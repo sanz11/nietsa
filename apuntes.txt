@@ -1,0 +1,2 @@
+comprobante model line 1128 relacion de tablas cli8ente y año mes 
+SELECT trabajador.`nombre`, trabajador.`apellidos`, trabajador.`cont_mensaje` FROM `trabajador`, `oficios` WHERE oficios.`dni`='70241454' and trabajador.`dni`='70241454';

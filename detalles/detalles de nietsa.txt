@@ -1,0 +1,39 @@
+codigo guia de remision, mostrar en factura
+
+
+
+mostrar la factura en guia de remision
+http://localhost/nietsa/index.php/almacen/guiarem/listar/V
+
+
+
+
+mostrar guia de remision en la factura
+http://localhost/nietsa/index.php/ventas/comprobante/comprobantes/V/F
+
+
+
+TABLA MOSTRAR GUIA DE REMISION
+
+SELECT * FROM cji_guiarem 
+             
+             
+*PUNTO 1
+Visualizar las boletas o facturas
+SELECT * FROM c.cji_comprobante  INNER JOIN g.cji_guiarem inner join where
+
+
+
+
+
+*PUNTO 2
+Visualizar listas de pagos pendientes y realizados
+             
+             
+             
+                WHERE g.GUIAREMC_TipoOperacion='" . $tipo_oper . "'
+             
+             
+					
+
+                
