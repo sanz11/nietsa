@@ -89,6 +89,32 @@ class Empresa_model extends Model
         }
     }
 	
+    public function listar_empresa_pdf($flagBS,$documento,$nombre)
+    {
+        $compania = $this->somevar['compania'];
+
+        if($nombre=="--" & $documento=="--"){
+             $sql = "SELECT * from cji_empresa  order by 1 asc "; 
+        }else if($documento !="--" && $nombre =="--"){
+                $sql = "SELECT * from cji_empresa where  EMPRC_Ruc LIKE '%".$documento."%' order by 1 asc "; 
+        }else if($nombre !="--" && $documento == "--"){
+                $sql = "SELECT * from cji_empresa  where   EMPRC_RazonSocial LIKE '%".$nombre."%' order by 1 asc "; 
+        }else{
+            $sql = "SELECT * from cji_empresa  where  EMPRC_RazonSocial  LIKE '%".$nombre."%' AND EMPRC_Ruc LIKE '%".$documento."%' order by 1 asc "; 
+        }
+       
+
+       
+
+        $query = $this->db->query($sql);
+        if ($query->num_rows > 0) {
+            foreach ($query->result() as $fila) {
+                $data[] = $fila;
+            }
+            return $data;
+        }
+    }
+
 	public function listar_tiposEmpresa($proveedor){
         $where = array('PROVP_Codigo'=>$proveedor);
         

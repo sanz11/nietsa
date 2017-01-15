@@ -10,6 +10,21 @@ jQuery(document).ready(function(){
     $("#buscarEmpresa").click(function(){
 		$("#form_busqueda").submit();
     });	
+     $("#imprimirEmpresa").click(function(){
+			var documento = $("#txtNumDoc").val();
+			var nombre = $("#txtNombre").val();
+			var flagBS = "B";
+		///
+		  if(documento==""){
+                    documento="--";
+            }
+             if(nombre==""){
+                    nombre="--";
+            }
+
+        url = base_url+"index.php/maestros/empresa/registro_empresa_pdf/"+flagBS+"/"+documento+"/"+ nombre;
+        window.open(url,'',"width=800,height=600,menubars=no,resizable=no;");
+    });
     $("#nuevoEmpresa").click(function(){
 		url = base_url+"index.php/maestros/empresa/nuevo_empresa";
 		$("#zonaContenido").load(url);

@@ -34,7 +34,7 @@ jQuery(document).ready(function(){
                     nombre="--";
             }
 
-        url = base_url+"index.php/almacen/producto/registro_persona_pdf/"+flagBS+"/"+documento+"/"+ nombre;
+        url = base_url+"index.php/maestros/persona/registro_persona_pdf/"+flagBS+"/"+documento+"/"+ nombre;
         window.open(url,'',"width=800,height=600,menubars=no,resizable=no;");
     });
 	container = $('div.container');

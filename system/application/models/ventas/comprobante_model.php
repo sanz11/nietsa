@@ -1128,8 +1128,8 @@ public function getNombreForPago($datos_for){
         //CPC_total => total de la FACTURA o BOLETA
         //CLIP_Codigo
       /*  SELECT trabajador.`nombre`, trabajador.`apellidos`, trabajador.`cont_mensaje` FROM `trabajador`, `oficios` WHERE oficios.`dni`='70241454' and trabajador.`dni`='70241454';*/
-      if($cliente != ""){
-      $sql1 = " SELECT * FROM cji_empresa WHERE EMPRC_Ruc=". $cliente. "";
+      if($cliente != "--"){
+      $sql1 = " SELECT * FROM cji_empresa WHERE EMPRC_Ruc='". $cliente. "'";
          $E_cod = $this->db->query($sql1);
         if ($E_cod->num_rows > 0) {
             foreach ($E_cod->result() as $fila1) {
@@ -1138,7 +1138,7 @@ public function getNombreForPago($datos_for){
             return $data1;
         }
 
-      $sql2 = " SELECT * FROM cji_cliente WHERE EMPRP_Codigo=". $data1['EMPRP_Codigo']. "";
+      $sql2 = " SELECT * FROM cji_cliente WHERE EMPRP_Codigo='". $data1['EMPRP_Codigo']. "'";
          $CLIP_cod = $this->db->query($sql2);
         if ($CLIP_cod->num_rows > 0) {
             foreach ($CLIP_cod->result() as $fila2) {
@@ -1148,17 +1148,19 @@ public function getNombreForPago($datos_for){
         }
      }
        
-       if($anio != "" && $mes!="" && $cliente !=""){//buscar por los 3 
-            $sql = " SELECT * FROM cji_comprobante c WHERE CPC_TipoOperacion='V' AND CPC_TipoDocumento='F' AND YEAR(CPC_FechaRegistro)='" . $anio . "' AND MONTH(CPC_FechaRegistro)=" . $mes . "' AND CLIP_Codigo=" . $data2['CLIP_Codigo'] . "";
-       }else if($cliente != "" && $anio != ""  && $mes == "" ){//buscar por cliente y año
-             $sql = " SELECT * FROM cji_comprobante c WHERE CPC_TipoOperacion='V' AND CPC_TipoDocumento='F' AND YEAR(CPC_FechaRegistro)='" . $anio . "' AND MONTH(CPC_FechaRegistro)=" . $mes . "";
-         }else if($cliente != "" && $anio == ""  && $mes == "" ){//buscar p or solo cliente
-             $sql = " SELECT * FROM cji_comprobante c WHERE CPC_TipoOperacion='V' AND CPC_TipoDocumento='F' AND YEAR(CPC_FechaRegistro)='" . $anio . "' AND MONTH(CPC_FechaRegistro)=" . $mes . "";
-         }else if($cliente == "" && $anio != ""  && $mes != "" ){//buscar por maño y mes
-             $sql = " SELECT * FROM cji_comprobante c WHERE CPC_TipoOperacion='V' AND CPC_TipoDocumento='F' AND YEAR(CPC_FechaRegistro)='" . $anio . "' AND MONTH(CPC_FechaRegistro)=" . $mes . "";
-         }else{
-
-        $sql = " SELECT * FROM cji_comprobante c WHERE CPC_TipoOperacion='V' AND CPC_TipoDocumento='F' AND YEAR(CPC_FechaRegistro)=" . $anio . "";
+       if($anio != "--" && $mes!="--" && $cliente !="--"){//buscar por los 3 
+            $sql = " SELECT * FROM cji_comprobante c WHERE CPC_TipoOperacion='V' AND CPC_TipoDocumento='F' AND YEAR(CPC_FechaRegistro)='" . $anio . "' AND MONTH(CPC_FechaRegistro)='" . $mes . "' AND CLIP_Codigo='" . $data2['CLIP_Codigo'] . "'";
+       }else if($cliente != "--" && $anio != "--"  && $mes == "--" ){//buscar por cliente y año
+             $sql = " SELECT * FROM cji_comprobante c WHERE CPC_TipoOperacion='V' AND CPC_TipoDocumento='F' AND YEAR(CPC_FechaRegistro)='" . $anio . "' AND MONTH(CPC_FechaRegistro)='" . $mes . "'";
+         }else if($cliente != "--" && $anio == "--"  && $mes == "--" ){//buscar p or solo cliente
+             $sql = " SELECT * FROM cji_comprobante c WHERE CPC_TipoOperacion='V' AND CPC_TipoDocumento='F' AND YEAR(CPC_FechaRegistro)='" . $anio . "' AND MONTH(CPC_FechaRegistro)='" . $mes . "'";
+         }else if($cliente == "--" && $anio != "--"  && $mes != "--" ){//buscar por año y mes
+             $sql = " SELECT * FROM cji_comprobante c WHERE CPC_TipoOperacion='V' AND CPC_TipoDocumento='F' AND YEAR(CPC_FechaRegistro)='" . $anio . "' AND MONTH(CPC_FechaRegistro)='" . $mes . "'";
+         }else if($cliente == "--" && $anio != "--"  && $mes == "--" ){//buscar por año
+             $sql = " SELECT * FROM cji_comprobante c WHERE CPC_TipoOperacion='V' AND CPC_TipoDocumento='F' AND YEAR(CPC_FechaRegistro)='" . $anio . "'";
+         }
+         else{
+            $sql = " SELECT * FROM cji_comprobante c WHERE CPC_TipoOperacion='V' AND CPC_TipoDocumento='F' AND YEAR(CPC_FechaRegistro)='" . $anio . "' AND MONTH(CPC_FechaRegistro)='" . $mes . "' AND CLIP_Codigo='" . $data2['CLIP_Codigo'] . "'";
     }
         //echo $sql;
         $query = $this->db->query($sql);

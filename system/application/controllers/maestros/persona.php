@@ -60,6 +60,97 @@ class Persona extends Controller{
           $this->layout->view("maestros/persona_index",$data);
 	}
 
+   public function registro_persona_pdf($flagbs = 'B', $documento='', $nombre='')
+    {
+
+        $this->load->library('cezpdf');
+        $this->load->helper('pdf_helper');
+        //prep_pdf();
+        $this->cezpdf = new Cezpdf('a4');
+        $datacreator = array(
+            'Title' => 'Estadillo de ',
+            'Name' => 'Estadillo de ',
+            'Author' => 'Vicente Producciones',
+            'Subject' => 'PDF con Tablas',
+            'Creator' => 'info@vicenteproducciones.com',
+            'Producer' => 'http://www.vicenteproducciones.com'
+        );
+
+        $this->cezpdf->addInfo($datacreator);
+        $this->cezpdf->selectFont(APPPATH . 'libraries/fonts/Helvetica.afm');
+        $delta = 20;
+
+            
+
+//        $this->cezpdf->ezText('', '', array("leading" => 100));
+        $this->cezpdf->ezText('<b>LISTADO DE PERSONAS</b>', 14, array("leading" => 0, 'left' => 185));
+        $this->cezpdf->ezText('', '', array("leading" => 10));
+
+
+        /* Datos del cliente */
+
+
+//        /* Listado de detalles */
+
+        $db_data = array();
+
+
+        $listado_persona = $this->persona_model->listar_persona_pdf($flagbs,$documento,$nombre);
+    
+            if (count($listado_persona) > 0) {
+                foreach ($listado_persona as $indice => $valor) {
+                    $ndocumento = $valor->PERSC_NumeroDocIdentidad;
+                    $pnombre = $valor->PERSC_Nombre;
+                    $direccion = $valor->PERSC_Direccion;
+                    $email = $valor->PERSC_Email;
+                    $telefono = $valor->PERSC_Telefono;
+
+
+                    $db_data[] = array(
+                        'cols1' => $indice + 1,
+                        'cols2' => $ndocumento,
+                        'cols3' => $pnombre,
+                        'cols4' => $email,
+                        'cols5' => $telefono
+                    );
+                }
+            }
+
+        
+
+
+        $col_names = array(
+            'cols1' => '<b>ITEM</b>',
+            'cols2' => '<b>DNI/CARNET EXTR</b>',
+            'cols3' => '<b>NOMBRE</b>',
+            'cols4' => '<b>EMAIL</b>',
+            'cols5' => '<b>TELEFONO</b>'
+        );
+
+        $this->cezpdf->ezTable($db_data, $col_names, '', array(
+            'width' => 525,
+            'showLines' => 1,
+            'shaded' => 1,
+            'showHeadings' => 1,
+            'xPos' => 'center',
+            'fontSize' => 8,
+            'cols' => array(
+                'cols1' => array('width' => 30, 'justification' => 'center'),
+                'cols2' => array('width' => 100, 'justification' => 'center'),
+                'cols3' => array('width' => 100, 'justification' => 'left'),
+                'cols4' => array('width' => 200, 'justification' => 'center'),
+                'cols5' => array('width' => 70, 'justification' => 'left')
+            )
+        ));
+
+
+        $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => $codificacion . '.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
+
+        ob_end_clean();
+
+        $this->cezpdf->ezStream($cabecera);
+    }
+
         
    public function nuevo_persona(){           
 		$data['cbo_dpto']         = $this->seleccionar_departamento('15');
