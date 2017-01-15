@@ -115,6 +115,31 @@ class Persona_model extends Model {
         $this->db->where("PERSP_Codigo", $persona);
         $this->db->update("cji_persona", $data);
     }
+     public function listar_persona_pdf($flagBS,$documento,$nombre)
+    {
+        $compania = $this->somevar['compania'];
+
+        if($nombre=="--" & $codigo=="--"){
+             $sql = "SELECT * from cji_familia f where  f.FAMI_FlagBienServicio='" . $flagBS . "' order by 1 asc "; 
+        }else if($codigo !="--" && $nombre =="--"){
+                $sql = "SELECT * from cji_familia f where  f.FAMI_FlagBienServicio='" . $flagBS . "' AND  f.FAMI_CodigoInterno LIKE '%".$codigo."%' order by 1 asc "; 
+        }else if($nombre !="--" && $codigo == "--"){
+                $sql = "SELECT * from cji_familia f where  f.FAMI_FlagBienServicio='" . $flagBS . "' AND  f.FAMI_Descripcion LIKE '%".$nombre."%' order by 1 asc "; 
+        }else{
+            $sql = "SELECT * from cji_familia f where  f.FAMI_FlagBienServicio='" . $flagBS . "' AND f.FAMI_Descripcion LIKE '%".$nombre."%' AND  f.FAMI_CodigoInterno LIKE '%".$codigo."%' order by 1 asc "; 
+        }
+       
+
+       
+
+        $query = $this->db->query($sql);
+        if ($query->num_rows > 0) {
+            foreach ($query->result() as $fila) {
+                $data[] = $fila;
+            }
+            return $data;
+        }
+    }
 
     public function eliminar_persona($persona) {
         $data = array("PERSC_FlagEstado" => '0');

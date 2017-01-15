@@ -22,7 +22,21 @@ jQuery(document).ready(function(){
 	base_url = $("#base_url").val();
         location.href = base_url+"index.php/maestros/persona/personas";
     });
-    
+    $("#imprimirPersona").click(function(){
+			var documento = $("#txtNumDoc").val();
+			var nombre = $("#txtNombre").val();
+			var flagBS = "B";
+		///
+		  if(documento==""){
+                    documento="--";
+            }
+             if(nombre==""){
+                    nombre="--";
+            }
+
+        url = base_url+"index.php/almacen/producto/registro_persona_pdf/"+flagBS+"/"+documento+"/"+ nombre;
+        window.open(url,'',"width=800,height=600,menubars=no,resizable=no;");
+    });
 	container = $('div.container');
  	$("#frmPersona").validate({
 		event    : "blur",
