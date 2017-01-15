@@ -75,9 +75,17 @@ jQuery(document).ready(function(){
 		parent.$.fancybox.close(); 
 	});
          $("#imprimirFamilia").click(function(){
-		
+			var codigo = $("#txtCodigo").val();
+			var nombre = $("#txtNombre").val();
 		///
-        url = base_url+"index.php/almacen/producto/registro_familia_pdf/"+flagBS+"/"+$("#txtCodigo").val()+"/"+ $("#txtNombre").val();
+		  if(codigo==""){
+                    codigo="--";
+            }
+             if(nombre==""){
+                    nombre="--";
+            }
+
+        url = base_url+"index.php/almacen/producto/registro_familia_pdf/"+flagBS+"/"+codigo+"/"+ nombre;
         window.open(url,'',"width=800,height=600,menubars=no,resizable=no;");
     });
         //$("#frmResultado #codigousuario").focus();

@@ -1410,11 +1410,11 @@ and pro.PROD_FlagActivo = 1 and pro.PROD_FlagEstado = 1 order by pro.PROD_FechaR
     {
         $compania = $this->somevar['compania'];
 
-        if($nombre=="" & $codigo==""){
+        if($nombre=="--" & $codigo=="--"){
              $sql = "SELECT * from cji_familia f where  f.FAMI_FlagBienServicio='" . $flagBS . "' order by 1 asc "; 
-        }else if($codigo !="" && $nombre ==""){
+        }else if($codigo !="--" && $nombre =="--"){
                 $sql = "SELECT * from cji_familia f where  f.FAMI_FlagBienServicio='" . $flagBS . "' AND  f.FAMI_CodigoInterno LIKE '%".$codigo."%' order by 1 asc "; 
-        }else if($nombre !="" && $codigo == ""){
+        }else if($nombre !="--" && $codigo == "--"){
                 $sql = "SELECT * from cji_familia f where  f.FAMI_FlagBienServicio='" . $flagBS . "' AND  f.FAMI_Descripcion LIKE '%".$nombre."%' order by 1 asc "; 
         }else{
             $sql = "SELECT * from cji_familia f where  f.FAMI_FlagBienServicio='" . $flagBS . "' AND f.FAMI_Descripcion LIKE '%".$nombre."%' AND  f.FAMI_CodigoInterno LIKE '%".$codigo."%' order by 1 asc "; 

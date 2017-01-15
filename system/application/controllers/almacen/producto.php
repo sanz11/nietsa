@@ -4287,9 +4287,10 @@ class Producto extends Controller
         $this->cezpdf->selectFont(APPPATH . 'libraries/fonts/Helvetica.afm');
         $delta = 20;
 
+            
 
 //        $this->cezpdf->ezText('', '', array("leading" => 100));
-        $this->cezpdf->ezText('<b>LISTADO FAMILIA DE ARTICULOS</b>', 14, array("leading" => 0, 'left' => 185));
+        $this->cezpdf->ezText('<b>LISTADO FAMILIA DE ARTICULOS</b>'.$codigo.$nombre, 14, array("leading" => 0, 'left' => 185));
         $this->cezpdf->ezText('', '', array("leading" => 10));
 
 
