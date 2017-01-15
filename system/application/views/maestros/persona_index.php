@@ -1,5 +1,5 @@
 <script type="text/javascript" src="<?php echo base_url();?>js/jquery.metadata.js"></script>
-<script type="text/javascript" src="<?php echo base_url();?>js/jquery.validate.js"></script>			
+<script type="text/javascript" src="<?php echo base_url();?>js/jquery.validate.js"></script>		
 <script type="text/javascript" src="<?php echo base_url();?>js/maestros/persona.js"></script>
 <div id="pagina">
     <div id="zonaContenido">
@@ -32,6 +32,7 @@
                             </table>
                         </form>
                   </div>
+                <div class="acciones"> 
                     <div id="botonBusqueda">
                            <ul id="imprimirPersona" class="lista_botones"><li id="imprimir">Imprimir</li></ul>
                            <ul id="nuevoPersona" class="lista_botones"><li id="nuevo">Nueva Persona</li></ul>
@@ -39,23 +40,24 @@
                            <ul id="buscarPersona" class="lista_botones"><li id="buscar">Buscar</li></ul>
                     </div>
                   <div id="lineaResultado">
-                      <table class="fuente8" width="100%" cellspacing=0 cellpadding=3 border="0">
+                      <table class="fuente7" width="100%" cellspacing=0 cellpadding=3 border="0">
                             <tr>
                             <td width="50%" align="left">N de personas encontrados:&nbsp;<?php echo $registros;?> </td>
                             <td width="50%" align="right">&nbsp;</td>
                       </table>
                   </div>
+                </div>
                         <div id="cabeceraResultado" class="header">
                                 <?php echo $titulo_tabla; ?> </div>
                         <div id="frmResultado">
                         <table class="fuente8" width="100%" cellspacing="0" cellpadding="3" border="0" ID="Table1">
                                         <tr class="cabeceraTabla">
                                                 <td width="8%">ITEM</td>
-                                                <td width="8%">DNI/CARNET EXTR</td>
+                                                <td width="15%">DNI/CARNET EXTR</td>
                                                 <td width="38%">NOMBRE  </td>
-                                               
-                                                <td width="13%">TEL&Eacute;FONO</td>
-                                                <td width="19%">M&Oacute;VIL</td>
+                                                <td width="38%">DIRECCI&Oacute;N</td>
+                                              <td width="13%">TEL&Eacute;FONO</td>
+                                               <!--   <td width="19%">M&Oacute;VIL</td>-->
                                                 <td width="5%">&nbsp;</td>
                                                 <td width="5%">&nbsp;</td>
                                                 <td width="5%">&nbsp;</td>
@@ -66,6 +68,7 @@
                                         foreach($lista as $indice=>$valor){
                                                 $class = $indice%2==0?'itemParTabla':'itemImparTabla';
                                                 ?>
+                                                
                                                 <tr class="<?php echo $class;?>">
                                                         <td><div align="center"><?php echo $valor[0];?></div></td>
                                                         <td><div align="left"><?php echo $valor[1];?></div></td>
@@ -75,6 +78,7 @@
                                                         <td><div align="center"><?php echo $valor[5];?></div></td>
                                                         <td><div align="center"><?php echo $valor[6];?></div></td>
                                                         <td><div align="center"><?php echo $valor[7];?></div></td>
+                                                        <!--<td><div align="center"><?php echo $valor[8];?></div></td>-->
                                                         
                                                 </tr>
                                                 <?php

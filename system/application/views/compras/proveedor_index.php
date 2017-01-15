@@ -64,7 +64,8 @@
                             <table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
                                     <tr>
                                             <td width="16%">N. de Documento </td>
-                                            <td width="68%"><input id="txtNumDoc" type="text" list="list_grupo1" class="cajaPequena" NAME="txtNumDoc" maxlength="15" value="<?php echo $numdoc; ?>">
+                                            <td width="68%">
+                <input id="txtNumDoc" type="text" list="list_grupo1" class="cajaPequena" NAME="txtNumDoc" maxlength="11" onkeypress="return numbersonly(this,event,'.');" value="<?php echo $numdoc; ?>">
                                       
                                             
                                             
@@ -102,8 +103,14 @@
                                       <td>&nbsp;</td>
                                       <td>&nbsp;</td>
                                       </tr>
+                                      <tr>
+                                            <td>Dirección</td>
+                                            <td>
+                                               <input id="txtDireccion" name="txtDireccion" type="text"    maxlength="45" value="<?php echo $nombre; ?>">
+                                            </td>
+                                        </tr>
                                         <tr>
-                                        <td>Tipo Persona</td>
+                                        <td>Tipo Proveedor <!--Persona--></td>
                                         <td>
                                                 <select id="cboTipoProveedor" name="cboTipoProveedor" class="comboMedio">
                                                         <option value="" selected>::Seleccionar::</option>
@@ -112,7 +119,9 @@
                                                 </select>
                                         </td>
                                         </tr>
+                                        <!--
                                         <tr>
+                                        
 											<td>Tipo Proveedor</td>
 											<td>
 												<a href="<?php echo base_url(); ?>index.php/almacen/tipoproveedor/nueva_familia" id='linkVerTipo'></a>
@@ -131,7 +140,9 @@
 												<a href="#" onclick="buscar_marca();">
 												<img src="<?php echo base_url();?>images/ver.png" border="0"></a>
 											</td>
-                                        </tr>
+
+                                        </tr>-->
+               
                             </table>
                         </form>
                   </div>
@@ -159,30 +170,50 @@
                                                 <td width="5%">RUC</td>
                                                 <td width="5%">DNI</td>
                                                 <td width="36%">NOMBRE O RAZ&Oacute;N SOCIAL </td>
+                                                
+                                                <td width="13%">DIRECCI&Oacute;N</td>
                                                 <td width="10%">TIPO PROVEEDOR </td>
-                                                <td width="13%">TEL&Eacute;FONO</td>
-                                                <td width="19%">M&Oacute;VIL</td>
+                                               <!--<td width="19%">M&Oacute;VIL</td>-->
                                                 <td width="5%">&nbsp;</td>
                                                 <td width="5%">&nbsp;</td>
                                                 <td width="5%">&nbsp;</td>
                                         </tr>
                                         <?php
                                         $i=1;
-                                        if(count($lista)>0){
-                                        foreach($lista as $indice=>$valor){
-                                                $class = $indice%2==0?'itemParTabla':'itemImparTabla';
+ if(count($lista)>0){
+ foreach($lista as $indice=>$valor){
+ $class = $indice%2==0?'itemParTabla':'itemImparTabla';
                                                 ?>
-                                                <tr class="<?php echo $class;?>">
-                                                        <td><div align="center"><?php echo $valor[0];?></div></td>
-                                                        <td><div align="center"><?php echo $valor[1];?></div></td>
-                                                        <td><div align="center"><?php echo $valor[2];?></div></td>
-                                                        <td><div align="left"><?php echo $valor[3];?></div></td>
-                                                        <td><div align="center"><?php echo $valor[4];?></div></td>
-                                                        <td><div align="center"><?php echo $valor[5];?></div></td>
-                                                        <td><div align="center"><?php echo $valor[6];?></div></td>
+    <tr class="<?php echo $class;?>">
+                                                        <td>
+                                                   <div align="center"><?php echo $valor[0];?></div>
+                                                        </td>
+                                                        <td>
+                                                    <div align="center"><?php echo $valor[1];?></div>
+                                                        </td>
+
+                                                        <!--DNI-->
+                                                    <td><div align="center"><?php echo $valor[2];?></div></td>
+
+                                                        <!--RaZON SOCIAS-->
+                                                    <td><div align="left"><?php echo $valor[3];?></div></td>
+
+                                                        <!--direccion-->
+                                                    <td><div align="center"><?php echo $valor[4];?></div></td>
+
+                                                        <!--tipo proveedor-->
+                                                         <td>
+                                                    <div align="center"><?php echo $valor[5];?></div>
+                                                         </td>
+                                                        <td>
+                                                        <div align="center"><?php echo $valor[6];?></div>
+                                                        </td>
+
+
                                                         <td><div align="center"><?php echo $valor[7];?></div></td>
                                                         <td><div align="center"><?php echo $valor[8];?></div></td>
-                                                        <td><div align="center"><?php echo $valor[9];?></div></td>
+
+                                                       <!-- <td><div align="center"><?php echo $valor[9];?></div></td>-->
                                                 </tr>
                                                 <?php
                                                 $i++;
