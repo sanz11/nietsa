@@ -147,10 +147,35 @@ class Comprobante_model extends Model {
 
         if ($tipo_oper == 'V') {
 
-            if (isset($filter->ruc_cliente) && $filter->ruc_cliente != '') {
+            
+            if ($filter->anio != '--' && $filter->ruc_cliente == '--' && $filter->mes == '--') {//año
+                $where .= ' and YEAR(CPC_Fecha)=' . $filter->anio;
+            }
+             else if ($filter->anio != '--' && $filter->ruc_cliente == '--' && $filter->mes != '--') { //año y mes
+                $where .= ' and YEAR(CPC_Fecha)=' . $filter->anio.' and MONTH(CPC_Fecha)=' . $filter->mes;
+            }
+            else if ($filter->anio != '--' && $filter->ruc_cliente != '--' && $filter->mes == '--'){ //año y cliente
+                $where .= ' and YEAR(CPC_Fecha)=' . $filter->anio.' and MONTH(CPC_Fecha)=' . $filter->mes;
                 $where .= ' and EMPRC_Ruc LIKE "%' . $filter->ruc_cliente.'%"';
                 $where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' . $filter->ruc_cliente.'%"';
             }
+            else if ($filter->anio == '--' && $filter->ruc_cliente != '--' && $filter->mes == '--') {//cliente
+                $where .= ' and EMPRC_Ruc LIKE "%' . $filter->ruc_cliente.'%"';
+                $where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' . $filter->ruc_cliente.'%"';
+            }
+            else if ($filter->anio != '--' && $filter->ruc_cliente != '--' && $filter->mes != '--') { //año  mes y cliente
+                $where .= ' and YEAR(CPC_Fecha)=' . $filter->anio.' and MONTH(CPC_Fecha)=' . $filter->mes;
+                $where .= ' and EMPRC_Ruc LIKE "%' . $filter->ruc_cliente.'%"';
+                $where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' . $filter->ruc_cliente.'%"';
+            } else{
+                 $where .= ' and YEAR(CPC_Fecha)="--"';
+            }
+            //año
+            //año y mes
+            //año cliente
+            //año cliente y mes
+            //cliente
+            //isset($filter->anio) 
         }
         else {
            
@@ -179,10 +204,7 @@ class Comprobante_model extends Model {
                 LEFT JOIN cji_empresa e ON e.EMPRP_Codigo=c.EMPRP_Codigo AND " . ($tipo_oper != 'C' ? "c.CLIC_TipoPersona" : "c.PROVC_TipoPersona") . "='1'
 
                     WHERE cp.CPC_TipoOperacion='" . $tipo_oper . "'
-                      " . $where . "
-
-                GROUP BY cp.CPP_Codigo
-                ORDER BY cp.CPC_FechaRegistro DESC  ";
+                      " . $where . "";
 
         $query = $this->db->query($sql);
         if ($query->num_rows > 0) {
