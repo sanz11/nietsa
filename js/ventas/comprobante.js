@@ -446,18 +446,7 @@ function ver_reporte_pdf() {
     window.open(url, '', "width=800,height=600,menubars=no,resizable=no;");
 }
 
-function ver_reporte_pdf_ventas() {
-    var anio = $("#anioVenta").val();
-    var mes = $("#mesventa").val();
-    var cliente = $("#ruc_proveedorV").val();
-    if(anio=="0"){anio="--";}
-    if(mes==""){mes="--";}
-    if(cliente==""){cliente="--";}
 
-
-    url = base_url + "index.php/ventas/comprobante/ver_reporte_pdf_ventas/" + anio+ "/" + mes+ "/" + cliente;
-    window.open(url, '', "width=800,height=600,menubars=no,resizable=no;");
-}
 
 function estadisticas_compras_ventas(tipo) {
     var anio = $("#anioVenta2").val();
@@ -2234,4 +2223,27 @@ function verPdf(){
     //  console.log(data);  
 
 
+}
+function ver_reporte_pdf_ventas() {
+
+    var anio = $("#anioVenta").val();
+    var mes = $("#mesventa").val();
+    var cliente = $("#ruc_proveedorV").val();
+
+    var dataEviar="_____";
+
+     if(anio=="0"){anio="--";}
+    if(mes==""){mes="--";}
+    if(cliente==""){cliente="--";}
+    
+    dataEviar=anio+"_"+mes+"_"+cliente;
+  
+  
+    var url =base_url+ "index.php/ventas/comprobante/ver_reporte_pdf_ventas/" + dataEviar;
+    window.open(url, '', "width=800,height=600,menubars=no,resizable=no;");
+    //window.open(url3, '', "menubars=no,resizable=no;");
+    //  console.log(data);  
+
+    //url = base_url + "index.php/ventas/comprobante/ver_reporte_pdf_ventas/" + anio+ "/" + mes + "/" + cliente;
+    //window.open(url, '', "width=800,height=600,menubars=no,resizable=no;");
 }

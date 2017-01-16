@@ -137,6 +137,59 @@ class Comprobante_model extends Model {
         }
         return array();
     }
+    public function buscar_comprobante_venta_2($tipo_oper = 'V', $filter = NULL) {
+        
+
+       $compania = $this->somevar['compania'];
+
+        $where = '';
+        
+
+        if ($tipo_oper == 'V') {
+
+            if (isset($filter->ruc_cliente) && $filter->ruc_cliente != '') {
+                $where .= ' and EMPRC_Ruc LIKE "%' . $filter->ruc_cliente.'%"';
+                $where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' . $filter->ruc_cliente.'%"';
+            }
+        }
+        else {
+           
+            if (isset($filter->ruc_cliente) && $filter->ruc_cliente != '') {
+                $where .= ' and EMPRC_Ruc LIKE "%' . $filter->ruc_cliente.'%"';
+                $where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' . $filter->ruc_cliente.'%"';
+            }
+        }
+
+        $sql = "SELECT cp.CPC_Fecha,
+                       cp.CPC_Serie,
+                       cp.CPC_Numero,
+                       cp.CPC_subtotal,
+                       cp.CPC_igv,
+                       cp.CPC_total,
+                       (CASE " . ($tipo_oper != 'C' ? "c.CLIC_TipoPersona" : "c.PROVC_TipoPersona") . "  WHEN '1' THEN e.EMPRC_Ruc ELSE pe.PERSC_NumeroDocIdentidad end) numdoc,
+                       (CASE " . ($tipo_oper != 'C' ? "c.CLIC_TipoPersona" : "c.PROVC_TipoPersona") . "  WHEN '1' THEN e.EMPRC_RazonSocial ELSE CONCAT(pe.PERSC_Nombre , ' ', pe.PERSC_ApellidoPaterno, ' ', pe.PERSC_ApellidoMaterno) end) nombre,
+                       m.MONED_Simbolo,
+                       cp.CPC_total,
+                       cp.CPC_FlagEstado
+                FROM cji_comprobante cp
+                LEFT JOIN cji_moneda m ON m.MONED_Codigo=cp.MONED_Codigo
+                LEFT JOIN cji_comprobantedetalle cpd ON cpd.CPP_Codigo=cp.CPP_Codigo
+                " . ($tipo_oper != 'C' ? "INNER JOIN cji_cliente c ON c.CLIP_Codigo=cp.CLIP_Codigo" : "LEFT JOIN cji_proveedor c ON c.PROVP_Codigo=cp.PROVP_Codigo") . "
+                LEFT JOIN cji_persona pe ON pe.PERSP_Codigo=c.PERSP_Codigo AND " . ($tipo_oper != 'C' ? "c.CLIC_TipoPersona" : "c.PROVC_TipoPersona") . " ='0'
+                LEFT JOIN cji_empresa e ON e.EMPRP_Codigo=c.EMPRP_Codigo AND " . ($tipo_oper != 'C' ? "c.CLIC_TipoPersona" : "c.PROVC_TipoPersona") . "='1'
+
+                    WHERE cp.CPC_TipoOperacion='" . $tipo_oper . "'
+                      " . $where . "
+
+                GROUP BY cp.CPP_Codigo
+                ORDER BY cp.CPC_FechaRegistro DESC  ";
+
+        $query = $this->db->query($sql);
+        if ($query->num_rows > 0) {
+            return $query->result();
+        }
+        return array();
+    }
 
     public function contar_comprobantes($tipo_oper = 'V', $tipo_docu = 'F', $number_items = '', $offset = '', $fecha_registro = '') {
         $compania = $this->somevar['compania'];
@@ -1121,57 +1174,7 @@ public function getNombreForPago($datos_for){
         return array();
     }
 
-    public function buscar_comprobante_venta_2($anio,$mes,$cliente) {
-        
-        //CPC_TipoOperacion => V venta, C compra
-        //CPC_TipoDocumento => F factura, B boleta
-        //CPC_total => total de la FACTURA o BOLETA
-        //CLIP_Codigo
-      /*  SELECT trabajador.`nombre`, trabajador.`apellidos`, trabajador.`cont_mensaje` FROM `trabajador`, `oficios` WHERE oficios.`dni`='70241454' and trabajador.`dni`='70241454';*/
-      if($cliente != "--"){
-      $sql1 = " SELECT * FROM cji_empresa WHERE EMPRC_Ruc='". $cliente. "'";
-         $E_cod = $this->db->query($sql1);
-        if ($E_cod->num_rows > 0) {
-            foreach ($E_cod->result() as $fila1) {
-                $data1[] = $fila1;
-            }
-            return $data1;
-        }
-
-      $sql2 = " SELECT * FROM cji_cliente WHERE EMPRP_Codigo='". $data1['EMPRP_Codigo']. "'";
-         $CLIP_cod = $this->db->query($sql2);
-        if ($CLIP_cod->num_rows > 0) {
-            foreach ($CLIP_cod->result() as $fila2) {
-                $data2[] = $fila2;
-            }
-            return $data2;
-        }
-     }
-       
-       if($anio != "--" && $mes!="--" && $cliente !="--"){//buscar por los 3 
-            $sql = " SELECT * FROM cji_comprobante c WHERE CPC_TipoOperacion='V' AND CPC_TipoDocumento='F' AND YEAR(CPC_FechaRegistro)='" . $anio . "' AND MONTH(CPC_FechaRegistro)='" . $mes . "' AND CLIP_Codigo='" . $data2['CLIP_Codigo'] . "'";
-       }else if($cliente != "--" && $anio != "--"  && $mes == "--" ){//buscar por cliente y año
-             $sql = " SELECT * FROM cji_comprobante c WHERE CPC_TipoOperacion='V' AND CPC_TipoDocumento='F' AND YEAR(CPC_FechaRegistro)='" . $anio . "' AND MONTH(CPC_FechaRegistro)='" . $mes . "'";
-         }else if($cliente != "--" && $anio == "--"  && $mes == "--" ){//buscar p or solo cliente
-             $sql = " SELECT * FROM cji_comprobante c WHERE CPC_TipoOperacion='V' AND CPC_TipoDocumento='F' AND YEAR(CPC_FechaRegistro)='" . $anio . "' AND MONTH(CPC_FechaRegistro)='" . $mes . "'";
-         }else if($cliente == "--" && $anio != "--"  && $mes != "--" ){//buscar por año y mes
-             $sql = " SELECT * FROM cji_comprobante c WHERE CPC_TipoOperacion='V' AND CPC_TipoDocumento='F' AND YEAR(CPC_FechaRegistro)='" . $anio . "' AND MONTH(CPC_FechaRegistro)='" . $mes . "'";
-         }else if($cliente == "--" && $anio != "--"  && $mes == "--" ){//buscar por año
-             $sql = " SELECT * FROM cji_comprobante c WHERE CPC_TipoOperacion='V' AND CPC_TipoDocumento='F' AND YEAR(CPC_FechaRegistro)='" . $anio . "'";
-         }
-         else{
-            $sql = " SELECT * FROM cji_comprobante c WHERE CPC_TipoOperacion='V' AND CPC_TipoDocumento='F' AND YEAR(CPC_FechaRegistro)='" . $anio . "' AND MONTH(CPC_FechaRegistro)='" . $mes . "' AND CLIP_Codigo='" . $data2['CLIP_Codigo'] . "'";
-    }
-        //echo $sql;
-        $query = $this->db->query($sql);
-        if ($query->num_rows > 0) {
-            foreach ($query->result() as $fila) {
-                $data[] = $fila;
-            }
-            return $data;
-        }
-        return array();
-    }
+    
 
     public function buscar_comprobante_compras($anio) {
         //CPC_TipoOperacion => V venta, C compra
@@ -1327,6 +1330,87 @@ public function UpdateCuentas($codigo,$filter=null){
     $this->db->where($where);
     $this->db->update('cji_cuentas',(array)$filter);
 }
+
+public function busqueda_comprobante2($tipo_oper = 'V', $filter = NULL) {
+
+        $compania = $this->somevar['compania'];
+
+        $where = '';
+        if (isset($filter->seriei) && $filter->seriei != '') {
+            $where .= ' and cp.CPC_Serie="' . $filter->seriei . '"';
+        }
+        if (isset($filter->numero) && $filter->numero != '') {
+            $where .= ' and cp.CPC_Numero=' . $filter->numero;
+        }
+
+        if(isset($filter->fecha_ini) && $filter->fecha_ini != "" && !isset($filter->fecha_fin) || $filter->fecha_fin == ""){
+            $where .= ' AND cp.CPC_Fecha >= "' . $filter->fecha_ini. '"';
+            $where .= ' AND cp.CPC_Fecha <= ' . '"2020-12-12"';
+        }else if($filter->fecha_fin != "" && isset($filter->fecha_fin) && $filter->fecha_ini == "" || !isset($filter->fecha_ini)){
+            $where .= ' AND cp.CPC_Fecha <= "' . $filter->fecha_fin.'"';
+            $where .= ' AND cp.CPC_Fecha > ' . '"2010-12-12"';
+        }else{
+            $where .= ' AND cp.CPC_Fecha >= "' . $filter->fecha_ini. '"';
+            $where .= ' AND cp.CPC_Fecha <= "' . $filter->fecha_fin .'"';
+        }
+
+        if ($tipo_oper == 'V') {
+            if (isset($filter->nombre_cliente) && $filter->nombre_cliente != '') {
+                $where .= ' and EMPRC_RazonSocial LIKE "%' . $filter->nombre_cliente.'%"';
+                $where .= ' OR PERSC_Nombre LIKE "%' . $filter->nombre_cliente.'%"';
+                $where .= ' OR PERSC_ApellidoPaterno LIKE "%' . $filter->nombre_cliente.'%"';
+            }
+            if (isset($filter->ruc_cliente) && $filter->ruc_cliente != '') {
+                $where .= ' and EMPRC_Ruc LIKE "%' . $filter->ruc_cliente.'%"';
+                $where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' . $filter->ruc_cliente.'%"';
+            }
+        }
+        else {
+            if (isset($filter->nombre_proveedor) && $filter->nombre_proveedor != '') {
+                $where .= ' and EMPRC_RazonSocial LIKE "%' . $filter->nombre_proveedor.'%"';
+                $where .= ' OR PERSC_Nombre LIKE "%' . $filter->nombre_proveedor.'%"';
+                $where .= ' OR PERSC_ApellidoPaterno LIKE "%' . $filter->nombre_proveedor.'%"';
+            }
+            if (isset($filter->ruc_proveedor) && $filter->ruc_proveedor != '') {
+                $where .= ' and EMPRC_Ruc LIKE "%' . $filter->ruc_proveedor.'%"';
+                $where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' . $filter->ruc_proveedor.'%"';
+            }
+        }
+
+        $sql = "SELECT cp.CPC_Fecha,
+                       cp.CPP_Codigo,
+                       cp.CPC_Serie,
+                       cp.CPC_Numero,
+                       cp.CPP_Codigo_canje,
+                       cp.CPC_GuiaRemCodigo,
+                       cp.CPC_DocuRefeCodigo,
+                       cp.CPC_NombreAuxiliar,
+                       cp.CLIP_Codigo,
+                       cp.USUA_Codigo,
+                       (CASE " . ($tipo_oper != 'C' ? "c.CLIC_TipoPersona" : "c.PROVC_TipoPersona") . "  WHEN '1' THEN e.EMPRC_Ruc ELSE pe.PERSC_NumeroDocIdentidad end) numdoc,
+                       (CASE " . ($tipo_oper != 'C' ? "c.CLIC_TipoPersona" : "c.PROVC_TipoPersona") . "  WHEN '1' THEN e.EMPRC_RazonSocial ELSE CONCAT(pe.PERSC_Nombre , ' ', pe.PERSC_ApellidoPaterno, ' ', pe.PERSC_ApellidoMaterno) end) nombre,
+                       m.MONED_Simbolo,
+                       cp.CPC_total,
+                       cp.CPC_FlagEstado
+                FROM cji_comprobante cp
+                LEFT JOIN cji_moneda m ON m.MONED_Codigo=cp.MONED_Codigo
+                LEFT JOIN cji_comprobantedetalle cpd ON cpd.CPP_Codigo=cp.CPP_Codigo
+                " . ($tipo_oper != 'C' ? "INNER JOIN cji_cliente c ON c.CLIP_Codigo=cp.CLIP_Codigo" : "LEFT JOIN cji_proveedor c ON c.PROVP_Codigo=cp.PROVP_Codigo") . "
+                LEFT JOIN cji_persona pe ON pe.PERSP_Codigo=c.PERSP_Codigo AND " . ($tipo_oper != 'C' ? "c.CLIC_TipoPersona" : "c.PROVC_TipoPersona") . " ='0'
+                LEFT JOIN cji_empresa e ON e.EMPRP_Codigo=c.EMPRP_Codigo AND " . ($tipo_oper != 'C' ? "c.CLIC_TipoPersona" : "c.PROVC_TipoPersona") . "='1'
+
+                    WHERE cp.CPC_TipoOperacion='" . $tipo_oper . "'
+                      AND cp.CPC_TipoDocumento='" . $tipo_docu . "' AND cp.COMPP_Codigo =" . $compania . " " . $where . "
+
+                GROUP BY cp.CPP_Codigo
+                ORDER BY cp.CPC_FechaRegistro DESC  ";
+
+        $query = $this->db->query($sql);
+        if ($query->num_rows > 0) {
+            return $query->result();
+        }
+        return array();
+    }
 }
 
 ?>
