@@ -503,7 +503,7 @@ class Proveedor extends Controller
         }
     }
 
-    public function registro_proveedor_pdf($flagbs = 'B', $documento='', $nombre='', $telefono='', $direccion='', $tipoProv='')
+    public function registro_proveedor_pdf($flagbs = 'B', $documento='', $nombre='')
     {
 
         $this->load->library('cezpdf');
@@ -538,7 +538,7 @@ class Proveedor extends Controller
         $db_data = array();
 
 
-        $listado_proveedor = $this->proveedor_model->listar_proveedor_pdf($flagbs,$documento, $nombre, $telefono, $direccion, $tipoProv='');
+        $listado_proveedor = $this->proveedor_model->listar_proveedor_pdf($flagbs,$documento, $nombre);
     
             if (count($listado_proveedor) > 0) {
                 foreach ($listado_proveedor as $indice => $valor) {
