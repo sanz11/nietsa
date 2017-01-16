@@ -8189,6 +8189,7 @@ $db_data=array();
     
       $titulo="REPORTE DE VENTAS" ; 
       $tipo_oper="V";
+        $supertotal=0;
        
 
      $notimg="";
@@ -8213,8 +8214,9 @@ $db_data=array();
      
         $this->cezpdf->ezText($titulo , $options);
         $this->cezpdf->ezText("", 17, $options);
-        //$this->cezpdf->ezText(($titulo), 11, array("left" => 180));
-$nombre="";
+       
+
+
 $db_data=array();
         if (count($listado_comprobantes) > 0) {
             foreach ($listado_comprobantes as $indice => $valor) {
@@ -8222,7 +8224,8 @@ $db_data=array();
                 $fecha = $valor->CPC_Fecha;
                 $serie = $valor->CPC_Serie;
                 $numero = $valor->CPC_Numero;
-                $valor = $valor->CPC_subtotal;
+                $nombre = $valor->EMPRC_RazonSocial;
+                $valorV = $valor->CPC_subtotal;
                 $igv = $valor->CPC_igv;
                 $total = $valor->CPC_total;
 
@@ -8236,17 +8239,22 @@ $db_data=array();
     $nomusuario= strtolower($explorar[0]);
  }
            
+   
 
-                
                 $total = $valor->MONED_Simbolo . ' ' . number_format($valor->CPC_total, 2);
+                 $valorV = $valor->MONED_Simbolo . ' ' . number_format($valor->CPC_subtotal, 2);
+                  $igv = $valor->MONED_Simbolo . ' ' . number_format($valor->CPC_igv, 2);
+
+                  $supertotal= $supertotal+$valor->CPC_total;
                $db_data[] = array(
                 'col1' => $indice + 1,
                 'col2' => $fecha,
                 'col3' => $serie,
                 'col4' => $numero,
-                'col5' => $valor,
-                'col6' => $igv,
-                'col7' => $total
+                'col5' => $nombre,
+                'col6' => $valorV,
+                'col7' => $igv,
+                'col8' => $total
             ); 
  
         }
@@ -8256,11 +8264,14 @@ $db_data=array();
             'col2' => 'Fecha',
             'col3' => 'SERIE',
             'col4' => 'NRO',
-            'col5' => 'VALOR DE VENTA',
-            'col6' => 'I.G.V 18%',
-            'col7' => 'TOTAL'
+            'col5' => 'RAZON ZOCIAL',
+            'col6' => 'VALOR DE VENTA',
+            'col7' => 'I.G.V 18%',
+            'col8' => 'TOTAL'
             
         );
+
+        
 
         $this->cezpdf->ezTable($db_data, $col_names, '', array(
             'width' => 555,
@@ -8274,9 +8285,36 @@ $db_data=array();
                 'col2' => array('width' => 50, 'justification' => 'center'),
                 'col3' => array('width' => 30, 'justification' => 'center'),
                 'col4' => array('width' => 30, 'justification' => 'center'),
-                'col5' => array('width' => 55, 'justification' => 'center'),
-                'col6' => array('width' => 50),
-                'col7' => array('width' => 59, 'justification' => 'center')
+                'col5' => array('width' => 105, 'justification' => 'center'),
+                'col6' => array('width' => 55, 'justification' => 'center'),
+                'col7' => array('width' => 50, 'justification' => 'center'),
+                'col8' => array('width' => 59, 'justification' => 'center')
+            )
+        ));
+
+
+         $dbsupertotal[] = array(
+                'col11' => $supertotal
+            );
+
+        $this->cezpdf->ezText('', 20);
+
+         $col_names = array(
+            
+            'col11' => 'TOTAL'
+            
+        );
+
+
+         $this->cezpdf->ezTable($dbsupertotal,$col_names , '', array(
+            "top" => 20,
+            'width' => 555,
+            'showLines' => 1,
+            'shaded' => 0,
+            'xPos' => 'center',
+            'fontSize' => 7,
+            'cols' => array(
+                'col11' => array('width' => 59, 'justification' => 'center')
             )
         ));
 
@@ -8287,6 +8325,7 @@ $db_data=array();
 
 
 
+   
                 
               
 

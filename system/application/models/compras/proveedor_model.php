@@ -466,6 +466,70 @@ class Proveedor_model extends Model {
         $this->db->update("cji_proveedor", $data);
     }
 
+    public function listar_proveedor_pdf($flagBS, $documento, $nombre, $telefono, $direccion, $tipoProv)
+    {
+       $where = " ";
+     
+
+        if( $documento!="--"){
+
+             $sql ="select pr.PROVP_Codigo, pr.PROVC_TipoPersona, pr.EMPRP_Codigo, pr.PERSP_Codigo, e.EMPRC_RazonSocial, e.EMPRC_Ruc from cji_proveedor as pr inner join cji_empresa as e on e.EMPRP_Codigo = pr.EMPRP_Codigo where e.EMPRC_Ruc= '".$documento."' ";
+        }else{
+        
+
+        $sql = " select
+                prov.PROVP_Codigo PROVP_Codigo,
+                prov.EMPRP_Codigo EMPRP_Codigo,
+                prov.PERSP_Codigo PERSP_Codigo,
+                prov.PROVC_TipoPersona PROVC_TipoPersona,
+                pc.COMPP_Codigo COMPP_Codigo,
+                emp.EMPRC_RazonSocial nombre,
+                emp.EMPRC_Ruc ruc,
+                '' dni,
+                emp.EMPRC_Telefono telefono,
+                emp.EMPRC_Fax fax,
+                emp.EMPRC_Movil movil,
+                emp.EMPRC_CtaCteSoles ctactesoles,
+                emp.EMPRC_CtaCteDolares ctactedolares
+                from cji_proveedorcompania as pc
+                inner join cji_proveedor as prov on prov.PROVP_Codigo=pc.PROVP_Codigo
+                inner join cji_empresa as emp on prov.EMPRP_Codigo=emp.EMPRP_Codigo
+                where prov.PROVC_TipoPersona=1
+                and prov.PROVC_FlagEstado=1
+                and prov.PROVP_Codigo!=0
+                UNION
+                select
+                prov.PROVP_Codigo as PROVP_Codigo,
+                prov.EMPRP_Codigo EMPRP_Codigo,
+                prov.PERSP_Codigo PERSP_Codigo,
+                prov.PROVC_TipoPersona PROVC_TipoPersona,
+                pc.COMPP_Codigo COMPP_Codigo,
+                concat(pers.PERSC_Nombre,' ',pers.PERSC_ApellidoPaterno) as nombre,
+                pers.PERSC_Ruc ruc,
+                pers.PERSC_NumeroDocIdentidad dni,
+                pers.PERSC_Telefono telefono,
+                pers.PERSC_Fax fax,
+                pers.PERSC_Movil movil,
+                pers.PERSC_CtaCteSoles ctactedoles,
+                pers.PERSC_CtaCteDolares ctactedolares
+                from cji_proveedorcompania as pc
+                inner join cji_proveedor as prov on prov.PROVP_Codigo=pc.PROVP_Codigo
+                inner join cji_persona as pers on prov.PERSP_Codigo=pers.PERSP_Codigo
+                 inner join cji_empresa as emp on prov.EMPRP_Codigo=emp.EMPRP_Codigo
+                where prov.PROVC_TipoPersona=0
+                and prov.PROVC_FlagEstado=1
+                and prov.PROVP_Codigo!=0 "; 
+       
+            }
+        $query = $this->db->query($sql);
+        if ($query->num_rows > 0) {
+            foreach ($query->result() as $fila) {
+                $data[] = $fila;
+            }
+            return $data;
+        }
+    }
+
     public function eliminar_proveedorSucursal($sucursal) {
         $data = array("EESTABC_FlagEstado" => '0');
         $where = array("EESTABP_Codigo" => $sucursal);

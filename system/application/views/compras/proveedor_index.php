@@ -170,9 +170,10 @@
                                                 <td width="5%">RUC</td>
                                                 <td width="5%">DNI</td>
                                                 <td width="36%">NOMBRE O RAZ&Oacute;N SOCIAL </td>
+                                                <td width="10%">TIPO PROVEEDOR</td>
+                                                <td width="13%">TEL&Eacute;FONO</td>
+                                                <td width="13%">M&Oacute;VIL</td>
                                                 
-                                                <td width="13%">DIRECCI&Oacute;N</td>
-                                                <td width="10%">TIPO PROVEEDOR </td>
                                                <!--<td width="19%">M&Oacute;VIL</td>-->
                                                 <td width="5%">&nbsp;</td>
                                                 <td width="5%">&nbsp;</td>

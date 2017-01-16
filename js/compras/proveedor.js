@@ -23,6 +23,24 @@ jQuery(document).ready(function(){
         url = base_url+"index.php/compras/proveedor/proveedores/";
         location.href=url;
     });
+    $("#imprimirProveedor").click(function(){
+			var documento = $("#txtNumDoc").val();
+			var nombre = $("#txtNombre").val();
+			var telefono = $("#txtTelefono").val();
+			var direccion = $("#txtDireccion").val();
+			var tipoProv = $("#cboTipoProveedor").val();
+			var flagBS = "B";
+		///
+		  if(documento==""){documento="--";}
+          if(nombre==""){nombre="--";}
+           if(telefono==""){telefono="--";}
+          if(direccion==""){direccion="--";}
+           if(tipoProv==""){tipoProv="--";}
+           
+        url = base_url+"index.php/compras/proveedor/registro_proveedor_pdf/"+flagBS+"/"+documento+"/"+ nombre+"/"+ telefono+"/"+direccion+"/"+ tipoProv;
+        window.open(url,'',"width=800,height=600,menubars=no,resizable=no;");
+    });
+
     $("#imgCancelarProveedor").click(function(){
 	base_url = $("#base_url").val();
         location.href = base_url+"index.php/compras/proveedor/proveedores";

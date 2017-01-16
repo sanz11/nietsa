@@ -155,13 +155,22 @@ class Comprobante_model extends Model {
                 $where .= ' and YEAR(CPC_Fecha)=' . $filter->anio.' and MONTH(CPC_Fecha)=' . $filter->mes;
             }
             else if ($filter->anio != '--' && $filter->ruc_cliente != '--' && $filter->mes == '--'){ //año y cliente
-                $where .= ' and YEAR(CPC_Fecha)=' . $filter->anio.' and MONTH(CPC_Fecha)=' . $filter->mes;
+                $where .= ' and YEAR(CPC_Fecha)=' . $filter->anio;
                 $where .= ' and EMPRC_Ruc LIKE "%' . $filter->ruc_cliente.'%"';
                 $where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' . $filter->ruc_cliente.'%"';
             }
             else if ($filter->anio == '--' && $filter->ruc_cliente != '--' && $filter->mes == '--') {//cliente
                 $where .= ' and EMPRC_Ruc LIKE "%' . $filter->ruc_cliente.'%"';
                 $where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' . $filter->ruc_cliente.'%"';
+            }
+            else if ($filter->anio == '--' && $filter->ruc_cliente != '--' && $filter->mes != '--') {//cliente y mes con año actual
+               $where .= ' and YEAR(CPC_Fecha)=' .date ("Y") .' and MONTH(CPC_Fecha)=' . $filter->mes;
+                $where .= ' and EMPRC_Ruc LIKE "%' . $filter->ruc_cliente.'%"';
+                $where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' . $filter->ruc_cliente.'%"';
+            }
+            else if ($filter->anio == '--' && $filter->ruc_cliente == '--' && $filter->mes != '--') {//mes con año actual
+               $where .= ' and YEAR(CPC_Fecha)=' .date ("Y") .' and MONTH(CPC_Fecha)=' . $filter->mes;
+               
             }
             else if ($filter->anio != '--' && $filter->ruc_cliente != '--' && $filter->mes != '--') { //año  mes y cliente
                 $where .= ' and YEAR(CPC_Fecha)=' . $filter->anio.' and MONTH(CPC_Fecha)=' . $filter->mes;
@@ -170,7 +179,7 @@ class Comprobante_model extends Model {
             } else{
                  $where .= ' and YEAR(CPC_Fecha)="--"';
             }
-            //año
+            //año date ("Y")
             //año y mes
             //año cliente
             //año cliente y mes
@@ -191,6 +200,7 @@ class Comprobante_model extends Model {
                        cp.CPC_subtotal,
                        cp.CPC_igv,
                        cp.CPC_total,
+                       e.EMPRC_RazonSocial,
                        (CASE " . ($tipo_oper != 'C' ? "c.CLIC_TipoPersona" : "c.PROVC_TipoPersona") . "  WHEN '1' THEN e.EMPRC_Ruc ELSE pe.PERSC_NumeroDocIdentidad end) numdoc,
                        (CASE " . ($tipo_oper != 'C' ? "c.CLIC_TipoPersona" : "c.PROVC_TipoPersona") . "  WHEN '1' THEN e.EMPRC_RazonSocial ELSE CONCAT(pe.PERSC_Nombre , ' ', pe.PERSC_ApellidoPaterno, ' ', pe.PERSC_ApellidoMaterno) end) nombre,
                        m.MONED_Simbolo,
