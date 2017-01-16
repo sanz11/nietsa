@@ -96,7 +96,7 @@
                                             <td>&nbsp;</td>
                                             <td>&nbsp;</td>
                                     </tr>
-                                    <tr>
+                                    <!--<tr>
                                       <td>Tel&eacute;fono/Celular</td>
                                       <td><input id="txtTelefono" type="text" class="cajaPequena" NAME="txtTelefono" maxlength="15" value="<?php echo $telefono; ?>"></td>
                                       <td>&nbsp;</td>
@@ -110,7 +110,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                        <td>Tipo Proveedor <!--Persona--></td>
+                                        <td>Tipo Proveedor --Persona</td>
                                         <td>
                                                 <select id="cboTipoProveedor" name="cboTipoProveedor" class="comboMedio">
                                                         <option value="" selected>::Seleccionar::</option>
@@ -118,7 +118,7 @@
                                                         <option value="J" <?php if($tipo=='J') echo 'selected="selected"'; ?>>P.Juridica</option>
                                                 </select>
                                         </td>
-                                        </tr>
+                                        </tr>-->
                                         <!--
                                         <tr>
                                         

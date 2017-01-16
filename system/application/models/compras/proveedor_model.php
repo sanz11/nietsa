@@ -473,7 +473,11 @@ class Proveedor_model extends Model {
 
         if( $documento!="--"){
 
-             $sql ="select pr.PROVP_Codigo, pr.PROVC_TipoPersona, pr.EMPRP_Codigo, pr.PERSP_Codigo, e.EMPRC_RazonSocial, e.EMPRC_Ruc from cji_proveedor as pr inner join cji_empresa as e on e.EMPRP_Codigo = pr.EMPRP_Codigo where e.EMPRC_Ruc= '".$documento."' ";
+             $sql ="select e.EMPRC_Ruc ruc,  e.EMPRC_RazonSocial nombre,e.EMPRC_Telefono telefono, e.EMPRC_Movil movil, pr.PROVP_Codigo, pr.PROVC_TipoPersona, pr.EMPRP_Codigo, pr.PERSP_Codigo, e.EMPRC_RazonSocial, e.EMPRC_Ruc from cji_proveedor as pr inner join cji_empresa as e on e.EMPRP_Codigo = pr.EMPRP_Codigo where e.EMPRC_Ruc= '".$documento."' ";
+        }
+        if( $nombre!="--"){
+
+             $sql ="select e.EMPRC_Ruc ruc,  e.EMPRC_RazonSocial nombre,e.EMPRC_Telefono telefono, e.EMPRC_Movil movil, pr.PROVP_Codigo, pr.PROVC_TipoPersona, pr.EMPRP_Codigo, pr.PERSP_Codigo, e.EMPRC_RazonSocial, e.EMPRC_Ruc from cji_proveedor as pr inner join cji_empresa as e on e.EMPRP_Codigo = pr.EMPRP_Codigo where e.EMPRC_RazonSocial= '".$nombre."' ";
         }else{
         
 
@@ -518,9 +522,10 @@ class Proveedor_model extends Model {
                  inner join cji_empresa as emp on prov.EMPRP_Codigo=emp.EMPRP_Codigo
                 where prov.PROVC_TipoPersona=0
                 and prov.PROVC_FlagEstado=1
-                and prov.PROVP_Codigo!=0 "; 
+                and prov.PROVP_Codigo!=0 where emp.EMPRC_RazonSocial = '".$nombre."'"; 
        
             }
+            
         $query = $this->db->query($sql);
         if ($query->num_rows > 0) {
             foreach ($query->result() as $fila) {
