@@ -65,7 +65,7 @@ if (empty($persona)) header("location:$url");
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
                         </tr>
-                        <tr>
+                       <!-- <tr>
                             <td>Tel&eacute;fono/Celular</td>
                             <td><input id="txtTelefono" type="text" class="cajaPequena" NAME="txtTelefono"
                                        maxlength="15" value="<?php echo $telefono; ?>"></td>
@@ -86,16 +86,16 @@ if (empty($persona)) header("location:$url");
                                     </option>
                                 </select>
                             </td>
-                        </tr>
+                        </tr> -->
                     </table>
                 </form>
             </div>
             <div class="acciones">
                 <div id="botonBusqueda">
-                   <!--
+                   
                    <ul id="imprimirCliente" class="lista_botones">
                         <li id="imprimir">Imprimir</li>
-                    </ul>-->
+                    </ul>
                                         <ul id="nuevoCliente" class="lista_botones">
                         <li id="nuevo">Nuevo Cliente</li>
                     </ul>

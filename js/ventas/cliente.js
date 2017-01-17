@@ -21,6 +21,22 @@ jQuery(document).ready(function(){
 		url = base_url+"index.php/ventas/cliente/nuevo_cliente";
 		$("#zonaContenido").load(url);
     });
+    $("#imprimirCliente").click(function(){
+            var docum = $("#txtNumDoc").val();
+            var nomb = $("#txtNombre").val();
+            
+            
+
+            var documento = sintilde(docum);
+            var nombre = sintilde(nomb);
+        ///
+          if(docum==""){documento="--";}
+          if(nomb==""){nombre="--";}
+
+        url = base_url+"index.php/ventas/cliente/registro_cliente_pdf/"+documento+"/"+ nombrest;
+        window.open(url,'',"width=800,height=600,menubars=no,resizable=no;");
+    });
+
     $("#limpiarCliente").click(function(){
         url = base_url+"index.php/ventas/cliente/clientes";
         location.href=url;
@@ -718,4 +734,25 @@ function cambiar_estado_campos(estado){
     $("#cboNacionalidad").attr('disabled', estado);
     $("#ruc_persona").attr('disabled', estado);
     
+}
+function sintilde(cadena){
+   
+   var specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,.";
+
+   
+   for (var i = 0; i < specialChars.length; i++) {
+       cadena= cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
+   }   
+
+   // Lo queremos devolver limpio en minusculas
+   cadena = cadena.toLowerCase();
+
+   // Quitamos acentos y "ñ". Fijate en que va sin comillas el primer parametro
+   cadena = cadena.replace(/á/gi,"a");
+   cadena = cadena.replace(/é/gi,"e");
+   cadena = cadena.replace(/í/gi,"i");
+   cadena = cadena.replace(/ó/gi,"o");
+   cadena = cadena.replace(/ú/gi,"u");
+   cadena = cadena.replace(/ñ/gi,"n");
+   return cadena;
 }

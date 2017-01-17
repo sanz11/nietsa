@@ -438,12 +438,14 @@ class Proveedor_model extends Model {
        $where = " ";
      
        
-        if( $documento!="--"){
+        if( $nombre!="--"){
+           
+             $sql ="select e.EMPRC_Ruc ruc,  e.EMPRC_RazonSocial nombre ,e.EMPRC_Telefono telefono, e.EMPRC_Movil movil, pr.PROVP_Codigo, pr.PROVC_TipoPersona, pr.EMPRP_Codigo, pr.PERSP_Codigo, e.EMPRC_RazonSocial, e.EMPRC_Ruc from cji_proveedor as pr inner join cji_empresa as e on e.EMPRP_Codigo = pr.EMPRP_Codigo where e.EMPRC_RazonSocial like '%".$nombre."%' ";
+        }
+        if( $documento!="--"  && $nombre=="--"){
              $sql ="select e.EMPRC_Ruc ruc,  e.EMPRC_RazonSocial nombre,e.EMPRC_Telefono telefono, e.EMPRC_Movil movil, pr.PROVP_Codigo, pr.PROVC_TipoPersona, pr.EMPRP_Codigo, pr.PERSP_Codigo, e.EMPRC_RazonSocial, e.EMPRC_Ruc from cji_proveedor as pr inner join cji_empresa as e on e.EMPRP_Codigo = pr.EMPRP_Codigo where e.EMPRC_Ruc= '".$documento."' ";
         }
-         if( $nombre!="--" && $documento=="--"){
-             $sql ="select e.EMPRC_Ruc ruc,  e.EMPRC_RazonSocial nombre,e.EMPRC_Telefono telefono, e.EMPRC_Movil movil, pr.PROVP_Codigo, pr.PROVC_TipoPersona, pr.EMPRP_Codigo, pr.PERSP_Codigo, e.EMPRC_RazonSocial, e.EMPRC_Ruc from cji_proveedor as pr inner join cji_empresa as e on e.EMPRP_Codigo = pr.EMPRP_Codigo where e.EMPRC_RazonSocial like '%".$nombre."%' ";
-        }
+         
         if($documento=="--" && $nombre=="--"){
         
         $sql = "select e.EMPRC_Ruc ruc,  e.EMPRC_RazonSocial nombre,e.EMPRC_Telefono telefono, e.EMPRC_Movil movil, pr.PROVP_Codigo, pr.PROVC_TipoPersona, pr.EMPRP_Codigo, pr.PERSP_Codigo, e.EMPRC_RazonSocial, e.EMPRC_Ruc from cji_proveedor as pr inner join cji_empresa as e on e.EMPRP_Codigo = pr.EMPRP_Codigo "; 
