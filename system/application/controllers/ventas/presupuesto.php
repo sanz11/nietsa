@@ -142,7 +142,19 @@ class Presupuesto extends Controller{
                 $ver3 = "<a href='javascript:;' onclick='ver_presupuesto_ver_xls(" . $codigo . ")' target='_self'><img src='" . base_url() . "images/xls.png' width='16' height='16' border='0' title='Ver PDF'></a>";
                 $eliminar = $estado == '1' ? "<a href='javascript:;' onclick='eliminar_presupuesto(" . $codigo . ")' target='_parent'><img src='" . base_url() . "images/eliminar.png' width='16' height='16' border='0' title='Eliminar'></a>" : "";
                 $enviarcorreo = $estado == '1' ? "<a href='" . base_url() . "index.php/ventas/presupuesto/ventana_presupuesto_correos/" . $codigo . "' class='enviarcorreo'><img src='" . base_url() . "images/send.png' width='16' height='16' border='0' title='Enviar Presupuesto via correo'></a>" : "";
-                $lista[] = array($item++, $fecha, $serie, $numero, $codigo_usuario, $nombre_cliente, $nom_tipodocu, $total, $img_estado, $editar, $ver, $ver2, $ver3, $enviarcorreo, $vermensaje, $eliminar);
+
+                $usua = $valor->USUA_Codigo;
+
+                $usuarioNom=$this->cliente_model->getUsuarioNombre($usua);
+                    $nomusuario="";
+                    if($usuarioNom[0]->ROL_Codigo==0){
+                     $nomusuario= $usuarioNom[0]->USUA_usuario;
+                        }else{
+                     $explorar= explode(" ",$usuarioNom[0]->PERSC_Nombre);
+                           
+                        $nomusuario= strtolower($explorar[0]);
+                    }
+                $lista[] = array($item++, $fecha, $serie, $numero, $codigo_usuario, $nombre_cliente, $nom_tipodocu, $total, $img_estado, $editar, $ver, $ver2, $ver3, $enviarcorreo, $vermensaje, $eliminar,  $nomusuario);
             }
         }
         $data['titulo_tabla'] = "RELACIÓN DE PRE-VENTA";

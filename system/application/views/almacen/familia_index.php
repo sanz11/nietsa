@@ -87,6 +87,7 @@
 						<td width="5%">&nbsp;</td>
 						<td width="5%">&nbsp;</td>
 						<td width="5%">&nbsp;</td>
+						<td width="5%">USUARIO</td>
 					</tr>					
 						<?php
 						if(count($lista)>0){
@@ -107,6 +108,7 @@
                                                                 <td><div align="center"><?php echo $valor[4];?></div></td>
 								<td><div align="center"><?php echo $valor[5];?></div></td>
 								<td><div align="center"><?php echo $valor[6];?></div></td>
+								<td><div align="center"><?php echo $valor[8];?></div></td>
 							</tr>
 							<?php
 							}

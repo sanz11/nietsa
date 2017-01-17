@@ -55,6 +55,7 @@ class Presupuesto_model extends Model {
         $sql = "SELECT p.PRESUC_Fecha,
                          p.PRESUP_Codigo,
                          p.PRESUC_Serie,
+                         p.USUA_Codigo,
                          p.PRESUC_Numero,
                          p.CLIP_Codigo,
                          p.PRESUC_NombreAuxiliar,
