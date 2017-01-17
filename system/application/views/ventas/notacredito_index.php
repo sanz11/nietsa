@@ -317,6 +317,7 @@ $CI = get_instance();
                             <?php if ($tipo_oper == 'V') { ?>
                                 <td width="4%">&nbsp;</td>
                             <?php } ?>
+                            <td width="4%">USUARIO</td>
                         </tr>
                         <?php
                         if (count($lista) > 0) {
@@ -413,6 +414,9 @@ $CI = get_instance();
                                     <?php } ?>
                                     <td>
                                         <div align="center"><?php echo $valor[11]; ?></div>
+                                    </td>
+                                    <td>
+                                        <div align="center"><?php echo $valor[20]; ?></div>
                                     </td>
                                 </tr>
                             <?php

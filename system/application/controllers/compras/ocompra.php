@@ -195,7 +195,21 @@ class Ocompra extends Controller
                 $ver = "<a href='javascript:;' onclick='ocompra_ver_pdf(" . $codigo . ")'><img src='" . base_url() . "images/icono_imprimir.png' width='16' height='16' border='0' title='Imprimir'></a>";
                 $ver2 = "<a href='javascript:;' onclick='ocompra_ver_pdf_conmenbrete(" . $codigo . ")'><img src='" . base_url() . "images/pdf.png' width='16' height='16' border='0' title='Ver PDF'></a>";
                 $eliminar = "<a href='javascript:;' onclick='eliminar_ocompra(" . $codigo . ")'><img src='" . base_url() . "images/eliminar.png' width='16' height='16' border='0' title='Eliminar'></a>";
-                $lista[] = array($check, $item++, $fecha, $numero, $cotizacion, $pedido, $nombre_proveedor, $msguiain, $monto_total, $msgaprob, $estado, $ver3, $editar, $ver, $ver2);
+
+                 $usua = $valor->USUA_Codigo;
+
+               $usuarioNom=$this->cliente_model->getUsuarioNombre($usua);
+                    $nomusuario="";
+                    if($usuarioNom[0]->ROL_Codigo==0){
+                     $nomusuario= $usuarioNom[0]->USUA_usuario;
+                        }else{
+                     $explorar= explode(" ",$usuarioNom[0]->PERSC_Nombre);
+                           
+                        $nomusuario= strtolower($explorar[0]);
+                    }
+
+
+                $lista[] = array($check, $item++, $fecha, $numero, $cotizacion, $pedido, $nombre_proveedor, $msguiain, $monto_total, $msgaprob, $estado, $ver3, $editar, $ver, $ver2, $nomusuario);
             }
         }
         $data['fechai'] = form_input(array("name" => "fechai", "id" => "fechai", "class" => "cajaGeneral cajaSoloLectura", "readonly" => "readonly", "size" => 10, "maxlength" => "10", "value" => ""));

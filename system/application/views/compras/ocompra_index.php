@@ -312,6 +312,7 @@
                                 <td width="4%">&nbsp;</td>
                                 <td width="4%">&nbsp;</td>
                                 <td width="4%">&nbsp;</td>
+                                <td width="4%">usuario</td>
                             </tr>
                             <?php
                             if (count($lista) > 0) {
@@ -362,6 +363,9 @@
                                         </td>
                                         <td>
                                             <div align="center"><?php echo $valor[14]; ?></div>
+                                        </td>
+                                         <td>
+                                            <div align="center"><?php echo $valor[15]; ?></div>
                                         </td>
                                     </tr>
                                 <?php

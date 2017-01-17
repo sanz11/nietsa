@@ -152,6 +152,7 @@ class Notacredito_model extends Model
         $sql = "SELECT cp.CRED_Fecha,
                        cp.CRED_Codigo,
                        cp.CRED_Serie,
+                       cp.USUA_Codigo,
                        cp.CRED_Numero,
                        (CASE " . ($tipo_oper != 'C' ? "c.CLIC_TipoPersona" : "c.PROVC_TipoPersona") . "  WHEN '1'THEN e.EMPRC_RazonSocial ELSE CONCAT(pe.PERSC_Nombre , ' ', pe.PERSC_ApellidoPaterno, ' ', pe.PERSC_ApellidoMaterno) end) nombre,
                        m.MONED_Simbolo,

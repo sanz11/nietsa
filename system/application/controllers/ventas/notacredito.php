@@ -309,6 +309,19 @@ class Notacredito extends Controller
                 $ver2 = "<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(1," . $codigo . ")' target='_parent'><img src='" . base_url() . "images/pdf.png' width='16' height='16' border='0' title='Ver PDF'></a>";
                 // Eliminar
                 $eliminar = "<a href='javascript:;' onclick='eliminar_comprobante(" . $codigo . ")' target='_parent'><img src='" . base_url() . "images/eliminar.png' width='16' height='16' border='0' title='Eliminar'></a>";
+                
+                $usua = $valor->USUA_Codigo;
+
+                $usuarioNom=$this->cliente_model->getUsuarioNombre($usua);
+                    $nomusuario="";
+                    if($usuarioNom[0]->ROL_Codigo==0){
+                     $nomusuario= $usuarioNom[0]->USUA_usuario;
+                        }else{
+                     $explorar= explode(" ",$usuarioNom[0]->PERSC_Nombre);
+                           
+                        $nomusuario= strtolower($explorar[0]);
+                    }
+
 
                 if ($tipo_oper == 'V') {
                     $lista[] = array($item++, $fecha, $serie, $numero, $guiarem_codigo, $docurefe_codigo, $nombre, $total, $img_estado, $editar, $ver, $ver2, $carga, $docInicio, $compInicio, $docFin, $compFin, $numero_inicio, $numero_fin, $codigo);
