@@ -55,6 +55,7 @@
                         <td width="5%">&nbsp;</td>
                         <td width="5%">&nbsp;</td>
                         <td width="5%">&nbsp;</td>
+                         <td width="10%">USUARIO</td>   
                     </tr>
                     <?php
                     $i = 1;
@@ -74,6 +75,7 @@
                                 <td><div align="center"><?php echo $valor[8]; ?></div></td>
                                 <td><div align="center"><?php echo $valor[9]; ?></div></td>
                                 <td><div align="center"><?php echo $valor[10]; ?></div></td>
+                                 <td><div align="center"><?php echo $valor[11]; ?></div></td>
                             </tr>
                             <?php
                             $i++;
