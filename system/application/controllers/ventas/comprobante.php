@@ -8292,9 +8292,10 @@ $db_data=array();
             )
         ));
 
+        $supertot = $valor->MONED_Simbolo . ' ' . number_format($supertotal, 2);
 
          $dbsupertotal[] = array(
-                'col11' => $supertotal
+                'col11' => $supertot
             );
 
         $this->cezpdf->ezText('', 20);
