@@ -154,6 +154,7 @@ class Proveedor_model extends Model {
         };
         $sql = "
                 select
+                prov.USUA_Codigo USUA_Codigo,
                 prov.PROVP_Codigo PROVP_Codigo,
                 prov.EMPRP_Codigo EMPRP_Codigo,
                 prov.PERSP_Codigo PERSP_Codigo,
@@ -176,6 +177,7 @@ class Proveedor_model extends Model {
                 " .$provedorcompania. "
                 UNION
                 select
+                prov.USUA_Codigo USUA_Codigo,
                 prov.PROVP_Codigo as PROVP_Codigo,
                 prov.EMPRP_Codigo EMPRP_Codigo,
                 prov.PERSP_Codigo PERSP_Codigo,
@@ -407,12 +409,13 @@ class Proveedor_model extends Model {
         );
         $this->db->insert("cji_empresatipoproveedor", $data);
     }
-    public function insertar_datosProveedor($empresa, $persona, $tipo_persona) {
+    public function insertar_datosProveedor($empresa, $persona, $tipo_persona, $USUACodi) {
         $compania = $this->somevar['compania'];
         $data = array(
             "PERSP_Codigo" => $persona,
             "EMPRP_Codigo" => $empresa,
-            "PROVC_TipoPersona" => $tipo_persona
+            "PROVC_TipoPersona" => $tipo_persona,
+            "USUA_Codigo" => $USUACodi
         );
         $this->db->insert("cji_proveedor", $data);
         $proveedor = $this->db->insert_id();
@@ -431,6 +434,20 @@ class Proveedor_model extends Model {
             "EMPRP_Codigo" => $empresa
         );
         $this->db->where("PROVP_Codigo", $proveedor);
+        $this->db->update("cji_proveedor", $data);
+    }
+    public function modificar_datosProveedorUSU( $empresa, $USUACodi) {
+        $data = array(
+            "USUA_Codigo" => $USUACodi
+        );
+        $this->db->where("EMPRP_Codigo", $empresa);
+        $this->db->update("cji_proveedor", $data);
+    }
+    public function modificar_datosProveedorUSU2( $persona, $USUACodi) {
+        $data = array(
+            "USUA_Codigo" => $USUACodi
+        );
+        $this->db->where("PERSP_Codigo", $persona);
         $this->db->update("cji_proveedor", $data);
     }
     public function listar_proveedor_pdf($flagBS, $documento, $nombre)

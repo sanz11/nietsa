@@ -39,7 +39,7 @@ public function optenercuentaEmpresa($values){
         } 
     }
     public function buscarClienteRuc($keyword, $compania){
-        $query = $this->db->select('c.CLIP_Codigo, c.CLIC_TipoPersona, c.EMPRP_Codigo, c.PERSP_Codigo, p.PERSC_Nombre,
+        $query = $this->db->select('c.USUA_Codigo, c.CLIP_Codigo, c.CLIC_TipoPersona, c.EMPRP_Codigo, c.PERSP_Codigo, p.PERSC_Nombre,
                                 p.PERSC_ApellidoPaterno, p.PERSC_Ruc,
                                 e.EMPRC_RazonSocial, e.EMPRC_Ruc')
                 ->from('cji_cliente c')
@@ -77,6 +77,7 @@ public function optenercuentaEmpresa($values){
         $sql = "
                 select
 				CLIC_flagCalifica,
+                cli.USUA_Codigo,
                 cli.CLIP_Codigo CLIP_Codigo,
                 cli.EMPRP_Codigo EMPRP_Codigo,
                 cli.PERSP_Codigo PERSP_Codigo,
@@ -97,6 +98,7 @@ public function optenercuentaEmpresa($values){
                 UNION
                 select
 				CLIC_flagCalifica,
+                cli.USUA_Codigo,
                 cli.CLIP_Codigo as CLIP_Codigo,
                 cli.EMPRP_Codigo EMPRP_Codigo,
                 cli.PERSP_Codigo PERSP_Codigo,
@@ -266,6 +268,7 @@ public function optenercuentaEmpresa($values){
             $sql = "
                     select
 					CLIC_flagCalifica,
+                    cli.USUA_Codigo USUA_Codigo,
                     cli.CLIP_Codigo CLIP_Codigo,
                     cli.EMPRP_Codigo EMPRP_Codigo,
                     cli.PERSP_Codigo PERSP_Codigo,
@@ -286,6 +289,7 @@ public function optenercuentaEmpresa($values){
                     UNION
                     select
 					CLIC_flagCalifica,
+                    cli.USUA_Codigo USUA_Codigo,
                     cli.CLIP_Codigo as CLIP_Codigo,
                     cli.EMPRP_Codigo EMPRP_Codigo,
                     cli.PERSP_Codigo PERSP_Codigo,
@@ -341,7 +345,7 @@ public function optenercuentaEmpresa($values){
             return $data;
         }
     }
-    public function insertar_datosCliente($empresa,$persona,$tipo_persona, $categoria, $forma_pago,$calificaciones){
+    public function insertar_datosCliente($empresa,$persona,$tipo_persona, $categoria, $forma_pago,$calificaciones,$USUACodi){
         $compania = $this->somevar['compania'];
         if($forma_pago=='' || $forma_pago=='0')
             $forma_pago=NULL;
@@ -351,7 +355,8 @@ public function optenercuentaEmpresa($values){
                     "CLIC_TipoPersona"  => $tipo_persona,
                     "TIPCLIP_Codigo"    => $categoria,
                     "FORPAP_Codigo"     => $forma_pago,
-					"CLIC_flagCalifica" => $calificaciones
+					"CLIC_flagCalifica" => $calificaciones,
+                    "USUA_Codigo" => $USUACodi
                 );
         $this->db->insert("cji_cliente",$data);
         $cliente = $this->db->insert_id();

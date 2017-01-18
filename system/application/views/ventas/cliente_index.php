@@ -129,6 +129,7 @@ if (empty($persona)) header("location:$url");
                         <td width="5%">&nbsp;</td>
                         <td width="6%">&nbsp;</td>
                         <td width="6%">&nbsp;</td>
+                         <td width="19%">usuario</td>
                     </tr>
                     <?php
                     $i = 1;
@@ -169,6 +170,9 @@ if (empty($persona)) header("location:$url");
                                 </td>
                                 <td>
                                     <div align="left"><?php echo $valor[10];?></div>
+                                </td>
+                                <td>
+                                    <div align="left"><?php echo $valor[11];?></div>
                                 </td>
                             </tr>
                             <?php

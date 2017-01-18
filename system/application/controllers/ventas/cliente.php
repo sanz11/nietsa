@@ -87,7 +87,23 @@ class Cliente extends Controller
                 $editar = "<a href='#' onclick='editar_cliente(" . $codigo . ")'><img src='" . base_url() . "images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
                 $ver = "<a href='#' onclick='ver_cliente(" . $codigo . ")'><img src='" . base_url() . "images/ver.png' width='16' height='16' border='0' title='ver'></a>";
                 $eliminar = "<a href='#' onclick='eliminar_cliente(" . $codigo . ")'><img src='" . base_url() . "images/eliminar.png' width='16' height='16' border='0' title='Eliminar (Solo puedes eliminar los clientes de tu compañia )'></a>";
-                $lista[] = array($item, $ruc, $dni, $razon_social, $tipo_cliente, $telefono, $fax, $calificacion, $editar, $ver, $eliminar);
+
+               $usua = $valor->USUA_Codigo;
+               if($usua != "0"){
+                $usuarioNom=$this->cliente_model->getUsuarioNombre($usua);
+                    $nomusuario="";
+                    if($usuarioNom[0]->ROL_Codigo==0){
+                     $nomusuario= $usuarioNom[0]->USUA_usuario;
+                        }else{
+                     $explorar= explode(" ",$usuarioNom[0]->PERSC_Nombre);
+                           
+                        $nomusuario= strtolower($explorar[0]);
+                    }
+                }else{
+                    $nomusuario="";
+                }
+
+                $lista[] = array($item, $ruc, $dni, $razon_social, $tipo_cliente, $telefono, $fax, $calificacion, $editar, $ver, $eliminar,$nomusuario);
                 $item++;
             }
         }
@@ -235,7 +251,9 @@ class Cliente extends Controller
             }
 
             $this->empresa_model->insertar_sucursalEmpresaPrincipal('1', $empresa, $ubigeo_domicilio, 'PRINCIPAL', $direccion);//Direccion Principal
-            $cliente = $this->cliente_model->insertar_datosCliente($empresa, $persona, $tipo_persona, $categoria, $forma_pago, $calificaciones);
+
+            $USUACodi= $this->session->userdata('user'); 
+            $cliente = $this->cliente_model->insertar_datosCliente($empresa, $persona, $tipo_persona, $categoria, $forma_pago, $calificaciones,$USUACodi);
             //Insertar Establecimientos
             if ($nombre_sucursal != '') {
                 foreach ($nombre_sucursal as $indice => $valor) {
@@ -288,7 +306,8 @@ class Cliente extends Controller
             } else {
                 $persona = $this->persona_model->insertar_datosPersona($ubigeo_nacimiento, $ubigeo_domicilio, $estado_civil, $nacionalidad, $nombres, $paterno, $materno, $ruc_persona, $tipo_documento, $numero_documento, $direccion, $telefono, $movil, $email, $direccion, $sexo, $web, $ctactesoles, $ctactedolares);
             }
-            $cliente = $this->cliente_model->insertar_datosCliente($empresa, $persona, $tipo_persona, $categoria, $forma_pago, $calificaciones);
+             $USUACodi= $this->session->userdata('user'); 
+            $cliente = $this->cliente_model->insertar_datosCliente($empresa, $persona, $tipo_persona, $categoria, $forma_pago, $calificaciones,$USUACodi);
         }
         exit('{"result":"ok", "codigo":"' . $cliente . '"}');
     }
@@ -601,7 +620,26 @@ class Cliente extends Controller
                 $editar = "<a href='#' onclick='editar_cliente(" . $codigo . ")'><img src='" . base_url() . "images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
                 $ver = "<a href='#' onclick='ver_cliente(" . $codigo . ")'><img src='" . base_url() . "images/ver.png' width='16' height='16' border='0' title='Ver'></a>";
                 $eliminar = "<a href='#' onclick='eliminar_cliente(" . $codigo . ")'><img src='" . base_url() . "images/eliminar.png' width='16' height='16' border='0' title='Eliminar (Solo puedes eliminar los clientes de tu compañia )'></a>";
-                $lista[] = array($item, $ruc, $dni, $razon_social, $tipo_cliente, $telefono, $fax, $calificacion, $editar, $ver, $eliminar);
+
+                 $usua = $valor->USUA_Codigo;
+
+
+                if($usua!="0"){
+                $usuarioNom=$this->cliente_model->getUsuarioNombre($usua);
+
+                    $nomusuario="";
+                    if($usuarioNom[0]->ROL_Codigo==0){
+                     $nomusuario= $usuarioNom[0]->USUA_usuario;
+                        }else{
+                     $explorar= explode(" ",$usuarioNom[0]->PERSC_Nombre);
+                           
+                        $nomusuario= strtolower($explorar[0]);
+                    }
+                }else{
+                     $nomusuario="";
+                }
+
+                $lista[] = array($item, $ruc, $dni, $razon_social, $tipo_cliente, $telefono, $fax, $calificacion, $editar, $ver, $eliminar,$nomusuario);
                 $item++;
             }
         }
