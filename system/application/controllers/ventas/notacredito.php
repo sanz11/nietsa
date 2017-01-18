@@ -324,10 +324,10 @@ class Notacredito extends Controller
 
 
                 if ($tipo_oper == 'V') {
-                    $lista[] = array($item++, $fecha, $serie, $numero, $guiarem_codigo, $docurefe_codigo, $nombre, $total, $img_estado, $editar, $ver, $ver2, $carga, $docInicio, $compInicio, $docFin, $compFin, $numero_inicio, $numero_fin, $codigo);
+                    $lista[] = array($item++, $fecha, $serie, $numero, $guiarem_codigo, $docurefe_codigo, $nombre, $total, $img_estado, $editar, $ver, $ver2, $carga, $docInicio, $compInicio, $docFin, $compFin, $numero_inicio, $numero_fin, $codigo,$nomusuario);
                 }
                 else {
-                    $lista[] = array($item++, $fecha, $serie, $numero, $guiarem_codigo, $docurefe_codigo, $nombre, $total, $img_estado, $editar, $ver, $ver2, $carga, $docInicio, $compInicio, $docFin, $compFin, $numero_inicio, $numero_fin, $codigo);
+                    $lista[] = array($item++, $fecha, $serie, $numero, $guiarem_codigo, $docurefe_codigo, $nombre, $total, $img_estado, $editar, $ver, $ver2, $carga, $docInicio, $compInicio, $docFin, $compFin, $numero_inicio, $numero_fin, $codigo,$nomusuario);
                 }
             }
         }

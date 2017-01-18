@@ -52,6 +52,7 @@ class Familia extends Controller{
 
 				$usua = $valor->USUA_Codigo;
 
+				if($usua != "0"){
                 $usuarioNom=$this->cliente_model->getUsuarioNombre($usua);
                     $nomusuario="";
                     if($usuarioNom[0]->ROL_Codigo==0){
@@ -61,8 +62,11 @@ class Familia extends Controller{
                            
                         $nomusuario= strtolower($explorar[0]);
                     }
+                }else{
+                   $nomusuario="";
+                }
 
-				$lista[]         = array($item++,$codigo_interno,$codigo_usuario,$cajaCodigo.$descripcion,$ingresar,$editar,$eliminar,$imprimir,$nomusuario);
+				$lista[]= array($item++,$codigo_interno,$codigo_usuario,$cajaCodigo.$descripcion,$ingresar,$editar,$eliminar,$imprimir,$nomusuario);
 			}
 		}
 		if($j=='0' || $j==''){

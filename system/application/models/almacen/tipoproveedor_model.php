@@ -56,21 +56,23 @@ class Tipoproveedor_model extends model{
 			return $data;
 		}		
 	}	
-	function insertar_familia($descripcion,$codrelacion,$codigointerno, $codigousuario=''){
+	function insertar_familia($descripcion,$codrelacion,$codigointerno, $codigousuario='',$USUACodi){
          $compania = $this->somevar['compania'];
 		$data = array(
                              "FAMI_Descripcion"       => strtoupper($descripcion),
                              "FAMI_Codigo2"              => $codrelacion,
                              "FAMI_CodigoInterno" => $codigointerno,
                              "FAMI_CodigoUsuario" => strtoupper($codigousuario),
-                             "COMPP_Codigo" => $compania
+                             "COMPP_Codigo" => $compania,
+                             "USUA_Codigo" => $USUACodi
 			     );
 		$this->db->insert("cji_tipoproveedor",$data);		
 	}
-	function modificar_familia($familia,$descripcion, $codigousuario){
+	function modificar_familia($familia,$descripcion, $codigousuario,$USUACodi){
 		$data = array(
                              "FAMI_Descripcion"       => strtoupper($descripcion),
-                             "FAMI_CodigoUsuario"     => strtoupper($codigousuario)
+                             "FAMI_CodigoUsuario"     => strtoupper($codigousuario),
+                              "USUA_Codigo" => $USUACodi
                              );
 		$this->db->where('FAMI_Codigo',$familia);
 		$this->db->update("cji_tipoproveedor",$data);

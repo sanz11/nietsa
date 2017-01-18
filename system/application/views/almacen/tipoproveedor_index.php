@@ -52,22 +52,28 @@
 					</table>
 				</form>
 			  </div>
+			<div id="dataContenedor">
+			<div class="acciones">
 			 	<div id="botonBusqueda">
 					<ul id="imprimirFamilia" class="lista_botones"><li id="imprimir">Imprimir</li></ul>
 					<ul id="nuevaFamilia" class="lista_botones"><li id="nuevo">Nuevo Tipo de Proveedor</li></ul>
 					<ul id="limpiarFamilia" class="lista_botones"><li id="limpiar">Limpiar</li></ul>
 					<ul id="buscarFamilia" class="lista_botones"><li id="buscar">Buscar</li></ul>   
 				</div>
+			
+
 			  <div id="lineaResultado">
-			  <table class="fuente8" width="100%" cellspacing="0" cellpadding="3" border="0">
+			  <table class="fuente18" width="100%" cellspacing="0" cellpadding="3" border="0">
 			  	<tr>
-				<td width="50%" align="left">N de tipos encontrados:&nbsp;<?php echo $registros;?> </td>
+				<td width="60%" align="left">N de tipos encontrados:&nbsp;<?php echo $registros;?> </td>
 				<td width="50%" align="right">
 					<input type="hidden" class="cajaPequena" id="codanterior" name="codanterior" value="<?php echo $codanterior?>">
 					<input type="hidden" class="cajaPequena" id="codanterior2" name="codanterior2" value="<?php echo $codanterior2?>">
 				</td>
 			  </table>
 				</div>
+			</div>
+			</div>
 				<div id="cabeceraResultado" class="header"><?php echo $titulo_tabla;;?></div>
 				<div id="frmResultado">
 				<table class="fuente8" width="100%" cellspacing="0" cellpadding="3" border="0" id="tablaFamilia">
@@ -79,6 +85,7 @@
 						<td width="5%">&nbsp;</td>
 						<td width="5%">&nbsp;</td>
 						<td width="5%">&nbsp;</td>
+						<td width="50%">USUARIO</td>
 					</tr>					
 						<?php
 						if(count($lista)>0){
@@ -93,6 +100,7 @@
 								<td><div align="center"><?php echo $valor[4];?></div></td>
 								<td><div align="center"><?php echo $valor[5];?></div></td>
 								<td><div align="center"><?php echo $valor[6];?></div></td>
+								<td><div align="center"><?php echo $valor[7];?></div></td>
 							</tr>
 							<?php
 							}

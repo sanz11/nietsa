@@ -44,6 +44,11 @@ body {
     background-image: url('../images/bg-frmbusqueda.png');
 
 }
+.fuente18 {
+    width: 286px;
+    background-image: url('../images/bg-frmbusqueda.png');
+    font: 8pt helvetica;
+}
 
 #zonaLogo {
     position: absolute;

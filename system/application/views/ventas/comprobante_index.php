@@ -356,8 +356,8 @@ if ($tipo_oper == 'V'){
                                 <td width="10%">TOTAL</td>
                                 <td width="15%" colspan="4">ESTADO</td>
                                 <td width="4%">&nbsp;</td>
-                                <td width="4%">&nbsp;</td>
                                 <td width="4%">USUARIO</td>
+                                
                                 <?php if ($tipo_oper == 'V') { ?>
                                     <td width="4%">&nbsp;</td>
                                     <td width="4%">&nbsp;</td>

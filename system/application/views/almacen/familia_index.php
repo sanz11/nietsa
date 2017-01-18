@@ -53,6 +53,7 @@
 					</table>
 				</form>
 			  </div>
+			   <div id="dataContenedor">
 <div class="acciones">
 			 	<div id="botonBusqueda">
                                         <?php if($codigohf){?>
@@ -74,6 +75,7 @@
 				</td>
 			  </table>
 				</div>
+</div>
 </div>
 				<div id="cabeceraResultado" class="header"><?php echo $titulo_tabla;?></div>
 				<div id="frmResultado">
