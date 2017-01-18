@@ -56,6 +56,7 @@ class Presupuesto_model extends Model{
                          p.PRESUP_Codigo,
                          p.PRESUC_Serie,
                          p.PRESUC_Numero,
+                        p.USUA_Codigo,
                          p.PRESUC_CodigoUsuario,                        
                        (CASE c.PERSP_Codigo  WHEN 0
                        THEN e.EMPRC_RazonSocial

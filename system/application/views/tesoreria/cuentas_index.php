@@ -254,6 +254,7 @@ $CI = get_instance();
                                     <td width="4%">&nbsp;</td>
                                     <td width="4%">&nbsp;</td>
                                     <td width="4%">&nbsp;</td>
+                                     <td width="4%">usuario</td>
                                 </tr>
                                 <?php
                                 if (count($lista) > 0) {
@@ -313,6 +314,7 @@ $CI = get_instance();
                                                 <td><div align="center">&nbsp;</div></td>
                                                 <td><div align="center"><?php echo $valor[9]; ?></div></td>
                                                 <td><div align="center"><?php echo $valor[11]; ?></div></td>
+                                                 <td><div align="center"><?php echo $valor[12]; ?></div></td>
                                             </tr>
                                         <?php
                                         } else {
@@ -330,6 +332,7 @@ $CI = get_instance();
                                                 <td><div align="center">&nbsp;</div></td>
                                                 <td><div align="center"><?php echo $valor[9]; ?></div></td>
                                                 <td><div align="center"><?php echo $valor[11]; ?></div></td>
+                                                <td><div align="center"><?php echo $valor[12]; ?></div></td>
                                             </tr>
                                         <?php
                                         }
