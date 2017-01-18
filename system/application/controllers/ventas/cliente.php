@@ -492,7 +492,9 @@ class Cliente extends Controller
             $this->empresa_model->modificar_sucursalEmpresaPrincipal($empresa, '1', $ubigeo_domicilio, 'PRINCIPAL', $direccion);
             //Modificar contactos empresa
         }
-        $this->cliente_model->modificar_datosCliente($id, $categoria, $forma_pago, $calificaciones);
+
+       $USUACodi= $this->session->userdata('user'); 
+        $this->cliente_model->modificar_datosCliente($id, $categoria, $forma_pago, $calificaciones,$USUACodi);
     }
 
     public function ver_cliente($cliente)

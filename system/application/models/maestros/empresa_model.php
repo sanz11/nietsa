@@ -282,7 +282,7 @@ class Empresa_model extends Model
     }
 
 
-    public function insertar_datosEmpresa($tipocodigo, $ruc,$razon_social,$telefono,$fax,$web,$movil,$email, $sector_comercial='', $ctactesoles='', $ctactedolares='',$direccion=''){
+    public function insertar_datosEmpresa($tipocodigo, $ruc,$razon_social,$telefono,$fax,$web,$movil,$email, $sector_comercial='', $ctactesoles='', $ctactedolares='',$direccion='', $USUACodi){
            if($sector_comercial=='' || $sector_comercial=='0') 
                $sector_comercial=NULL;
            $data = array(
@@ -297,7 +297,8 @@ class Empresa_model extends Model
                         "EMPRC_Email"      => strtolower($email),
                         "EMPRC_CtaCteSoles"    => $ctactesoles,
                         "EMPRC_CtaCteDolares"  => $ctactedolares,
-                        "EMPRC_Direccion"  => $direccion
+                        "EMPRC_Direccion"  => $direccion,
+                        "USUA_Codigo"  => $USUACodi
                
                         );
             $this->db->insert("cji_empresa",$data);
@@ -408,7 +409,7 @@ $sql="INSERT INTO cji_configuracion (CONFIP_Codigo, DOCUP_Codigo, CONFIC_Serie, 
                                     );
             $this->db->insert("cji_emprarea",$data);
     }
-    public function modificar_datosEmpresa($empresa, $tipocodigo, $ruc,$razon_social,$telefono,$movil,$fax,$web,$email,$sector_comercial='',$ctactesoles='',$ctactedolares='',$direccion=''){
+    public function modificar_datosEmpresa($empresa, $tipocodigo, $ruc,$razon_social,$telefono,$movil,$fax,$web,$email,$sector_comercial='',$ctactesoles='',$ctactedolares='',$direccion='',$USUACodi){
         if($sector_comercial=='' || $sector_comercial=='0') 
                $sector_comercial=NULL;
         $data = array(
@@ -423,7 +424,8 @@ $sql="INSERT INTO cji_configuracion (CONFIP_Codigo, DOCUP_Codigo, CONFIC_Serie, 
                     "EMPRC_Email"       => strtolower($email),
                     "EMPRC_CtaCteSoles"   => $ctactesoles,
                     "EMPRC_CtaCteDolares" => $ctactedolares,
-                    "EMPRC_Direccion" => $direccion
+                    "EMPRC_Direccion" => $direccion,
+                    "USUA_Codigo" => $USUACodi
                      );
         $this->db->where("EMPRP_Codigo",$empresa);
         $this->db->update("cji_empresa",$data);

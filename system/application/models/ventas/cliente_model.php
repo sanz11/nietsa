@@ -370,14 +370,15 @@ public function optenercuentaEmpresa($values){
                      );
         $this->db->insert("cji_clientecompania",$data);
     }
-    public function modificar_datosCliente($cliente, $categoria, $forma_pago,$calificaciones){
+    public function modificar_datosCliente($cliente, $categoria, $forma_pago,$calificaciones,$USUACodi){
             if($forma_pago=='' || $forma_pago=='0')
                 $forma_pago=NULL;
             
             $data = array(
                         "TIPCLIP_Codigo"     => $categoria,
                         "FORPAP_Codigo"     => $forma_pago,
-						"CLIC_flagCalifica"=>$calificaciones
+                        "CLIC_flagCalifica"=>$calificaciones,
+						"USUA_Codigo"=>$USUACodi,
                          );
             $this->db->where("CLIP_Codigo",$cliente);
             $this->db->update("cji_cliente",$data);
