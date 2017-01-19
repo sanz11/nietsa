@@ -1227,38 +1227,40 @@ public function getNombreForPago($datos_for){
         //CPC_TipoOperacion => V venta, C compra
         //CPC_TipoDocumento => F factura, B boleta
         //CPC_total => total de la FACTURA o BOLETA
-       /* if ($anio != '--' && $rucp == '--' && $mes == '--') {//año
-                $where .= ' and YEAR(CPC_FechaRegistro)=' . $anio;
+        $where="";
+        if ($anio != '--' && $rucp == '--' && $mes == '--') {//año
+                $where .= ' and YEAR(c.CPC_FechaRegistro)=' . $anio;
             }
         else if ($anio != '--' && $rucp == '--' && $mes != '--') { //año y mes
-                $where .= ' and YEAR(CPC_FechaRegistro)=' . $anio.' and MONTH(CPC_FechaRegistro)=' . $mes;
+                $where .= ' and YEAR(c.CPC_FechaRegistro)=' . $anio.' and MONTH(CPC_FechaRegistro)=' . $mes;
             }
         else if ($anio != '--' && $rucp != '--' && $mes == '--'){ //año y cliente
-                $where .= ' and YEAR(CPC_FechaRegistro)=' . $anio;
-                $where .= ' and EMPRC_Ruc LIKE "%' . $rucp.'%"';
-                $where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' . $rucp.'%"';
+                $where .= ' and YEAR(c.CPC_FechaRegistro)=' . $anio;
+                $where .= ' and e.EMPRC_Ruc LIKE "%' . $rucp.'%"';
+                //$where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' .$rucp.'%"';
             }
         else if ($anio == '--' && $rucp != '--' && $mes == '--') {//cliente
-                $where .= ' and EMPRC_Ruc LIKE "%' . $rucp.'%"';
-                $where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' . $rucp.'%"';
+                $where .= ' and e.EMPRC_Ruc LIKE "%' . $rucp.'%"';
+                //$where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' .$rucp.'%"';
             }
         else if ($anio == '--' && $rucp != '--' && $mes != '--') {//cliente y mes con año actual
-               $where .= ' and YEAR(CPC_FechaRegistro)=' .date ("Y") .' and MONTH(CPC_FechaRegistro)=' . $$mes;
-                $where .= ' and EMPRC_Ruc LIKE "%' .$rucp.'%"';
-                $where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' .$rucp.'%"';
+               $where .= ' and YEAR(c.CPC_FechaRegistro)=' .date ("Y") .' and MONTH(c.CPC_FechaRegistro)=' . $mes;
+                $where .= ' and e.EMPRC_Ruc LIKE "%' .$rucp.'%"';
+                //$where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' .$rucp.'%"';
             }
         else if ($anio == '--' && $rucp== '--' && $mes != '--') {//mes con año actual
-               $where .= ' and YEAR(CPC_FechaRegistro)=' .date ("Y") .' and MONTH(CPC_FechaRegistro)=' . $$mes;
+               $where .= ' and YEAR(c.CPC_FechaRegistro)=' .date ("Y") .' and MONTH(c.CPC_FechaRegistro)=' . $mes;
                
             }
         else if ($anio != '--' && $rucp!= '--' && $mes != '--') { //año  mes y cliente
-                $where .= ' and YEAR(CPC_FechaRegistro)=' . $anio.' and MONTH(CPC_FechaRegistro)=' . $mes;
-                $where .= ' and EMPRC_Ruc LIKE "%' . $rucp.'%"';
-                $where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' . $rucp.'%"';
+                $where .= ' and YEAR(c.CPC_FechaRegistro)=' . $anio.' and MONTH(c.CPC_FechaRegistro)=' . $mes;
+                $where .= ' and e.EMPRC_Ruc LIKE "%' . $rucp.'%"';
+                //$where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' . $rucp.'%"';
             } 
         else{
-                 $where .= ' and YEAR(CPC_FechaRegistro)="--"';
+                 $where .= '';
             }
+            /*
             //año date ("Y")
             //año y mes
             //año cliente
@@ -1266,7 +1268,7 @@ public function getNombreForPago($datos_for){
             //cliente
             //isset($filter->anio) */
         
-       $sql = " SELECT c.*,  e.* FROM cji_comprobante c INNER JOIN cji_proveedor p on p.PROVP_Codigo = c.PROVP_Codigo INNER JOIN  cji_empresa e on e.EMPRP_Codigo = p.EMPRP_Codigo WHERE CPC_TipoOperacion='C' AND CPC_TipoDocumento='F'";
+       $sql = " SELECT c.*,  e.* FROM cji_comprobante c INNER JOIN cji_proveedor p on p.PROVP_Codigo = c.PROVP_Codigo INNER JOIN  cji_empresa e on e.EMPRP_Codigo = p.EMPRP_Codigo WHERE CPC_TipoOperacion='C' AND CPC_TipoDocumento='F' ".$where." ORDER BY YEAR(c.CPC_FechaRegistro) asc, MONTH(c.CPC_FechaRegistro) asc, DAY(c.CPC_FechaRegistro) asc";
         //echo $sql;
         $query = $this->db->query($sql);
         if ($query->num_rows > 0) {

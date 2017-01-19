@@ -6918,6 +6918,7 @@ $direccion=substr($datos_proveedor[0]->EMPRC_Direccion,0, 50);
                 'col2' => substr($value->CPC_FechaRegistro, 0, 10),
                 'col3' => $serie,
                 'col4' => $value->CPC_Numero,
+                'col5' => $value->EMPRC_RazonSocial,
                 'col6' => $value->CPC_subtotal,
                 'col7' => $value->CPC_igv,
                 'col8' => $value->CPC_total
@@ -6929,6 +6930,7 @@ $direccion=substr($datos_proveedor[0]->EMPRC_Direccion,0, 50);
             'col2' => 'Fecha',
             'col3' => 'SERIE',
             'col4' => 'NRO',
+            'col5' => 'RAZON ZOCIAL',
             'col6' => 'VALOR DE VENTA',
             'col7' => 'I.G.V. 18%',
             'col8' => 'TOTAL',
@@ -6954,14 +6956,15 @@ $direccion=substr($datos_proveedor[0]->EMPRC_Direccion,0, 50);
             'xPos' => 'center',
             'fontSize' => 7,
             'cols' => array(
-                'col1' => array('width' => 25, 'justification' => 'center'),
+                'col1' => array('width' => 35, 'justification' => 'center'),
                 'col2' => array('width' => 50, 'justification' => 'center'),
                 'col3' => array('width' => 50, 'justification' => 'center'),
                 'col4' => array('width' => 30, 'justification' => 'center'),
+                'col5' => array('width' => 130, 'justification' => 'left'),
                 'col6' => array('width' => 50),
                 'col7' => array('width' => 50, 'justification' => 'center'),
                 'col8' => array('width' => 50, 'justification' => 'center'),
-                'col9' => array('width' => 60, 'justification' => 'center')
+                'col9' => array('width' => 40, 'justification' => 'center')
             )
         ));
 

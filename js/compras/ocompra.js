@@ -393,6 +393,9 @@ function ver_reporte_pdf_compras(){
     var anio = $("#anioVenta").val();
     var mes = $("#mesventa").val();
     var rucp = $("#ruc_proveedorC").val();
+    if(anio=="0"){anio="--";}
+    if(mes==""){mes="--";}
+    if(rucp==""){rucp="--";}
     url = base_url+"index.php/ventas/comprobante/ver_reporte_pdf_commpras/"+anio+"/"+mes+"/"+rucp;
     window.open(url,'',"width=800,height=600,menubars=no,resizable=no;")
 }
