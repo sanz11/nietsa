@@ -133,3 +133,30 @@ public function registro_familia_pdf($flagbs = 'B', $codigo='', $nombre='')
             return $data;
         }
     }
+---------------------------------------------------
+formato moneda de 4 digitos
+<?php 
+
+$n1=16179267.059569;
+$n2=1655.299;
+$total = $n2+$n1;
+
+echo "total suma : ".$total."<br>";
+
+$posicion = strpos ($total, ".");//capturar la posicion del punto = 2
+$resul = substr ($total, 0,($posicion+5)); //del total mostramos desde el punto 5 caracteres mas a la derecha
+echo "conversion a 4 decimales : ".$resul."<br>";
+
+//le damos formaton de moneda y ya no redondeariamos
+$stotal= money_format($resul);
+echo "conversion a formato maneda : ".$stotal ."<br>";
+
+
+
+
+
+
+function money_format($value) {
+  return '$' . number_format($value,4);
+}
+?>
