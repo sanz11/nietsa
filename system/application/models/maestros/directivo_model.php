@@ -288,7 +288,7 @@ class Directivo_model extends Model {
         }
     }
 
-    public function insertar_datosDirectivo($empresa, $persona, $finicio, $ffin, $cargo, $contrato, $imagen) {
+    public function insertar_datosDirectivo($empresa, $persona, $finicio, $ffin, $cargo, $contrato, $imagen,$USUACodi) {
         $compania = $this->somevar['compania'];
 
         /* if ($fcontrato == '' || $contrato == '0')
@@ -300,7 +300,8 @@ class Directivo_model extends Model {
             "DIREC_Imagen" => $imagen,
             "DIREC_FechaInicio" => $finicio,
             "DIREC_FechaFin" => $ffin,
-            "DIREC_NroContrato" => $contrato
+            "DIREC_NroContrato" => $contrato,
+            "USUA_Codigo" => $USUACodi
         );
         $this->db->insert("cji_directivo", $data);
         $directivo = $this->db->insert_id();
@@ -323,7 +324,7 @@ class Directivo_model extends Model {
         $this->db->update('cji_directivo', $data);
     }
 
-    public function modificar_datosDirectivo($directivo, $empresa, $personacod, $cargo, $fecini, $fecfin, $contrato, $imagen) {
+    public function modificar_datosDirectivo($directivo, $empresa, $personacod, $cargo, $fecini, $fecfin, $contrato, $imagen,$USUACodi) {
 //$user     =  $this->somevar ['user'] ;
         date_default_timezone_set('America/Lima');
         $Fec = date("Y-m-d");
@@ -337,7 +338,8 @@ class Directivo_model extends Model {
                 "DIREC_FechaInicio" => $fecini,
                 "DIREC_FechaFin" => $fecfin,
                 "DIREC_NroContrato" => $contrato,
-                "DIREC_FechaModificacion" => $modified
+                "DIREC_FechaModificacion" => $modified,
+                 "USUA_Codigo" => $USUACodi
             );
         } else {
             $data = array(
@@ -348,7 +350,8 @@ class Directivo_model extends Model {
                 "DIREC_FechaInicio" => $fecini,
                 "DIREC_FechaFin" => $fecfin,
                 "DIREC_NroContrato" => $contrato,
-                "DIREC_FechaModificacion" => $modified
+                "DIREC_FechaModificacion" => $modified,
+                 "USUA_Codigo" => $USUACodi
             );
         }
         $where = array("DIREP_Codigo" => $directivo);

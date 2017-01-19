@@ -441,7 +441,23 @@ public function registro_empresa_pdf($flagbs = 'B', $documento='', $nombre='')
                                     $editar         = "<a href='#' onclick='editar_empresa(".$codigo.")'><img src='".base_url()."images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
                                     $ver            = "<a href='#' onclick='ver_empresa(".$codigo.")'><img src='".base_url()."images/ver.png' width='16' height='16' border='0' title='Modificar'></a>";
                                     $eliminar       = "<a href='#' onclick='eliminar_empresa(".$codigo.")'><img src='".base_url()."images/eliminar.png' width='16' height='16' border='0' title='Modificar'></a>";
-                                    $lista[]        = array($item,$ruc,$razon_social,$telefono,$movil,$editar,$ver,$eliminar);
+
+                                     $usua = $valor->USUA_Codigo;
+                                       if($usua != "0"){
+                                        $usuarioNom=$this->cliente_model->getUsuarioNombre($usua);
+                                            $nomusuario="";
+                                            if($usuarioNom[0]->ROL_Codigo==0){
+                                             $nomusuario= $usuarioNom[0]->USUA_usuario;
+                                                }else{
+                                             $explorar= explode(" ",$usuarioNom[0]->PERSC_Nombre);
+                                                   
+                                                $nomusuario= strtolower($explorar[0]);
+                                            }
+                                        }else{
+                                            $nomusuario="";
+                                        }
+
+                                    $lista[]        = array($item,$ruc,$razon_social,$telefono,$movil,$editar,$ver,$eliminar,$nomusuario);
                                     $item++;
                             }
                     }

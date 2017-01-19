@@ -317,14 +317,15 @@ and pro.PROD_FlagActivo = 1 and pro.PROD_FlagEstado = 1 order by pro.PROD_FechaR
         }
     }
 
-    public function modificar_producto2($producto, $nombre_producto, $codigo_interno, $stock_producto, $precio_producto, $presentacion_producto, $marca_producto)
+    public function modificar_producto2($producto, $nombre_producto, $codigo_interno, $stock_producto, $precio_producto, $presentacion_producto, $marca_producto, $CodigUsu='')
     {
         $data = array(
 //"TIPPROD_Codigo" => $tipo_producto,
             "PROD_Nombre" => strtoupper($nombre_producto),
             //"PROD_Modelo" => strtoupper($modelo),
             "PROD_Stock" => $stock_producto,
-            "PROD_Presentacion" => $presentacion_producto
+            "PROD_Presentacion" => $presentacion_producto,
+            "USUA_Codigo" => $CodigUsu
         );
         $this->db->where('PROD_Codigo', $producto);
         $this->db->update("cji_producto", $data);
@@ -1029,7 +1030,7 @@ and pro.PROD_FlagActivo = 1 and pro.PROD_FlagEstado = 1 order by pro.PROD_FechaR
         $this->db->insert("cji_productoatributo", $data);
     }
 
-    public function modificar_producto($producto, $familia, $tipo_producto, $nombre_producto, $descripcion_breve, $comentario, $codigo_interno, $imagen, $activo, $fabricante, $linea, $marca, $pdf, $modelo, $presentacion, $geneindi, $padre, $codigo_usuario, $nombrecorto_producto, $stock_min, $codigo_original)
+    public function modificar_producto($producto, $familia, $tipo_producto, $nombre_producto, $descripcion_breve, $comentario, $codigo_interno, $imagen, $activo, $fabricante, $linea, $marca, $pdf, $modelo, $presentacion, $geneindi, $padre, $codigo_usuario, $nombrecorto_producto, $stock_min, $codigo_original,$CodigUsu='')
     {
         if ($fabricante == '' || $fabricante == '0')
             $fabricante = NULL;
@@ -1072,7 +1073,8 @@ and pro.PROD_FlagActivo = 1 and pro.PROD_FlagEstado = 1 order by pro.PROD_FechaR
             "PROD_PadreCodigo" => $padre,
             "PROD_CodigoUsuario" => $codigo_usuario,
             "PROD_CodigoOriginal" => $codigo_original,
-            "PROD_StockMinimo" => $stock_min
+            "PROD_StockMinimo" => $stock_min,
+            "USUA_Codigo" => $CodigUsu
         );
         if ($imagen == '')
             unset($data['PROD_Imagen']);
@@ -1095,7 +1097,7 @@ and pro.PROD_FlagActivo = 1 and pro.PROD_FlagEstado = 1 order by pro.PROD_FechaR
     }
 
     //$factorprin
-    public function modificar_producto_total($producto, $proveedor, $familia, $tipo_producto, $nombre_producto, $descripcion_breve, $comentario, $codigo_interno, $unidad_medida, $factor, $flagPrincipal, $atributo, $tipo_atributo, $nombre_atributo, $produnidad, $imagen, $activo, $fabricante, $linea, $marca, $pdf, $modelo, $presentacion, $geneindi, $padre = '', $codigo_usuario = '', $nombrecorto_producto = '', $stock_min = 0, $factorprin, $codigo_original)
+    public function modificar_producto_total($producto, $proveedor, $familia, $tipo_producto, $nombre_producto, $descripcion_breve, $comentario, $codigo_interno, $unidad_medida, $factor, $flagPrincipal, $atributo, $tipo_atributo, $nombre_atributo, $produnidad, $imagen, $activo, $fabricante, $linea, $marca, $pdf, $modelo, $presentacion, $geneindi, $padre = '', $codigo_usuario = '', $nombrecorto_producto = '', $stock_min = 0, $factorprin, $codigo_original,$CodigUsu)
     {
         $temp = explode(".", $codigo_interno);
         if ($familia != '' && $temp[count($temp) - 1] == '') {
@@ -1108,7 +1110,7 @@ and pro.PROD_FlagActivo = 1 and pro.PROD_FlagEstado = 1 order by pro.PROD_FechaR
             $this->familia_model->modificar_familia_numeracion($familia, $numero2);
         }
 
-        $this->modificar_producto($producto, $familia, $tipo_producto, $nombre_producto, $descripcion_breve, $comentario, $codigo_interno, $imagen, $activo, $fabricante, $linea, $marca, $pdf, $modelo, $presentacion, $geneindi, $padre, $codigo_usuario, $nombrecorto_producto, $stock_min, $codigo_original);
+        $this->modificar_producto($producto, $familia, $tipo_producto, $nombre_producto, $descripcion_breve, $comentario, $codigo_interno, $imagen, $activo, $fabricante, $linea, $marca, $pdf, $modelo, $presentacion, $geneindi, $padre, $codigo_usuario, $nombrecorto_producto, $stock_min, $codigo_original,$CodigUsu);
 
         if (is_array($unidad_medida)) {
             foreach ($unidad_medida as $indice => $valor) {

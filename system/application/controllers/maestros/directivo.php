@@ -20,6 +20,7 @@ class Directivo extends Controller {
         $this->load->model('maestros/formapago_model');
         $this->load->model('maestros/sectorcomercial_model');
         $this->load->model('ventas/tipocliente_model');
+         $this->load->model('ventas/cliente_model');
         $this->load->helper('json');
         $this->load->library('html');
         $this->load->library('table');
@@ -388,7 +389,8 @@ class Directivo extends Controller {
             }
             //exit();
             //$cliente=$this->directivo_model->insertar_datosDirectivo($empresa,$persona,$tipo_persona, $categoria, $forma_pago);
-            $directivo = $this->directivo_model->insertar_datosDirectivo($empresad, $persona, $finicio, $ffin, $cargo, $contrato, $imagen);
+            $USUACodi= $this->session->userdata('user');     
+            $directivo = $this->directivo_model->insertar_datosDirectivo($empresad, $persona, $finicio, $ffin, $cargo, $contrato, $imagen,$USUACodi);
         }
 
         $this->directivos();
@@ -568,7 +570,8 @@ class Directivo extends Controller {
             } else {
                 $persona = $this->persona_model->insertar_datosPersona($ubigeo_nacimiento, $ubigeo_domicilio, $estado_civil, $nacionalidad, $nombres, $paterno, $materno, $ruc_persona, $tipo_documento, $numero_documento, $direccion, $telefono, $movil, $email, $direccion, $sexo, $web, $fecnac);
             }
-            $this->directivo_model->modificar_datosDirectivo($directivo, $empresa, $personacod, $cargo, $fecini, $fecfin, $contrato, $imagen);
+            $USUACodi= $this->session->userdata('user');
+            $this->directivo_model->modificar_datosDirectivo($directivo, $empresa, $personacod, $cargo, $fecini, $fecfin, $contrato, $imagen,$USUACodi);
         }
 
         $this->directivos();

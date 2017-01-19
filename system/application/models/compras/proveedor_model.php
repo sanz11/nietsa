@@ -270,6 +270,7 @@ class Proveedor_model extends Model {
         };
         $sql = "
                 select
+                prov.USUA_Codigo USUA_Codigo,
                 prov.PROVP_Codigo PROVP_Codigo,
                 prov.EMPRP_Codigo EMPRP_Codigo,
                 prov.PERSP_Codigo PERSP_Codigo,
@@ -290,6 +291,7 @@ class Proveedor_model extends Model {
                 and prov.PROVP_Codigo!=0 " . $where . " " . $where_empr . "
                 UNION
                 select
+                prov.USUA_Codigo USUA_Codigo,
                 prov.PROVP_Codigo as PROVP_Codigo,
                 prov.EMPRP_Codigo EMPRP_Codigo,
                 prov.PERSP_Codigo PERSP_Codigo,

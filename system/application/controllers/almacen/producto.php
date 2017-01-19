@@ -892,8 +892,8 @@ class Producto extends Controller
         $presentacion_producto = $this->input->post('productopresentacion');
         $marca_producto = $this->input->post('productomarca');
 
-
-        $this->producto_model->modificar_producto2($producto, $nombre_producto, $codigo_interno, $stock_producto, $precio_producto, $presentacion_producto, $marca_producto);
+        $CodigUsu= $this->session->userdata('user');
+        $this->producto_model->modificar_producto2($producto, $nombre_producto, $codigo_interno, $stock_producto, $precio_producto, $presentacion_producto, $marca_producto, $CodigUsu);
 
         //$this->layout->view('almacen/buscar_productos/'.$j.'/'.$flagBS,$data);
     }
@@ -969,7 +969,8 @@ class Producto extends Controller
 
         $stock_min = $this->input->post('stock_min');
         //$factorprin
-        $this->producto_model->modificar_producto_total($codigo, $proveedor, $familia, $tipo_producto, $nombre_producto, $descripcion_breve, $comentario, $codigo_interno, $unidad_medida, $factor, $flagPrincipal, $atributo, $tipo_atributo, $nombre_atributo, $produnidad, $imagen, $activo, $fabricante, $linea, $marca, $pdf, $modelo, $presentacion, $geneindi, $padre, $codigo_usuario, $nombrecorto_producto, $stock_min, $factorprin, $codigo_original);
+          $CodigUsu= $this->session->userdata('user');
+        $this->producto_model->modificar_producto_total($codigo, $proveedor, $familia, $tipo_producto, $nombre_producto, $descripcion_breve, $comentario, $codigo_interno, $unidad_medida, $factor, $flagPrincipal, $atributo, $tipo_atributo, $nombre_atributo, $produnidad, $imagen, $activo, $fabricante, $linea, $marca, $pdf, $modelo, $presentacion, $geneindi, $padre, $codigo_usuario, $nombrecorto_producto, $stock_min, $factorprin, $codigo_original,$CodigUsu);
 
         $this->guardar_precios($codigo);
 
@@ -1335,7 +1336,20 @@ class Producto extends Controller
                 $ver = "<a href='javascript:;' onclick='ver_producto(" . $codigo . ")'><img src='" . base_url() . "images/ver.png' width='16' height='16' border='0' title='Ver'></a>";
                 $pdf = "<a href='" . base_url() . "pdf/" . $pdfs . "' target='blank'> <img src='" . base_url() . "images/pdf.png' width='16' height='16' border='0' title='Descargar Ficha Técnica'></a>";
                 $eliminar = "<a href='javascript:;' onclick='eliminar_producto(" . $codigo . ")'><img src='" . base_url() . "images/eliminar.png' width='16' height='16' border='0' title='Eliminar'></a>";
-                $lista[] = array($item++, $codigo_interno, $descripcion, $nombre_familia, $modelo, $nombre_marca, $precio_venta, $precio_costo, $estado, $editar, $checkenviar, $prorratear, $eliminar, $flagPublicado, $codigo, $editar2, $cajaCodigo, $pdf);
+                $usua = $valor->USUA_Codigo;
+
+                $usuarioNom=$this->cliente_model->getUsuarioNombre($usua);
+                    $nomusuario="";
+                    if($usuarioNom[0]->ROL_Codigo==0){
+                     $nomusuario= $usuarioNom[0]->USUA_usuario;
+                        }else{
+                     $explorar= explode(" ",$usuarioNom[0]->PERSC_Nombre);
+                           
+                        $nomusuario= strtolower($explorar[0]);
+                    }
+
+
+                $lista[] = array($item++, $codigo_interno, $descripcion, $nombre_familia, $modelo, $nombre_marca, $precio_venta, $precio_costo, $estado, $editar, $checkenviar, $prorratear, $eliminar, $flagPublicado, $codigo, $editar2, $cajaCodigo, $pdf,$nomusuario);
             }
         }
 
@@ -1475,7 +1489,21 @@ class Producto extends Controller
                 //$ver            = "<a href='javascript:;' onclick='ver_producto(".$codigo.")'><img src='".base_url()."images/ver.png' width='16' height='16' border='0' title='Modificar'></a>";
                 $pdf = "<a href='" . base_url() . "pdf/" . $pdfs . "' target='blank'> <img src='" . base_url() . "images/pdf.png' width='16' height='16' border='0' title='Descargar Ficha Técnica'></a>";
                 $eliminar = "<a href='javascript:;' onclick='eliminar_producto(" . $codigo . ")'><img src='" . base_url() . "images/eliminar.png' width='16' height='16' border='0' title='Modificar'></a>";
-                $lista[] = array($item++, $codigo_interno, $descripcion, $nombre_familia, $modelo, $nombre_marca, $precio_venta, $precio_costo, $estado, $editar, $publicar, $prorratear, $eliminar, $flagPublicado, $codigo, $editar2, $cajaCodigo, $pdf);
+
+                $usua = $valor->USUA_Codigo;
+
+                $usuarioNom=$this->cliente_model->getUsuarioNombre($usua);
+                    $nomusuario="";
+                    if($usuarioNom[0]->ROL_Codigo==0){
+                     $nomusuario= $usuarioNom[0]->USUA_usuario;
+                        }else{
+                     $explorar= explode(" ",$usuarioNom[0]->PERSC_Nombre);
+                           
+                        $nomusuario= strtolower($explorar[0]);
+                    }
+
+
+                $lista[] = array($item++, $codigo_interno, $descripcion, $nombre_familia, $modelo, $nombre_marca, $precio_venta, $precio_costo, $estado, $editar, $publicar, $prorratear, $eliminar, $flagPublicado, $codigo, $editar2, $cajaCodigo, $pdf,$nomusuario);
             }
         }
 
