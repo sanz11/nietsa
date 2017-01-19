@@ -153,14 +153,15 @@ $stotal= money_format($resul);
 echo "conversion a formato maneda : ".$stotal ."<br>";
 
 
-
-
-
-
 function money_format($value) {
   return '$' . number_format($value,4);
 }
 ?>
+// 4 decimales 2
+
+$posicion0 = strpos ($sum, ".");
+$resul0 = substr ($sum, 0,($posicion0+5)); 
+$sumt= '$' . number_format($resul0,4);
 
     // sin tilde
 
@@ -186,3 +187,4 @@ function money_format($value) {
    cadena = cadena.replace(/ñ/gi,"n");
    return cadena;
 }
+

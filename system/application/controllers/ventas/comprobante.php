@@ -6913,15 +6913,39 @@ $direccion=substr($datos_proveedor[0]->EMPRC_Direccion,0, 50);
         $sum = 0;
         foreach ($listado as $key => $value) {
             $sum += $value->CPC_total;
+
+
+            //supertotal
+            $posicion0 = strpos ($sum, ".");
+            $resul0 = substr ($sum, 0,($posicion0+5)); 
+            $sumt= '$' . number_format($resul0,4);
+
+            //total
+            $posicion1 = strpos ($value->CPC_total, ".");
+            $resul1 = substr ($value->CPC_total, 0,($posicion1+5)); 
+            $stotal= '$' . number_format($resul1,4);
+
+            //igv
+            $posicion2 = strpos ($value->CPC_igv, ".");
+            $resul2 = substr ($value->CPC_igv, 0,($posicion2+5)); 
+            $igv= '$' . number_format($resul2,4);
+
+            //subtotaol
+            $posicion3 = strpos ($value->CPC_subtotal, ".");
+            $resul3 = substr ($value->CPC_subtotal, 0,($posicion3+5)); 
+            $subtotal= '$' . number_format($resul3,4);
+
+
+
             $db_data[] = array(
                 'col1' => $key + 1,
                 'col2' => substr($value->CPC_FechaRegistro, 0, 10),
                 'col3' => $serie,
                 'col4' => $value->CPC_Numero,
                 'col5' => $value->EMPRC_RazonSocial,
-                'col6' => $value->CPC_subtotal,
-                'col7' => $value->CPC_igv,
-                'col8' => $value->CPC_total
+                'col6' => $subtotal,
+                'col7' => $igv,
+                'col8' => $stotal
             );
         }
 
@@ -6933,7 +6957,7 @@ $direccion=substr($datos_proveedor[0]->EMPRC_Direccion,0, 50);
             'col5' => 'RAZON ZOCIAL',
             'col6' => 'VALOR DE VENTA',
             'col7' => 'I.G.V. 18%',
-            'col8' => 'TOTAL',
+            'col8' => 'TOTAL'
         );
 
         $db_data[] = array(
@@ -6944,7 +6968,7 @@ $direccion=substr($datos_proveedor[0]->EMPRC_Direccion,0, 50);
             'col5' => "",
             'col6' => "",
             'col7' => "TOTAL",
-            'col8' => $sum,
+            'col8' => $sumt,
             'col9' => ""
         );
 
@@ -6960,11 +6984,11 @@ $direccion=substr($datos_proveedor[0]->EMPRC_Direccion,0, 50);
                 'col2' => array('width' => 50, 'justification' => 'center'),
                 'col3' => array('width' => 50, 'justification' => 'center'),
                 'col4' => array('width' => 30, 'justification' => 'center'),
-                'col5' => array('width' => 130, 'justification' => 'left'),
+                'col5' => array('width' => 130, 'justification' => 'center'),
                 'col6' => array('width' => 50),
-                'col7' => array('width' => 50, 'justification' => 'center'),
-                'col8' => array('width' => 50, 'justification' => 'center'),
-                'col9' => array('width' => 40, 'justification' => 'center')
+                'col7' => array('width' => 50, 'justification' => 'right'),
+                'col8' => array('width' => 50, 'justification' => 'right'),
+                'col9' => array('width' => 40, 'justification' => 'right')
             )
         ));
 
