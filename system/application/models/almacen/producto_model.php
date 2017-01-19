@@ -445,7 +445,7 @@ and pro.PROD_FlagActivo = 1 and pro.PROD_FlagEstado = 1 order by pro.PROD_FechaR
             return $data;
         }
     }
-    public function buscarProductoIndex($filter, $number_items = "", $offset = ""){
+    public function buscarProductoIndex($filter, $number_items = "", $offset = "",$flagBS="B"){
          $compania = $this->somevar['compania'];
 
 
@@ -455,7 +455,7 @@ and pro.PROD_FlagActivo = 1 and pro.PROD_FlagEstado = 1 order by pro.PROD_FechaR
             ->join('cji_marca', 'cji_marca.MARCP_Codigo = cji_producto.MARCP_Codigo ', 'left')
             ->where('cji_productocompania.COMPP_Codigo', $compania)
             ->where('PROD_FlagEstado', 1)
-            ->where('PROD_FlagBienServicio', 'B')
+            ->where('PROD_FlagBienServicio', $flagBS)
             ->order_by('cji_producto.PROD_Nombre');
 
         if (isset($filter->tipo) && $filter->tipo != "")
@@ -773,7 +773,7 @@ and pro.PROD_FlagActivo = 1 and pro.PROD_FlagEstado = 1 order by pro.PROD_FechaR
         }
     }
 
-    public function insertar_producto($familia, $tipo_producto, $nombre_producto, $descripcion_breve, $comentario, $codigo_interno, $imagen, $fabricante, $linea, $marca, $pdf, $modelo, $presentacion, $geneindi, $padre, $codigo_usuario, $nombrecorto_producto, $flagBS, $stock_min, $codigo_original)
+    public function insertar_producto($familia, $tipo_producto, $nombre_producto, $descripcion_breve, $comentario, $codigo_interno, $imagen, $fabricante, $linea, $marca, $pdf, $modelo, $presentacion, $geneindi, $padre, $codigo_usuario, $nombrecorto_producto, $flagBS, $stock_min, $codigo_original,$CodigUsu)
     {
         if ($fabricante == '' || $fabricante == '0')
             $fabricante = NULL;
@@ -818,7 +818,8 @@ and pro.PROD_FlagActivo = 1 and pro.PROD_FlagEstado = 1 order by pro.PROD_FechaR
             "PROD_CodigoUsuario" => $codigo_usuario,
             "PROD_CodigoOriginal" => $codigo_original,
             "PROD_FlagBienServicio" => $flagBS,
-            "PROD_StockMinimo" => $stock_min
+            "PROD_StockMinimo" => $stock_min,
+            "USUA_Codigo" => $CodigUsu
         );
         $this->db->insert("cji_producto", $data);
         return $this->db->insert_id();
@@ -885,7 +886,7 @@ and pro.PROD_FlagActivo = 1 and pro.PROD_FlagEstado = 1 order by pro.PROD_FechaR
           }*/
     /////////
 
-    public function insertar_producto_total($proveedor, $familia, $tipo_producto, $nombre_producto, $descripcion_breve, $comentario, $unidad_medida, $factor, $flagPrincipal, $atributo, $nombre_atributo, $codigo_familia, $fabricante, $linea, $marca, $imagen, $pdf, $modelo, $presentacion, $geneindi, $padre = '', $codigo_usuario = '', $nombrecorto_producto = '', $flagBS = 'B', $stock_min = 0, $factorprin, $codigo_original)
+    public function insertar_producto_total($proveedor, $familia, $tipo_producto, $nombre_producto, $descripcion_breve, $comentario, $unidad_medida, $factor, $flagPrincipal, $atributo, $nombre_atributo, $codigo_familia, $fabricante, $linea, $marca, $imagen, $pdf, $modelo, $presentacion, $geneindi, $padre = '', $codigo_usuario = '', $nombrecorto_producto = '', $flagBS = 'B', $stock_min = 0, $factorprin, $codigo_original,$CodigUsu)
     {
         $codigo_interno = '';
         if ($familia != '') {
@@ -897,7 +898,7 @@ and pro.PROD_FlagActivo = 1 and pro.PROD_FlagEstado = 1 order by pro.PROD_FechaR
             $this->familia_model->modificar_familia_numeracion($familia, $numero2);
         }
 
-        $producto = $this->insertar_producto($familia, $tipo_producto, $nombre_producto, $descripcion_breve, $comentario, $codigo_interno, $imagen, $fabricante, $linea, $marca, $pdf, $modelo, $presentacion, $geneindi, $padre, $codigo_usuario, $nombrecorto_producto, $flagBS, $stock_min, $codigo_original);
+        $producto = $this->insertar_producto($familia, $tipo_producto, $nombre_producto, $descripcion_breve, $comentario, $codigo_interno, $imagen, $fabricante, $linea, $marca, $pdf, $modelo, $presentacion, $geneindi, $padre, $codigo_usuario, $nombrecorto_producto, $flagBS, $stock_min, $codigo_original,$CodigUsu);
 
         //$this->insertar_producto_compania($producto);
         $comp = $this->compania_model->listar();

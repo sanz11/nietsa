@@ -10,7 +10,8 @@ class Tipoproveedor extends Controller{
 		$this->load->library('html');
 		$this->load->library('table');
 		$this->load->model('almacen/tipoproveedor_model');		
-		$this->load->model('compras/proveedor_model');		
+		$this->load->model('compras/proveedor_model');
+		$this->load->model('ventas/cliente_model');		
 		$this->load->model('maestros/empresa_model');	
 		$this->load->model('maestros/persona_model');	
 		$this->load->library('layout','layout_main');  
@@ -46,7 +47,24 @@ class Tipoproveedor extends Controller{
 				$ingresar        = "<a href='#' onclick='abrir_familia(".$codigo.")'><img src='".base_url()."images/ingresar.png' width='16' height='16' border='0' title='Abrir'></a>";
 				$editar          = "<a href='#' onclick='editar_familia(".$item.")'><img src='".base_url()."images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
 				$eliminar        = "<a href='#' onclick='eliminar_familia(".$item.")'><img src='".base_url()."images/eliminar.png' width='16' height='16' border='0' title='Modificar'></a>";
-				$lista[]         = array($item++,$codigo_interno,$codigo_usuario,$cajaCodigo.$descripcion,$ingresar,$editar,$eliminar);
+
+				$usu= $valor->USUA_Codigo;
+
+				if($usu!="0"){
+				 $usuarioNom=$this->cliente_model->getUsuarioNombre($usu);
+ 					$nomusuario="";
+ 					if($usuarioNom[0]->ROL_Codigo==0){
+    					$nomusuario= $usuarioNom[0]->USUA_usuario;
+    					}else{
+    					$explorar= explode(" ",$usuarioNom[0]->PERSC_Nombre);
+    					    
+    					$nomusuario= strtolower($explorar[0]);
+					 }
+					}else{
+						$nomusuario="";
+					}
+
+				$lista[]         = array($item++,$codigo_interno,$codigo_usuario,$cajaCodigo.$descripcion,$ingresar,$editar,$eliminar,$nomusuario);
 			}
 		}
 		if($j=='0' || $j==''){
@@ -125,8 +143,10 @@ class Tipoproveedor extends Controller{
 		$codanterior   = $this->input->post('codanterior');
 		$descripcion   = $this->input->post('descripcion');
 		$codigointerno = $this->input->post('codigointerno');
-                $codigousuario = $this->input->post('codigousuario');
-		$this->tipoproveedor_model->insertar_familia($descripcion,$codanterior,$codigointerno,$codigousuario);
+        $codigousuario = $this->input->post('codigousuario');
+        $USUACodi= $this->session->userdata('user');
+
+		$this->tipoproveedor_model->insertar_familia($descripcion,$codanterior,$codigointerno,$codigousuario,$USUACodi);
 		$this->index();
 	}
 	function editar_familia(){
@@ -139,8 +159,9 @@ class Tipoproveedor extends Controller{
 	function modificar_familia(){
 		$familia       = $this->input->post('codigo');
 		$descripcion   = $this->input->post('descripcion');
-                $codigousuario = $this->input->post('codigousuario');
-		$this->tipoproveedor_model->modificar_familia($familia,$descripcion, $codigousuario);
+        $codigousuario = $this->input->post('codigousuario');
+        $USUACodi= $this->session->userdata('user');
+		$this->tipoproveedor_model->modificar_familia($familia,$descripcion, $codigousuario,$USUACodi);
 		$this->index();
 	}
 	function buscar_familias($j='0'){

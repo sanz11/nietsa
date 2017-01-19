@@ -329,7 +329,7 @@ $("#buscarProducto").click(function(){
                             <td width="5%" align='center'>&nbsp;CODIGO&nbsp;&nbsp;&nbsp;</td>
                             <td>DESCRIPCION&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                             <?php if (FORMATO_IMPRESION != 4) { ?>
-                                <td width="30%">FAMILIA</td><?php } ?>
+                                <td width="15%">FAMILIA</td><?php } ?>
                             <?php if ($flagBS == 'B') { ?>
 
                                 <td width="15%">MARCA</td>
@@ -345,6 +345,7 @@ $("#buscarProducto").click(function(){
                             <!--<td width="3%">E.T</td>-->
                             <td width="3%">&nbsp;</td>
                             <td width="3%">&nbsp;</td>
+                             <td width="5%">USUARIO</td>
                         </tr>
                         <?php
                         if (count($lista) > 0) {
@@ -402,6 +403,10 @@ $("#buscarProducto").click(function(){
                                     <td>
                                         <div align="center"><?php echo $valor[12]; ?></div>
                                     </td>
+                                    <td>
+                                        <div align="center"><?php echo $valor[18]; ?></div>
+                                    </td>
+                                     
                                 </tr>
                             <?php
                             }

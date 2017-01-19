@@ -52,6 +52,7 @@ class Directivo_model extends Model {
         $sql = "
             select
             dir.DIREP_Codigo DIREP_Codigo,
+            dir.USUA_Codigo USUA_Codigo,
             dir.EMPRP_Codigo EMPRP_Codigo,
             dir.PERSP_Codigo PERSP_Codigo,
             dir.CARGP_Codigo CARGP_Codigo,
@@ -246,6 +247,7 @@ class Directivo_model extends Model {
                     select
                     dir.DIREP_Codigo DIREP_Codigo,
                     dir.EMPRP_Codigo EMPRP_Codigo,
+                     dir.USUA_Codigo USUA_Codigo,
                     dir.PERSP_Codigo PERSP_Codigo,
                     dir.CARGP_Codigo CARGP_Codigo,
                     dir.DIREC_FechaInicio Inicio,

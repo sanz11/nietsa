@@ -23,17 +23,25 @@ jQuery(document).ready(function(){
         url = base_url+"index.php/compras/proveedor/proveedores/";
         location.href=url;
     });
+
     $("#imprimirProveedor").click(function(){
-			var documento = $("#txtNumDoc").val();
+			var docum = $("#txtNumDoc").val();
 			var nombre = $("#txtNombre").val();
 			
 			var flagBS = "B";
+
+			var documento = sintilde(docum);
+			var nombrest = sintilde(nombre);
 		///
-		  if(documento==""){documento="--";}
-          if(nombre==""){nombre="--";}
+		  if(docum==""){documento="--";}
+          if(nombre==""){nombrest="--";}
+
+
+
+  
           
            
-        url = base_url+"index.php/compras/proveedor/registro_proveedor_pdf/"+flagBS+"/"+documento+"/"+ nombre;
+        url = base_url+"index.php/compras/proveedor/registro_proveedor_pdf/"+flagBS+"/"+documento+"/"+ nombrest;
         window.open(url,'',"width=800,height=600,menubars=no,resizable=no;");
     });
 
@@ -860,4 +868,25 @@ function cambiar_estado_campos(estado){
     $("#cboNacionalidad").attr('disabled', estado);
     $("#ruc_persona").attr('disabled', estado);
     
+}
+function sintilde(cadena){
+   
+   var specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,.";
+
+   
+   for (var i = 0; i < specialChars.length; i++) {
+       cadena= cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
+   }   
+
+   // Lo queremos devolver limpio en minusculas
+   cadena = cadena.toLowerCase();
+
+   // Quitamos acentos y "ñ". Fijate en que va sin comillas el primer parametro
+   cadena = cadena.replace(/á/gi,"a");
+   cadena = cadena.replace(/é/gi,"e");
+   cadena = cadena.replace(/í/gi,"i");
+   cadena = cadena.replace(/ó/gi,"o");
+   cadena = cadena.replace(/ú/gi,"u");
+   cadena = cadena.replace(/ñ/gi,"n");
+   return cadena;
 }

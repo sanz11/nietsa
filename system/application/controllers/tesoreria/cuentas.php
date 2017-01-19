@@ -187,7 +187,18 @@ class Cuentas extends controller
                 $ver = "<a href='javascript:;' onclick='ver_comprobante_pdf(" . $codigo . ", \"" . $tipo_docu . "\")' target='_parent'><img src='" . base_url() . "images/icono_imprimir.png' width='16' height='16' border='0' title='Imprimir'></a>";
                 $ver2 = "<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(" . $codigo . ", \"" . $tipo_docu . "\",$tipo_cuenta)' target='_parent'><img src='" . base_url() . "images/pdf.png' width='16' height='16' border='0' title='Ver PDF'></a>";
 
-                $lista[] = array($item++, $tipo_docu_nomb, $serie, $numero, $fecha, $nombre, $total_formato, $saldo, $estado_formato, $editar, $ver, $ver2);
+                $usua = $valor->USUA_Codigo;
+
+                $usuarioNom=$this->cliente_model->getUsuarioNombre($usua);
+                    $nomusuario="";
+                    if($usuarioNom[0]->ROL_Codigo==0){
+                     $nomusuario= $usuarioNom[0]->USUA_usuario;
+                        }else{
+                     $explorar= explode(" ",$usuarioNom[0]->PERSC_Nombre);
+                           
+                        $nomusuario= strtolower($explorar[0]);
+                    }
+                $lista[] = array($item++, $tipo_docu_nomb, $serie, $numero, $fecha, $nombre, $total_formato, $saldo, $estado_formato, $editar, $ver, $ver2, $nomusuario);
             }
         }
 
@@ -350,8 +361,10 @@ class Cuentas extends controller
                 $filter->MONED_Codigo = $this->input->post('moneda');
 
                 $cod_cuentaspago = $this->cuentaspago_model->insertar($filter);
+                
+               $USUACodi= $this->session->userdata('user');  
 
-                $this->cuentas_model->modificar_estado($cuenta->CUE_Codigo, ($avance == $total ? 'C' : 'A'));
+                $this->cuentas_model->modificar_estado($cuenta->CUE_Codigo, ($avance == $total ? 'C' : 'A'), $USUACodi);
             }
         }
 

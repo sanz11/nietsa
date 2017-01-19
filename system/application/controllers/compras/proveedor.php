@@ -16,6 +16,7 @@ class Proveedor extends Controller
         $this->load->model('maestros/tipodocumento_model');
         $this->load->model('maestros/tipocodigo_model');
         $this->load->model('maestros/estadocivil_model');
+        $this->load->model('ventas/cliente_model');
         $this->load->model('maestros/ubigeo_model');
         $this->load->model('maestros/sectorcomercial_model');
         $this->load->model('compras/proveedor_model');
@@ -72,10 +73,29 @@ class Proveedor extends Controller
                 $editar = "<a href='#' onclick='editar_proveedor(" . $codigo . ")'><img src='" . base_url() . "images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
                 $ver = "<a href='#' onclick='ver_proveedor(" . $codigo . ")'><img src='" . base_url() . "images/ver.png' width='16' height='16' border='0' title='Modificar'></a>";
                 $eliminar = "<a href='#' onclick='eliminar_proveedor(" . $codigo . ")'><img src='" . base_url() . "images/eliminar.png' width='16' height='16' border='0' title='Modificar'></a>";
-                $lista[] = array($item, $ruc, $dni, $razon_social, $tipo_proveedor, $telefono, $movil, $editar, $ver, $eliminar);
+
+                $usua = $valor->USUA_Codigo;
+
+            if($usua!="0"){
+                $usuarioNom=$this->cliente_model->getUsuarioNombre($usua);
+                    $nomusuario="";
+                    if($usuarioNom[0]->ROL_Codigo==0){
+                     $nomusuario= $usuarioNom[0]->USUA_usuario;
+                        }else{
+                     $explorar= explode(" ",$usuarioNom[0]->PERSC_Nombre);
+                           
+                        $nomusuario = strtolower($explorar[0]);
+                    }
+                }else{
+                    $nomusuario="";
+                }
+
+
+                $lista[] = array($item, $ruc, $dni, $razon_social, $tipo_proveedor, $telefono, $movil, $editar, $ver, $eliminar, $nomusuario );
                 $item++;
             }
         }
+        
         $data['lista'] = $lista;
         $this->layout->view("compras/proveedor_index", $data);
     }
@@ -224,8 +244,10 @@ class Proveedor extends Controller
             } else
                 $empresa = $this->empresa_model->insertar_datosEmpresa($tipocodigo, $ruc, $razon_social, $telefono, $fax, $web, $movil, $email, $sector_comercial, $ctactesoles, $ctactedolares,$direccion);
             //Direccion Principal
-            $this->empresa_model->insertar_sucursalEmpresaPrincipal('1', $empresa, $ubigeo_domicilio, 'PRINCIPAL', $direccion);          
-            $this->proveedor_model->insertar_datosProveedor($empresa, $persona, $tipo_persona);
+            $this->empresa_model->insertar_sucursalEmpresaPrincipal('1', $empresa, $ubigeo_domicilio, 'PRINCIPAL', $direccion);
+
+            $USUACodi= $this->session->userdata('user');            
+            $this->proveedor_model->insertar_datosProveedor($empresa, $persona, $tipo_persona, $USUACodi);
             //Insertar Establecimientos
             if ($nombre_sucursal != '') {
                 foreach ($nombre_sucursal as $indice => $valor) {
@@ -277,8 +299,8 @@ class Proveedor extends Controller
                 $this->persona_model->modificar_datosPersona($persona, $ubigeo_nacimiento, $ubigeo_domicilio, $estado_civil, $nacionalidad, $nombres, $paterno, $materno, $ruc_persona, $tipo_documento, $numero_documento, $direccion, $telefono, $movil, $email, $domicilio, $sexo, $fax, $web, $ctactesoles, $ctactedolares);
             } else
                 $persona = $this->persona_model->insertar_datosPersona($ubigeo_nacimiento, $ubigeo_domicilio, $estado_civil, $nacionalidad, $nombres, $paterno, $materno, $ruc_persona, $tipo_documento, $numero_documento, $direccion, $telefono, $movil, $email, $direccion, $sexo, $web, $ctactesoles, $ctactedolares);
-
-            $cliente = $this->proveedor_model->insertar_datosProveedor($empresa, $persona, $tipo_persona);
+                  $USUACodi= $this->session->userdata('user');    
+            $cliente = $this->proveedor_model->insertar_datosProveedor($empresa, $persona, $tipo_persona, $USUACodi);
         }
         exit('{"result": "ok", "codigo":"' . $cliente . '"}');
     }
@@ -496,10 +518,16 @@ class Proveedor extends Controller
         $sexo = $this->input->post('cboSexo');
         if ($tipo_persona == 0) {
             $this->persona_model->modificar_datosPersona($persona, $ubigeo_nacimiento, $ubigeo_domicilio, $estado_civil, $nacionalidad, $nombres, $paterno, $materno, $ruc_persona, $tipo_documento, $numero_documento, $direccion, $telefono, $movil, $email, $domicilio, $sexo, $fax, $web, $ctactesoles, $ctactedolares);
+
+        $USUACodi= $this->session->userdata('user');    
+         $this->proveedor_model->modificar_datosProveedorUSU2($persona, $USUACodi);
+
         } elseif ($tipo_persona == 1) {
             $this->empresa_model->modificar_datosEmpresa($empresa, $tipocodigo, $ruc, $razon_social, $telefono, $movil, $fax, $web, $email, $sector_comercial, $ctactesoles, $ctactedolares,$direccion);
             $this->empresa_model->modificar_sucursalEmpresaPrincipal($empresa, '1', $ubigeo_domicilio, 'PRINCIPAL', $direccion);
             //Modificar contactows empresa
+            $USUACodi= $this->session->userdata('user');    
+         $this->proveedor_model->modificar_datosProveedorUSU( $empresa, $USUACodi);
         }
     }
 

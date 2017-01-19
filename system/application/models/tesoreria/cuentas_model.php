@@ -228,8 +228,11 @@ class Cuentas_model extends Model {
 
 
 
-    function modificar_estado($cuenta, $estado) {
-        $data = array("CUE_FlagEstadoPago" => $estado);
+    function modificar_estado($cuenta, $estado,$USUACodi) {
+        $data = array(
+            "CUE_FlagEstadoPago" => $estado,
+             "USUA_Codigo" =>$USUACodi
+             );
         $this->db->where('CUE_Codigo', $cuenta);
         $this->db->update("cji_cuentas", $data);
     }

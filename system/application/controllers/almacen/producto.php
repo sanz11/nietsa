@@ -103,7 +103,7 @@ class Producto extends Controller
         $conf['base_url'] = site_url('almacen/producto/productos/' . $flagBS);
         $conf['per_page'] = 100;
         $offset = (int)$this->uri->segment(5);
-        $listado_productos = $this->producto_model->buscarProductoIndex($filter, $conf['per_page'], $offset);
+        $listado_productos = $this->producto_model->buscarProductoIndex($filter, $conf['per_page'], $offset,$flagBS);
         $data['registros'] = count($this->producto_model->buscarProductoIndex($filter));
         
         $conf['num_links'] = 3;
@@ -169,7 +169,20 @@ class Producto extends Controller
                 $ver = "<a href='javascript:;' onclick='ver_producto(" . $codigo . ")'><img src='" . base_url() . "images/ver.png' width='16' height='16' border='0' title='Ver'></a>";
                 $pdf = "<a href='" . base_url() . "pdf/" . $pdfs . "' target='blank'> <img src='" . base_url() . "images/pdf.png' width='16' height='16' border='0' title='Descargar Ficha Técnica'></a>";
                 $eliminar = "<a href='javascript:;' onclick='eliminar_producto(" . $codigo . ")'><img src='" . base_url() . "images/eliminar.png' width='16' height='16' border='0' title='Eliminar'></a>";
-                $lista[] = array($item++, $codigo_interno, $descripcion, $nombre_familia, $modelo, $nombre_marca, $precio_venta, $precio_costo, $estado, $editar, $checkenviar, $prorratear, $eliminar, $flagPublicado, $codigo, $editar2, $cajaCodigo, $pdf);
+
+                 $usua = $valor->USUA_Codigo;
+
+                $usuarioNom=$this->cliente_model->getUsuarioNombre($usua);
+                    $nomusuario="";
+                    if($usuarioNom[0]->ROL_Codigo==0){
+                     $nomusuario= $usuarioNom[0]->USUA_usuario;
+                        }else{
+                     $explorar= explode(" ",$usuarioNom[0]->PERSC_Nombre);
+                           
+                        $nomusuario= strtolower($explorar[0]);
+                    }
+
+                $lista[] = array($item++, $codigo_interno, $descripcion, $nombre_familia, $modelo, $nombre_marca, $precio_venta, $precio_costo, $estado, $editar, $checkenviar, $prorratear, $eliminar, $flagPublicado, $codigo, $editar2, $cajaCodigo, $pdf, $nomusuario);
             }
         }
 
@@ -438,8 +451,9 @@ class Producto extends Controller
             $config['max_width'] = '1024';
             $config['max_height'] = '768';
             $this->load->library('upload', $config);
-            /* Insertar producto */                                                                                                                                                                                                                                                                                                                                                     //$factorprin               
-            $codigo = $this->producto_model->insertar_producto_total($proveedor, $familia, $tipo_producto, $nombre_producto, $descripcion_breve, $comentario, $unidad_medida, $factor, $flagPrincipal, $atributo, $nombre_atributo, $codigo_familia, $fabricante, $linea, $marca, $imagen, $pdf, $modelo, $presentacion, $geneindi, $padre, $codigo_usuario, $nombrecorto_producto, $flagBS, $stock_min, $factorprin, $codigo_original);
+            /* Insertar producto */                                                                                                                                                                                                                                                  
+            $CodigUsu= $this->session->userdata('user');                                                                                                   //$factorprin               
+            $codigo = $this->producto_model->insertar_producto_total($proveedor, $familia, $tipo_producto, $nombre_producto, $descripcion_breve, $comentario, $unidad_medida, $factor, $flagPrincipal, $atributo, $nombre_atributo, $codigo_familia, $fabricante, $linea, $marca, $imagen, $pdf, $modelo, $presentacion, $geneindi, $padre, $codigo_usuario, $nombrecorto_producto, $flagBS, $stock_min, $factorprin, $codigo_original,$CodigUsu);
             // print_r($codigo);
             echo '$codigo';
             $this->guardar_precios($codigo);

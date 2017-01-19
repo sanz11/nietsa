@@ -12,7 +12,8 @@ class Familia extends Controller{
 		$this->load->model('almacen/familia_model');		
 		$this->load->model('compras/proveedor_model');		
 		$this->load->model('maestros/empresa_model');	
-		$this->load->model('maestros/persona_model');	
+		$this->load->model('maestros/persona_model');
+		 $this->load->model('ventas/cliente_model');
 		$this->load->library('layout','layout_main');  
 	}
 	function index(){
@@ -48,7 +49,24 @@ class Familia extends Controller{
 				$imprimir        = "<a href='#' onclick='imprimir_familia(".$codigo.")'><img src='".base_url()."images/icono_imprimir.png' width='16' height='16' border='0' title='Abrir'></a>";
 				$editar          = "<a href='#' onclick='editar_familia(".$item.")'><img src='".base_url()."images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
 				$eliminar        = "<a href='#' onclick='eliminar_familia(".$item.")'><img src='".base_url()."images/eliminar.png' width='16' height='16' border='0' title='Modificar'></a>";
-				$lista[]         = array($item++,$codigo_interno,$codigo_usuario,$cajaCodigo.$descripcion,$ingresar,$editar,$eliminar,$imprimir);
+
+				$usua = $valor->USUA_Codigo;
+
+				if($usua != "0"){
+                $usuarioNom=$this->cliente_model->getUsuarioNombre($usua);
+                    $nomusuario="";
+                    if($usuarioNom[0]->ROL_Codigo==0){
+                     $nomusuario= $usuarioNom[0]->USUA_usuario;
+                        }else{
+                     $explorar= explode(" ",$usuarioNom[0]->PERSC_Nombre);
+                           
+                        $nomusuario= strtolower($explorar[0]);
+                    }
+                }else{
+                   $nomusuario="";
+                }
+
+				$lista[]= array($item++,$codigo_interno,$codigo_usuario,$cajaCodigo.$descripcion,$ingresar,$editar,$eliminar,$imprimir,$nomusuario);
 			}
 		}
 		if($j=='0' || $j==''){
@@ -131,7 +149,8 @@ class Familia extends Controller{
 		$descripcion   = $this->input->post('descripcion');
 		$codigointerno = $this->input->post('codigointerno');
                 $codigousuario = $this->input->post('codigousuario');
-		$this->familia_model->insertar_familia($flagBS,$descripcion,$codanterior,$codigointerno,$codigousuario);
+                $USUACodi= $this->session->userdata('user');
+		$this->familia_model->insertar_familia($flagBS,$descripcion,$codanterior,$codigointerno,$codigousuario,$USUACodi);
 		$this->index();
 	}
 	function editar_familia(){

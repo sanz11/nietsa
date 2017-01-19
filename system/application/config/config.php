@@ -10,7 +10,11 @@
 |	http://example.com/
 |
 */
+<<<<<<< HEAD
 $config['base_url']	= "http://localhost/nietsa/";
+=======
+$config['base_url']	= "http://localhost:85/ws/nietsa/";
+>>>>>>> 4633520a63ff63ed17612cf8f65dbb92008f47d4
 //$config['base_url']	= "http://localhost/nietsa3/";
 
 /*

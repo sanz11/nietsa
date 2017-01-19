@@ -1215,7 +1215,7 @@ function listar_unidad_medida_producto(producto) {
              if(presentacion)
              nombre+=' / Prest: '+presentacion;*/
         }
-        $("#nombre_producto").val(nombre);
+        $("#nombre_producto").val(nombre+" /"+modelo);
         listar_precios_x_producto_unidad();
     });
 }

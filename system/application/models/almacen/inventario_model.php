@@ -21,7 +21,9 @@ class Inventario_model extends model {
             $this->db->where('cji_inventario.INVE_Codigo', $filter->cod_inventario);
 
         $compania = $this->somevar['compania'];
+        $this->db->select('cji_inventario.*, u.USUA_usuario name');
 		$this->db->where('cji_inventario.COMPP_Codigo', $compania);
+        $this->db->join('cji_usuario u','u.USUA_Codigo = cji_inventario.USUA_Codigo');
         $this->db->orderby('cji_inventario.INVE_Codigo', 'DESC');
         $query = $this->db->get('cji_inventario', $number_items, $offset);
 
@@ -90,7 +92,7 @@ class Inventario_model extends model {
         }
     }
 
-    public function insertar($datos) {
+    public function insertar($datos,$USUACodi) {
 
         $filter = new stdClass();
         $filter->INVE_Titulo = $datos['titulo'];
@@ -99,6 +101,7 @@ class Inventario_model extends model {
         $filter->INVE_Numero = $datos['numero'];
         $filter->ALMAP_Codigo = $datos['almacen'];
         $filter->INVE_FechaInicio = human_to_mysql($datos['fecha_inicio']);
+        $filter->USUA_Codigo= $USUACodi;
 
         $result = $this->db->insert("cji_inventario", (array) $filter);
 

@@ -10,6 +10,7 @@ class Empresa extends Controller{
     $this->load->model('maestros/ubigeo_model');
     $this->load->model('maestros/directivo_model');
     $this->load->model('maestros/cargo_model');
+    $this->load->model('ventas/cliente_model');
     $this->load->model('maestros/area_model');
     $this->load->model('maestros/estadocivil_model');
     $this->load->model('maestros/nacionalidad_model');
@@ -58,7 +59,23 @@ class Empresa extends Controller{
                                     $editar         = "<a href='javascript:;' onclick='editar_empresa(".$codigo.")'><img src='".base_url()."images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
                                     $ver            = "<a href='javascript:;' onclick='ver_empresa(".$codigo.")'><img src='".base_url()."images/ver.png' width='16' height='16' border='0' title='Modificar'></a>";
                                     $eliminar       = "<a href='javascript:;' onclick='eliminar_empresa(".$codigo.")'><img src='".base_url()."images/eliminar.png' width='16' height='16' border='0' title='Modificar'></a>";
-                                    $lista[]        = array($item,$ruc,$razon_social,$telefono,$movil,$editar,$ver,$eliminar);
+
+                                        $usua = $valor->USUA_Codigo;
+                                       if($usua != "0"){
+                                        $usuarioNom=$this->cliente_model->getUsuarioNombre($usua);
+                                            $nomusuario="";
+                                            if($usuarioNom[0]->ROL_Codigo==0){
+                                             $nomusuario= $usuarioNom[0]->USUA_usuario;
+                                                }else{
+                                             $explorar= explode(" ",$usuarioNom[0]->PERSC_Nombre);
+                                                   
+                                                $nomusuario= strtolower($explorar[0]);
+                                            }
+                                        }else{
+                                            $nomusuario="";
+                                        }
+
+                  $lista[] = array($item,$ruc,$razon_social,$telefono,$movil,$editar,$ver,$eliminar,$nomusuario);
                                     $item++;
                             }
                     }
@@ -225,8 +242,9 @@ public function registro_empresa_pdf($flagbs = 'B', $documento='', $nombre='')
         if($arrayDpto!='' && $arrayProv!='' && $arrayDist!=''){
                 $ubigeo_sucursal  = $this->html->array_ubigeo($arrayDpto,$arrayProv,$arrayDist);
         }
-        
-        $empresa = $this->empresa_model->insertar_datosEmpresa($tipocodigo, $ruc,$razon_social,$telefono,$fax,$web,$movil,$email, $sector_comercial, $ctactesoles, $ctactedolares);
+
+        $USUACodi= $this->session->userdata('user');     
+        $empresa = $this->empresa_model->insertar_datosEmpresa($tipocodigo, $ruc,$razon_social,$telefono,$fax,$web,$movil,$email, $sector_comercial, $ctactesoles, $ctactedolares,$direccion, $USUACodi);
 
         $this->empresa_model->insertar_sucursalEmpresaPrincipal('1',$empresa,$ubigeo_domicilio,'PRINCIPAL',$direccion);//Direccion Principal
         //Insertar Establecimientos
@@ -357,7 +375,8 @@ public function registro_empresa_pdf($flagbs = 'B', $documento='', $nombre='')
         $ctactesoles       = $this->input->post('ctactesoles');
         $ctactedolares     = $this->input->post('ctactedolares');
        
-        $this->empresa_model->modificar_datosEmpresa($empresa,$tipocodigo, $ruc,$razon_social,$telefono,$movil,$fax,$web,$email, $sector_comercial, $ctactesoles, $ctactedolares);
+       $USUACodi= $this->session->userdata('user');     
+        $this->empresa_model->modificar_datosEmpresa($empresa,$tipocodigo, $ruc,$razon_social,$telefono,$movil,$fax,$web,$email, $sector_comercial, $ctactesoles, $ctactedolares,$direccion,$USUACodi);
         $this->empresa_model->modificar_sucursalEmpresaPrincipal($empresa,'1',$ubigeo_domicilio,'PRINCIPAL',$direccion);
     }
     public function eliminar_empresa(){

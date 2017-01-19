@@ -126,14 +126,15 @@ class Familia_model extends model{
 			return $data;
 		}		
 	}
-	function insertar_familia($flagBS,$descripcion,$codrelacion,$codigointerno, $codigousuario=''){
+	function insertar_familia($flagBS,$descripcion,$codrelacion,$codigointerno, $codigousuario='',$USUACodi){
                  $compania = $this->somevar['compania'];
                 $data = array(
                              "FAMI_FlagBienServicio"  => $flagBS,
                              "FAMI_Descripcion"       => strtoupper($descripcion),
                              "FAMI_Codigo2"           => $codrelacion,
                              "FAMI_CodigoInterno"     => $codigointerno,
-                             "FAMI_CodigoUsuario"     => strtoupper($codigousuario)
+                             "FAMI_CodigoUsuario"     => strtoupper($codigousuario),
+                             "USUA_Codigo"     => $USUACodi
                              );
                 $this->db->insert("cji_familia",$data);	
                 $familia = $this->db->insert_id();

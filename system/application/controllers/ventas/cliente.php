@@ -87,7 +87,23 @@ class Cliente extends Controller
                 $editar = "<a href='#' onclick='editar_cliente(" . $codigo . ")'><img src='" . base_url() . "images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
                 $ver = "<a href='#' onclick='ver_cliente(" . $codigo . ")'><img src='" . base_url() . "images/ver.png' width='16' height='16' border='0' title='ver'></a>";
                 $eliminar = "<a href='#' onclick='eliminar_cliente(" . $codigo . ")'><img src='" . base_url() . "images/eliminar.png' width='16' height='16' border='0' title='Eliminar (Solo puedes eliminar los clientes de tu compañia )'></a>";
-                $lista[] = array($item, $ruc, $dni, $razon_social, $tipo_cliente, $telefono, $fax, $calificacion, $editar, $ver, $eliminar);
+
+               $usua = $valor->USUA_Codigo;
+               if($usua != "0"){
+                $usuarioNom=$this->cliente_model->getUsuarioNombre($usua);
+                    $nomusuario="";
+                    if($usuarioNom[0]->ROL_Codigo==0){
+                     $nomusuario= $usuarioNom[0]->USUA_usuario;
+                        }else{
+                     $explorar= explode(" ",$usuarioNom[0]->PERSC_Nombre);
+                           
+                        $nomusuario= strtolower($explorar[0]);
+                    }
+                }else{
+                    $nomusuario="";
+                }
+
+                $lista[] = array($item, $ruc, $dni, $razon_social, $tipo_cliente, $telefono, $fax, $calificacion, $editar, $ver, $eliminar,$nomusuario);
                 $item++;
             }
         }
@@ -235,7 +251,9 @@ class Cliente extends Controller
             }
 
             $this->empresa_model->insertar_sucursalEmpresaPrincipal('1', $empresa, $ubigeo_domicilio, 'PRINCIPAL', $direccion);//Direccion Principal
-            $cliente = $this->cliente_model->insertar_datosCliente($empresa, $persona, $tipo_persona, $categoria, $forma_pago, $calificaciones);
+
+            $USUACodi= $this->session->userdata('user'); 
+            $cliente = $this->cliente_model->insertar_datosCliente($empresa, $persona, $tipo_persona, $categoria, $forma_pago, $calificaciones,$USUACodi);
             //Insertar Establecimientos
             if ($nombre_sucursal != '') {
                 foreach ($nombre_sucursal as $indice => $valor) {
@@ -288,7 +306,8 @@ class Cliente extends Controller
             } else {
                 $persona = $this->persona_model->insertar_datosPersona($ubigeo_nacimiento, $ubigeo_domicilio, $estado_civil, $nacionalidad, $nombres, $paterno, $materno, $ruc_persona, $tipo_documento, $numero_documento, $direccion, $telefono, $movil, $email, $direccion, $sexo, $web, $ctactesoles, $ctactedolares);
             }
-            $cliente = $this->cliente_model->insertar_datosCliente($empresa, $persona, $tipo_persona, $categoria, $forma_pago, $calificaciones);
+             $USUACodi= $this->session->userdata('user'); 
+            $cliente = $this->cliente_model->insertar_datosCliente($empresa, $persona, $tipo_persona, $categoria, $forma_pago, $calificaciones,$USUACodi);
         }
         exit('{"result":"ok", "codigo":"' . $cliente . '"}');
     }
@@ -473,7 +492,9 @@ class Cliente extends Controller
             $this->empresa_model->modificar_sucursalEmpresaPrincipal($empresa, '1', $ubigeo_domicilio, 'PRINCIPAL', $direccion);
             //Modificar contactos empresa
         }
-        $this->cliente_model->modificar_datosCliente($id, $categoria, $forma_pago, $calificaciones);
+
+       $USUACodi= $this->session->userdata('user'); 
+        $this->cliente_model->modificar_datosCliente($id, $categoria, $forma_pago, $calificaciones,$USUACodi);
     }
 
     public function ver_cliente($cliente)
@@ -601,12 +622,97 @@ class Cliente extends Controller
                 $editar = "<a href='#' onclick='editar_cliente(" . $codigo . ")'><img src='" . base_url() . "images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
                 $ver = "<a href='#' onclick='ver_cliente(" . $codigo . ")'><img src='" . base_url() . "images/ver.png' width='16' height='16' border='0' title='Ver'></a>";
                 $eliminar = "<a href='#' onclick='eliminar_cliente(" . $codigo . ")'><img src='" . base_url() . "images/eliminar.png' width='16' height='16' border='0' title='Eliminar (Solo puedes eliminar los clientes de tu compañia )'></a>";
-                $lista[] = array($item, $ruc, $dni, $razon_social, $tipo_cliente, $telefono, $fax, $calificacion, $editar, $ver, $eliminar);
+
+                 $usua = $valor->USUA_Codigo;
+
+
+                if($usua!="0"){
+                $usuarioNom=$this->cliente_model->getUsuarioNombre($usua);
+
+                    $nomusuario="";
+                    if($usuarioNom[0]->ROL_Codigo==0){
+                     $nomusuario= $usuarioNom[0]->USUA_usuario;
+                        }else{
+                     $explorar= explode(" ",$usuarioNom[0]->PERSC_Nombre);
+                           
+                        $nomusuario= strtolower($explorar[0]);
+                    }
+                }else{
+                     $nomusuario="";
+                }
+
+                $lista[] = array($item, $ruc, $dni, $razon_social, $tipo_cliente, $telefono, $fax, $calificacion, $editar, $ver, $eliminar,$nomusuario);
                 $item++;
             }
         }
         $data['lista'] = $lista;
         $this->layout->view("ventas/cliente_index", $data);
+    }
+    public function registro_cliente_pdf($flagbs = 'B', $codigo='', $nombre=''){
+
+        $this->load->library('cezpdf');
+        $this->load->helper('pdf_helper');
+        $this->cezpdf = new Cezpdf('a4');
+        $datacreator = array(
+            'Title' => 'Estadillo de ',
+            'Name' => 'Estadillo de ',
+            'Author' => 'Vicente Producciones',
+            'Subject' => 'PDF con Tablas',
+            'Creator' => 'info@vicenteproducciones.com',
+            'Producer' => 'http://www.vicenteproducciones.com'
+        );
+
+        $this->cezpdf->addInfo($datacreator);
+        $this->cezpdf->selectFont(APPPATH . 'libraries/fonts/Helvetica.afm');
+        $delta = 20;
+
+        $this->cezpdf->ezText('<b>LISTADO FAMILIA DE ARTICULOS</b>', 14, array("leading" => 0, 'left' => 185));
+        $this->cezpdf->ezText('', '', array("leading" => 10));
+
+        $db_data = array();
+
+
+        $listado_productos = $this->producto_model->listar_familia_pdf($flagbs,$codigo,$nombre);
+    
+            if (count($listado_productos) > 0) {
+                foreach ($listado_productos as $indice => $valor) {
+                    $codigo = $valor->FAMI_Codigo;
+                    $codigo_interno = $valor->FAMI_CodigoInterno;
+                    $descripcion = $valor->FAMI_Descripcion;
+
+
+                    $db_data[] = array(
+                        'cols1' => $indice + 1,
+                        'cols2' => $codigo_interno,
+                        'cols3' => $descripcion
+                    );
+                }
+            }
+
+        $col_names = array(
+            'cols1' => '<b>ITEM</b>',
+            'cols2' => '<b>CODIGO</b>',
+            'cols3' => '<b>DESCRIPCION</b>'
+        );
+
+        $this->cezpdf->ezTable($db_data, $col_names, '', array(
+            'width' => 525,
+            'showLines' => 1,
+            'shaded' => 1,
+            'showHeadings' => 1,
+            'xPos' => 'center',
+            'fontSize' => 8,
+            'cols' => array(
+                'cols1' => array('width' => 30, 'justification' => 'center'),
+                'cols2' => array('width' => 70, 'justification' => 'center'),
+                'cols3' => array('width' => 245, 'justification' => 'left')
+            )
+        ));
+        $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => $codificacion . '.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
+
+        ob_end_clean();
+
+        $this->cezpdf->ezStream($cabecera);
     }
 
     public function comparar($x, $y)

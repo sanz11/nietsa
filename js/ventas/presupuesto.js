@@ -509,11 +509,11 @@ function listar_unidad_medida_producto(producto){
         nombre=nombre_producto;
         if(flagBS=='B'){
             if(marca)
-                nombre+=' / Marca:'+marca;
+                nombre+=' / '+marca;
             if(modelo)
-                nombre+=' / Modelo: '+modelo;
-            if(presentacion)
-                nombre+=' / Prest: '+presentacion;  
+                nombre+=' / '+modelo;
+           /* if(presentacion)
+                nombre+=' / Prest: '+presentacion;  */
         }
         $("#nombre_producto").val(nombre);
         listar_precios_x_producto_unidad(producto);

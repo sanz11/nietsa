@@ -53,6 +53,7 @@
 					</table>
 				</form>
 			  </div>
+			   <div id="dataContenedor">
 <div class="acciones">
 			 	<div id="botonBusqueda">
                                         <?php if($codigohf){?>
@@ -75,6 +76,7 @@
 			  </table>
 				</div>
 </div>
+</div>
 				<div id="cabeceraResultado" class="header"><?php echo $titulo_tabla;?></div>
 				<div id="frmResultado">
 				<table class="fuente8" width="100%" cellspacing="0" cellpadding="3" border="0" id="tablaFamilia">
@@ -87,6 +89,7 @@
 						<td width="5%">&nbsp;</td>
 						<td width="5%">&nbsp;</td>
 						<td width="5%">&nbsp;</td>
+						<td width="5%">USUARIO</td>
 					</tr>					
 						<?php
 						if(count($lista)>0){
@@ -107,6 +110,7 @@
                                                                 <td><div align="center"><?php echo $valor[4];?></div></td>
 								<td><div align="center"><?php echo $valor[5];?></div></td>
 								<td><div align="center"><?php echo $valor[6];?></div></td>
+								<td><div align="center"><?php echo $valor[8];?></div></td>
 							</tr>
 							<?php
 							}

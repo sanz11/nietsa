@@ -213,6 +213,7 @@ if(empty($persona)) header("location:$url");
                                 <td width="3%">&nbsp;</td>
                                 <td width="3%">&nbsp;</td>
                                 <td width="3%">&nbsp;</td>
+                                <td width="8%">USUARIO</td>
                                 </tr>                   
                                 <?php
                                 if(count($lista)>0){
@@ -233,6 +234,7 @@ if(empty($persona)) header("location:$url");
                                 <td><div align="center"><?php echo $valor[10];?></div></td>
                                 <td><div align="center"><?php echo $valor[11];?></div></td>
                                 <td><div align="center"><?php echo $valor[12];?></div></td>
+                                <td><div align="center"><?php echo $valor[13];?></div></td>
                                 </tr>
                                 <?php
                                  }

@@ -177,7 +177,7 @@
                                                <!--<td width="19%">M&Oacute;VIL</td>-->
                                                 <td width="5%">&nbsp;</td>
                                                 <td width="5%">&nbsp;</td>
-                                                <td width="5%">&nbsp;</td>
+                                                <td width="50%">USUARIO</td>
                                         </tr>
                                         <?php
                                         $i=1;
@@ -212,9 +212,9 @@
 
 
                                                         <td><div align="center"><?php echo $valor[7];?></div></td>
-                                                        <td><div align="center"><?php echo $valor[8];?></div></td>
+                                                <td><div align="center"><?php echo $valor[8];?></div></td>
 
-                                                       <!-- <td><div align="center"><?php echo $valor[9];?></div></td>-->
+                                                      <td><div align="center"><?php echo $valor[10];?></div></td>
                                                 </tr>
                                                 <?php
                                                 $i++;
