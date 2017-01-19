@@ -148,10 +148,11 @@ class Familia_model extends model{
                          );
             $this->db->insert("cji_familiacompania",$data);
         }
-	function modificar_familia($familia,$descripcion, $codigousuario){
+	function modificar_familia($familia,$descripcion, $codigousuario,$USUACodi){
 		$data = array(
                              "FAMI_Descripcion"       => strtoupper($descripcion),
-                             "FAMI_CodigoUsuario"     => strtoupper($codigousuario)
+                             "FAMI_CodigoUsuario"     => strtoupper($codigousuario),
+                             "USUA_Codigo"     => strtoupper($USUACodi)
                              );
 		$this->db->where('FAMI_Codigo',$familia);
 		$this->db->update("cji_familia",$data);				 

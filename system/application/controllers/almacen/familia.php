@@ -164,8 +164,11 @@ class Familia extends Controller{
 	function modificar_familia(){
 		$familia       = $this->input->post('codigo');
 		$descripcion   = $this->input->post('descripcion');
-                $codigousuario = $this->input->post('codigousuario');
-		$this->familia_model->modificar_familia($familia,$descripcion, $codigousuario);
+       $codigousuario = $this->input->post('codigousuario');
+
+       $USUACodi= $this->session->userdata('user');     
+
+		$this->familia_model->modificar_familia($familia,$descripcion, $codigousuario,$USUACodi);
 		$this->index();
 	}
 	function buscar_familias($flagBS='B',$j='0'){

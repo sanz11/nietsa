@@ -108,12 +108,13 @@ class Inventario_model extends model {
         return $result;
     }
 
-    public function editar($datos) {
+    public function editar($datos,$USUACodi) {
 
         $filter = new stdClass();
         $filter->INVE_Titulo = $datos['titulo'];
         $filter->ALMAP_Codigo = $datos['almacen'];
         $filter->INVE_FechaInicio = $datos['fecha_inicio'];
+        $filter->USUA_Codigo = $USUACodi;
 
         $this->db->where('cji_inventario.INVE_Codigo', $datos['cod_inventario']);
         $result = $this->db->update("cji_inventario", (array) $filter);
