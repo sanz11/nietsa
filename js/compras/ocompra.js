@@ -391,7 +391,9 @@ jQuery(document).ready(function(){
 
 function ver_reporte_pdf_compras(){
     var anio = $("#anioVenta").val();
-    url = base_url+"index.php/ventas/comprobante/ver_reporte_pdf_commpras/"+anio;
+    var mes = $("#mesventa").val();
+    var rucp = $("#ruc_proveedorC").val();
+    url = base_url+"index.php/ventas/comprobante/ver_reporte_pdf_commpras/"+anio+"/"+mes+"/"+rucp;
     window.open(url,'',"width=800,height=600,menubars=no,resizable=no;")
 }
 
@@ -1206,6 +1208,29 @@ function obtener_proveedor(){
             }
             else{
                 $('#nombre_proveedor').val('No se encontró ningún registro');
+                $('#linkVerProveedor').focus();
+            }
+        });
+    });
+    return true;
+}
+function obtener_proveedor2(){
+    var numdoc = $("#ruc_proveedorC").val();
+    $("#proveedorC, #nombre_proveedorC").val('');
+    
+    if(numdoc=='')
+        return false;
+
+    var url = base_url+"index.php/compras/proveedor/obtener_nombre_proveedor/"+numdoc;
+    $.getJSON(url,function(data){
+        $.each(data, function(i,item){
+            if(item.EMPRC_RazonSocial!=''){
+                $('#nombre_proveedorC').val(item.EMPRC_RazonSocial);
+                $('#proveedorC').val(item.PROVP_Codigo);
+                $('#codproductoC').focus();
+            }
+            else{
+                $('#nombre_proveedorC').val('No se encontró ningún registro');
                 $('#linkVerProveedor').focus();
             }
         });

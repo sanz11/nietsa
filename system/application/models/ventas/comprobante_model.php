@@ -1223,6 +1223,60 @@ public function getNombreForPago($datos_for){
         }
         return array();
     }
+    public function buscar_comprobante_compras2($anio,$mes,$rucp) {
+        //CPC_TipoOperacion => V venta, C compra
+        //CPC_TipoDocumento => F factura, B boleta
+        //CPC_total => total de la FACTURA o BOLETA
+       /* if ($anio != '--' && $rucp == '--' && $mes == '--') {//año
+                $where .= ' and YEAR(CPC_FechaRegistro)=' . $anio;
+            }
+        else if ($anio != '--' && $rucp == '--' && $mes != '--') { //año y mes
+                $where .= ' and YEAR(CPC_FechaRegistro)=' . $anio.' and MONTH(CPC_FechaRegistro)=' . $mes;
+            }
+        else if ($anio != '--' && $rucp != '--' && $mes == '--'){ //año y cliente
+                $where .= ' and YEAR(CPC_FechaRegistro)=' . $anio;
+                $where .= ' and EMPRC_Ruc LIKE "%' . $rucp.'%"';
+                $where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' . $rucp.'%"';
+            }
+        else if ($anio == '--' && $rucp != '--' && $mes == '--') {//cliente
+                $where .= ' and EMPRC_Ruc LIKE "%' . $rucp.'%"';
+                $where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' . $rucp.'%"';
+            }
+        else if ($anio == '--' && $rucp != '--' && $mes != '--') {//cliente y mes con año actual
+               $where .= ' and YEAR(CPC_FechaRegistro)=' .date ("Y") .' and MONTH(CPC_FechaRegistro)=' . $$mes;
+                $where .= ' and EMPRC_Ruc LIKE "%' .$rucp.'%"';
+                $where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' .$rucp.'%"';
+            }
+        else if ($anio == '--' && $rucp== '--' && $mes != '--') {//mes con año actual
+               $where .= ' and YEAR(CPC_FechaRegistro)=' .date ("Y") .' and MONTH(CPC_FechaRegistro)=' . $$mes;
+               
+            }
+        else if ($anio != '--' && $rucp!= '--' && $mes != '--') { //año  mes y cliente
+                $where .= ' and YEAR(CPC_FechaRegistro)=' . $anio.' and MONTH(CPC_FechaRegistro)=' . $mes;
+                $where .= ' and EMPRC_Ruc LIKE "%' . $rucp.'%"';
+                $where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' . $rucp.'%"';
+            } 
+        else{
+                 $where .= ' and YEAR(CPC_FechaRegistro)="--"';
+            }
+            //año date ("Y")
+            //año y mes
+            //año cliente
+            //año cliente y mes
+            //cliente
+            //isset($filter->anio) */
+        
+       $sql = " SELECT c.*,  e.* FROM cji_comprobante c INNER JOIN cji_proveedor p on p.PROVP_Codigo = c.PROVP_Codigo INNER JOIN  cji_empresa e on e.EMPRP_Codigo = p.EMPRP_Codigo WHERE CPC_TipoOperacion='C' AND CPC_TipoDocumento='F'";
+        //echo $sql;
+        $query = $this->db->query($sql);
+        if ($query->num_rows > 0) {
+            foreach ($query->result() as $fila) {
+                $data[] = $fila;
+            }
+            return $data;
+        }
+        return array();
+    }
 
     public function estadisticas_compras_ventas($tipo, $anio) {
         $sql = "SELECT p.CLIP_Codigo,e.EMPRC_RazonSocial,pe.PERSC_Nombre,MONTH(c.CPC_FechaRegistro) 

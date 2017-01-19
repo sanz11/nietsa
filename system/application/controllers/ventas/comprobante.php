@@ -6886,7 +6886,7 @@ $direccion=substr($datos_proveedor[0]->EMPRC_Direccion,0, 50);
 
     
 
-    public function ver_reporte_pdf_commpras($anio)
+    public function ver_reporte_pdf_commpras($anio,$mes='',$rucp='')
     {
         $usuario = $this->usuario_model->obtener($this->somevar['user']);
         $persona = $this->persona_model->obtener_datosPersona($usuario->PERSP_Codigo);
@@ -6899,7 +6899,7 @@ $direccion=substr($datos_proveedor[0]->EMPRC_Direccion,0, 50);
         /* Cabecera */
         $delta = 20;
 
-        $listado = $this->comprobante_model->buscar_comprobante_compras($anio);
+        $listado = $this->comprobante_model->buscar_comprobante_compras2($anio,$mes,$rucp);
 
         $confi = $this->configuracion_model->obtener_configuracion($this->somevar['compania']);
         $serie = '';

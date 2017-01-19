@@ -21,6 +21,9 @@ function seleccionar_proveedor(codigo,ruc,razon_social, empresa, persona){
     $("#proveedor").val(codigo);
     $("#ruc_proveedor").val(ruc);
     $("#nombre_proveedor").val(razon_social);
+     $("#proveedorC").val(codigo);
+    $("#ruc_proveedorC").val(ruc);
+    $("#nombre_proveedorC").val(razon_social);
 }
 function seleccionar_producto(codigo,interno,familia,stock,costo){
     $("#producto").val(codigo);
@@ -145,7 +148,34 @@ function obtener_nombre_producto(producto){
 									<td>
 										<?php echo $combo; ?>
 									</td>
-								</tr>
+								<td>Seleccione Mes</td>
+                  <td>
+                    <select id="mesventa" name="mesventa">
+                      <option value="">Seleccione...</option>
+                      <option value="1">ENERO</option>
+                      <option value="2">FEBRERO</option>
+                      <option value="3">MARZO</option>
+                      <option value="4">ABRIL</option>
+                      <option value="5">MAYO</option>
+                      <option value="6">JUNIO</option>
+                      <option value="7">JULIO</option>
+                      <option value="8">AGOSTRO</option>
+                      <option value="9">SETIEMBRE</option>
+                      <option value="10">OCTUBRE</option>
+                      <option value="11">NOVIEMBRE</option>
+                      <option value="12">DICIEMBRE</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                                    <td>Proveedor </td>
+                                    <td colspan="3">
+                                            <input type="hidden" name="proveedorC" id="proveedorC" size="5" class="cajaPequena" value="">
+                                            <input type="text" name="ruc_proveedorC" class="cajaPequena" id="ruc_proveedorC" size="10" maxlength="11" onBlur="obtener_proveedor2();" value="" onKeyPress="return numbersonly(this,event,'.');" />
+                                            &nbsp;<input type="text" name="nombre_proveedorC" class="cajaGrande cajaSoloLectura" id="nombre_proveedorC" size="15" maxlength="15" readonly="readonly" value="" />
+                                            <a href="<?php echo base_url();?>index.php/compras/proveedor/ventana_busqueda_proveedor/" id="linkVerProveedor"><img height='16' width='16' src='<?php echo base_url(); ?>/images/ver.png' title='Buscar' border='0' /></a>
+                                    </td>
+                                </tr>
 								<tr>
 									<td colspan="2">
 										<a href="javascript:;" onclick="ver_reporte_pdf_compras()" ><img  style="margin:15px 0px;"  src="<?php echo base_url();?>images/botonreporte.jpg" width="85" height="22" class="imgBoton" ></a>
