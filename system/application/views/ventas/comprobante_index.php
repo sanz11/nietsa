@@ -357,8 +357,10 @@ if ($tipo_oper == 'V'){
                                 <td width="15%" colspan="4">ESTADO</td>
                                 <td width="4%">&nbsp;</td>
                                 <td width="4%">USUARIO</td>
-                                
+
                                 <?php if ($tipo_oper == 'V') { ?>
+
+                                    
                                     <td width="4%">&nbsp;</td>
                                     <td width="4%">&nbsp;</td>
                                     <?php if ($tipo_docu == 'N') {
@@ -376,6 +378,7 @@ if ($tipo_oper == 'V'){
                                 }
                                 ?>
                                 <td width="8%">&nbsp;</td>
+
                             </tr>
                             <?php
                             if (count($lista) > 0) {

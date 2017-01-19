@@ -68,6 +68,7 @@ $CI = get_instance();
                 }
                 ?>
                 <td width="8%">&nbsp;</td>
+                 <td width="4%">USUARIO</td>
             </tr>
             <?php
             if (count($lista) > 0) {
@@ -151,7 +152,11 @@ $CI = get_instance();
                             <td>
                                 <div align="center"><?php echo $valor[12]; ?></div>
                             </td>
+                             <td>
+                                <div align="center"><?php echo $valor[17]; ?></div>
+                            </td>
                         <?php } ?>
+                       
                     </tr>
 
 

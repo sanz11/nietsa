@@ -742,12 +742,28 @@ class Comprobante extends Controller{
                     $disparador = "";
                     $contadoVacios++;
                 }
+
+                $usua = $valor->USUA_Codigo;
+               if($usua != "0"){
+                $usuarioNom=$this->cliente_model->getUsuarioNombre($usua);
+                    $nomusuario="";
+                    if($usuarioNom[0]->ROL_Codigo==0){
+                     $nomusuario= $usuarioNom[0]->USUA_usuario;
+                        }else{
+                     $explorar= explode(" ",$usuarioNom[0]->PERSC_Nombre);
+                           
+                        $nomusuario= strtolower($explorar[0]);
+                    }
+                }else{
+                    $nomusuario="";
+                }
+
                 if ($tipo_oper == 'V') { // Ventas
-                    $lista[] = array($item++, $fecha, $serie, $numero, $guiarem_codigo, $docurefe_codigo, $nombre, $total, $img_estado, $editar, $ver, $ver2, $disparador, $estado, $codigo, $codigo_canje, $contadoVacios);
+                    $lista[] = array($item++, $fecha, $serie, $numero, $guiarem_codigo, $docurefe_codigo, $nombre, $total, $img_estado, $editar, $ver, $ver2, $disparador, $estado, $codigo, $codigo_canje, $contadoVacios, $nomusuario);
                     
                 }
                 else { // Compras
-                    $lista[] = array($item++, $fecha, $serie, $numero, $guiarem_codigo, $docurefe_codigo, $nombre, $total, $img_estado, $editar, $ver, $ver2, $disparador, $estado, $codigo, $codigo_canje, $contadoVacios);
+                    $lista[] = array($item++, $fecha, $serie, $numero, $guiarem_codigo, $docurefe_codigo, $nombre, $total, $img_estado, $editar, $ver, $ver2, $disparador, $estado, $codigo, $codigo_canje, $contadoVacios, $nomusuario);
                 }
 
                 $contadoVacios = 1;

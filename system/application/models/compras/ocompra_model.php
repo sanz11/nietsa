@@ -195,7 +195,9 @@ class Ocompra_model extends Model
 
     public function modificar_ocompra($ocompra, $filter = null)
     {
-        $where = array("OCOMP_Codigo" => $ocompra);
+        $where = array(
+            "OCOMP_Codigo" => $ocompra,
+            );
         $this->db->where($where);
         $this->db->update('cji_ordencompra', (array)$filter);
     }
@@ -321,6 +323,7 @@ class Ocompra_model extends Model
                          o.PROVP_Codigo,
                          o.CENCOSP_Codigo,
                          o.OCOMC_Numero,
+                          o.USUA_Codigo,
                            (CASE WHEN o.COTIP_Codigo = 0 THEN '***'
                            ELSE CAST(ct.COTIC_Numero AS char) END) cotizacion,
                          (CASE " . ($filter->tipo_oper != 'C' ? "p.CLIC_TipoPersona" : "p.PROVC_TipoPersona") . "  WHEN '1' THEN e.EMPRC_Ruc ELSE pe.PERSC_NumeroDocIdentidad end) numdoc,

@@ -1189,6 +1189,8 @@ $data['cboMiContacto'] = form_dropdown("formapago", $this->directivo_model->list
         $filter->OCOMC_FlagEstado = $this->input->post('estado');
         $filter->OCOMC_CtaCteSoles = $this->input->post('ctactesoles');
         $filter->OCOMC_CtaCteDolares = $this->input->post('ctactedolares');
+    
+        $filter->USUA_Codigo = $this->session->userdata('user');
         $this->ocompra_model->modificar_ocompra($codigo, $filter);
 
         $prodcodigo = $this->input->post('prodcodigo');
@@ -3111,7 +3113,20 @@ $data['cboMiContacto'] = form_dropdown("formapago", $this->directivo_model->list
                 $ver = "<a href='#' onclick='ocompra_ver_pdf(" . $codigo . ")'><img src='" . base_url() . "images/ver.png' width='16' height='16' border='0' title='Modificar'></a>";
                 $ver2 = "<a href='#' onclick='ocompra_ver_pdf_conmenbrete(" . $codigo . ")'><img src='" . base_url() . "images/pdf.png' width='16' height='16' border='0' title='Modificar'></a>";
                 $eliminar = "<a href='#' onclick='eliminar_ocompra(" . $codigo . ")'><img src='" . base_url() . "images/eliminar.png' width='16' height='16' border='0' title='Modificar'></a>";
-                $lista[] = array($check, $item++, $fecha, $numero, $nro_cotizacion, $nro_pedido, $nombre_proveedor, $msguiain, $monto_total, $msgaprob, $img_estado, $ver3, $editar, $ver, $ver2);
+
+                $usua = $valor->USUA_Codigo;
+
+               $usuarioNom=$this->cliente_model->getUsuarioNombre($usua);
+                    $nomusuario="";
+                    if($usuarioNom[0]->ROL_Codigo==0){
+                     $nomusuario= $usuarioNom[0]->USUA_usuario;
+                        }else{
+                     $explorar= explode(" ",$usuarioNom[0]->PERSC_Nombre);
+                           
+                        $nomusuario= strtolower($explorar[0]);
+                    }
+
+                $lista[] = array($check, $item++, $fecha, $numero, $nro_cotizacion, $nro_pedido, $nombre_proveedor, $msguiain, $monto_total, $msgaprob, $img_estado, $ver3, $editar, $ver, $ver2, $nomusuario);
             }
         }
         $data['titulo_tabla'] = "RESULTADO DE BÚSQUEDA DE ORDEN DE " . ($tipo_oper == 'V' ? 'VENTA' : 'COMPRA');

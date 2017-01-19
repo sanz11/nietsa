@@ -199,7 +199,23 @@ class Tipoproveedor extends Controller{
 				$ingresar        = "<a href='#' onclick='abrir_familia(".$codigo.")'><img src='".base_url()."images/ingresar.png' width='16' height='16' border='0' title='Abrir'></a>";
 				$editar          = "<a href='#' onclick='editar_familia(".$item.")'><img src='".base_url()."images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
 				$eliminar        = "<a href='#' onclick='eliminar_familia(".$item.")'><img src='".base_url()."images/eliminar.png' width='16' height='16' border='0' title='Modificar'></a>";
-				$lista[]         = array($item++,$codigo_interno,$codigo_usuario,$cajaCodigo.$descripcion,$ingresar,$editar,$eliminar);
+
+				$usua = $valor->USUA_Codigo;
+               if($usua != "0"){
+                $usuarioNom=$this->cliente_model->getUsuarioNombre($usua);
+                    $nomusuario="";
+                    if($usuarioNom[0]->ROL_Codigo==0){
+                     $nomusuario= $usuarioNom[0]->USUA_usuario;
+                        }else{
+                     $explorar= explode(" ",$usuarioNom[0]->PERSC_Nombre);
+                           
+                        $nomusuario= strtolower($explorar[0]);
+                    }
+                }else{
+                    $nomusuario="";
+                }
+
+				$lista[]         = array($item++,$codigo_interno,$codigo_usuario,$cajaCodigo.$descripcion,$ingresar,$editar,$eliminar,$nomusuario);
 			}
 		}
 		if($j=='0' || $j==''){
