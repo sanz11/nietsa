@@ -89,9 +89,10 @@ class Cliente extends Controller
                 $eliminar = "<a href='#' onclick='eliminar_cliente(" . $codigo . ")'><img src='" . base_url() . "images/eliminar.png' width='16' height='16' border='0' title='Eliminar (Solo puedes eliminar los clientes de tu compañia )'></a>";
 
                $usua = $valor->USUA_Codigo;
+               $nomusuario="";
                if($usua != "0"){
                 $usuarioNom=$this->cliente_model->getUsuarioNombre($usua);
-                    $nomusuario="";
+                    
                     if($usuarioNom[0]->ROL_Codigo==0){
                      $nomusuario= $usuarioNom[0]->USUA_usuario;
                         }else{

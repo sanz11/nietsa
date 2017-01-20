@@ -256,13 +256,14 @@ $("#buscarProducto").click(function(){
                                     />
                             </td>
                         </tr>
-<tr>
+                        <!--
+                        <tr>
                             <td>Nombre dos</td>
                             <td><input id="txtNombredos" name="txtNombredos" type="text" class="cajaGrande" maxlength="100" placeholder="Nombre Productos -"
                                        value="<?php echo $nombredos;?>"></td>
                                      
            
-                        </tr>
+                        </tr>-->
                         <tr>
                             <td>Familia</td>
                             <td>
@@ -288,9 +289,9 @@ $("#buscarProducto").click(function(){
                 <form id="frmpublicar" name="frmpublicar" method="post" enctype="multipart/form-data" action="">
                 <div class="acciones">
                     <div id="botonBusqueda">
-                        <!--<ul id="imprimirProducto" class="lista_botones">
+                        <ul id="imprimirProducto" class="lista_botones">
                             <li id="imprimir">Imprimir</li>
-                        </ul>-->
+                        </ul>
                         <ul id="nuevoProducto" class="lista_botones">
                             <li id="nuevo">
                                 Nuevo <?php if ($flagBS == 'B') echo 'Artículo'; else echo 'Servicio'; ?></li>

@@ -181,7 +181,8 @@ if(empty($persona)) header("location:$url");
 					</table>
 			  </div>
 <div class="acciones">
-			 	<div id="botonBusqueda"><!--<ul id="imprimirPresupuesto" class="lista_botones"><li id="imprimir">Imprimir</li></ul>-->
+			 	<div id="botonBusqueda">
+                <ul id="imprimirPresupuesto" onclick="verpdf()" class="lista_botones"><li id="imprimir">Imprimir</li></ul>
                                         <ul id="nuevaPresupuesto_factura" class="lista_botones"><li id="nuevo">Nuevo Presupuesto (General)</li></ul>
 										<!--<ul id="nuevaPresupuesto_boleta" class="lista_botones"><li id="nuevo">Nuevo Presupuesto (Boleta)</li></ul>-->
                                         <ul id="limpiarPresupuesto" class="lista_botones"><li id="limpiar">Limpiar</li></ul>

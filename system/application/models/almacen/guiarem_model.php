@@ -100,8 +100,7 @@ class Guiarem_Model extends Model
         }
     }
 
-    public function buscar($tipo_oper = 'V', $filter = NULL, $number_items = '', $offset = '')
-    {
+    public function buscar($tipo_oper = 'V', $filter = NULL, $number_items = '', $offset = ''){
         $compania = $this->somevar['compania'];
         $data_confi = $this->companiaconfiguracion_model->obtener($compania);
         $data_confi_docu = $this->companiaconfidocumento_model->obtener($data_confi[0]->COMPCONFIP_Codigo, 10);
@@ -722,6 +721,92 @@ public function getNumeroSerieOrderVenta($codigo){
             return $data;
  }
 }
+
+public function buscar_verPdf($tipo_oper = 'V', $filter = NULL){
+        $compania = $this->somevar['compania'];
+        $data_confi = $this->companiaconfiguracion_model->obtener($compania);
+        $data_confi_docu = $this->companiaconfidocumento_model->obtener($data_confi[0]->COMPCONFIP_Codigo, 10);
+
+        $where = '';
+        if (isset($filter->numero) && $filter->numero != '')
+                    $where = ' and g.GUIAREMC_Numero="' . $filter->numero . '"';
+ if (isset($filter->serie) && $filter->serie != '')
+        $where = ' and g.GUIAREMC_Serie=' . $filter->serie;
+
+        if (isset($filter->fechai) && $filter->fechai != '' && isset($filter->fechaf) && $filter->fechaf != '')
+            $where = ' and g.GUIAREMC_Fecha BETWEEN "' . ($filter->fechai) . '" AND "' . ($filter->fechaf) . '"';
+        switch ($data_confi_docu[0]->COMPCONFIDOCP_Tipo) {
+            case '1':
+                if (isset($filter->numero) && $filter->numero != '')
+                    $where .= ' and g.GUIAREMC_Numero="' . $filter->numero . '"';
+                break;
+            case '2':
+                if (isset($filter->serie) && $filter->serie != '' && isset($filter->numero) && $filter->numero != '')
+                    $where .= ' and g.GUIAREMC_Numero="' . $filter->serie . '" and g.GUIAREMC_Numero="' . $filter->numero . '"';
+                break;
+            case '3':
+                if (isset($filter->codigo_usuario) && $filter->codigo_usuario != '')
+                    $where .= ' and g.GUIAREMC_Serie="' . $filter->codigo_usuario . '"';
+                break;
+        }
+        if ($tipo_oper != 'C') {
+            if (isset($filter->cliente) && $filter->cliente != '')
+                $where .= ' and g.CLIP_Codigo=' . $filter->cliente;
+        } else {
+            if (isset($filter->proveedor) && $filter->proveedor != '')
+                $where .= ' and g.PROVP_Codigo=' . $filter->proveedor;
+        }
+
+        if (isset($filter->serie) && $filter->serie != '' && isset($filter->numero) && $filter->numero != '')
+            $where .= ' and g.GUIAREMC_Serie="' . $filter->serie . '" and g.GUIAREMC_Numero="' . $filter->numero . '"';
+        if (isset($filter->producto) && $filter->producto != '')
+            $where .= ' and gd.PRODCTOP_Codigo=' . $filter->producto;
+        $limit = "";
+        //if (isset($filter->ruc_proveedor) && $filter->ruc_proveedor != '')
+           // $where .= ' and e.EMPRC_Ruc=' . $filter->ruc_proveedor;
+
+
+        //if ((string)$offset != '' && $number_items != '')
+            //$limit = 'LIMIT ' . $offset . ',' . $number_items;
+        $sql = "SELECT g.GUIAREMC_Fecha,
+                       g.GUIAREMC_FechaTraslado,
+                       g.GUIAREMP_Codigo,
+                       g.GUIAREMC_Serie,
+                       g.GUIAREMC_Numero,
+                       g.GUIAREMC_CodigoUsuario,
+                       al.ALMAC_Descripcion,
+                       g.OCOMP_Codigo,
+                       g.GUIAREMC_Numero,
+                       g.GUIAREMC_NumeroRef,
+                       g.USUA_Codigo,
+                       g.GUIAREMC_total,
+                       (CASE " . ($tipo_oper != 'C' ? "c.CLIC_TipoPersona" : "c.PROVC_TipoPersona") . "  WHEN '1'THEN e.EMPRC_Ruc ELSE pe.PERSC_NumeroDocIdentidad end) numdoc,
+                       (CASE " . ($tipo_oper != 'C' ? "c.CLIC_TipoPersona" : "c.PROVC_TipoPersona") . "  WHEN '1'THEN e.EMPRC_RazonSocial ELSE CONCAT(pe.PERSC_Nombre , ' ', pe.PERSC_ApellidoPaterno, ' ', pe.PERSC_ApellidoMaterno) end) nombre,
+                       m.MONED_Simbolo,
+                       g.GUIAREMC_total,
+                       g.GUIAREMC_FlagEstado
+                FROM cji_guiarem g
+                LEFT JOIN cji_moneda m ON m.MONED_Codigo=g.MONED_Codigo
+                LEFT JOIN cji_almacen al ON al.ALMAP_Codigo=g.ALMAP_Codigo
+                LEFT JOIN cji_guiaremdetalle gd ON gd.GUIAREMP_Codigo=g.GUIAREMP_Codigo
+                " . ($tipo_oper != 'C' ? "LEFT JOIN cji_cliente c ON c.CLIP_Codigo=g.CLIP_Codigo" : "LEFT JOIN cji_proveedor c ON c.PROVP_Codigo=g.PROVP_Codigo") . "
+                LEFT JOIN cji_persona pe ON pe.PERSP_Codigo=c.PERSP_Codigo AND " . ($tipo_oper != 'C' ? "c.CLIC_TipoPersona" : "c.PROVC_TipoPersona") . " ='0'
+                LEFT JOIN cji_empresa e ON e.EMPRP_Codigo=c.EMPRP_Codigo AND " . ($tipo_oper != 'C' ? "c.CLIC_TipoPersona" : "c.PROVC_TipoPersona") . "='1'
+                WHERE g.GUIAREMC_TipoOperacion='" . $tipo_oper . "'
+                    AND g.GUIAREMC_FlagEstado != 9
+                      AND g.COMPP_Codigo =" . $compania . " " . $where . "
+                    
+                      GROUP BY g.GUIAREMP_Codigo
+                ORDER BY " . ($tipo_oper == 'V' ? 'g.GUIAREMC_FechaRegistro DESC' : 'g.GUIAREMC_FechaRegistro DESC') ;
+        $query = $this->db->query($sql);
+        if ($query->num_rows > 0) {
+            foreach ($query->result() as $fila) {
+                $data[] = $fila;
+            }
+            return $data;
+        }
+        return array();
+    }
 }
 
 ?>

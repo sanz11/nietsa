@@ -145,6 +145,7 @@
             <div id="tituloForm" class="header"><?php echo $titulo_busqueda; ?></div>
             <div id="frmBusqueda">
                 <form id="form_busqueda" name="form_busqueda" method="post" action="<?php echo $accion; ?>">
+                <input type="hidden" name="tipo_oper" id="tipo_oper" value="<?=$tipo_oper?>">
                     <table class="fuente8" width="98%" cellspacing="0" cellpadding="3" border="0">
                         <tr>
                             <td align='left' width="10%">Fecha inicial</td>
@@ -242,9 +243,9 @@
             </div>
             <div class="acciones">
                 <div id="botonBusqueda">
-                    <!--<ul id="imprimirGuiarem" class="lista_botones">
+                    <ul id="imprimirGuiarem" class="lista_botones" onclick="verPdf()">
                         <li id="imprimir">Imprimir</li>
-                    </ul>-->
+                    </ul>
                     <ul id="nuevaGuiarem" class="lista_botones">
                         <li id="nuevo">Nueva G. de Remisión</li>
                     </ul>

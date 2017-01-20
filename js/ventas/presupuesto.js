@@ -1,3 +1,36 @@
+function verpdf(){
+  var dataEviar="_____";
+    base_url2 = $("#base_url").val();
+    tipo_oper2 = $("#tipo_oper").val();
+    fechai2=$("#fechai").val().split("/");
+    fechafin=$("#fechaf").val().split("/");
+    series=$("#serie").val();
+    numeros=$("#numero").val();
+    codCliente=$("#cliente").val();
+
+    ruc_prove=$("#ruc_proveedor").val();
+    producto=$("#producto").val();
+    //fechafin=$("#fechaf").val().split("/");
+    var datafechaIni="";var datafechafin="";
+    if($("#fechai").val()!=""){
+     datafechaIni=fechai2[2]+"-"+fechai2[1]+"-"+fechai2[0];
+    }
+   if($("#fechaf").val()!=""){
+   datafechafin=fechafin[2]+"-"+fechafin[1]+"-"+fechafin[0];
+  }
+  if(tipo_oper2=='V'){
+   dataEviar=datafechaIni+"_"+datafechafin+"_"+series+"_"+numeros+"_"+codCliente+"_"+producto;
+     
+  }else{
+   dataEviar=datafechaIni+"_"+datafechafin+"_"+series+"_"+numeros+"_"+ruc_prove+"_"+nomb_proveer;
+     
+  }
+  
+    var url3 =base_url2+ "index.php/almacen/guiarem/verPdfGias/" + tipo_oper2 + "/"+dataEviar;
+    window.open(url3, '', "width=800,height=600,menubars=no,resizable=no;");
+  
+}
+
 jQuery(document).ready(function(){
     base_url   = $("#base_url").val();
     tipo_docu   = $("#tipo_docu").val();
@@ -436,9 +469,9 @@ function calcula_totales_conigv(){
             precio_total_conigv = money_format(precio_conigv + precio_total_conigv);
         }
     }
-    $("#importetotal").val(importe_total.toFixed(4));//
-    $("#descuentotal_conigv").val(descuento_total_conigv.toFixed(4));
-    $("#preciototal_conigv").val(precio_total_conigv.toFixed(4));
+    $("#importetotal").val(importe_total.toFixed(2));//
+    $("#descuentotal_conigv").val(descuento_total_conigv.toFixed(2));
+    $("#preciototal_conigv").val(precio_total_conigv.toFixed(2));
 }
 function modifica_pu_conigv(n){
     a  ="prodpu_conigv["+n+"]";

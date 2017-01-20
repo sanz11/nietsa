@@ -204,7 +204,9 @@ jQuery(document).ready(function () {
         location.href = url;
     });
     $("#buscarGuiarem").click(function () {
+
         $("#form_busqueda").submit();
+
     });
 
     $("#punto_partida").click(function () {

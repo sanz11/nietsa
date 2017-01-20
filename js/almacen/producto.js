@@ -16,9 +16,25 @@ jQuery(document).ready(function(){
 //	+$("#txtCodigo").val()+"/"+$("#txtNombre").val()+"/"+$("#txtFamilia").val()+"/"+$("#familiaid").val()+"/"+$("#txtMarca").val()+"/"+$("#cboPublicacion").val();
 	///
     $("#imprimirProducto").click(function(){
+
+            var codigo = $("#txtCodigo").val();
+            var nombre = $("#txtNombre").val();
+            var idfami = $("#txtFamilia").val();
+            var marca = $("#txtMarca").val();
+
+
+            var codigo = sintilde(codigo);
+            var nombre = sintilde(nombre);
+            var idfami = sintilde(idfami);
+            var marca = sintilde(marca);
+        ///
+          if(codigo==""){codigo="--";}
+          if(nombre==""){nombre="--";}
+          if(idfami==""){idfami="--";}
+          if(marca==""){marca="--";}
 		
 		///
-        url = base_url+"index.php/almacen/producto/registro_productos_pdf/"+flagBS+"/"+$("#txtNombre").val();
+        url = base_url+"index.php/almacen/producto/registro_productos_pdf2/b/"+codigo+"/"+nombre+"/"+idfami+"/"+marca;
         window.open(url,'',"width=800,height=600,menubars=no,resizable=no;")
     });
 	///
@@ -738,3 +754,24 @@ $("#grabarSeries").click(function(){
         }
     },'json');
 });*/
+function sintilde(cadena){
+   
+   var specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,.";
+
+   
+   for (var i = 0; i < specialChars.length; i++) {
+       cadena= cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
+   }   
+
+   // Lo queremos devolver limpio en minusculas
+   cadena = cadena.toLowerCase();
+
+   // Quitamos acentos y "ñ". Fijate en que va sin comillas el primer parametro
+   cadena = cadena.replace(/á/gi,"a");
+   cadena = cadena.replace(/é/gi,"e");
+   cadena = cadena.replace(/í/gi,"i");
+   cadena = cadena.replace(/ó/gi,"o");
+   cadena = cadena.replace(/ú/gi,"u");
+   cadena = cadena.replace(/ñ/gi,"n");
+   return cadena;
+}

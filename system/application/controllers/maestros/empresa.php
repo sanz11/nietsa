@@ -61,7 +61,7 @@ class Empresa extends Controller{
                                     $eliminar       = "<a href='javascript:;' onclick='eliminar_empresa(".$codigo.")'><img src='".base_url()."images/eliminar.png' width='16' height='16' border='0' title='Modificar'></a>";
 
                                         $usua = $valor->USUA_Codigo;
-                                       if($usua != "0"){
+    if($usua != "0" ){
                                         $usuarioNom=$this->cliente_model->getUsuarioNombre($usua);
                                             $nomusuario="";
                                             if($usuarioNom[0]->ROL_Codigo==0){

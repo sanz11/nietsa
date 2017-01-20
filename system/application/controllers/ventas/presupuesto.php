@@ -4735,7 +4735,126 @@ foreach ($datos_umedida as $key => $value) {
         $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => $codificacion . '.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
         $this->cezpdf->ezStream($cabecera);
     }
+public function verPdfPresupuesto($tipo_oper = '',$dataEviar=""){
+    $titulo=""; $subTitulo="";
+    if($tipo_oper=='V'){
+      $titulo="REPORTE DE PRESUPUESTO" ; 
+    }else{
+        $titulo="REPORTE DE COMPRAS" ;
+    }
 
+    
+     $notimg="";
+     $this->cezpdf = new Cezpdf('a4', 'portrait');
+     $explorarData =explode('_', $dataEviar);
+     $fechaini=$explorarData[0];
+     $fechafin=$explorarData[1];
+     $series=$explorarData[2];
+     $numero=$explorarData[3];
+     $codiogcliente=$explorarData[4];
+     $codroducto=$explorarData[5];
+     $this->somevar['compania'];
+        $filter = new stdClass();
+        $filter->fechai=$fechaini;//$fechaini;
+        $filter->fechaf=$fechafin;//$fechaini;
+        $filter->serie =$series;
+        $filter->numero =$numero;
+        $filter->cliente =$codiogcliente;
+        $filter->producto =$codroducto;
+     $listado_presupuestos = $this->presupuesto_model->buscar_presupuestos($filter, $tipo_oper);
+        $item = $j + 1;
+        $lista = array();
+        if (count($listado_presupuestos) > 0) {
+            foreach ($listado_presupuestos as $indice => $valor) {
+                $codigo = $valor->PRESUP_Codigo;
+                $fecha = mysql_to_human($valor->PRESUC_Fecha);
+                $serie = $valor->PRESUC_Serie;
+                $numero = $valor->PRESUC_Numero;
+                $codigo_usuario = $valor->PRESUC_CodigoUsuario;
+                $Mensajesenviados = $this->presupuesto_model->correoenviado_presu($codigo);
+                
+                $nombre_cliente = $valor->nombre;
+                if ($valor->CLIP_Codigo == 144 ||
+                    $valor->CLIP_Codigo == 135 ||
+                    $valor->CLIP_Codigo == 218 ||
+                    $valor->CLIP_Codigo == 1037
+                )
+                    $nombre_cliente = $valor->PRESUC_NombreAuxiliar;
+                $nom_tipodocu = $valor->nom_tipodocu;
+                $total = $valor->MONED_Simbolo . ' ' . number_format($valor->PRESUC_total, 2);
+                $estado = $valor->PRESUC_FlagEstado;
+                
+
+                $usua = $valor->USUA_Codigo;
+
+                $usuarioNom=$this->cliente_model->getUsuarioNombre($usua);
+                    $nomusuario="";
+                    if($usuarioNom[0]->ROL_Codigo==0){
+                     $nomusuario= $usuarioNom[0]->USUA_usuario;
+                        }else{
+                     $explorar= explode(" ",$usuarioNom[0]->PERSC_Nombre);
+                           
+                        $nomusuario= strtolower($explorar[0]);
+                    }
+                $lista[] = array($item++, $fecha, $serie, $numero, $codigo_usuario, $nombre_cliente, $nom_tipodocu, $total, $img_estado, $editar, $ver, $ver2, $ver3, $enviarcorreo, $vermensaje, $eliminar,  $nomusuario);
+            }
+        }
+ $col_names = array(
+            'col1' => 'Itm',
+            'col2' => 'Fecha',
+            'col3' => 'SERIE',
+            'col4' => 'NRO',
+            'col6' => 'RAZON SOCIAL',
+            'col7' => 'TOTAL',
+            'col8' => 'USUARIO'
+            
+        );
+
+        $this->cezpdf->ezTable($db_data, $col_names, '', array(
+            'width' => 555,
+            'showLines' => 1,
+            'shaded' => 0,
+            'showHeadings' => 1,
+            'xPos' => 'center',
+            'fontSize' => 8,
+            'cols' => array(
+                'col1' => array('width' => 25, 'justification' => 'center'),
+                'col2' => array('width' => 60, 'justification' => 'center'),
+                'col3' => array('width' => 30, 'justification' => 'center'),
+                'col4' => array('width' => 30, 'justification' => 'center'),
+                'col6' => array('width' => 200),
+                'col7' => array('width' => 59, 'justification' => 'center'),
+                'col8' => array('width' => 50, 'justification' => 'center')
+            )
+        ));
+        $db_data1[] = array(
+                'col1' =>'',
+                'col2' =>"S/. ". $tolta_suma ,
+                
+            ); 
+        $col_names1 = array(
+            'col1' => '',
+            'col2' => 'Total'
+            
+        );
+        $this->cezpdf->ezText("", 17, $options); 
+        $this->cezpdf->ezTable($db_data1, $col_names1, '', array(
+            'width' => 555,
+            'showLines' => 1,
+            'shaded' => 0,
+            'showHeadings' => 1,
+            'xPos' => 'center',
+            'fontSize' => 9,
+            'cols' => array(
+                'col1' => array('width' => 25, 'justification' => 'center'),
+                'col2' => array('width' => 140, 'justification' => 'center')
+             )
+        ));
+$this->cezpdf->ezText('', 8);
+        $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => $tipo_doc . '.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
+        $this->cezpdf->ezStream($cabecera); 
+            
+}
 }
 
 ?>
