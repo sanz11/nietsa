@@ -368,43 +368,54 @@ function calcula_importe2_conigv(n){
 }
 function calcula_totales(){
     n = document.getElementById('tblDetallePresupuesto').rows.length;
+    var desc = $("#descuento").val();
     importe_total = 0;
     igv_total = 0;
     descuento_total = 0;
     precio_total = 0;
-  for(i=0;i<n;i++){//Estanb al reves los campos
+     //(aumentado
+    igvtotal=0;
+    importetotal=0;
+    preciototal=0;cantidad=0;pu_conigv=0;
+
+    for(i=0;i<n;i++){//Estanb al reves los campos
+        h = "prodcantidad["+i+"]";
         a = "prodimporte["+i+"]"
         b = "prodigv["+i+"]";
         c = "proddescuento["+i+"]";
         d = "prodprecio["+i+"]";
-        e  = "detaccion["+i+"]";
+        e = "detaccion["+i+"]";
+        x = "prodpu_conigv["+i+"]";
+        
         if(document.getElementById(e).value!='e'){
-            //importe = parseFloat(document.getElementById(a).value);
+            importe = parseFloat(document.getElementById(a).value);
             igv = parseFloat(document.getElementById(b).value);
             descuento = parseFloat(document.getElementById(c).value);
             precio = parseFloat(document.getElementById(d).value);
-            //importe_total = money_format(importe + importe_total);
-            //igv_total = money_format(igv + igv_total);
-            descuento_total = money_format(descuento + descuento_total);
+            cantidad = parseFloat(document.getElementById(h).value);
+            pu_conigv = parseFloat(document.getElementById(x).value);
+            importe_total = money_format(importe + importe_total);
+            igv_total = money_format(igv + igv_total);
+            //descuento_total = money_format(descuento + descuento_total);
             precio_total = money_format(precio + precio_total);
-            igv_total+=money_format(igv);
+        
         }
     }
-
-  
-	igv100 = parseInt($("#igv").val());
-	//igv_total+=money_format(igv);//money_format(precio_total*igv100/100);
-	importe_total = money_format(precio_total + igv_total-descuento_total);
-	
-	//money_format
-       /*igvtotal=money_format((importe_total*18)/118);
+    calcularDescuento=money_format(((pu_conigv*cantidad)*desc)/100);
+    
+    ///aumentado
+       igvtotal=money_format((importe_total*18)/118);
        preciototal=money_format(importe_total-igvtotal);
-       importetotal=money_format(importe_total);
-*/
-    $("#importetotal").val((importe_total).toFixed(2));//.toFixed(2)
-    $("#igvtotal").val((igv_total).toFixed(2));
-    $("#descuentotal").val((descuento_total));
-    $("#preciototal").val((precio_total.toFixed(2)));
+       descuento = money_format((preciototal * desc) /100); 
+      // if (desc != 0) {
+       // importetotal = money_format(importe_total - descuento);
+      // }else{
+        importetotal=money_format(importe_total);
+     //  }
+    $("#preciototal").val(preciototal.toFixed(4)); 
+    $("#descuentotal").val(calcularDescuento.toFixed(4));
+    $("#igvtotal").val(igvtotal.toFixed(4));  //val(igv_total.toFixed(2))
+    $("#importetotal").val(importetotal.toFixed(4));
 }
 function calcula_totales_conigv(){
     n = document.getElementById('tblDetallePresupuesto').rows.length;
@@ -425,9 +436,9 @@ function calcula_totales_conigv(){
             precio_total_conigv = money_format(precio_conigv + precio_total_conigv);
         }
     }
-    $("#importetotal").val(importe_total.toFixed(2));//
-    $("#descuentotal_conigv").val(descuento_total_conigv.toFixed(2));
-    $("#preciototal_conigv").val(precio_total_conigv.toFixed(2));
+    $("#importetotal").val(importe_total.toFixed(4));//
+    $("#descuentotal_conigv").val(descuento_total_conigv.toFixed(4));
+    $("#preciototal_conigv").val(precio_total_conigv.toFixed(4));
 }
 function modifica_pu_conigv(n){
     a  ="prodpu_conigv["+n+"]";
@@ -454,7 +465,7 @@ function modifica_pu(n){
     calcula_importe(n);
 }
 function modifica_descuento_total(){
-    descuento = $('#descuento').val();
+   /* descuento = $('#descuento').val();
     n     = document.getElementById('tblDetallePresupuesto').rows.length;
     for(i=0;i<n;i++){
         a = "proddescuento100["+i+"]";
@@ -463,7 +474,18 @@ function modifica_descuento_total(){
     for(i=0;i<n;i++){
         calcula_importe(i);
     }
+    calcula_totales();*/
+descuento = $('#descuento').val();
+    n     = document.getElementById('tblDetallePresupuesto').rows.length;
+    for(i=0;i<n;i++){
+        a = "proddescuento100["+i+"]";
+        document.getElementById(a).value = descuento;
+    }
+    for(jj=0;jj<n;jj++){
+        calcula_importe(jj);
+    }
     calcula_totales();
+
 }
 function modifica_igv_total(){
     igv = $('#igv').val();

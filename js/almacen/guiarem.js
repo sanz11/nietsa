@@ -863,10 +863,10 @@ function calcula_totales() {
     igv_total = money_format(precio_total * igv100 / 100);
     importe_total = money_format(precio_total + igv_total);
 
-    $("#preciototal").val(precio_total.toFixed(2));
-    $("#importetotal").val(importe_total.toFixed(2));
-    $("#igvtotal").val(igv_total.toFixed(2));
-    $("#descuentotal").val(descuento_total.toFixed(2));
+    $("#preciototal").val(precio_total.toFixed(4));
+    $("#importetotal").val(importe_total.toFixed(4));
+    $("#igvtotal").val(igv_total.toFixed(4));
+    $("#descuentotal").val(descuento_total.toFixed(4));
 
 }
 function modifica_pu_conigv(n) {
@@ -1518,9 +1518,9 @@ function calcula_totales_conigv() {
     }
 
 
-    $("#importetotal").val(importe_total.toFixed(2));
-    $("#descuentotal_conigv").val(descuento_total_conigv.toFixed(2));
-    $("#preciototal_conigv").val(precio_total_conigv.toFixed(2));
+    $("#importetotal").val(importe_total.toFixed(4));
+    $("#descuentotal_conigv").val(descuento_total_conigv.toFixed(4));
+    $("#preciototal_conigv").val(precio_total_conigv.toFixed(4));
 }
 function agregar_todopresupuesto(guia, tipo_oper) {
 

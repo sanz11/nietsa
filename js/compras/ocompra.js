@@ -627,6 +627,7 @@ function calcula_totales(){
     igvtotal=0;
     importetotal=0;
     preciototal=0;cantidad=0;pu_conigv=0;
+
     for(i=0;i<n;i++){//Estanb al reves los campos
         h = "prodcantidad["+i+"]";
         a = "prodimporte["+i+"]"
@@ -634,7 +635,7 @@ function calcula_totales(){
         c = "proddescuento["+i+"]";
         d = "prodprecio["+i+"]";
         e = "detaccion["+i+"]";
-        i = "prodpu_conigv["+i+"]";
+        x = "prodpu_conigv["+i+"]";
         
         if(document.getElementById(e).value!='e'){
             importe = parseFloat(document.getElementById(a).value);
@@ -642,7 +643,7 @@ function calcula_totales(){
             descuento = parseFloat(document.getElementById(c).value);
             precio = parseFloat(document.getElementById(d).value);
             cantidad = parseFloat(document.getElementById(h).value);
-            pu_conigv = parseFloat(document.getElementById(i).value);
+            pu_conigv = parseFloat(document.getElementById(x).value);
             importe_total = money_format(importe + importe_total);
             igv_total = money_format(igv + igv_total);
             //descuento_total = money_format(descuento + descuento_total);
@@ -661,10 +662,10 @@ function calcula_totales(){
       // }else{
         importetotal=money_format(importe_total);
      //  }
-    $("#preciototal").val(preciototal.toFixed(2)); 
-    $("#descuentotal").val(calcularDescuento.toFixed(2));
-    $("#igvtotal").val(igvtotal.toFixed(2));  //val(igv_total.toFixed(2))
-    $("#importetotal").val(importetotal.toFixed(2));
+    $("#preciototal").val(preciototal.toFixed(4)); 
+    $("#descuentotal").val(calcularDescuento.toFixed(4));
+    $("#igvtotal").val(igvtotal.toFixed(4));  //val(igv_total.toFixed(2))
+    $("#importetotal").val(importetotal.toFixed(4));
 }
 function modifica_pu_conigv(n){
     a  ="prodpu_conigv["+n+"]";

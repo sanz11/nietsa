@@ -405,15 +405,15 @@ class Comprobante extends Controller{
                 $producto = $valor->PROD_Codigo;
                 $unidad_medida = $valor->UNDMED_Codigo;
                 $cantidad = $valor->CPDEC_Cantidad;
-                $igv100 = round($valor->CPDEC_Igv100, 2);
-                $pu = round((($tipo_doc == 'F') ? $valor->CPDEC_Pu : $valor->CPDEC_Pu_ConIgv - ($valor->CPDEC_Pu_ConIgv * $igv100 / 100)), 2);
-                $subtotal = round((($tipo_doc == 'F') ? $valor->CPDEC_Subtotal : $pu * $cantidad), 2);
-                $igv = round($valor->CPDEC_Igv, 2);
-                $descuento = round($valor->CPDEC_Descuento, 2);
-                $total = round((($tipo_doc == 'F') ? $valor->CPDEC_Total : $subtotal), 2);
-                $pu_conigv = round($valor->CPDEC_Pu_ConIgv, 2);
-                $subtotal_conigv = round($valor->CPDEC_Subtotal_ConIgv, 2);
-                $descuento_conigv = round($valor->CPDEC_Descuento_ConIgv, 2);
+                $igv100 = round($valor->CPDEC_Igv100, 4);
+                $pu = round((($tipo_doc == 'F') ? $valor->CPDEC_Pu : $valor->CPDEC_Pu_ConIgv - ($valor->CPDEC_Pu_ConIgv * $igv100 / 100)), 4);
+                $subtotal = round((($tipo_doc == 'F') ? $valor->CPDEC_Subtotal : $pu * $cantidad), 4);
+                $igv = round($valor->CPDEC_Igv, 4);
+                $descuento = round($valor->CPDEC_Descuento, 4);
+                $total = round((($tipo_doc == 'F') ? $valor->CPDEC_Total : $subtotal), 4);
+                $pu_conigv = round($valor->CPDEC_Pu_ConIgv, 4);
+                $subtotal_conigv = round($valor->CPDEC_Subtotal_ConIgv, 4);
+                $descuento_conigv = round($valor->CPDEC_Descuento_ConIgv, 4);
                 $observacion = $valor->CPDEC_Observacion;
                 $flagGenInd = $valor->CPDEC_GenInd;
                 $costo = $valor->CPDEC_Costo;
@@ -516,22 +516,22 @@ class Comprobante extends Controller{
                 $producto = $valor->PROD_Codigo;
                 $unidad_medida = $valor->UNDMED_Codigo;
                 $cantidad = $valor->CPDEC_Cantidad;
-                $igv100 = round($valor->CPDEC_Igv100, 2);
-                $pu = round((($tipo_doc == 'F') ? $valor->CPDEC_Pu : $valor->CPDEC_Pu_ConIgv - ($valor->CPDEC_Pu_ConIgv * $igv100 / 100)), 2);
-                $subtotal = round((($tipo_doc == 'F') ? $valor->CPDEC_Subtotal : $pu * $cantidad), 2);
+                $igv100 = round($valor->CPDEC_Igv100, 4);
+                $pu = round((($tipo_doc == 'F') ? $valor->CPDEC_Pu : $valor->CPDEC_Pu_ConIgv - ($valor->CPDEC_Pu_ConIgv * $igv100 / 100)), 4);
+                $subtotal = round((($tipo_doc == 'F') ? $valor->CPDEC_Subtotal : $pu * $cantidad), 4);
                 $igv = round($valor->CPDEC_Igv, 2);
-                $descuento = round($valor->CPDEC_Descuento, 2);
-                $total = round((($tipo_doc == 'F') ? $valor->CPDEC_Total : $subtotal), 2);
+                $descuento = round($valor->CPDEC_Descuento, 4);
+                $total = round((($tipo_doc == 'F') ? $valor->CPDEC_Total : $subtotal), 4);
 
 
                 ///stv
 
                 if ($tipo_doc == 'B') {
-                    $pu = round($valor->CPDEC_Pu_ConIgv, 2);
-                    $subtotal = round(($pu * $cantidad), 2);
-                    $igv = round($valor->CPDEC_Igv, 2);
-                    $descuento = round($valor->CPDEC_Descuento, 2);
-                    $total = round($subtotal, 2);
+                    $pu = round($valor->CPDEC_Pu_ConIgv, 4);
+                    $subtotal = round(($pu * $cantidad), 4);
+                    $igv = round($valor->CPDEC_Igv, 4);
+                    $descuento = round($valor->CPDEC_Descuento, 4);
+                    $total = round($subtotal, 4);
                 }
 
 //                if($tipo_doc=='B'){
@@ -544,9 +544,9 @@ class Comprobante extends Controller{
 
                 ////////
 
-                $pu_conigv = round($valor->CPDEC_Pu_ConIgv, 2);
-                $subtotal_conigv = round($valor->CPDEC_Subtotal_ConIgv, 2);
-                $descuento_conigv = round($valor->CPDEC_Descuento_ConIgv, 2);
+                $pu_conigv = round($valor->CPDEC_Pu_ConIgv, 4);
+                $subtotal_conigv = round($valor->CPDEC_Subtotal_ConIgv, 4);
+                $descuento_conigv = round($valor->CPDEC_Descuento_ConIgv, 4);
                 $observacion = $valor->CPDEC_Observacion;
                 $flagGenInd = $valor->CPDEC_GenInd;
                 $costo = $valor->CPDEC_Costo;
@@ -711,7 +711,7 @@ class Comprobante extends Controller{
                 } else {
                     $nombre = $valor->nombre;
                 }
-                $total = $valor->MONED_Simbolo . ' ' . number_format($valor->CPC_total, 2);
+                $total = $valor->MONED_Simbolo . ' ' . number_format($valor->CPC_total, 4);
                 $estado = $valor->CPC_FlagEstado;
                 $pago_pendiente = $this->comprobante_model->comprobante_pago_pendiente($codigo);
                 $img_estado = ($estado == '1' || $estado == '2' ? "<a href='" . base_url() . "index.php/seguridad/usuario/ventana_confirmacion_usuario2/" . $serie . "/" . $codigo . "' id='linkVerProveedor'><img src='" . base_url() . "images/active.png' alt='Activo' title='Activo' /></a> " : "<img src='" . base_url() . "images/inactive.png' alt='Anulado' title='Anulado' />");
@@ -971,7 +971,7 @@ $modifCuentaDepen=$codigo;//'<a href="javascript:;" onclick="modifcarDependi('.$
         
     $nomusuario= strtolower($explorar[0]);
  }
-                $total = $valor->MONED_Simbolo . ' ' . number_format($valor->CPC_total, 2);
+                $total = $valor->MONED_Simbolo . ' ' . number_format($valor->CPC_total, 4);
                 $estado = $valor->CPC_FlagEstado;
                 $pago_pendiente = $this->comprobante_model->comprobante_pago_pendiente($codigo);
                 $img_estado = ($estado == '1' || $estado == '2' ? "<a href='" . base_url() . "index.php/seguridad/usuario/ventana_confirmacion_usuario2/" . $serie . "/" . $codigo . "' id='linkVerProveedor'><img src='" . base_url() . "images/active.png' alt='Activo' title='Activo' /></a> " : "<img src='" . base_url() . "images/inactive.png' alt='Anulado' title='Anulado' />");
@@ -1603,8 +1603,7 @@ public function ingresarConfiguracio($codigo){
 }
     public function disparador($tipo_oper = 'V', $codigo, $tipo_docu = 'F')
     {
-
-        $hoy = date("Y-m-d");
+$hoy = date("Y-m-d");
         $datos_comprobante = $this->comprobante_model->obtener_comprobante($codigo);
         $presupuesto = $datos_comprobante[0]->PRESUP_Codigo;
         $ordencompra = $datos_comprobante[0]->OCOMP_Codigo;
@@ -1631,7 +1630,7 @@ public function ingresarConfiguracio($codigo){
         $fecha = mysql_to_human($datos_comprobante[0]->CPC_Fecha);
         $vendedor = $datos_comprobante[0]->CPC_Vendedor;
         $tdc = $datos_comprobante[0]->CPC_TDC;
-$GUIASAP_Codigo=$datos_comprobante[0]->GUIASAP_Codigo;
+
         if ($estado == 2) {
             $mueve = 1;
             $filter = new stdClass();
@@ -1661,11 +1660,11 @@ $GUIASAP_Codigo=$datos_comprobante[0]->GUIASAP_Codigo;
             $cofiguracion_datos = $this->configuracion_model->obtener_numero_documento($compania, $tipo);
 
             if ($cofiguracion_datos) {
-                $filter->CPC_Numero = sprintf("%07d", $cofiguracion_datos[0]->CONFIC_Numero);
+                $filter->CPC_Numero = sprintf("%07d", $cofiguracion_datos[0]->CONFIC_Numero + 1);
             }
 
             $this->comprobante_model->insertar_disparador($codigo, $filter);
-if($GUIASAP_Codigo!=null || $GUIASAP_Codigo!=0){ 
+
             if ($tipo_oper == 'V') {
                 if ($mueve == 1) {
                     $filter3 = new stdClass();
@@ -1765,7 +1764,7 @@ if($GUIASAP_Codigo!=null || $GUIASAP_Codigo!=0){
                         $this->guiaindetalle_model->insertar($filter4);
                     }
                 }
-            }}
+            }
         }//
         //$this->comprobantes($tipo_oper , $tipo_docu , 0, 1);
         redirect('ventas/comprobante/comprobantes/' . $tipo_oper . '/' . $tipo_docu);
@@ -2572,7 +2571,7 @@ if ($this->input->post('txtVendero') != '' && $this->input->post('txtVendero') !
             $db_data[] = array(
                 'cols2' => $valor->CPDEC_Cantidad,
                 'cols5' => utf8_decode_seguro(substr($valor->PROD_Nombre, 0, 45)),
-                'cols6' => number_format(($modo_impresion == '1' ? $pu_conigv : $valor->CPDEC_Pu), 2),
+                'cols6' => number_format(($modo_impresion == '1' ? $pu_conigv : $valor->CPDEC_Pu), 4),
                 'cols7' => number_format($valor->CPDEC_Cantidad * ($modo_impresion == '1' ? $pu_conigv : $valor->CPDEC_Pu), 2)
             );
         }
@@ -2595,11 +2594,11 @@ if ($this->input->post('txtVendero') != '' && $this->input->post('txtVendero') !
 
         /* Totales */
 
-        $this->cezpdf->addText(90, 123, 11, strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre);
-        $this->cezpdf->addText(520, 100, 11, $moneda_simbolo . ' ' . number_format($subtotal, 2));
+        $this->cezpdf->addText(90, 123, 11, strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre);
+        $this->cezpdf->addText(520, 100, 11, $moneda_simbolo . ' ' . number_format($subtotal, 4));
         $this->cezpdf->addText(470, 82, 11, $igv100 . ' %');
-        $this->cezpdf->addText(520, 82, 11, $moneda_simbolo . ' ' . number_format($igv, 2));
-        $this->cezpdf->addText(520, 64, 11, $moneda_simbolo . ' ' . number_format(($total), 2));
+        $this->cezpdf->addText(520, 82, 11, $moneda_simbolo . ' ' . number_format($igv, 4));
+        $this->cezpdf->addText(520, 64, 11, $moneda_simbolo . ' ' . number_format(($total), 4));
 
         $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'nama_file.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
         $this->cezpdf->ezStream($cabecera);
@@ -2654,8 +2653,8 @@ if ($this->input->post('txtVendero') != '' && $this->input->post('txtVendero') !
                 'cols1' => '',
                 'cols2' => $valor->CPDEC_Cantidad,
                 'cols3' => utf8_decode_seguro($nomprod),
-                'cols4' => number_format($valor->CPDEC_Pu_ConIgv, 2),
-                'cols5' => number_format($valor->CPDEC_Total, 2),
+                'cols4' => number_format($valor->CPDEC_Pu_ConIgv, 4),
+                'cols5' => number_format($valor->CPDEC_Total, 4),
                 'cols6' => ''
             );
         }
@@ -2681,8 +2680,8 @@ if ($this->input->post('txtVendero') != '' && $this->input->post('txtVendero') !
         $delta = 130;
         $positionx = 400;
         $positiony = 120 + $delta;
-        $this->cezpdf->addText(120, $positiony, 10, strtoupper(num2letras(round($total, 2))));
-        $this->cezpdf->addText($positionx, $positiony - 19, 10, number_format($total, 2));
+        $this->cezpdf->addText(120, $positiony, 10, strtoupper(num2letras(round($total, 4))));
+        $this->cezpdf->addText($positionx, $positiony - 19, 10, number_format($total, 4));
 
         $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'nama_file.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
         $this->cezpdf->ezStream($cabecera);
@@ -2890,8 +2889,8 @@ $this->cezpdf->addText(130, 690, 8, utf8_decode_seguro($nombre_cliente));
                 foreach ($detalle_comprobante as $indice => $valor) {
                     $cod_prod = $valor->PROD_CodigoUsuario;
                     $cant = $valor->CPDEC_Cantidad;
-                    $pu = number_format($valor->CPDEC_Pu_ConIgv, 2);
-                    $st = number_format($valor->CPDEC_Total, 2);
+                    $pu = number_format($valor->CPDEC_Pu_ConIgv, 4);
+                    $st = number_format($valor->CPDEC_Total, 4);
                     $producto = substr($valor->PROD_Nombre, 0, 25);
                     $unidad = $valor->UNDMED_Simbolo;
 $this->cezpdf->addText(110, $y, 9, utf8_decode_seguro($cant));
@@ -2905,7 +2904,7 @@ $this->cezpdf->addTextWrap(370 ,$y, 35, 8,$pu, 'right');
 
 
 $this->cezpdf->addText(420,$y,8, $simb);
-$this->cezpdf->addTextWrap(450 ,$y, 35, 8, number_format($valor->CPDEC_Subtotal,3), 'right');
+$this->cezpdf->addTextWrap(450 ,$y, 35, 8, number_format($valor->CPDEC_Subtotal,4), 'right');
 //$this->cezpdf->addText(358, $y, 9, utf8_decode_seguro($simb) . ' ' . ($pu// ));
 $y -= 20;//ABAD RICHARD
 }
@@ -2913,7 +2912,7 @@ $y -= 20;//ABAD RICHARD
 
                // $this->cezpdf->addText(26, 296, 8, 'SON: ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre);
 
-$this->cezpdf->addText(430, 320, 10,  number_format($total, 2));
+$this->cezpdf->addText(430, 320, 10,  number_format($total, 4));
 
 
             } else {
@@ -2940,8 +2939,8 @@ $this->cezpdf->addText(130, 690, 8, utf8_decode_seguro($nombre_cliente));
                 foreach ($detalle_comprobante as $indice => $valor) {
                     $cod_prod = $valor->PROD_CodigoUsuario;
                     $cant = $valor->CPDEC_Cantidad;
-                    $pu = number_format($valor->CPDEC_Pu_ConIgv, 2);
-                    $st = number_format($valor->CPDEC_Total, 2);
+                    $pu = number_format($valor->CPDEC_Pu_ConIgv, 4);
+                    $st = number_format($valor->CPDEC_Total, 4);
                     $producto = substr($valor->PROD_Nombre, 0, 25);
                     $unidad = $valor->UNDMED_Simbolo;
 $this->cezpdf->addText(110, $y, 9, utf8_decode_seguro($cant));
@@ -2955,7 +2954,7 @@ $this->cezpdf->addTextWrap(370 ,$y, 35, 8,$pu, 'right');
 
 
 $this->cezpdf->addText(420,$y,8, $simb);
-$this->cezpdf->addTextWrap(450 ,$y, 35, 8, number_format($valor->CPDEC_Subtotal,3), 'right');
+$this->cezpdf->addTextWrap(450 ,$y, 35, 8, number_format($valor->CPDEC_Subtotal,4), 'right');
 //$this->cezpdf->addText(358, $y, 9, utf8_decode_seguro($simb) . ' ' . ($pu// ));
 $y -= 20;//ABAD RICHARD
 }
@@ -2963,7 +2962,7 @@ $y -= 20;//ABAD RICHARD
 
                // $this->cezpdf->addText(26, 296, 8, 'SON: ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre);
 
-$this->cezpdf->addText(430, 320, 10,  number_format($total, 2));
+$this->cezpdf->addText(430, 320, 10,  number_format($total, 4));
 
             }
         }    # code...
@@ -3013,8 +3012,8 @@ $this->cezpdf->addText(60, 670, 8, utf8_decode_seguro(substr($direccion,0,58)));
                 foreach ($detalle_comprobante as $indice => $valor) {
                     $cod_prod = $valor->PROD_CodigoUsuario;
                     $cant = $valor->CPDEC_Cantidad;
-                    $pu = number_format($valor->CPDEC_Pu_ConIgv, 2);
-                    $st = number_format($valor->CPDEC_Total, 2);
+                    $pu = number_format($valor->CPDEC_Pu_ConIgv, 4);
+                    $st = number_format($valor->CPDEC_Total, 4);
                     $producto = substr($valor->PROD_Nombre, 0, 25);
                     $unidad = $valor->UNDMED_Simbolo;
 $this->cezpdf->addText(80, $y, 9, utf8_decode_seguro($cant));
@@ -3025,7 +3024,7 @@ $this->cezpdf->addText(450, $y, 9, utf8_decode_seguro($simb) . ' ' . number_form
 $this->cezpdf->addText(400,$y,8, $simb);
 $this->cezpdf->addTextWrap(440 ,$y, 35, 8,$pu, 'right');
 $this->cezpdf->addText(500,$y,8, $simb);
-$this->cezpdf->addTextWrap(540 ,$y, 35, 8, number_format($valor->CPDEC_Subtotal,3), 'right');
+$this->cezpdf->addTextWrap(540 ,$y, 35, 8, number_format($valor->CPDEC_Subtotal,4), 'right');
 //$this->cezpdf->addText(358, $y, 9, utf8_decode_seguro($simb) . ' ' . ($pu// ));
 $y -= 20;//ABAD RICHARD
 }
@@ -3039,13 +3038,13 @@ $y -= 20;//ABAD RICHARD
 
 
 $this->cezpdf->addText(280,$y-155,8, $simb);
-$this->cezpdf->addTextWrap(300 ,$y-155, 35, 8, number_format($subtotal,3), 'right');
+$this->cezpdf->addTextWrap(300 ,$y-155, 35, 8, number_format($subtotal,4), 'right');
 
 $this->cezpdf->addText(380,$y-155,8, $simb);
-$this->cezpdf->addTextWrap(400 ,$y-155, 35, 8, number_format($igv ,3), 'right');
+$this->cezpdf->addTextWrap(400 ,$y-155, 35, 8, number_format($igv ,4), 'right');
 
 $this->cezpdf->addText(500,$y-155,8, $simb);
-$this->cezpdf->addTextWrap(540 ,$y-155, 35, 8, number_format($total,3), 'right');
+$this->cezpdf->addTextWrap(540 ,$y-155, 35, 8, number_format($total,4), 'right');
             } 
             else //comprbante pdf tipo 0
             {
@@ -3088,8 +3087,8 @@ $this->cezpdf->addText(60, 670, 8, utf8_decode_seguro(substr($direccion,0,58)));
                 foreach ($detalle_comprobante as $indice => $valor) {
                     $cod_prod = $valor->PROD_CodigoUsuario;
                     $cant = $valor->CPDEC_Cantidad;
-                    $pu = number_format($valor->CPDEC_Pu_ConIgv, 2);
-                    $st = number_format($valor->CPDEC_Total, 2);
+                    $pu = number_format($valor->CPDEC_Pu_ConIgv, 4);
+                    $st = number_format($valor->CPDEC_Total, 4);
                     $producto = substr($valor->PROD_Nombre, 0, 25);
                     $unidad = $valor->UNDMED_Simbolo;
 $this->cezpdf->addText(80, $y, 9, utf8_decode_seguro($cant));
@@ -3101,7 +3100,7 @@ $this->cezpdf->addText(450, $y, 9, utf8_decode_seguro($simb) . ' ' . number_form
 $this->cezpdf->addText(400,$y,8, $simb);
 $this->cezpdf->addTextWrap(440 ,$y, 35, 8,$pu, 'right');
 $this->cezpdf->addText(500,$y,8, $simb);
-$this->cezpdf->addTextWrap(540 ,$y, 35, 8, number_format($valor->CPDEC_Subtotal,3), 'right');
+$this->cezpdf->addTextWrap(540 ,$y, 35, 8, number_format($valor->CPDEC_Subtotal,4), 'right');
 //$this->cezpdf->addText(358, $y, 9, utf8_decode_seguro($simb) . ' ' . ($pu// ));
 $y -= 15;//ABAD RICHARD
 }
@@ -3116,13 +3115,13 @@ $y -= 15;//ABAD RICHARD
         $total = $datos_comprobante[0]->CPC_total;*/
 
 $this->cezpdf->addText(280,$y-220,8, $simb);
-$this->cezpdf->addTextWrap(300 ,$y-220, 35, 8, number_format($subtotal,3), 'right');
+$this->cezpdf->addTextWrap(300 ,$y-220, 35, 8, number_format($subtotal,4), 'right');
 
 $this->cezpdf->addText(380,$y-220,8, $simb);
-$this->cezpdf->addTextWrap(400 ,$y-220, 35, 8, number_format($igv ,3), 'right');
+$this->cezpdf->addTextWrap(400 ,$y-220, 35, 8, number_format($igv ,4), 'right');
 
 $this->cezpdf->addText(500,$y-220,8, $simb);
-$this->cezpdf->addTextWrap(540 ,$y-220, 35, 8, number_format($total,3), 'right');
+$this->cezpdf->addTextWrap(540 ,$y-220, 35, 8, number_format($total,4), 'right');
             }
 }
 
@@ -3501,9 +3500,9 @@ $this->cezpdf->addTextWrap(540 ,$y-220, 35, 8, number_format($total,3), 'right')
                         $this->cezpdf->addText(88 + $posiciongeneralx, $i + $posiciongeneraly, 7, utf8_decode_seguro($valor->PROD_Nombre));
                         $this->cezpdf->addText(55 + $posiciongeneralx, $i + $posiciongeneraly, 7, $valor->CPDEC_Cantidad);
                         $this->cezpdf->addText(420 + $posiciongeneralx, $i + $posiciongeneraly, 7, $moneda_simbolo);
-                        $this->cezpdf->addTextWrap(425 + $posiciongeneralx, $i + $posiciongeneraly, 45, 7, number_format($pu_conigv, 2), 'right');
+                        $this->cezpdf->addTextWrap(425 + $posiciongeneralx, $i + $posiciongeneraly, 45, 7, number_format($pu_conigv, 4), 'right');
                         $this->cezpdf->addText(480 + $posiciongeneralx, $i + $posiciongeneraly, 7, $moneda_simbolo);
-                        $this->cezpdf->addTextWrap(490 + $posiciongeneralx, $i + $posiciongeneraly, 45, 7, number_format($valor->CPDEC_Total, 2), 'right');
+                        $this->cezpdf->addTextWrap(490 + $posiciongeneralx, $i + $posiciongeneraly, 45, 7, number_format($valor->CPDEC_Total, 4), 'right');
 
                         $i -= 17;
 
@@ -3514,14 +3513,14 @@ $this->cezpdf->addTextWrap(540 ,$y-220, 35, 8, number_format($total,3), 'right')
                     /* Inicio Totales */
                     // $this->cezpdf->addText(20, 360, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" valido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
                     /* inicio Total EN LETRAS */
-                    $this->cezpdf->addText(88 + $posiciongeneralx, 466 + $posiciongeneraly, 9, strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre);
+                    $this->cezpdf->addText(88 + $posiciongeneralx, 466 + $posiciongeneraly, 9, strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre);
                     $this->cezpdf->addText(488 + $posiciongeneralx, 448 + $posiciongeneraly, 7, $moneda_simbolo);
-                    $this->cezpdf->addTextWrap(489 + $posiciongeneralx, 448 + $posiciongeneraly, 45, 7, number_format($subtotal - $descuento, 2), 'right');
+                    $this->cezpdf->addTextWrap(489 + $posiciongeneralx, 448 + $posiciongeneraly, 45, 7, number_format($subtotal - $descuento, 4), 'right');
 
                     $this->cezpdf->addText(488 + $posiciongeneralx, 431 + $posiciongeneraly, 7, $moneda_simbolo);
-                    $this->cezpdf->addTextWrap(489 + $posiciongeneralx, 431 + $posiciongeneraly, 45, 7, number_format($igv, 2), 'right');
+                    $this->cezpdf->addTextWrap(489 + $posiciongeneralx, 431 + $posiciongeneraly, 45, 7, number_format($igv, 4), 'right');
                     $this->cezpdf->addText(488 + $posiciongeneralx, 413 + $posiciongeneraly, 7, $moneda_simbolo);
-                    $this->cezpdf->addTextWrap(489 + $posiciongeneralx, 413 + $posiciongeneraly, 45, 7, number_format($total, 2), 'right');
+                    $this->cezpdf->addTextWrap(489 + $posiciongeneralx, 413 + $posiciongeneraly, 45, 7, number_format($total, 4), 'right');
                     $this->cezpdf->addTextWrap(413 + $posiciongeneralx, 431 + $posiciongeneraly, 45, 7, $igv100, 'right');
 
 
@@ -3613,9 +3612,9 @@ $this->cezpdf->addTextWrap(540 ,$y-220, 35, 8, number_format($total,3), 'right')
                         $this->cezpdf->addText(88 + $posiciongeneralx, $i + $posiciongeneraly, 9, utf8_decode_seguro($valor->PROD_Nombre));
                         $this->cezpdf->addText(55 + $posiciongeneralx, $i + $posiciongeneraly, 9, $valor->CPDEC_Cantidad);
                         $this->cezpdf->addText(410 + $posiciongeneralx, $i + $posiciongeneraly, 9, $moneda_simbolo);
-                        $this->cezpdf->addTextWrap(412 + $posiciongeneralx, $i + $posiciongeneraly, 45, 9, number_format($pu_conigv, 2), 'right');
+                        $this->cezpdf->addTextWrap(412 + $posiciongeneralx, $i + $posiciongeneraly, 45, 9, number_format($pu_conigv, 4), 'right');
                         $this->cezpdf->addText(480 + $posiciongeneralx, $i + $posiciongeneraly, 9, $moneda_simbolo);
-                        $this->cezpdf->addTextWrap(490 + $posiciongeneralx, $i + $posiciongeneraly, 45, 9, number_format($valor->CPDEC_Total, 2), 'right');
+                        $this->cezpdf->addTextWrap(490 + $posiciongeneralx, $i + $posiciongeneraly, 45, 9, number_format($valor->CPDEC_Total, 4), 'right');
 
                         $i -= 16;
 
@@ -3625,7 +3624,7 @@ $this->cezpdf->addTextWrap(540 ,$y-220, 35, 8, number_format($total,3), 'right')
                     /* Inicio Totales */
                     // $this->cezpdf->addText(20, 360, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" valido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
                     /* inicio Total EN LETRAS */
-                    $this->cezpdf->addText($posiciongeneralx + 75, $posiciongeneraly + 480, 9, strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre);
+                    $this->cezpdf->addText($posiciongeneralx + 75, $posiciongeneraly + 480, 9, strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre);
                     /* fin Total EN LETRAS */
 //            $this->cezpdf->addText(500, 110, 9, $moneda_simbolo . ' ' . number_format($subtotal, 2));
                     //$this->cezpdf->addText(462, 306, 9, 'DCTO: '. $moneda_simbolo . ' ' . number_format($descuento, 2));
@@ -3635,9 +3634,9 @@ $this->cezpdf->addTextWrap(540 ,$y-220, 35, 8, number_format($total,3), 'right')
 
 
                     $this->cezpdf->addText(488 + $posiciongeneralx, 445 + $posiciongeneraly, 9, $moneda_simbolo);
-                    $this->cezpdf->addTextWrap(489 + $posiciongeneralx, 445 + $posiciongeneraly, 45, 9, number_format($igv, 2), 'right');
+                    $this->cezpdf->addTextWrap(489 + $posiciongeneralx, 445 + $posiciongeneraly, 45, 9, number_format($igv, 4), 'right');
                     $this->cezpdf->addText(488 + $posiciongeneralx, 427 + $posiciongeneraly, 9, $moneda_simbolo);
-                    $this->cezpdf->addTextWrap(489 + $posiciongeneralx, 427 + $posiciongeneraly, 45, 9, number_format($total, 2), 'right');
+                    $this->cezpdf->addTextWrap(489 + $posiciongeneralx, 427 + $posiciongeneraly, 45, 9, number_format($total, 4), 'right');
                     $this->cezpdf->addTextWrap(405 + $posiciongeneralx, 445 + $posiciongeneraly, 45, 9, $igv100, 'right');
 
 
@@ -3736,9 +3735,9 @@ $this->cezpdf->addTextWrap(540 ,$y-220, 35, 8, number_format($total,3), 'right')
                     $posicionX += 380;
                     $this->cezpdf->addText($posicionX, $posicionY, 9, $valor->CPDEC_Cantidad);
                     $posicionX += 35;
-                    $this->cezpdf->addText($posicionX, $posicionY, 9, $moneda_simbolo . ' ' . number_format($pu_conigv, 2));
+                    $this->cezpdf->addText($posicionX, $posicionY, 9, $moneda_simbolo . ' ' . number_format($pu_conigv, 4));
                     $posicionX += 55;
-                    $this->cezpdf->addText($posicionX, $posicionY, 9, $moneda_simbolo . ' ' . number_format($valor->CPDEC_Total, 2));
+                    $this->cezpdf->addText($posicionX, $posicionY, 9, $moneda_simbolo . ' ' . number_format($valor->CPDEC_Total, 4));
 
 
 //
@@ -3762,15 +3761,15 @@ $this->cezpdf->addTextWrap(540 ,$y-220, 35, 8, number_format($total,3), 'right')
                 }
                 /* Totales */
                 $this->cezpdf->addText(20, 260, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" vï¿½lido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
-                $this->cezpdf->addText(20, 245, 9, strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . ' ' . $moneda_simbolo . ' ' . number_format($total, 2));
+                $this->cezpdf->addText(20, 245, 9, strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . ' ' . $moneda_simbolo . ' ' . number_format($total, 4));
 
-                $this->cezpdf->addText(40, 215, 9, $moneda_simbolo . ' ' . number_format($subtotal, 2));
+                $this->cezpdf->addText(40, 215, 9, $moneda_simbolo . ' ' . number_format($subtotal, 4));
 
-                $this->cezpdf->addText(150, 215, 9, $moneda_simbolo . ' ' . number_format($descuento, 2));
+                $this->cezpdf->addText(150, 215, 9, $moneda_simbolo . ' ' . number_format($descuento, 4));
 
                 $this->cezpdf->addText(280, 215, 9, $moneda_simbolo . ' ' . (number_format($subtotal - $descuento, 2)));
-                $this->cezpdf->addText(400, 215, 9, $moneda_simbolo . ' ' . number_format($igv, 2));
-                $this->cezpdf->addText(500, 215, 9, $moneda_simbolo . ' ' . number_format(($total), 2));
+                $this->cezpdf->addText(400, 215, 9, $moneda_simbolo . ' ' . number_format($igv, 4));
+                $this->cezpdf->addText(500, 215, 9, $moneda_simbolo . ' ' . number_format(($total), 4));
 
                 $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'nama_file.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
                 $this->cezpdf->ezStream($cabecera);
@@ -4139,11 +4138,11 @@ $this->cezpdf->addText($posiciongeneralx + 520, $posiciongeneraly + 580, 9, utf8
                     
                     //if($modo_impresion=='1'){
 $this->cezpdf->addText(435, $i-190, 10, $moneda_simbolo);
-$this->cezpdf->addTextWrap(438, $i-190, 45, 10,number_format($pu_conigv, 2), 'right');
+$this->cezpdf->addTextWrap(438, $i-190, 45, 10,number_format($pu_conigv, 4), 'right');
 
                         //$this->cezpdf->addTextWrap(470, $i, 40, 9, $moneda_simbolo . '' . number_format($pu_conigv, 2), "right");
 $this->cezpdf->addText(525, $i-190, 10, $moneda_simbolo);
-$this->cezpdf->addTextWrap(538, $i-190, 45, 10,number_format($putotal_conigv, 2), 'right');
+$this->cezpdf->addTextWrap(538, $i-190, 45, 10,number_format($putotal_conigv, 4), 'right');
                   /*
                     }elseif($modo_impresion=='2')
                     {
@@ -4181,11 +4180,11 @@ $this->cezpdf->addText($posiciongeneralx + 117, $posiciongeneraly + 111, 9, strt
                 //-$this->cezpdf->addText(570 + $posiciongeneralx, 321 + $posiciongeneraly, 9, $moneda_simbolo);
                 //-$this->cezpdf->addTextWrap(570 + $posiciongeneralx, 321 + $posiciongeneraly, 45, 9, number_format(($total), 2), 'right');
 $this->cezpdf->addText($posiciongeneralx + 516, $posiciongeneraly + 88, 10, $moneda_simbolo);
-$this->cezpdf->addTextWrap($posiciongeneralx + 516, $posiciongeneraly + 88, 60, 10,number_format($subtotal - $descuento, 2), 'right');
+$this->cezpdf->addTextWrap($posiciongeneralx + 516, $posiciongeneraly + 88, 60, 10,number_format($subtotal - $descuento, 4), 'right');
 $this->cezpdf->addText($posiciongeneralx + 516, $posiciongeneraly + 59, 10, $moneda_simbolo);
-$this->cezpdf->addTextWrap($posiciongeneralx + 516, $posiciongeneraly + 59, 60, 10, number_format($igv, 2), 'right');
+$this->cezpdf->addTextWrap($posiciongeneralx + 516, $posiciongeneraly + 59, 60, 10, number_format($igv, 4), 'right');
 $this->cezpdf->addText($posiciongeneralx + 516, $posiciongeneraly + 34, 10, $moneda_simbolo);
-$this->cezpdf->addTextWrap($posiciongeneralx + 516, $posiciongeneraly + 34, 60, 10,  number_format(($total), 2), 'right');
+$this->cezpdf->addTextWrap($posiciongeneralx + 516, $posiciongeneraly + 34, 60, 10,  number_format(($total), 4), 'right');
 
                /* $this->cezpdf->addText($posiciongeneralx + 520, $posiciongeneraly + 88, 9, $moneda_simbolo);
                 $this->cezpdf->addTextWrap($posiciongeneralx + 510, $posiciongeneraly + 88, 60, 9, number_format($subtotal - $descuento, 2), 'right');
@@ -4308,9 +4307,9 @@ $this->cezpdf->addTextWrap($posiciongeneralx + 516, $posiciongeneraly + 34, 60, 
                     $posicionX += 380;
                     $this->cezpdf->addText($posicionX, $posicionY, 9, $valor->CPDEC_Cantidad);
                     $posicionX += 35;
-                    $this->cezpdf->addText($posicionX, $posicionY, 9, $moneda_simbolo . ' ' . number_format($pu_conigv, 2));
+                    $this->cezpdf->addText($posicionX, $posicionY, 9, $moneda_simbolo . ' ' . number_format($pu_conigv, 4));
                     $posicionX += 55;
-                    $this->cezpdf->addText($posicionX, $posicionY, 9, $moneda_simbolo . ' ' . number_format($valor->CPDEC_Total, 2));
+                    $this->cezpdf->addText($posicionX, $posicionY, 9, $moneda_simbolo . ' ' . number_format($valor->CPDEC_Total, 4));
 //
 //                if (count($datos_serie) > 0) {
 //                    $this->cezpdf->addText(40, $posicionY - 15, 9, "Series: ");
@@ -4332,12 +4331,12 @@ $this->cezpdf->addTextWrap($posiciongeneralx + 516, $posiciongeneraly + 34, 60, 
                 }
                 /* Totales */
                 $this->cezpdf->addText(20, 260, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" vï¿½lido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
-                $this->cezpdf->addText(20, 245, 9, strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . ' ' . $moneda_simbolo . ' ' . number_format($total, 2));
-                $this->cezpdf->addText(40, 215, 9, $moneda_simbolo . ' ' . number_format($subtotal, 2));
-                $this->cezpdf->addText(150, 215, 9, $moneda_simbolo . ' ' . number_format($descuento, 2));
+                $this->cezpdf->addText(20, 245, 9, strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . ' ' . $moneda_simbolo . ' ' . number_format($total, 4));
+                $this->cezpdf->addText(40, 215, 9, $moneda_simbolo . ' ' . number_format($subtotal, 4));
+                $this->cezpdf->addText(150, 215, 9, $moneda_simbolo . ' ' . number_format($descuento, 4));
                 $this->cezpdf->addText(280, 215, 9, $moneda_simbolo . ' ' . (number_format($subtotal - $descuento, 2)));
-                $this->cezpdf->addText(400, 215, 9, $moneda_simbolo . ' ' . number_format($igv, 2));
-                $this->cezpdf->addText(500, 215, 9, $moneda_simbolo . ' ' . number_format(($total), 2));
+                $this->cezpdf->addText(400, 215, 9, $moneda_simbolo . ' ' . number_format($igv, 4));
+                $this->cezpdf->addText(500, 215, 9, $moneda_simbolo . ' ' . number_format(($total), 4));
                 $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'nama_file.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
                 $this->cezpdf->ezStream($cabecera);
             }
@@ -4512,9 +4511,9 @@ $this->cezpdf->addTextWrap($posiciongeneralx + 516, $posiciongeneraly + 34, 60, 
                         $this->cezpdf->addText(88 + $posiciongeneralx, $i + $posiciongeneraly, 7, utf8_decode_seguro($valor->PROD_Nombre));
                         $this->cezpdf->addText(55 + $posiciongeneralx, $i + $posiciongeneraly, 7, $valor->CPDEC_Cantidad);
                         $this->cezpdf->addText(420 + $posiciongeneralx, $i + $posiciongeneraly, 7, $moneda_simbolo);
-                        $this->cezpdf->addTextWrap(425 + $posiciongeneralx, $i + $posiciongeneraly, 45, 7, number_format($pu_conigv, 2), 'right');
+                        $this->cezpdf->addTextWrap(425 + $posiciongeneralx, $i + $posiciongeneraly, 45, 7, number_format($pu_conigv, 4), 'right');
                         $this->cezpdf->addText(480 + $posiciongeneralx, $i + $posiciongeneraly, 7, $moneda_simbolo);
-                        $this->cezpdf->addTextWrap(490 + $posiciongeneralx, $i + $posiciongeneraly, 45, 7, number_format($valor->CPDEC_Total, 2), 'right');
+                        $this->cezpdf->addTextWrap(490 + $posiciongeneralx, $i + $posiciongeneraly, 45, 7, number_format($valor->CPDEC_Total, 4), 'right');
 
                         $i -= 17;
 
@@ -4527,12 +4526,12 @@ $this->cezpdf->addTextWrap($posiciongeneralx + 516, $posiciongeneraly + 34, 60, 
                     /* inicio Total EN LETRAS */
 
                     $this->cezpdf->addText(488 + $posiciongeneralx, 448 + $posiciongeneraly, 7, $moneda_simbolo);
-                    $this->cezpdf->addTextWrap(489 + $posiciongeneralx, 448 + $posiciongeneraly, 45, 7, number_format($subtotal - $descuento, 2), 'right');
+                    $this->cezpdf->addTextWrap(489 + $posiciongeneralx, 448 + $posiciongeneraly, 45, 7, number_format($subtotal - $descuento, 4), 'right');
 
                     $this->cezpdf->addText(488 + $posiciongeneralx, 431 + $posiciongeneraly, 7, $moneda_simbolo);
-                    $this->cezpdf->addTextWrap(489 + $posiciongeneralx, 431 + $posiciongeneraly, 45, 7, number_format($igv, 2), 'right');
+                    $this->cezpdf->addTextWrap(489 + $posiciongeneralx, 431 + $posiciongeneraly, 45, 7, number_format($igv, 4), 'right');
                     $this->cezpdf->addText(488 + $posiciongeneralx, 413 + $posiciongeneraly, 7, $moneda_simbolo);
-                    $this->cezpdf->addTextWrap(489 + $posiciongeneralx, 413 + $posiciongeneraly, 45, 7, number_format($total, 2), 'right');
+                    $this->cezpdf->addTextWrap(489 + $posiciongeneralx, 413 + $posiciongeneraly, 45, 7, number_format($total, 4), 'right');
                     $this->cezpdf->addTextWrap(413 + $posiciongeneralx, 431 + $posiciongeneraly, 45, 7, $igv100, 'right');
 
 
@@ -4625,9 +4624,9 @@ $this->cezpdf->addTextWrap($posiciongeneralx + 516, $posiciongeneraly + 34, 60, 
                         $this->cezpdf->addText(88 + $posiciongeneralx, $i + $posiciongeneraly, 7, utf8_decode_seguro($valor->PROD_Nombre));
                         $this->cezpdf->addText(55 + $posiciongeneralx, $i + $posiciongeneraly, 7, $valor->CPDEC_Cantidad);
                         $this->cezpdf->addText(410 + $posiciongeneralx, $i + $posiciongeneraly, 7, $moneda_simbolo);
-                        $this->cezpdf->addTextWrap(412 + $posiciongeneralx, $i + $posiciongeneraly, 45, 7, number_format($pu_conigv, 2), 'right');
+                        $this->cezpdf->addTextWrap(412 + $posiciongeneralx, $i + $posiciongeneraly, 45, 7, number_format($pu_conigv, 4), 'right');
                         $this->cezpdf->addText(480 + $posiciongeneralx, $i + $posiciongeneraly, 7, $moneda_simbolo);
-                        $this->cezpdf->addTextWrap(490 + $posiciongeneralx, $i + $posiciongeneraly, 45, 7, number_format($valor->CPDEC_Total, 2), 'right');
+                        $this->cezpdf->addTextWrap(490 + $posiciongeneralx, $i + $posiciongeneraly, 45, 7, number_format($valor->CPDEC_Total, 4), 'right');
 
                         $i -= 16;
 
@@ -4637,19 +4636,19 @@ $this->cezpdf->addTextWrap($posiciongeneralx + 516, $posiciongeneraly + 34, 60, 
                     /* Inicio Totales */
                     // $this->cezpdf->addText(20, 360, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" valido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
                     /* inicio Total EN LETRAS */
-                    $this->cezpdf->addText($posiciongeneralx + 75, $posiciongeneraly + 485, 9, strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre);
+                    $this->cezpdf->addText($posiciongeneralx + 75, $posiciongeneraly + 485, 9, strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre);
                     /* fin Total EN LETRAS */
 //            $this->cezpdf->addText(500, 110, 9, $moneda_simbolo . ' ' . number_format($subtotal, 2));
                     //$this->cezpdf->addText(462, 306, 9, 'DCTO: '. $moneda_simbolo . ' ' . number_format($descuento, 2));
 
                     $this->cezpdf->addText(488 + $posiciongeneralx, 468 + $posiciongeneraly, 7, $moneda_simbolo);
-                    $this->cezpdf->addTextWrap(489 + $posiciongeneralx, 468 + $posiciongeneraly, 45, 7, number_format($subtotal - $descuento, 2), 'right');
+                    $this->cezpdf->addTextWrap(489 + $posiciongeneralx, 468 + $posiciongeneraly, 45, 7, number_format($subtotal - $descuento, 4), 'right');
 
 
                     $this->cezpdf->addText(488 + $posiciongeneralx, 450 + $posiciongeneraly, 7, $moneda_simbolo);
-                    $this->cezpdf->addTextWrap(489 + $posiciongeneralx, 450 + $posiciongeneraly, 45, 7, number_format($igv, 2), 'right');
+                    $this->cezpdf->addTextWrap(489 + $posiciongeneralx, 450 + $posiciongeneraly, 45, 7, number_format($igv, 4), 'right');
                     $this->cezpdf->addText(488 + $posiciongeneralx, 432 + $posiciongeneraly, 7, $moneda_simbolo);
-                    $this->cezpdf->addTextWrap(489 + $posiciongeneralx, 432 + $posiciongeneraly, 45, 7, number_format($total, 2), 'right');
+                    $this->cezpdf->addTextWrap(489 + $posiciongeneralx, 432 + $posiciongeneraly, 45, 7, number_format($total, 4), 'right');
                     $this->cezpdf->addTextWrap(400 + $posiciongeneralx, 450 + $posiciongeneraly, 45, 7, $igv100, 'right');
 
 
@@ -4752,9 +4751,9 @@ $this->cezpdf->addTextWrap($posiciongeneralx + 516, $posiciongeneraly + 34, 60, 
                     $posicionX += 380;
                     $this->cezpdf->addText($posicionX, $posicionY, 9, $valor->CPDEC_Cantidad);
                     $posicionX += 35;
-                    $this->cezpdf->addText($posicionX, $posicionY, 9, $moneda_simbolo . ' ' . number_format($pu_conigv, 2));
+                    $this->cezpdf->addText($posicionX, $posicionY, 9, $moneda_simbolo . ' ' . number_format($pu_conigv, 4));
                     $posicionX += 55;
-                    $this->cezpdf->addText($posicionX, $posicionY, 9, $moneda_simbolo . ' ' . number_format($valor->CPDEC_Total, 2));
+                    $this->cezpdf->addText($posicionX, $posicionY, 9, $moneda_simbolo . ' ' . number_format($valor->CPDEC_Total, 4));
 
 
 //
@@ -4778,15 +4777,15 @@ $this->cezpdf->addTextWrap($posiciongeneralx + 516, $posiciongeneraly + 34, 60, 
                 }
                 /* Totales */
                 $this->cezpdf->addText(20, 260, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" vï¿½lido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
-                $this->cezpdf->addText(20, 245, 9, strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . ' ' . $moneda_simbolo . ' ' . number_format($total, 2));
+                $this->cezpdf->addText(20, 245, 9, strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . ' ' . $moneda_simbolo . ' ' . number_format($total, 4));
 
-                $this->cezpdf->addText(40, 215, 9, $moneda_simbolo . ' ' . number_format($subtotal, 2));
+                $this->cezpdf->addText(40, 215, 9, $moneda_simbolo . ' ' . number_format($subtotal, 4));
 
-                $this->cezpdf->addText(150, 215, 9, $moneda_simbolo . ' ' . number_format($descuento, 2));
+                $this->cezpdf->addText(150, 215, 9, $moneda_simbolo . ' ' . number_format($descuento, 4));
 
                 $this->cezpdf->addText(280, 215, 9, $moneda_simbolo . ' ' . (number_format($subtotal - $descuento, 2)));
-                $this->cezpdf->addText(400, 215, 9, $moneda_simbolo . ' ' . number_format($igv, 2));
-                $this->cezpdf->addText(500, 215, 9, $moneda_simbolo . ' ' . number_format(($total), 2));
+                $this->cezpdf->addText(400, 215, 9, $moneda_simbolo . ' ' . number_format($igv, 4));
+                $this->cezpdf->addText(500, 215, 9, $moneda_simbolo . ' ' . number_format(($total), 4));
 
                 $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'nama_file.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
                 $this->cezpdf->ezStream($cabecera);
@@ -4994,10 +4993,10 @@ $this->cezpdf->addText(430+$posiciongeneralx, 570+$posiciongeneraly, 9, utf8_dec
 //                $this->cezpdf->addText(120, $i, 9, utf8_decode_seguro($array_producto[0] . '  --- ' . $unidad));
 $this->cezpdf->addText(55, $i-210, 8, $valor->CPDEC_Cantidad);
 $this->cezpdf->addText(420, $i-210, 8, $moneda_simbolo);
-$this->cezpdf->addTextWrap(415, $i-210, 45, 8, number_format($pu_conigv, 2), 'right');
+$this->cezpdf->addTextWrap(415, $i-210, 45, 8, number_format($pu_conigv, 4), 'right');
                     //$this->cezpdf->addTextWrap(470, $i, 40, 9, $moneda_simbolo . '' . number_format($pu_conigv, 2), "right");//revisar http://pubsvn.ez.no/doxygen/4.0/html/classCpdf.html#a4c3091f0936a733aa7e7ff98b876f3b1
 $this->cezpdf->addText(500, $i-210, 8, $moneda_simbolo);
-$this->cezpdf->addTextWrap(510, $i-210, 44, 9, number_format($valor->CPDEC_Total, 2),"right");//." ".number_format($valor->CPDEC_Total, 2)
+$this->cezpdf->addTextWrap(510, $i-210, 44, 9, number_format($valor->CPDEC_Total, 4),"right");//." ".number_format($valor->CPDEC_Total, 2)
 
 /*
                     $this->cezpdf->addText(420, $i-210, 8, $moneda_simbolo);
@@ -5014,15 +5013,15 @@ $this->cezpdf->addTextWrap(510, $i-210, 44, 9, number_format($valor->CPDEC_Total
 
                 /* Totales */
                 // $this->cezpdf->addText(20, 360, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" valido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
-                $this->cezpdf->addText($posiciongeneralx + 70, $posiciongeneraly + 128, 9, strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre);
+                $this->cezpdf->addText($posiciongeneralx + 70, $posiciongeneraly + 128, 9, strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre);
 //            $this->cezpdf->addText(500, 110, 9, $moneda_simbolo . ' ' . number_format($subtotal, 2));
                 //$this->cezpdf->addText(462, 306, 9, 'DCTO: '. $moneda_simbolo . ' ' . number_format($descuento, 2));
 $this->cezpdf->addText($posiciongeneralx + 480, $posiciongeneraly + 102, 9, $moneda_simbolo);
-$this->cezpdf->addTextWrap($posiciongeneralx + 480, $posiciongeneraly + 102, 60, 9, number_format($subtotal - $descuento, 2), 'right');
+$this->cezpdf->addTextWrap($posiciongeneralx + 480, $posiciongeneraly + 102, 60, 9, number_format($subtotal - $descuento, 4), 'right');
 $this->cezpdf->addText($posiciongeneralx + 480, $posiciongeneraly + 80, 9, $moneda_simbolo);
-$this->cezpdf->addTextWrap($posiciongeneralx + 480, $posiciongeneraly + 80, 60, 9, number_format($igv, 2), 'right');
+$this->cezpdf->addTextWrap($posiciongeneralx + 480, $posiciongeneraly + 80, 60, 9, number_format($igv, 4), 'right');
 $this->cezpdf->addText($posiciongeneralx + 480, $posiciongeneraly + 55 , 9, $moneda_simbolo);
-$this->cezpdf->addTextWrap($posiciongeneralx + 480, $posiciongeneraly + 55, 60, 9, number_format(($total), 2), 'right');
+$this->cezpdf->addTextWrap($posiciongeneralx + 480, $posiciongeneraly + 55, 60, 9, number_format(($total), 4), 'right');
 /*
 $this->cezpdf->addText($posiciongeneralx + 480, $posiciongeneraly + 102, 9, $moneda_simbolo);
 $this->cezpdf->addTextWrap($posiciongeneralx + 480, $posiciongeneraly + 102, 60, 9, number_format($subtotal - $descuento, 2), 'right');
@@ -5161,9 +5160,9 @@ $this->cezpdf->addTextWrap($posiciongeneralx + 480, $posiciongeneraly + 55, 60, 
                     $posicionX += 380;
                     $this->cezpdf->addText($posicionX, $posicionY, 9, $valor->CPDEC_Cantidad);
                     $posicionX += 35;
-                    $this->cezpdf->addText($posicionX, $posicionY, 9, $moneda_simbolo . ' ' . number_format($pu_conigv, 2));
+                    $this->cezpdf->addText($posicionX, $posicionY, 9, $moneda_simbolo . ' ' . number_format($pu_conigv, 4));
                     $posicionX += 55;
-                    $this->cezpdf->addText($posicionX, $posicionY, 9, $moneda_simbolo . ' ' . number_format($valor->CPDEC_Total, 2));
+                    $this->cezpdf->addText($posicionX, $posicionY, 9, $moneda_simbolo . ' ' . number_format($valor->CPDEC_Total, 4));
 
 
 //
@@ -5187,15 +5186,15 @@ $this->cezpdf->addTextWrap($posiciongeneralx + 480, $posiciongeneraly + 55, 60, 
                 }
                 /* Totales */
                 $this->cezpdf->addText(20, 245, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" valido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
-                $this->cezpdf->addText(340, 245, 9, strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . ' ' . $moneda_simbolo . ' ' . number_format($total, 2));
+                $this->cezpdf->addText(340, 245, 9, strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . ' ' . $moneda_simbolo . ' ' . number_format($total, 4));
 
-                $this->cezpdf->addText(40, 215, 9, $moneda_simbolo . ' ' . number_format($subtotal, 2));
+                $this->cezpdf->addText(40, 215, 9, $moneda_simbolo . ' ' . number_format($subtotal, 4));
 
-                $this->cezpdf->addText(150, 215, 9, $moneda_simbolo . ' ' . number_format($descuento, 2));
+                $this->cezpdf->addText(150, 215, 9, $moneda_simbolo . ' ' . number_format($descuento, 4));
 
                 $this->cezpdf->addText(280, 215, 9, $moneda_simbolo . ' ' . (number_format($subtotal - $descuento, 2)));
-                $this->cezpdf->addText(400, 215, 9, $moneda_simbolo . ' ' . number_format($igv, 2));
-                $this->cezpdf->addText(500, 215, 9, $moneda_simbolo . ' ' . number_format(($total), 2));
+                $this->cezpdf->addText(400, 215, 9, $moneda_simbolo . ' ' . number_format($igv, 4));
+                $this->cezpdf->addText(500, 215, 9, $moneda_simbolo . ' ' . number_format(($total), 4));
 
                 $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'nama_file.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
                 $this->cezpdf->ezStream($cabecera);
@@ -5514,7 +5513,7 @@ $this->cezpdf->addTextWrap($posiciongeneralx + 480, $posiciongeneraly + 55, 60, 
 
                 /////alineado ppu
 
-                $ppu = $moneda_simbolo . number_format($valor->CPDEC_Pu_ConIgv, 2);
+                $ppu = $moneda_simbolo . number_format($valor->CPDEC_Pu_ConIgv, 4);
                 $ppu = $this->ali_precio($ppu);
                 $this->cezpdf->addText($positionx, $positiony, 7, $ppu);
 
@@ -5527,7 +5526,7 @@ $this->cezpdf->addTextWrap($posiciongeneralx + 480, $posiciongeneraly + 55, 60, 
 
                 /////alineado ppt
 
-                $ppt = $moneda_simbolo . number_format($valor->CPDEC_Total, 2);
+                $ppt = $moneda_simbolo . number_format($valor->CPDEC_Total, 4);
                 $ppt = $this->ali_precio($ppt);
                 $this->cezpdf->addText($positionx, $positiony, 7, $ppt);
 
@@ -5545,12 +5544,12 @@ $this->cezpdf->addTextWrap($posiciongeneralx + 480, $posiciongeneraly + 55, 60, 
             // $this->cezpdf->addText(20, 230, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" vï¿½lido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
 
 
-            $this->cezpdf->addText(52, $positiony - 54, 6, "SON: " . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . ' ' . $moneda_simbolo . ' ' . number_format($total, 2));
+            $this->cezpdf->addText(52, $positiony - 54, 6, "SON: " . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . ' ' . $moneda_simbolo . ' ' . number_format($total, 4));
 
 
             /////alineado ppto
 
-            $ppto = $moneda_simbolo . number_format($total, 2);
+            $ppto = $moneda_simbolo . number_format($total, 4);
             $ppto = $this->ali_precio($ppto);
             $this->cezpdf->addText($positionx - 156, $positiony - 78, 8, $ppto);
 
@@ -5676,9 +5675,9 @@ $this->cezpdf->addTextWrap($posiciongeneralx + 480, $posiciongeneraly + 55, 60, 
                 $positionx += 428;
                 $this->cezpdf->addText($positionx, $positiony, 7, $valor->CPDEC_Cantidad);
                 $positionx += 25;
-                $this->cezpdf->addText($positionx, $positiony, 7, $moneda_simbolo . ' ' . number_format($valor->CPDEC_Pu_ConIgv, 2));
+                $this->cezpdf->addText($positionx, $positiony, 7, $moneda_simbolo . ' ' . number_format($valor->CPDEC_Pu_ConIgv, 4));
                 $positionx += 50;
-                $this->cezpdf->addText($positionx, $positiony, 7, $moneda_simbolo . ' ' . number_format($valor->CPDEC_Total, 2));
+                $this->cezpdf->addText($positionx, $positiony, 7, $moneda_simbolo . ' ' . number_format($valor->CPDEC_Total, 4));
 // $this->cezpdf->addText($positionx, $positiony, 7, number_format($valor->CPDEC_Total, 2));
                 $this->cezpdf->addText(40, $positiony - 15, 7, "Series: " . $ser);
                 $positiony -= 40;
@@ -5690,8 +5689,8 @@ $this->cezpdf->addTextWrap($posiciongeneralx + 480, $posiciongeneraly + 55, 60, 
             $positiony = 120 + $delta;
 
             $this->cezpdf->addText(20, 230, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" vï¿½lido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
-            $this->cezpdf->addText(20, $positiony - 35, 9, strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . ' ' . $moneda_simbolo . ' ' . number_format($total, 2));
-            $this->cezpdf->addText($positionx + 100, $positiony - 38, 10, $moneda_simbolo . ' ' . number_format($total, 2));
+            $this->cezpdf->addText(20, $positiony - 35, 9, strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . ' ' . $moneda_simbolo . ' ' . number_format($total, 4));
+            $this->cezpdf->addText($positionx + 100, $positiony - 38, 10, $moneda_simbolo . ' ' . number_format($total, 4));
         }
 
         $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'nama_file.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
@@ -5857,10 +5856,10 @@ $this->cezpdf->addTextWrap($posiciongeneralx + 480, $posiciongeneraly + 55, 60, 
                         $this->cezpdf->addText($positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 9, strtoupper(utf8_decode_seguro($valor->PROD_Nombre)));
                         $positionx += 345; /* mueve todo P.UNIT. y el importe */
                         $this->cezpdf->addText($positionx + $posiciongeneralx - 12, $positiony + $posiciongeneraly, 9, $moneda_simbolo);
-                        $this->cezpdf->addTextWrap($positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 45, 9, number_format($valor->CPDEC_Pu_ConIgv, 2), 'right');
+                        $this->cezpdf->addTextWrap($positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 45, 9, number_format($valor->CPDEC_Pu_ConIgv, 4), 'right');
                         $positionx += 62;
                         $this->cezpdf->addText($positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 9, $moneda_simbolo);
-                        $this->cezpdf->addTextWrap($positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 60, 9, number_format($valor->CPDEC_Total, 2), 'right');
+                        $this->cezpdf->addTextWrap($positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 60, 9, number_format($valor->CPDEC_Total, 4), 'right');
                         $positiony -= 17;
                     }
 
@@ -5871,9 +5870,9 @@ $this->cezpdf->addTextWrap($posiciongeneralx + 480, $posiciongeneraly + 55, 60, 
                     $positiony = 350 + $delta;
                     // $this->cezpdf->addText(20, 230, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" vï¿½lido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
                     /*  MUEVE NRO TOTAL EN LETRAS */
-                    $this->cezpdf->addText(85 + $posiciongeneralx, $positiony - 3 + $posiciongeneraly, 9, "SON: " . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre);
+                    $this->cezpdf->addText(85 + $posiciongeneralx, $positiony - 3 + $posiciongeneraly, 9, "SON: " . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre);
                     /*  MUEVE EL TOTAL */
-                    $this->cezpdf->addText($positionx + 70 + $posiciongeneralx, $positiony - 28 + $posiciongeneraly, 10, $moneda_simbolo . ' ' . number_format($total, 2));
+                    $this->cezpdf->addText($positionx + 70 + $posiciongeneralx, $positiony - 28 + $posiciongeneraly, 10, $moneda_simbolo . ' ' . number_format($total, 4));
 
                     $posiciongeneralix = 0;
                     $posiciongeneraliy = 0;
@@ -5951,9 +5950,9 @@ $this->cezpdf->addTextWrap($posiciongeneralx + 480, $posiciongeneraly + 55, 60, 
                             $posicion1 = strrpos($nombacortado, ' ');
                             $this->cezpdf->addText($positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 8, strtoupper(utf8_decode_seguro(substr($nombreproducto, 0, $posicion1))));
                             $positionx += 115;
-                            $this->cezpdf->addTextWrap($positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 35, 8, number_format($valor->CPDEC_Pu_ConIgv, 2), 'right');
+                            $this->cezpdf->addTextWrap($positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 35, 8, number_format($valor->CPDEC_Pu_ConIgv, 4), 'right');
                             $positionx += 40;
-                            $this->cezpdf->addTextWrap($positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 35, 8, number_format($valor->CPDEC_Total, 2), 'right');
+                            $this->cezpdf->addTextWrap($positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 35, 8, number_format($valor->CPDEC_Total, 4), 'right');
                             $positiony -= 15;
                             $this->cezpdf->addText(60 + $posiciongeneralx, $positiony + $posiciongeneraly, 8, strtoupper(utf8_decode_seguro(substr($nombreproducto, $posicion1, 20))));
 
@@ -5963,9 +5962,9 @@ $this->cezpdf->addTextWrap($posiciongeneralx + 480, $posiciongeneraly + 55, 60, 
                         $prod_nombreimei = $valor->PROD_Nombre . ' / ' . $prod_nombreimei;
                         if ($valornombreproducto <= 25) {
                             $positionx += 115;
-                            $this->cezpdf->addTextWrap($positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 35, 8, number_format($valor->CPDEC_Pu_ConIgv, 2), 'right');
+                            $this->cezpdf->addTextWrap($positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 35, 8, number_format($valor->CPDEC_Pu_ConIgv, 4), 'right');
                             $positionx += 40;
-                            $this->cezpdf->addTextWrap($positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 35, 8, number_format($valor->CPDEC_Total, 2), 'right');
+                            $this->cezpdf->addTextWrap($positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 35, 8, number_format($valor->CPDEC_Total, 4), 'right');
                         }
 
 
@@ -5976,7 +5975,7 @@ $this->cezpdf->addTextWrap($posiciongeneralx + 480, $posiciongeneraly + 55, 60, 
                     $delta = 130;
                     $positionx = 427;
                     $positiony = 318 + $delta;
-                    $this->cezpdf->addText($positionx - 210 + $posiciongeneralx, $positiony - 63 + $posiciongeneraly, 8, number_format($total, 2));
+                    $this->cezpdf->addText($positionx - 210 + $posiciongeneralx, $positiony - 63 + $posiciongeneraly, 8, number_format($total, 4));
 
                     $posiciongeneralix = 0;
                     $posiciongeneraliy = 0;
@@ -6090,9 +6089,9 @@ $this->cezpdf->addTextWrap($posiciongeneralx + 480, $posiciongeneraly + 55, 60, 
                     $positionx += 428;
                     $this->cezpdf->addText($positionx, $positiony, 8, $valor->CPDEC_Cantidad);
                     $positionx += 25;
-                    $this->cezpdf->addText($positionx, $positiony, 8, $moneda_simbolo . ' ' . number_format($valor->CPDEC_Pu_ConIgv, 2));
+                    $this->cezpdf->addText($positionx, $positiony, 8, $moneda_simbolo . ' ' . number_format($valor->CPDEC_Pu_ConIgv, 4));
                     $positionx += 50;
-                    $this->cezpdf->addText($positionx, $positiony, 8, $moneda_simbolo . ' ' . number_format($valor->CPDEC_Total, 2));
+                    $this->cezpdf->addText($positionx, $positiony, 8, $moneda_simbolo . ' ' . number_format($valor->CPDEC_Total, 4));
 // $this->cezpdf->addText($positionx, $positiony, 7, number_format($valor->CPDEC_Total, 2));
                     $this->cezpdf->addText(40, $positiony - 15, 7, "Series: " . $ser);
                     $positiony -= 40;
@@ -6104,8 +6103,8 @@ $this->cezpdf->addTextWrap($posiciongeneralx + 480, $posiciongeneraly + 55, 60, 
                 $positiony = 120 + $delta;
 
                 $this->cezpdf->addText(20, 230, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" vï¿½lido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
-                $this->cezpdf->addText(20, $positiony - 35, 9, strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . ' ' . $moneda_simbolo . ' ' . number_format($total, 2));
-                $this->cezpdf->addText($positionx + 100, $positiony - 38, 10, $moneda_simbolo . ' ' . number_format($total, 2));
+                $this->cezpdf->addText(20, $positiony - 35, 9, strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . ' ' . $moneda_simbolo . ' ' . number_format($total, 4));
+                $this->cezpdf->addText($positionx + 100, $positiony - 38, 10, $moneda_simbolo . ' ' . number_format($total, 4));
             }
 
 
@@ -6281,12 +6280,12 @@ $db_data = array();
                          $this->cezpdf->addText(120 + $positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 6,substr($nombreproducto,0,50));
                         $positionx += 150;
 $this->cezpdf->addText(210 + $positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 7, $moneda_simbolo);
-$this->cezpdf->addTextWrap(215 + $positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 35, 7, number_format($valor->CPDEC_Pu_ConIgv, 2), 'right');
+$this->cezpdf->addTextWrap(215 + $positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 35, 7, number_format($valor->CPDEC_Pu_ConIgv, 4), 'right');
 
                       
     $this->cezpdf->addText(256 + $positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 7, $moneda_simbolo);
 
-     $this->cezpdf->addTextWrap(275 + $positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 35, 7, number_format($valor->CPDEC_Total, 2), 'right');
+     $this->cezpdf->addTextWrap(275 + $positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 35, 7, number_format($valor->CPDEC_Total, 4), 'right');
 
                         $positiony -= 1;
 
@@ -6300,12 +6299,12 @@ $this->cezpdf->addTextWrap(215 + $positionx + $posiciongeneralx, $positiony + $p
 $this->cezpdf->addText(120 + $positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 6,substr($nombreproducto,0,50));
                         $positionx += 150;
 $this->cezpdf->addText(210 + $positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 7, $moneda_simbolo);
-$this->cezpdf->addTextWrap(215 + $positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 35, 7, number_format($valor->CPDEC_Pu_ConIgv, 2), 'right');
+$this->cezpdf->addTextWrap(215 + $positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 35, 7, number_format($valor->CPDEC_Pu_ConIgv, 4), 'right');
 
                       
     $this->cezpdf->addText(256 + $positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 7, $moneda_simbolo);
 
-     $this->cezpdf->addTextWrap(275 + $positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 35, 7, number_format($valor->CPDEC_Total, 2), 'right');
+     $this->cezpdf->addTextWrap(275 + $positionx + $posiciongeneralx, $positiony + $posiciongeneraly, 35, 7, number_format($valor->CPDEC_Total, 4), 'right');
                     }
                     $positiony -= 10;
                 }
@@ -6314,7 +6313,7 @@ $this->cezpdf->addTextWrap(215 + $positionx + $posiciongeneralx, $positiony + $p
                 $delta = 130;
                 $positionx = 305;
                 $positiony = 438 + $delta;
- $this->cezpdf->addText($positionx + 140, $positiony- 300, 8, number_format($total, 1));
+ $this->cezpdf->addText($positionx + 140, $positiony- 300, 8, number_format($total, 4));
                
                 $posiciongeneralix = 0;
                 $posiciongeneraliy = 0;
@@ -6424,9 +6423,9 @@ $direccion=substr($datos_proveedor[0]->EMPRC_Direccion,0, 50);
                     $positionx += 428;
                     $this->cezpdf->addText($positionx, $positiony, 8, $valor->CPDEC_Cantidad);
                     $positionx += 25;
-                    $this->cezpdf->addText($positionx, $positiony, 8, $moneda_simbolo . ' ' . number_format($valor->CPDEC_Pu_ConIgv, 2));
+                    $this->cezpdf->addText($positionx, $positiony, 8, $moneda_simbolo . ' ' . number_format($valor->CPDEC_Pu_ConIgv, 4));
                     $positionx += 50;
-                    $this->cezpdf->addText($positionx, $positiony, 8, $moneda_simbolo . ' ' . number_format($valor->CPDEC_Total, 2));
+                    $this->cezpdf->addText($positionx, $positiony, 8, $moneda_simbolo . ' ' . number_format($valor->CPDEC_Total, 4));
 // $this->cezpdf->addText($positionx, $positiony, 7, number_format($valor->CPDEC_Total, 2));
 //                    $this->cezpdf->addText(40, $positiony - 15, 7, "Series: " . $ser);
                     $positiony -= 13;
@@ -6438,8 +6437,8 @@ $direccion=substr($datos_proveedor[0]->EMPRC_Direccion,0, 50);
                 $positiony = 120 + $delta;
 
                 $this->cezpdf->addText(20, 230, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" valido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
-                $this->cezpdf->addText(20, $positiony - 35, 9, strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . ' ' . $moneda_simbolo . ' ' . number_format($total, 2));
-                $this->cezpdf->addText($positionx + 130, $positiony - 38, 10, $moneda_simbolo . ' ' . number_format($total, 2));
+                $this->cezpdf->addText(20, $positiony - 35, 9, strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . ' ' . $moneda_simbolo . ' ' . number_format($total, 4));
+                $this->cezpdf->addText($positionx + 130, $positiony - 38, 10, $moneda_simbolo . ' ' . number_format($total, 4));
             }
 
             $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'nama_file.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
@@ -6841,7 +6840,7 @@ $direccion=substr($datos_proveedor[0]->EMPRC_Direccion,0, 50);
                 'col4' => $valor->OCOMC_Numero,
                 'col5' => $valor->cotizacion,
                 'col6' => $valor->nombre,
-                'col7' => $valor->MONED_Simbolo . ' ' . number_format($valor->OCOMC_total, 2),
+                'col7' => $valor->MONED_Simbolo . ' ' . number_format($valor->OCOMC_total, 4),
                 'col8' => $valor->aprobado,
                 'col9' => $valor->ingreso
             );
@@ -7460,8 +7459,8 @@ $direccion=substr($datos_proveedor[0]->EMPRC_Direccion,0, 50);
                 'item_unidad' => $valor->UNDMED_Simbolo,
                 'item_codigo' => $valor->PROD_CodigoUsuario,
                 'item_descripcion' => utf8_decode_seguro($valor->PROD_Nombre, true),
-                'item_precio_unitario' => number_format($pu_conigv, 2),
-                'item_importe' => number_format($valor->CPDEC_Total, 2)
+                'item_precio_unitario' => number_format($pu_conigv, 4),
+                'item_importe' => number_format($valor->CPDEC_Total, 4)
             );
         }
         $fecha_formato = $datos_comprobante[0]->CPC_Fecha;
@@ -7480,14 +7479,14 @@ $direccion=substr($datos_proveedor[0]->EMPRC_Direccion,0, 50);
         }
         $data['lista_items'] = $db_data;
         $data['cond_pago'] = $cond_pago;
-        $son = strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre;
+        $son = strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre;
         $data['igv100'] = $igv100;
         $data['total_texto'] = $son;
-        $data['total_bruto'] = $moneda_simbolo . ' ' . number_format($total, 2);
-        $data['igv'] = $moneda_simbolo . ' ' . number_format($igv, 2);
-        $data['subtotal'] = $moneda_simbolo . ' ' . number_format(($total - $igv), 2);
-        $data['total'] = $moneda_simbolo . ' ' . number_format($total, 2);
-        $data['descuento'] = $moneda_simbolo . ' ' . number_format($descuento, 2);
+        $data['total_bruto'] = $moneda_simbolo . ' ' . number_format($total, 4);
+        $data['igv'] = $moneda_simbolo . ' ' . number_format($igv, 4);
+        $data['subtotal'] = $moneda_simbolo . ' ' . number_format(($total - $igv), 4);
+        $data['total'] = $moneda_simbolo . ' ' . number_format($total, 4);
+        $data['descuento'] = $moneda_simbolo . ' ' . number_format($descuento, 4);
         $this->load->view('ventas/comprobante_ver_html', $data);
     }
 
@@ -7594,19 +7593,19 @@ $direccion=substr($datos_proveedor[0]->EMPRC_Direccion,0, 50);
                 'item_unidad' => $valor->UNDMED_Simbolo,
                 'item_codigo' => $valor->PROD_CodigoUsuario,
                 'item_descripcion' => utf8_decode_seguro($valor->PROD_Nombre, true),
-                'item_precio_unitario' => number_format($pu_conigv, 2),
-                'item_importe' => number_format($valor->CPDEC_Total, 2)
+                'item_precio_unitario' => number_format($pu_conigv, 4),
+                'item_importe' => number_format($valor->CPDEC_Total, 4)
             );
         }
         $data['lista_items'] = $db_data;
         $data['lista_items'] = $db_data;
-        $son = 'SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre;
+        $son = 'SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre;
         $data['total_texto'] = $son;
-        $data['total_bruto'] = $moneda_simbolo . ' ' . number_format($total, 2);
-        $data['igv'] = $moneda_simbolo . ' ' . number_format($igv, 2);
-        $data['subtotal'] = $moneda_simbolo . ' ' . number_format(($total - $igv), 2);
-        $data['total'] = $moneda_simbolo . ' ' . number_format($total, 2);
-        $data['descuento'] = $moneda_simbolo . ' ' . number_format($descuento, 2);
+        $data['total_bruto'] = $moneda_simbolo . ' ' . number_format($total, 4);
+        $data['igv'] = $moneda_simbolo . ' ' . number_format($igv, 4);
+        $data['subtotal'] = $moneda_simbolo . ' ' . number_format(($total - $igv), 4);
+        $data['total'] = $moneda_simbolo . ' ' . number_format($total, 4);
+        $data['descuento'] = $moneda_simbolo . ' ' . number_format($descuento, 4);
         $this->load->view('ventas/boleta_ver_html', $data);
     }
 
@@ -8177,7 +8176,7 @@ $db_data=array();
                 } else {
                     $nombre = $valor->nombre;
                 }
-                $total = $valor->MONED_Simbolo . ' ' . number_format($valor->CPC_total, 2);
+                $total = $valor->MONED_Simbolo . ' ' . number_format($valor->CPC_total, 4);
                $db_data[] = array(
                 'col1' => $indice + 1,
                 'col2' => $fecha,
@@ -8284,9 +8283,9 @@ $db_data=array();
            
    
 
-                $total = $valor->MONED_Simbolo . ' ' . number_format($valor->CPC_total, 2);
-                 $valorV = $valor->MONED_Simbolo . ' ' . number_format($valor->CPC_subtotal, 2);
-                  $igv = $valor->MONED_Simbolo . ' ' . number_format($valor->CPC_igv, 2);
+                $total = $valor->MONED_Simbolo . ' ' . number_format($valor->CPC_total, 4);
+                 $valorV = $valor->MONED_Simbolo . ' ' . number_format($valor->CPC_subtotal, 4);
+                  $igv = $valor->MONED_Simbolo . ' ' . number_format($valor->CPC_igv, 4);
 
                   $supertotal= $supertotal+$valor->CPC_total;
                $db_data[] = array(
@@ -8335,7 +8334,7 @@ $db_data=array();
             )
         ));
 
-        $supertot = $valor->MONED_Simbolo . ' ' . number_format($supertotal, 2);
+        $supertot = $valor->MONED_Simbolo . ' ' . number_format($supertotal, 4);
 
          $dbsupertotal[] = array(
                 'col11' => $supertot

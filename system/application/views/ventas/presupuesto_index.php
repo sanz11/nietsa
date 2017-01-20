@@ -205,7 +205,7 @@ if(empty($persona)) header("location:$url");
                                 <td width="7%">CODIGO</td>
                                 <td width="26%">RAZON SOCIAL</td>
                                 <td width="5%" >MENSAJE ENVIADOS</td>
-                                <td width="8%">TOTAL</td>
+                                <td width="10%">TOTAL</td>
 								<td width="4%">ESTADO</td>
                                 <td width="3%">&nbsp;</td>
                                 <td width="3%">&nbsp;</td>

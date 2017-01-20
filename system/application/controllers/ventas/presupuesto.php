@@ -133,7 +133,7 @@ class Presupuesto extends Controller{
                 )
                     $nombre_cliente = $valor->PRESUC_NombreAuxiliar;
                 $nom_tipodocu = $valor->nom_tipodocu;
-                $total = $valor->MONED_Simbolo . ' ' . number_format($valor->PRESUC_total, 2);
+                $total = $valor->MONED_Simbolo . ' ' . number_format($valor->PRESUC_total, 4);
                 $estado = $valor->PRESUC_FlagEstado;
                 $img_estado = ($estado == '1' ? "<img src='" . base_url() . "images/active.png' alt='Activo' title='Activo' />" : "<img src='" . base_url() . "images/inactive.png' alt='Anulado' title='Anulado' />");
                 $editar = "<a href='javascript:;' onclick='editar_presupuesto(" . $codigo . ")' target='_parent'><img src='" . base_url() . "images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
@@ -969,8 +969,8 @@ class Presupuesto extends Controller{
       <td>" . utf8_decode_seguro($valor->PROD_Nombre) . "</td>
       <td>" . $valor->UNDMED_Simbolo . "</td>
       <td>" . $valor->PRESDEC_Cantidad . "</td>
-      <td>" . number_format(($modo_impresion == '1' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2) . "</td>
-      <td>" . number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2) . "</td></tr>";
+      <td>" . number_format(($modo_impresion == '1' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 4) . "</td>
+      <td>" . number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 4) . "</td></tr>";
         }
         $xls .= "</table><br><br>";
         if (FORMATO_IMPRESION == 3) {
@@ -982,10 +982,10 @@ class Presupuesto extends Controller{
         }
         $xls .= "
 		 <table>
-			<tr><td colspan=5><b>SON : " . strtoupper(num2letras(round($total, 2))) . " $moneda_nombre</td>
-      <td><b>$subtotal_text</b></td><td><b>" . number_format($subtotal, 2) . "</b></td></tr>
-			<tr><td colspan=5></td><td><b>$igv_text</b></td><td><b>" . number_format($igv, 2) . "</b></td></tr>
-			<tr><td colspan=5></td><td><b>TOTAL $moneda_simbolo</b></td><td><b>" . number_format($total, 2) . "</b></td></tr>
+			<tr><td colspan=5><b>SON : " . strtoupper(num2letras(round($total, 4))) . " $moneda_nombre</td>
+      <td><b>$subtotal_text</b></td><td><b>" . number_format($subtotal, 4) . "</b></td></tr>
+			<tr><td colspan=5></td><td><b>$igv_text</b></td><td><b>" . number_format($igv, 4) . "</b></td></tr>
+			<tr><td colspan=5></td><td><b>TOTAL $moneda_simbolo</b></td><td><b>" . number_format($total, 4) . "</b></td></tr>
 		</table>
 		";
         $vendedor_nombre = '';
@@ -1202,8 +1202,8 @@ $cuenEmpreDolares="";
                 'cols3' => utf8_decode_seguro($valor->PROD_Nombre . ($valor->PROD_Modelo != '' ? ' - ' . $valor->PROD_Modelo : '')),
                 'cols4' => $valor->UNDMED_Simbolo,
                 'cols5' => $valor->PRESDEC_Cantidad,
-                'cols6' => number_format(($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2),
-                'cols7' => number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2)
+                'cols6' => number_format(($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 4),
+                'cols7' => number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 4)
             );
         }
         $col_names = array(
@@ -1235,12 +1235,12 @@ $cuenEmpreDolares="";
         $this->cezpdf->ezText('', '');
         // Totales 
         if ($tipo_docu != 'B') {
-            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>VALOR VENTA</b>', 'cols2' => '<b>' . number_format($subtotal, 2) . '</b>'),
-                array('cols0' => '', 'cols1' => '<b>IMPUESTO</b>', 'cols2' => '<b>' . number_format($igv, 2) . '</b>'),
-                array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>')
+            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>VALOR VENTA</b>', 'cols2' => '<b>' . number_format($subtotal, 4) . '</b>'),
+                array('cols0' => '', 'cols1' => '<b>IMPUESTO</b>', 'cols2' => '<b>' . number_format($igv, 4) . '</b>'),
+                array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 4) . '</b>')
             );
         } else {
-            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>'),
+            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 4) . '</b>'),
                 array('cols0' => '', 'cols1' => '', 'cols2' => '')
             );
         }
@@ -1694,8 +1694,8 @@ $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 
       <td>" . utf8_decode_seguro($valor->PROD_Nombre) . "</td>
       <td>" . $valor->UNDMED_Simbolo . "</td>
       <td>" . $valor->PRESDEC_Cantidad . "</td>
-      <td>" . number_format(($modo_impresion == '1' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2) . "</td>
-      <td>" . number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2) . "</td></tr>";
+      <td>" . number_format(($modo_impresion == '1' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 4) . "</td>
+      <td>" . number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 4) . "</td></tr>";
         }
 
         $xls .= "</table><br><br>";
@@ -1710,10 +1710,10 @@ $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 
         }
         $xls .= "
 		 <table>
-			<tr><td colspan=5><b>SON : " . strtoupper(num2letras(round($total, 2))) . " $moneda_nombre</td>
-      <td><b>$subtotal_text</b></td><td><b>" . number_format($subtotal, 2) . "</b></td></tr>
-			<tr><td colspan=5></td><td><b>$igv_text</b></td><td><b>" . number_format($igv, 2) . "</b></td></tr>
-			<tr><td colspan=5></td><td><b>TOTAL $moneda_simbolo</b></td><td><b>" . number_format($total, 2) . "</b></td></tr>
+			<tr><td colspan=5><b>SON : " . strtoupper(num2letras(round($total, 4))) . " $moneda_nombre</td>
+      <td><b>$subtotal_text</b></td><td><b>" . number_format($subtotal, 4) . "</b></td></tr>
+			<tr><td colspan=5></td><td><b>$igv_text</b></td><td><b>" . number_format($igv, 4) . "</b></td></tr>
+			<tr><td colspan=5></td><td><b>TOTAL $moneda_simbolo</b></td><td><b>" . number_format($total, 4) . "</b></td></tr>
 		</table>
 		";
 
@@ -1903,8 +1903,8 @@ $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 
                 'cols3' => utf8_decode_seguro($valor->PROD_Nombre),
                 'cols4' => $valor->UNDMED_Simbolo,
                 'cols5' => $valor->PRESDEC_Cantidad,
-                'cols6' => number_format(($modo_impresion == '1' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2),
-                'cols7' => number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2)
+                'cols6' => number_format(($modo_impresion == '1' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 4),
+                'cols7' => number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 4)
             );
         }
         $col_names = array(
@@ -1938,9 +1938,9 @@ $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 
         $this->cezpdf->ezText('', '');
 
         /* Totales */
-        $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>VALOR VENTA</b>', 'cols2' => '<b>' . number_format($subtotal, 2) . '</b>'),
-            array('cols0' => '', 'cols1' => '<b>IMPUESTO</b>', 'cols2' => '<b>' . number_format($igv, 2) . '</b>'),
-            array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>')
+        $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>VALOR VENTA</b>', 'cols2' => '<b>' . number_format($subtotal, 4) . '</b>'),
+            array('cols0' => '', 'cols1' => '<b>IMPUESTO</b>', 'cols2' => '<b>' . number_format($igv, 4) . '</b>'),
+            array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 4) . '</b>')
         );
         $this->cezpdf->ezTable($db_data, "", "", array(
             'width' => 525,
@@ -2138,8 +2138,8 @@ $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 
                 'cols3' => utf8_decode_seguro($valor->PROD_Nombre . ($valor->PROD_Modelo != '' ? ' - ' . $valor->PROD_Modelo : '')),
                 'cols4' => $valor->UNDMED_Simbolo,
                 'cols5' => $valor->PRESDEC_Cantidad,
-                'cols6' => number_format(($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2),
-                'cols7' => number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2)
+                'cols6' => number_format(($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 4),
+                'cols7' => number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 4)
             );
         }
         $col_names = array(
@@ -2174,12 +2174,12 @@ $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 
 
         /* Totales */
         if ($tipo_docu != 'B') {
-            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>VALOR VENTA</b>', 'cols2' => '<b>' . number_format($subtotal, 2) . '</b>'),
-                array('cols0' => '', 'cols1' => '<b>IMPUESTO</b>', 'cols2' => '<b>' . number_format($igv, 2) . '</b>'),
-                array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>')
+            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>VALOR VENTA</b>', 'cols2' => '<b>' . number_format($subtotal, 4) . '</b>'),
+                array('cols0' => '', 'cols1' => '<b>IMPUESTO</b>', 'cols2' => '<b>' . number_format($igv, 4) . '</b>'),
+                array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 4) . '</b>')
             );
         } else {
-            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>'),
+            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 4) . '</b>'),
                 array('cols0' => '', 'cols1' => '', 'cols2' => '')
             );
         }
@@ -2381,8 +2381,8 @@ $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 
                 'cols3' => utf8_decode_seguro($valor->PROD_Nombre . ($valor->PROD_Modelo != '' ? ' - ' . $valor->PROD_Modelo : '')),
                 'cols4' => $valor->UNDMED_Simbolo,
                 'cols5' => $valor->PRESDEC_Cantidad,
-                'cols6' => number_format(($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2),
-                'cols7' => number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2)
+                'cols6' => number_format(($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 4),
+                'cols7' => number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 4)
             );
         }
         $col_names = array(
@@ -2417,12 +2417,12 @@ $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 
 
         /* Totales */
         if ($tipo_docu != 'B') {
-            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>VALOR VENTA</b>', 'cols2' => '<b>' . number_format($subtotal, 2) . '</b>'),
-                array('cols0' => '', 'cols1' => '<b>IMPUESTO</b>', 'cols2' => '<b>' . number_format($igv, 2) . '</b>'),
-                array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>')
+            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>VALOR VENTA</b>', 'cols2' => '<b>' . number_format($subtotal, 4) . '</b>'),
+                array('cols0' => '', 'cols1' => '<b>IMPUESTO</b>', 'cols2' => '<b>' . number_format($igv, 4) . '</b>'),
+                array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 4) . '</b>')
             );
         } else {
-            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>'),
+            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 4) . '</b>'),
                 array('cols0' => '', 'cols1' => '', 'cols2' => '')
             );
         }
@@ -2706,12 +2706,12 @@ $this->cezpdf->ezImage("images/cabeceras/presupuestotek.jpg");
         $this->cezpdf->ezText('', '');
         /* Totales 29/08/2016*/
         if ($tipo_docu != 'B') {
-            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>VALOR VENTA</b>', 'cols2' => '<b>' . number_format($subtotal, 4) . '</b>'),
+            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>VALOR VENTA</b>', 'cols2' => '<b>' . number_format($subtotal, 4) . '</b>'),
                 array('cols0' => '', 'cols1' => '<b>IMPUESTO</b>', 'cols2' => '<b>' . number_format($igv, 4) . '</b>'),
-                array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>')
+                array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 4) . '</b>')
             );
         } else {
-            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 4) . '</b>'),
+            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 4) . '</b>'),
                 array('cols0' => '', 'cols1' => '', 'cols2' => '')
             );
         }
@@ -2927,8 +2927,8 @@ $this->cezpdf->ezImage("images/cabeceras/presupuestotek.jpg");
                 'cols3' => utf8_decode_seguro($valor->PROD_Nombre . ($valor->PROD_Modelo != '' ? ' - ' . $valor->PROD_Modelo : '')),
                 'cols4' => $valor->UNDMED_Simbolo,
                 'cols5' => $valor->PRESDEC_Cantidad,
-                'cols6' => number_format(($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2),
-                'cols7' => number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2)
+                'cols6' => number_format(($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 4),
+                'cols7' => number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 4)
             );
         }
         $col_names = array(
@@ -2963,12 +2963,12 @@ $this->cezpdf->ezImage("images/cabeceras/presupuestotek.jpg");
 
         /* Totales */
         if ($tipo_docu != 'B') {
-            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>VALOR VENTA</b>', 'cols2' => '<b>' . number_format($subtotal, 2) . '</b>'),
-                array('cols0' => '', 'cols1' => '<b>IMPUESTO</b>', 'cols2' => '<b>' . number_format($igv, 2) . '</b>'),
-                array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>')
+            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>VALOR VENTA</b>', 'cols2' => '<b>' . number_format($subtotal, 4) . '</b>'),
+                array('cols0' => '', 'cols1' => '<b>IMPUESTO</b>', 'cols2' => '<b>' . number_format($igv, 4) . '</b>'),
+                array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 4) . '</b>')
             );
         } else {
-            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>'),
+            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 4) . '</b>'),
                 array('cols0' => '', 'cols1' => '', 'cols2' => '')
             );
         }
@@ -3260,8 +3260,8 @@ $this->cezpdf->ezImage("images/cabeceras/presupuestotek.jpg");
                     'cols5' => utf8_decode_seguro($valor->PROD_Nombre),
                     'cols6' => $valor->UNDMED_Descripcion,
                     'cols7' => $valor->PRESDEC_Cantidad,
-                    'cols8' => number_format($pu_conigv, 2),
-                    'cols9' => number_format($valor->PRESDEC_Cantidad * $pu_conigv, 2)
+                    'cols8' => number_format($pu_conigv, 4),
+                    'cols9' => number_format($valor->PRESDEC_Cantidad * $pu_conigv, 4)
                 );
 
                 if ($contador == $total_items AND $sobrantes > 0) {
@@ -3315,8 +3315,8 @@ $this->cezpdf->ezImage("images/cabeceras/presupuestotek.jpg");
                         'cols5' => utf8_decode_seguro($valor->PROD_Nombre),
                         'cols6' => $valor->UNDMED_Simbolo,
                         'cols7' => $valor->PRESDEC_Cantidad,
-                        'cols8' => number_format($pu_conigv, 2),
-                        'cols9' => number_format($valor->PRESDEC_Cantidad * $pu_conigv, 2)
+                        'cols8' => number_format($pu_conigv, 4),
+                        'cols9' => number_format($valor->PRESDEC_Cantidad * $pu_conigv, 4)
                     );
 
                     if ($contador == $total_items) {
@@ -3410,8 +3410,8 @@ $this->cezpdf->ezImage("images/cabeceras/presupuestotek.jpg");
                         'cols5' => utf8_decode_seguro($valor->PROD_Nombre),
                         'cols6' => $valor->UNDMED_Simbolo,
                         'cols7' => $valor->PRESDEC_Cantidad,
-                        'cols8' => number_format($pu_conigv, 2),
-                        'cols9' => number_format($valor->PRESDEC_Cantidad * $pu_conigv, 2)
+                        'cols8' => number_format($pu_conigv, 4),
+                        'cols9' => number_format($valor->PRESDEC_Cantidad * $pu_conigv, 4)
                     );
 
                     if ($contador == $total_items) {
@@ -3456,9 +3456,9 @@ $this->cezpdf->ezImage("images/cabeceras/presupuestotek.jpg");
 
 
         /* Totales */
-        $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>SUBTOTAL</b>', 'cols2' => '<b>' . number_format($subtotal, 2) . '</b>'),
-            array('cols0' => '', 'cols1' => '<b>IGV</b>', 'cols2' => '<b>' . number_format($igv, 2) . '</b>'),
-            array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>')
+        $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>SUBTOTAL</b>', 'cols2' => '<b>' . number_format($subtotal, 4) . '</b>'),
+            array('cols0' => '', 'cols1' => '<b>IGV</b>', 'cols2' => '<b>' . number_format($igv, 4) . '</b>'),
+            array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 4) . '</b>')
         );
         $this->cezpdf_horizontal->ezTable($db_data, "", "", array(
             'width' => 730,
@@ -3655,8 +3655,8 @@ $this->cezpdf->ezImage("images/cabeceras/presupuestotek.jpg");
                 'cols3' => utf8_decode_seguro($valor->PROD_Nombre . ($valor->PROD_Modelo != '' ? ' - ' . $valor->PROD_Modelo : '')),
                 'cols4' => $valor->UNDMED_Simbolo,
                 'cols5' => $valor->PRESDEC_Cantidad,
-                'cols6' => number_format(($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2),
-                'cols7' => number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2)
+                'cols6' => number_format(($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 4),
+                'cols7' => number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 24)
             );
         }
         $col_names = array(
@@ -3691,12 +3691,12 @@ $this->cezpdf->ezImage("images/cabeceras/presupuestotek.jpg");
 
         /* Totales */
         if ($tipo_docu != 'B') {
-            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>VALOR VENTA</b>', 'cols2' => '<b>' . number_format($subtotal, 2) . '</b>'),
-                array('cols0' => '', 'cols1' => '<b>IMPUESTO</b>', 'cols2' => '<b>' . number_format($igv, 2) . '</b>'),
-                array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>')
+            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>VALOR VENTA</b>', 'cols2' => '<b>' . number_format($subtotal, 4) . '</b>'),
+                array('cols0' => '', 'cols1' => '<b>IMPUESTO</b>', 'cols2' => '<b>' . number_format($igv, 4) . '</b>'),
+                array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 4) . '</b>')
             );
         } else {
-            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>'),
+            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 4) . '</b>'),
                 array('cols0' => '', 'cols1' => '', 'cols2' => '')
             );
         }
@@ -3915,9 +3915,9 @@ foreach ($datos_umedida as $key => $value) {
                     $cantidad = $valor->PRESDEC_Cantidad;
                     $igv100 = $valor->PRESDEC_Igv100;
                     $pu = $valor->PRESDEC_Pu;
-                    $subtotal = round($valor->PRESDEC_Subtotal, 2);
+                    $subtotal = round($valor->PRESDEC_Subtotal, 4);
                     $igv = $valor->PRESDEC_Igv;
-                    $descuento = round($valor->PRESDEC_Descuento, 2);
+                    $descuento = round($valor->PRESDEC_Descuento, 4);
                     $total = $valor->PRESDEC_Total;
 
 
@@ -4190,8 +4190,8 @@ foreach ($datos_umedida as $key => $value) {
                 'cols3' => utf8_decode_seguro($valor->PROD_Nombre . ($valor->PROD_Modelo != '' ? ' - ' . $valor->PROD_Modelo : '')),
                 'cols4' => $valor->UNDMED_Simbolo,
                 'cols5' => $valor->PRESDEC_Cantidad,
-                'cols6' => number_format(($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2),
-                'cols7' => number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2)
+                'cols6' => number_format(($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 4),
+                'cols7' => number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 4)
             );
         }
         $col_names = array(
@@ -4223,12 +4223,12 @@ foreach ($datos_umedida as $key => $value) {
         $this->cezpdf->ezText('', '');
         /* Totales */
         if ($tipo_docu != 'B') {
-            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>VALOR VENTA</b>', 'cols2' => '<b>' . number_format($subtotal, 2) . '</b>'),
-                array('cols0' => '', 'cols1' => '<b>IMPUESTO</b>', 'cols2' => '<b>' . number_format($igv, 2) . '</b>'),
-                array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>')
+            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>VALOR VENTA</b>', 'cols2' => '<b>' . number_format($subtotal, 4) . '</b>'),
+                array('cols0' => '', 'cols1' => '<b>IMPUESTO</b>', 'cols2' => '<b>' . number_format($igv, 4) . '</b>'),
+                array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 4) . '</b>')
             );
         } else {
-            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>'),
+            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 4) . '</b>'),
                 array('cols0' => '', 'cols1' => '', 'cols2' => '')
             );
         }
@@ -4418,8 +4418,8 @@ foreach ($datos_umedida as $key => $value) {
                 'cols3' => utf8_decode_seguro($valor->PROD_Nombre . ($valor->PROD_Modelo != '' ? ' - ' . $valor->PROD_Modelo : '')),
                 'cols4' => $valor->UNDMED_Simbolo,
                 'cols5' => $valor->PRESDEC_Cantidad,
-                'cols6' => number_format(($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2),
-                'cols7' => number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2)
+                'cols6' => number_format(($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 4),
+                'cols7' => number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 4)
             );
         }
         $col_names = array(
@@ -4454,12 +4454,12 @@ foreach ($datos_umedida as $key => $value) {
 
         /* Totales */
         if ($tipo_docu != 'B') {
-            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>VALOR VENTA</b>', 'cols2' => '<b>' . number_format($subtotal, 2) . '</b>'),
-                array('cols0' => '', 'cols1' => '<b>IMPUESTO</b>', 'cols2' => '<b>' . number_format($igv, 2) . '</b>'),
-                array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>')
+            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>VALOR VENTA</b>', 'cols2' => '<b>' . number_format($subtotal, 4) . '</b>'),
+                array('cols0' => '', 'cols1' => '<b>IMPUESTO</b>', 'cols2' => '<b>' . number_format($igv, 4) . '</b>'),
+                array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 4) . '</b>')
             );
         } else {
-            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>'),
+            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 4) . '</b>'),
                 array('cols0' => '', 'cols1' => '', 'cols2' => '')
             );
         }
@@ -4641,8 +4641,8 @@ foreach ($datos_umedida as $key => $value) {
                 'cols3' => utf8_decode_seguro($valor->PROD_Nombre . ($valor->PROD_Modelo != '' ? ' - ' . $valor->PROD_Modelo : '')),
                 'cols4' => $valor->UNDMED_Simbolo,
                 'cols5' => $valor->PRESDEC_Cantidad,
-                'cols6' => number_format(($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2),
-                'cols7' => number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2)
+                'cols6' => number_format(($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 4),
+                'cols7' => number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 4)
             );
         }
         $col_names = array(
@@ -4674,12 +4674,12 @@ foreach ($datos_umedida as $key => $value) {
         $this->cezpdf->ezText('', '');
         /* Totales */
         if ($tipo_docu != 'B') {
-            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>VALOR VENTA</b>', 'cols2' => '<b>' . number_format($subtotal, 2) . '</b>'),
-                array('cols0' => '', 'cols1' => '<b>IMPUESTO</b>', 'cols2' => '<b>' . number_format($igv, 2) . '</b>'),
-                array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>')
+            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>VALOR VENTA</b>', 'cols2' => '<b>' . number_format($subtotal, 4) . '</b>'),
+                array('cols0' => '', 'cols1' => '<b>IMPUESTO</b>', 'cols2' => '<b>' . number_format($igv, 4) . '</b>'),
+                array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 4) . '</b>')
             );
         } else {
-            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>'),
+            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 4) . '</b>'),
                 array('cols0' => '', 'cols1' => '', 'cols2' => '')
             );
         }

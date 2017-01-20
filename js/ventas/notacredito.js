@@ -525,10 +525,10 @@ function calcula_totales() {
     importe_total = money_format(precio_total + igv_total);
     //preciototal=importe_total.toFixed(2)+igv_total.toFixed(2);
 
-    $("#importetotal").val(importe_total.toFixed(2));  //val(importe_total.toFixed(2))
-    $("#igvtotal").val(igv_total.toFixed(2));  //val(igv_total.toFixed(2))
-    $("#descuentotal").val(descuento_total.toFixed(2));
-    $("#preciototal").val(precio_total.toFixed(2));  //val(precio_total.toFixed(2))
+    $("#importetotal").val(importe_total.toFixed(4));  //val(importe_total.toFixed(2))
+    $("#igvtotal").val(igv_total.toFixed(4));  //val(igv_total.toFixed(2))
+    $("#descuentotal").val(descuento_total.toFixed(4));
+    $("#preciototal").val(precio_total.toFixed(4));  //val(precio_total.toFixed(2))
 
 
 }
@@ -552,9 +552,9 @@ function calcula_totales_conigv() {
             precio_total_conigv = money_format(precio_conigv + precio_total_conigv);
         }
     }
-    $("#importetotal").val(importe_total.toFixed(2));
-    $("#descuentotal_conigv").val(descuento_total_conigv.toFixed(2));
-    $("#preciototal_conigv").val(precio_total_conigv.toFixed(2));
+    $("#importetotal").val(importe_total.toFixed(4));
+    $("#descuentotal_conigv").val(descuento_total_conigv.toFixed(4));
+    $("#preciototal_conigv").val(precio_total_conigv.toFixed(4));
 }
 function mostrar_productos_factura(guias) {
     for (i = 0; i < guias.length; i++) {
@@ -1348,9 +1348,9 @@ function seleccionar_comprobante(guia, serie, numero_comprobante, tipo) {
             igv100 = parseInt($("#igv").val());
             igv_total = money_format(subTotal * igv100 / 100);
             importe_total = money_format(subTotal + igv_total);
-            $("#preciototal").val(subTotal.toFixed(2));  //val(importe_total.toFixed(2))
-            $("#igvtotal").val(igv_total.toFixed(2));  //val(igv_total.toFixed(2))
-            $("#importetotal").val(importe_total.toFixed(2));
+            $("#preciototal").val(subTotal.toFixed(4));  //val(importe_total.toFixed(2))
+            $("#igvtotal").val(igv_total.toFixed(4));  //val(igv_total.toFixed(2))
+            $("#importetotal").val(importe_total.toFixed(4));
 
         },
         error: function (HXR, error) {

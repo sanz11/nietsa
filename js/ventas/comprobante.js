@@ -117,7 +117,9 @@ jQuery(document).ready(function () {
         dataString = $('#frmComprobante').serialize();
          if (click) {
             console.log("valor  "+click);
-            click = false;    
+            click = false;  
+
+           
        // return false;
         $.ajax({
             type: "POST",
@@ -145,7 +147,7 @@ jQuery(document).ready(function () {
                         
                             $('#cancelarImprimirComprobante').click();
                         } else {
-                            $('#linkVerImpresion').click();
+                           $('#linkVerImpresion').click();
                         }
 
                         //location.href = base_url+"index.php/ventas/comprobante/comprobantes"+"/"+tipo_oper+"/"+tipo_docu;
@@ -168,9 +170,11 @@ jQuery(document).ready(function () {
 
 
         });
+  
         }else{
             console.log("valor "+click);
         }
+
 
     });
 
@@ -823,9 +827,9 @@ function calcula_importe2(n) {
 
         t_igv = money_format((importe * valor_igv) / 100);
         importe_total = money_format(importe + t_igv);
-        document.getElementById(g).value = importe_total.toFixed(2);
-        document.getElementById(e).value = t_igv.toFixed(2);
-        document.getElementById(f).value = importe.toFixed(2);
+        document.getElementById(g).value = importe_total.toFixed(4);
+        document.getElementById(e).value = t_igv.toFixed(4);
+        document.getElementById(f).value = importe.toFixed(4);
         calcula_totales();
     } else {
 
@@ -839,7 +843,7 @@ function calcula_importe2(n) {
 
         t_importe = money_format(importe - (importe * dsc));
 
-        document.getElementById(a).value = t_importe.toFixed(2);
+        document.getElementById(a).value = t_importe.toFixed(4);
         calcula_totales3();
     }
 }
@@ -858,8 +862,8 @@ function calcula_totales3() {
     $('#porcentaje').val('0.00');
     $('#descuentotal_conigv').val('0.00');
 
-    $('#importetotal').val(importe_total.toFixed(2));
-    $('#preciototal_conigv').val((importe_total / (1 + (parseFloat(igv) / 100))).toFixed(2));
+    $('#importetotal').val(importe_total.toFixed(4));
+    $('#preciototal_conigv').val((importe_total / (1 + (parseFloat(igv) / 100))).toFixed(4));
 
 }
 function descuento_porcentaje() {
@@ -880,9 +884,9 @@ function descuento_porcentaje() {
     total = sub_total - descuento;
     valor = (total * igv) / 100;
     importe_total = total + valor;
-    $('#igvtotal').val(valor.toFixed(2));
-    $('#descuentotal').val(descuento.toFixed(2));
-    $('#importetotal').val(importe_total.toFixed(2));
+    $('#igvtotal').val(valor.toFixed(4));
+    $('#descuentotal').val(descuento.toFixed(4));
+    $('#importetotal').val(importe_total.toFixed(4));
 
 }
 function incremento_visa() {
@@ -900,9 +904,9 @@ function incremento_visa() {
     //importe_total= importe+total;
     sub_total = (total / (igv / 100));
     igv_total = total - sub_total;
-    $('#importetotal').val(total.toFixed(2));
-    $('#igvtotal').val(igv_total.toFixed(2));
-    $('#preciototal').val(sub_total.toFixed(2));
+    $('#importetotal').val(total.toFixed(4));
+    $('#igvtotal').val(igv_total.toFixed(4));
+    $('#preciototal').val(sub_total.toFixed());
 
     //if($('#visa').val()== 0 ){ calcula_totales();}
 
@@ -965,14 +969,14 @@ function calcula_totales() {
     importe_total = money_format(precio_total + igv_total);
 
 
-    $("#importetotal").val(importe_total.toFixed(2));  //val(importe_total.toFixed(2))
-    $("#igvtotal").val(igv_total.toFixed(2));  //val(igv_total.toFixed(2))
-    $("#descuentotal").val(descuento_total.toFixed(2));
+    $("#importetotal").val(importe_total.toFixed(4));  //val(importe_total.toFixed(2))
+    $("#igvtotal").val(igv_total.toFixed(4));  //val(igv_total.toFixed(2))
+    $("#descuentotal").val(descuento_total.toFixed(4));
 
     if (tipo_oper == 'C')
-        $("#preciototal").val(precio_total.toFixed(2));  //val(precio_total.toFixed(2))
+        $("#preciototal").val(precio_total.toFixed(4));  //val(precio_total.toFixed(2))
     else
-        $("#preciototal").val(precio_total.toFixed(2));  //val(precio_total.toFixed(2))
+        $("#preciototal").val(precio_total.toFixed(4));  //val(precio_total.toFixed(2))
 }
 function calcula_totales_conigv() {
     n = document.getElementById('tblDetalleComprobante').rows.length;
@@ -995,9 +999,9 @@ function calcula_totales_conigv() {
     }
 
 
-    $("#importetotal").val(importe_total.toFixed(2));
-    $("#descuentotal_conigv").val(descuento_total_conigv.toFixed(2));
-    $("#preciototal_conigv").val(precio_total_conigv.toFixed(2));
+    $("#importetotal").val(importe_total.toFixed(4));
+    $("#descuentotal_conigv").val(descuento_total_conigv.toFixed(4));
+    $("#preciototal_conigv").val(precio_total_conigv.toFixed(4));
 }
 function mostrar_productos_factura(guias) {
     for (i = 0; i < guias.length; i++) {

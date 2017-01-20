@@ -278,8 +278,9 @@ $lista[] = array($item++, $fecha, $serie, $numero, $codigo_usuario, $nombre_alma
         $filterin->TIPOMOVC_Tipo = 2;
         $lista_almacen = $this->almacen_model->seleccionar();
         $lista_miEstablec = $this->emprestablecimiento_model->obtener($this->somevar['establec']);
-        $direccion_miEstablec = $lista_miEstablec[0]->EESTAC_Direccion . ' ' . $lista_miEstablec[0]->distrito . ' - ' . $lista_miEstablec[0]->provincia . ' - ' . $lista_miEstablec[0]->departamento;
 
+      $direccion_miEstablec  = $lista_miEstablec[0]->EESTAC_Direccion . ' ' . $lista_miEstablec[0]->distrito . ' - ' . $lista_miEstablec[0]->provincia . ' - ' . $lista_miEstablec[0]->departamento;
+      
         $data['cboAlmacen'] = form_dropdown("almacen", $lista_almacen, obtener_val_x_defecto($lista_almacen), " class='cajaGrande' id='almacen'");
         $data['cboDocumento'] = form_dropdown("referencia", $this->documento_model->seleccionar('1'), "1", " class='comboMedio' style='width:140px' id='referencia'");
         $data['cboTipoMov'] = form_dropdown("tipo_movimiento", $this->tipomovimiento_model->seleccionar($filterin), "0", " class='comboMedio' id='tipo_movimiento'");

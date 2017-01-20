@@ -4086,7 +4086,7 @@ class Producto extends Controller
 	  LEFT JOIN `cji_marca` ON `cji_marca`.`MARCP_Codigo` = `cji_producto`.`MARCP_Codigo`
 	  WHERE `cji_producto`.`PROD_FlagEstado` = 1 
 	  AND `cji_producto`.`PROD_CodigoUsuario`  
-	  LIKE '" . $keyword. "%' OR `cji_producto`.`PROD_Nombre` LIKE '%" .$repartir[0] . "%' and cji_marca.MARCC_Descripcion like '%".$repartir[1] ."%' ORDER BY `cji_producto`.`PROD_Nombre` limit 0,50");
+	  LIKE '" . $keyword. "%' OR `cji_producto`.`PROD_Nombre` LIKE '" .$repartir[0] . "%" .$repartir[1] . "%".$repartir[2]."%".$repartir[3] ."%' and cji_marca.MARCC_Descripcion like '%".$repartir[4] ."%' ORDER BY `cji_producto`.`PROD_Nombre` limit 0,50");
         $result = array();
         while ($data = mysql_fetch_assoc($query)) {
             $cod_prod = $data['PROD_Codigo'];

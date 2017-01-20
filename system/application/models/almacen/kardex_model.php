@@ -78,7 +78,7 @@ class kardex_Model extends Model {
 
         $this->db->group_by(array('cji_kardex.DOCUP_Codigo', 'cji_kardex.KARDC_CodigoDoc'));
 
-        $this->db->order_by('cji_kardex.KARDP_Codigo');
+        $this->db->order_by('cji_kardex.KARD_Fecha');
 
         $query = $this->db->get();
 

@@ -106,15 +106,15 @@ class Notacredito extends Controller
                 $producto = $valor->PROD_Codigo;
                 $unidad_medida = $valor->UNDMED_Codigo;
                 $cantidad = $valor->CREDET_Cantidad;
-                $igv100 = round($valor->CREDET_Igv100, 2);
-                $pu = round((($tipo_doc == 'F') ? $valor->CREDET_Pu : $valor->CREDET_Pu_ConIgv - ($valor->CREDET_Pu_ConIgv * $igv100 / 100)), 2);
-                $subtotal = round((($tipo_doc == 'F') ? $valor->CREDET_Subtotal : $pu * $cantidad), 2);
+                $igv100 = round($valor->CREDET_Igv100, 4);
+                $pu = round((($tipo_doc == 'F') ? $valor->CREDET_Pu : $valor->CREDET_Pu_ConIgv - ($valor->CREDET_Pu_ConIgv * $igv100 / 100)), 4);
+                $subtotal = round((($tipo_doc == 'F') ? $valor->CREDET_Subtotal : $pu * $cantidad), 4);
                 $igv = round($valor->CREDET_Igv, 2);
-                $descuento = round($valor->CREDET_Descuento, 2);
-                $total = round((($tipo_doc == 'F') ? $valor->CREDET_Total : $subtotal), 2);
-                $pu_conigv = round($valor->CREDET_Pu_ConIgv, 2);
-                $subtotal_conigv = round($valor->CREDET_Subtotal_ConIgv, 2);
-                $descuento_conigv = round($valor->CREDET_Descuento_ConIgv, 2);
+                $descuento = round($valor->CREDET_Descuento, 4);
+                $total = round((($tipo_doc == 'F') ? $valor->CREDET_Total : $subtotal), 4);
+                $pu_conigv = round($valor->CREDET_Pu_ConIgv, 4);
+                $subtotal_conigv = round($valor->CREDET_Subtotal_ConIgv, 4);
+                $descuento_conigv = round($valor->CREDET_Descuento_ConIgv, 4);
                 $observacion = $valor->CREDET_Observacion;
 
                 $datos_producto = $this->producto_model->obtener_producto($producto);
@@ -264,7 +264,7 @@ class Notacredito extends Controller
                 $guiarem_codigo = $valor->CRED_GuiaRemCodigo;
                 $docurefe_codigo = $valor->CRED_DocuRefeCodigo;
                 $nombre = $valor->nombre;
-                $total = $valor->MONED_Simbolo . ' ' . number_format($valor->CRED_total, 2);
+                $total = $valor->MONED_Simbolo . ' ' . number_format($valor->CRED_total, 4);
                 $estado = $valor->CRED_FlagEstado;
                 $estado_programacion = $valor->CRED_Flag;
                 $docInicio = $valor->CRED_TipoDocumento_inicio;
@@ -1280,9 +1280,9 @@ class Notacredito extends Controller
 
                     $this->cezpdf->addTextWrap(140, $i+20,200, 9, substr($producto_nom, 0, 45));
                     $this->cezpdf->addText(435, $i+20, 9, $moneda_sim);
-                    $this->cezpdf->addTextWrap(425, $i+20, 45, 9, number_format($pu, 2), 'right');
+                    $this->cezpdf->addTextWrap(425, $i+20, 45, 9, number_format($pu, 4), 'right');
                     $this->cezpdf->addText(500, $i+20, 9, $moneda_sim);
-                    $this->cezpdf->addTextWrap(490, $i+20, 50, 9, number_format($total1, 2), 'right');
+                    $this->cezpdf->addTextWrap(490, $i+20, 50, 9, number_format($total1, 4), 'right');
                     $i -= 16.8;
 
                 }
@@ -1387,7 +1387,7 @@ class Notacredito extends Controller
                 $this->cezpdf->addText(500, 460, 9, $moneda_sim);
                 $this->cezpdf->addTextWrap(490, 460, 55, 9, $igv, 'right');
                 $this->cezpdf->addText(500, 425, 9, $moneda_sim);
-                $this->cezpdf->addTextWrap(490, 425, 55, 9, number_format($importe, 2), 'right');
+                $this->cezpdf->addTextWrap(490, 425, 55, 9, number_format($importe, 4), 'right');
                 //$this->cezpdf->addText(56,490, 9, strtoupper(num2letras(round($importe, 2))) . ' ' . $moneda_nombre . ' ');
                 //$this->cezpdf->addText(146,482, 9, "S. E. u O.   ");
 //---------------------------------------------------------------------------------------------------------------		
@@ -1415,9 +1415,9 @@ class Notacredito extends Controller
 
                     $this->cezpdf->addTextWrap(140, $i-25,150, 8, substr($producto_nom, 0, 45));
                     $this->cezpdf->addText(435, $i-25, 9, $moneda_sim);
-                    $this->cezpdf->addTextWrap(425, $i-25, 45, 8, number_format($pu, 2), 'right');
+                    $this->cezpdf->addTextWrap(425, $i-25, 45, 8, number_format($pu, 4), 'right');
                     $this->cezpdf->addText(500, $i-25, 8, $moneda_sim);
-                    $this->cezpdf->addTextWrap(490, $i-25, 50, 8, number_format($total1, 2), 'right');
+                    $this->cezpdf->addTextWrap(490, $i-25, 50, 8, number_format($total1, 4), 'right');
                     $i -= 12;
                 }
 //---------------------------------------------------------------------------------------------------------------
@@ -1487,7 +1487,7 @@ class Notacredito extends Controller
 
     $this->cezpdf->addTextWrap(490, 605, 55, 8,$moneda_sim."    " .$subtotal, 'right');
     $this->cezpdf->addTextWrap(490, 592, 55, 8,$moneda_sim."    ". $igv, 'right');
-    $this->cezpdf->addTextWrap(490, 580, 55, 8,$moneda_sim."    ". number_format($importe, 2), 'right');
+    $this->cezpdf->addTextWrap(490, 580, 55, 8,$moneda_sim."    ". number_format($importe, 4), 'right');
                 //------------------------------------------------------------------------------------------------------------------------
             }
         } else {
@@ -1509,8 +1509,8 @@ class Notacredito extends Controller
                     //$this->cezpdf->addText(5, $i, 9, $cod_interno);
                     $this->cezpdf->addText(35 + $posiciongeneralx, $i + $posiciongeneraly, 9, $cantidad);
                     $this->cezpdf->addText(85 + $posiciongeneralx, $i + $posiciongeneraly, 9, substr($producto_nom, 0, 45));
-                    $this->cezpdf->addText(422 + $posiciongeneralx, $i + $posiciongeneraly, 9, $moneda_sim . ' ' . number_format($pu, 2));
-                    $this->cezpdf->addText(492 + $posiciongeneralx, $i + $posiciongeneraly, 9, $moneda_sim . ' ' . number_format($total1, 2));
+                    $this->cezpdf->addText(422 + $posiciongeneralx, $i + $posiciongeneraly, 9, $moneda_sim . ' ' . number_format($pu, 4));
+                    $this->cezpdf->addText(492 + $posiciongeneralx, $i + $posiciongeneraly, 9, $moneda_sim . ' ' . number_format($total1, 4));
                     $i -= 16.8;
                 }
 
@@ -1648,7 +1648,7 @@ class Notacredito extends Controller
                 $this->cezpdf->addText(25, 433, 9, $moneda_sim . ' ' . $subtotal);
                 $this->cezpdf->addText(300, 433, 9, $moneda_sim . ' ' . $subtotal);
                 $this->cezpdf->addText(410, 433, 9, $moneda_sim . ' ' . $igv);
-                $this->cezpdf->addText(496, 433, 9, $moneda_sim . ' ' . number_format($importe, 2));
+                $this->cezpdf->addText(496, 433, 9, $moneda_sim . ' ' . number_format($importe, 4));
 
                 //$this->cezpdf->addText(60,200, 9, strtoupper(num2letras(round($importe, 2))) . ' ' . $moneda_nombre . ' ');
                 /*$this->cezpdf->addText(150, 192, 9, "S. E. u O.   ");	*/
@@ -2066,7 +2066,7 @@ class Notacredito extends Controller
                 'col4' => $valor->OCOMC_Numero,
                 'col5' => $valor->cotizacion,
                 'col6' => $valor->nombre,
-                'col7' => $valor->MONED_Simbolo . ' ' . number_format($valor->OCOMC_total, 2),
+                'col7' => $valor->MONED_Simbolo . ' ' . number_format($valor->OCOMC_total, 4),
                 'col8' => $valor->aprobado,
                 'col9' => $valor->ingreso
             );
@@ -2674,8 +2674,8 @@ class Notacredito extends Controller
                 'item_unidad' => $valor->UNDMED_Simbolo,
                 'item_codigo' => $valor->PROD_CodigoUsuario,
                 'item_descripcion' => utf8_decode_seguro($valor->PROD_Nombre, true),
-                'item_precio_unitario' => number_format($pu_conigv, 2),
-                'item_importe' => number_format($valor->CREDET_Total, 2)
+                'item_precio_unitario' => number_format($pu_conigv, 4),
+                'item_importe' => number_format($valor->CREDET_Total, 4)
             );
         }
         $fecha_formato = $datos_comprobante[0]->CPC_Fecha;
@@ -2694,14 +2694,14 @@ class Notacredito extends Controller
         }
         $data['lista_items'] = $db_data;
         $data['cond_pago'] = $cond_pago;
-        $son = strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre;
+        $son = strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre;
         $data['igv100'] = $igv100;
         $data['total_texto'] = $son;
-        $data['total_bruto'] = $moneda_simbolo . ' ' . number_format($total, 2);
-        $data['igv'] = $moneda_simbolo . ' ' . number_format($igv, 2);
-        $data['subtotal'] = $moneda_simbolo . ' ' . number_format(($total - $igv), 2);
-        $data['total'] = $moneda_simbolo . ' ' . number_format($total, 2);
-        $data['descuento'] = $moneda_simbolo . ' ' . number_format($descuento, 2);
+        $data['total_bruto'] = $moneda_simbolo . ' ' . number_format($total, 4);
+        $data['igv'] = $moneda_simbolo . ' ' . number_format($igv, 4);
+        $data['subtotal'] = $moneda_simbolo . ' ' . number_format(($total - $igv), 4);
+        $data['total'] = $moneda_simbolo . ' ' . number_format($total, 4);
+        $data['descuento'] = $moneda_simbolo . ' ' . number_format($descuento, 4);
         $this->load->view('ventas/comprobante_ver_html', $data);
     }
 
@@ -2808,19 +2808,19 @@ class Notacredito extends Controller
                 'item_unidad' => $valor->UNDMED_Simbolo,
                 'item_codigo' => $valor->PROD_CodigoUsuario,
                 'item_descripcion' => utf8_decode_seguro($valor->PROD_Nombre, true),
-                'item_precio_unitario' => number_format($pu_conigv, 2),
-                'item_importe' => number_format($valor->CPDEC_Total, 2)
+                'item_precio_unitario' => number_format($pu_conigv, 4),
+                'item_importe' => number_format($valor->CPDEC_Total, 4)
             );
         }
         $data['lista_items'] = $db_data;
         $data['lista_items'] = $db_data;
-        $son = 'SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre;
+        $son = 'SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre;
         $data['total_texto'] = $son;
-        $data['total_bruto'] = $moneda_simbolo . ' ' . number_format($total, 2);
-        $data['igv'] = $moneda_simbolo . ' ' . number_format($igv, 2);
-        $data['subtotal'] = $moneda_simbolo . ' ' . number_format(($total - $igv), 2);
-        $data['total'] = $moneda_simbolo . ' ' . number_format($total, 2);
-        $data['descuento'] = $moneda_simbolo . ' ' . number_format($descuento, 2);
+        $data['total_bruto'] = $moneda_simbolo . ' ' . number_format($total, 4);
+        $data['igv'] = $moneda_simbolo . ' ' . number_format($igv, 4);
+        $data['subtotal'] = $moneda_simbolo . ' ' . number_format(($total - $igv), 4);
+        $data['total'] = $moneda_simbolo . ' ' . number_format($total, 4);
+        $data['descuento'] = $moneda_simbolo . ' ' . number_format($descuento, 4);
         $this->load->view('ventas/boleta_ver_html', $data);
     }
 

@@ -119,7 +119,7 @@ class Ocompra extends Controller
 
 
                 $simbolo_moneda = $datos_moneda[0]->MONED_Simbolo;
-                $monto_total = $simbolo_moneda . " " . number_format($total, 2);
+                $monto_total = $simbolo_moneda . " " . number_format($total, 4);
 
                 if ($tipo == 0) {
                     $datos_persona = $this->persona_model->obtener_datosPersona($persona);
@@ -1436,8 +1436,8 @@ $data['cboMiContacto'] = form_dropdown("formapago", $this->directivo_model->list
                     'col3' => $prod_unidad,
                     'col4' => $prod_codigo,
                     'col5' => utf8_decode_seguro($prod_nombre),
-                    'col6' => number_format($pu, 2),
-                    'col7' => number_format($importe, 2)
+                    'col6' => number_format($pu, 4),
+                    'col7' => number_format($importe, 4)
                 );
             }
         }
@@ -1470,11 +1470,11 @@ $data['cboMiContacto'] = form_dropdown("formapago", $this->directivo_model->list
         $this->cezpdf->ezText('', '');
         /*         * Sub Totales* */
         $data_subtotal = array(
-            array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => 'Sub-total', 'cols3' => $simbolo_moneda . " " . number_format($subtotal, 2)),
-            array('cols0' => '', 'cols1' => 'Descuento    ' . $descuento100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($descuentototal, 2)),
-            array('cols0' => '', 'cols1' => 'I.G.V.           ' . $igv100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($igvtotal, 2)),
-            array('cols0' => '', 'cols1' => utf8_decode_seguro('Percepción') . '   ' . $percepcion100 . ' %', 'cols3' => $simbolo_moneda . " " . number_format($percepcion, 2)),
-            array('cols0' => '', 'cols1' => 'Total', 'cols3' => $simbolo_moneda . " " . number_format($total, 2))
+            array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => 'Sub-total', 'cols3' => $simbolo_moneda . " " . number_format($subtotal, 4)),
+            array('cols0' => '', 'cols1' => 'Descuento    ' . $descuento100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($descuentototal, 4)),
+            array('cols0' => '', 'cols1' => 'I.G.V.           ' . $igv100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($igvtotal, 4)),
+            array('cols0' => '', 'cols1' => utf8_decode_seguro('Percepción') . '   ' . $percepcion100 . ' %', 'cols3' => $simbolo_moneda . " " . number_format($percepcion, 4)),
+            array('cols0' => '', 'cols1' => 'Total', 'cols3' => $simbolo_moneda . " " . number_format($total, 4))
         );
         $this->cezpdf->ezTable($data_subtotal, "", "", array(
             'width' => 525,
@@ -1629,8 +1629,8 @@ $data['cboMiContacto'] = form_dropdown("formapago", $this->directivo_model->list
                     'col3' => $prod_cantidad,
                     'col4' => $prod_unidad,
                     'col5' => utf8_decode_seguro($prod_nombre),
-                    'col6' => number_format($pu, 2),
-                    'col7' => number_format($importe, 2)
+                    'col6' => number_format($pu, 4),
+                    'col7' => number_format($importe, 4)
                 );
             }
         }
@@ -1663,11 +1663,11 @@ $data['cboMiContacto'] = form_dropdown("formapago", $this->directivo_model->list
         $this->cezpdf->ezText('', '');
         /*         * Sub Totales* */
         $data_subtotal = array(
-            array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => 'Sub-total', 'cols3' => $simbolo_moneda . " " . number_format($subtotal, 2)),
-            array('cols0' => '', 'cols1' => 'Descuento  ' . $descuento100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($descuentototal, 2)),
-            array('cols0' => '', 'cols1' => 'I.G.V.        ' . $igv100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($igvtotal, 2)),
-            array('cols0' => '', 'cols1' => utf8_decode_seguro('Percepción'), 'cols3' => $simbolo_moneda . " " . number_format($percepcion, 2)),
-            array('cols0' => '', 'cols1' => 'Total', 'cols3' => $simbolo_moneda . " " . number_format($total, 2))
+            array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => 'Sub-total', 'cols3' => $simbolo_moneda . " " . number_format($subtotal, 4)),
+            array('cols0' => '', 'cols1' => 'Descuento  ' . $descuento100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($descuentototal, 4)),
+            array('cols0' => '', 'cols1' => 'I.G.V.        ' . $igv100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($igvtotal, 4)),
+            array('cols0' => '', 'cols1' => utf8_decode_seguro('Percepción'), 'cols3' => $simbolo_moneda . " " . number_format($percepcion, 4)),
+            array('cols0' => '', 'cols1' => 'Total', 'cols3' => $simbolo_moneda . " " . number_format($total, 4))
         );
         $this->cezpdf->ezTable($data_subtotal, "", "", array(
             'width' => 525,
@@ -1821,8 +1821,8 @@ $data['cboMiContacto'] = form_dropdown("formapago", $this->directivo_model->list
                     'col3' => $prod_cantidad,
                     'col4' => $prod_unidad,
                     'col5' => utf8_decode_seguro($prod_nombre),
-                    'col6' => number_format($pu, 2),
-                    'col7' => number_format($importe, 2)
+                    'col6' => number_format($pu, 4),
+                    'col7' => number_format($importe, 4)
                 );
             }
         }
@@ -1856,11 +1856,11 @@ $data['cboMiContacto'] = form_dropdown("formapago", $this->directivo_model->list
 
         /*         * Sub Totales* */
         $data_subtotal = array(
-            array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => 'Sub-total', 'cols3' => $simbolo_moneda . " " . number_format($subtotal, 2)),
-            array('cols0' => '', 'cols1' => 'Descuento  ' . $descuento100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($descuentototal, 2)),
-            array('cols0' => '', 'cols1' => 'I.G.V.        ' . $igv100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($igvtotal, 2)),
-            array('cols0' => '', 'cols1' => utf8_decode_seguro('Percepción'), 'cols3' => $simbolo_moneda . " " . number_format($percepcion, 2)),
-            array('cols0' => '', 'cols1' => 'Total', 'cols3' => $simbolo_moneda . " " . number_format($total, 2))
+            array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => 'Sub-total', 'cols3' => $simbolo_moneda . " " . number_format($subtotal, 4)),
+            array('cols0' => '', 'cols1' => 'Descuento  ' . $descuento100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($descuentototal, 4)),
+            array('cols0' => '', 'cols1' => 'I.G.V.        ' . $igv100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($igvtotal, 4)),
+            array('cols0' => '', 'cols1' => utf8_decode_seguro('Percepción'), 'cols3' => $simbolo_moneda . " " . number_format($percepcion, 4)),
+            array('cols0' => '', 'cols1' => 'Total', 'cols3' => $simbolo_moneda . " " . number_format($total, 4))
         );
         $this->cezpdf->ezTable($data_subtotal, "", "", array(
             'width' => 525,
@@ -2012,8 +2012,8 @@ $data['cboMiContacto'] = form_dropdown("formapago", $this->directivo_model->list
                     'col3' => $prod_cantidad,
                     'col4' => $prod_unidad,
                     'col5' => utf8_decode_seguro($prod_nombre),
-                    'col6' => number_format($pu, 2),
-                    'col7' => number_format($importe, 2)
+                    'col6' => number_format($pu, 4),
+                    'col7' => number_format($importe, 4)
                 );
             }
         }
@@ -2046,11 +2046,11 @@ $data['cboMiContacto'] = form_dropdown("formapago", $this->directivo_model->list
         $this->cezpdf->ezText('', '');
         /*         * Sub Totales* */
         $data_subtotal = array(
-            array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => 'Sub-total', 'cols3' => $simbolo_moneda . " " . number_format($subtotal, 2)),
-            array('cols0' => '', 'cols1' => 'Descuento  ' . $descuento100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($descuentototal, 2)),
-            array('cols0' => '', 'cols1' => 'I.G.V.        ' . $igv100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($igvtotal, 2)),
-            array('cols0' => '', 'cols1' => utf8_decode_seguro('Percepción'), 'cols3' => $simbolo_moneda . " " . number_format($percepcion, 2)),
-            array('cols0' => '', 'cols1' => 'Total', 'cols3' => $simbolo_moneda . " " . number_format($total, 2))
+            array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => 'Sub-total', 'cols3' => $simbolo_moneda . " " . number_format($subtotal, 4)),
+            array('cols0' => '', 'cols1' => 'Descuento  ' . $descuento100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($descuentototal, 4)),
+            array('cols0' => '', 'cols1' => 'I.G.V.        ' . $igv100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($igvtotal, 4)),
+            array('cols0' => '', 'cols1' => utf8_decode_seguro('Percepción'), 'cols3' => $simbolo_moneda . " " . number_format($percepcion, 4)),
+            array('cols0' => '', 'cols1' => 'Total', 'cols3' => $simbolo_moneda . " " . number_format($total, 4))
         );
         $this->cezpdf->ezTable($data_subtotal, "", "", array(
             'width' => 525,
@@ -2279,8 +2279,8 @@ $data['cboMiContacto'] = form_dropdown("formapago", $this->directivo_model->list
                     'col3' => $prod_unidad,
                     'col4' => $prod_codigo,
                     'col5' => utf8_decode_seguro($prod_nombre),
-                    'col6' => number_format($pu, 2),
-                    'col7' => number_format($importe, 2)
+                    'col6' => number_format($pu, 4),
+                    'col7' => number_format($importe, 4)
                 );
             }
         }
@@ -2326,11 +2326,11 @@ $data['cboMiContacto'] = form_dropdown("formapago", $this->directivo_model->list
 //        }else{
         ///
         $data_subtotal = array(
-            array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => 'Sub-total', 'cols3' => $simbolo_moneda . " " . number_format($subtotal, 2)),
-            array('cols0' => '', 'cols1' => 'Descuento    ' . $descuento100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($descuentototal, 2)),
-            array('cols0' => '', 'cols1' => 'I.G.V.           ' . $igv100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($igvtotal, 2)),
+            array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => 'Sub-total', 'cols3' => $simbolo_moneda . " " . number_format($subtotal, 4)),
+            array('cols0' => '', 'cols1' => 'Descuento    ' . $descuento100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($descuentototal, 4)),
+            array('cols0' => '', 'cols1' => 'I.G.V.           ' . $igv100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($igvtotal, 4)),
             //array('cols0' => '', 'cols1' => utf8_decode_seguro('Percepción') . '   ' . $percepcion100 . ' %', 'cols3' => $simbolo_moneda . " " . number_format($percepcion, 2)),
-            array('cols0' => '', 'cols1' => 'Total', 'cols3' => $simbolo_moneda . " " . number_format($total, 2))
+            array('cols0' => '', 'cols1' => 'Total', 'cols3' => $simbolo_moneda . " " . number_format($total, 4))
         );
         ///stv
         //}
@@ -2542,8 +2542,8 @@ $data['cboMiContacto'] = form_dropdown("formapago", $this->directivo_model->list
                     'col3' => $prod_cantidad,
                     'col4' => $prod_unidad,
                     'col5' => utf8_decode_seguro($prod_nombre),
-                    'col6' => number_format($pu, 2),
-                    'col7' => number_format($importe, 2)
+                    'col6' => number_format($pu, 4),
+                    'col7' => number_format($importe, 4)
                 );
             }
         }
@@ -2576,11 +2576,11 @@ $data['cboMiContacto'] = form_dropdown("formapago", $this->directivo_model->list
         $this->cezpdf->ezText('', '');
         /*         * Sub Totales* */
         $data_subtotal = array(
-            array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => 'Sub-total', 'cols3' => $simbolo_moneda . " " . number_format($subtotal, 2)),
-            array('cols0' => '', 'cols1' => 'Descuento  ' . $descuento100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($descuentototal, 2)),
-            array('cols0' => '', 'cols1' => 'I.G.V.        ' . $igv100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($igvtotal, 2)),
-            array('cols0' => '', 'cols1' => utf8_decode_seguro('Percepción'), 'cols3' => $simbolo_moneda . " " . number_format($percepcion, 2)),
-            array('cols0' => '', 'cols1' => 'Total', 'cols3' => $simbolo_moneda . " " . number_format($total, 2))
+            array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => 'Sub-total', 'cols3' => $simbolo_moneda . " " . number_format($subtotal, 4)),
+            array('cols0' => '', 'cols1' => 'Descuento  ' . $descuento100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($descuentototal, 4)),
+            array('cols0' => '', 'cols1' => 'I.G.V.        ' . $igv100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($igvtotal, 4)),
+            array('cols0' => '', 'cols1' => utf8_decode_seguro('Percepción'), 'cols3' => $simbolo_moneda . " " . number_format($percepcion, 4)),
+            array('cols0' => '', 'cols1' => 'Total', 'cols3' => $simbolo_moneda . " " . number_format($total, 4))
         );
         $this->cezpdf->ezTable($data_subtotal, "", "", array(
             'width' => 525,
@@ -2736,8 +2736,8 @@ $data['cboMiContacto'] = form_dropdown("formapago", $this->directivo_model->list
                     'col3' => $prod_cantidad,
                     'col4' => $prod_unidad,
                     'col5' => utf8_decode_seguro($prod_nombre),
-                    'col6' => number_format($pu, 2),
-                    'col7' => number_format($importe, 2)
+                    'col6' => number_format($pu, 4),
+                    'col7' => number_format($importe, 4)
                 );
             }
         }
@@ -2771,11 +2771,11 @@ $data['cboMiContacto'] = form_dropdown("formapago", $this->directivo_model->list
 
         /*         * Sub Totales* */
         $data_subtotal = array(
-            array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => 'Sub-total', 'cols3' => $simbolo_moneda . " " . number_format($subtotal, 2)),
-            array('cols0' => '', 'cols1' => 'Descuento  ' . $descuento100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($descuentototal, 2)),
-            array('cols0' => '', 'cols1' => 'I.G.V.        ' . $igv100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($igvtotal, 2)),
-            array('cols0' => '', 'cols1' => utf8_decode_seguro('Percepción'), 'cols3' => $simbolo_moneda . " " . number_format($percepcion, 2)),
-            array('cols0' => '', 'cols1' => 'Total', 'cols3' => $simbolo_moneda . " " . number_format($total, 2))
+            array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => 'Sub-total', 'cols3' => $simbolo_moneda . " " . number_format($subtotal, 4)),
+            array('cols0' => '', 'cols1' => 'Descuento  ' . $descuento100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($descuentototal, 4)),
+            array('cols0' => '', 'cols1' => 'I.G.V.        ' . $igv100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($igvtotal, 4)),
+            array('cols0' => '', 'cols1' => utf8_decode_seguro('Percepción'), 'cols3' => $simbolo_moneda . " " . number_format($percepcion, 4)),
+            array('cols0' => '', 'cols1' => 'Total', 'cols3' => $simbolo_moneda . " " . number_format($total, 4))
         );
         $this->cezpdf->ezTable($data_subtotal, "", "", array(
             'width' => 525,
@@ -2933,8 +2933,8 @@ $data['cboMiContacto'] = form_dropdown("formapago", $this->directivo_model->list
                     'col3' => $prod_cantidad,
                     'col4' => $prod_unidad,
                     'col5' => utf8_decode_seguro($prod_nombre),
-                    'col6' => number_format($pu, 2),
-                    'col7' => number_format($importe, 2)
+                    'col6' => number_format($pu, 4),
+                    'col7' => number_format($importe, 4)
                 );
             }
         }
@@ -2967,11 +2967,11 @@ $data['cboMiContacto'] = form_dropdown("formapago", $this->directivo_model->list
         $this->cezpdf->ezText('', '');
         /*         * Sub Totales* */
         $data_subtotal = array(
-            array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => 'Sub-total', 'cols3' => $simbolo_moneda . " " . number_format($subtotal, 2)),
-            array('cols0' => '', 'cols1' => 'Descuento  ' . $descuento100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($descuentototal, 2)),
-            array('cols0' => '', 'cols1' => 'I.G.V.        ' . $igv100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($igvtotal, 2)),
-            array('cols0' => '', 'cols1' => utf8_decode_seguro('Percepción'), 'cols3' => $simbolo_moneda . " " . number_format($percepcion, 2)),
-            array('cols0' => '', 'cols1' => 'Total', 'cols3' => $simbolo_moneda . " " . number_format($total, 2))
+            array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 4))) . ' ' . $moneda_nombre . '</b>', 'cols1' => 'Sub-total', 'cols3' => $simbolo_moneda . " " . number_format($subtotal, 4)),
+            array('cols0' => '', 'cols1' => 'Descuento  ' . $descuento100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($descuentototal, 4)),
+            array('cols0' => '', 'cols1' => 'I.G.V.        ' . $igv100 . '%', 'cols3' => $simbolo_moneda . " " . number_format($igvtotal, 4)),
+            array('cols0' => '', 'cols1' => utf8_decode_seguro('Percepción'), 'cols3' => $simbolo_moneda . " " . number_format($percepcion, 4)),
+            array('cols0' => '', 'cols1' => 'Total', 'cols3' => $simbolo_moneda . " " . number_format($total, 4))
         );
         $this->cezpdf->ezTable($data_subtotal, "", "", array(
             'width' => 525,
@@ -3086,7 +3086,7 @@ $data['cboMiContacto'] = form_dropdown("formapago", $this->directivo_model->list
                   $tipo = $datos_proveedor[0]->PROVC_TipoPersona; */
 
                 $simbolo_moneda = $valor->MONED_Simbolo;
-                $monto_total = $simbolo_moneda . " " . number_format($total, 2);
+                $monto_total = $simbolo_moneda . " " . number_format($total, 4);
                 $nro_cotizacion = $cotizacion;
                 if ($nro_pedido == 0)
                     $nro_pedido = "***";
@@ -3627,7 +3627,7 @@ $data['cboMiContacto'] = form_dropdown("formapago", $this->directivo_model->list
                 'col3' => $valor->OCOMC_Numero,
                 'col4' => $valor->cotizacion,
                 'col5' => $valor->nombre,
-                'col6' => $valor->MONED_Simbolo . ' ' . number_format($valor->OCOMC_total, 2),
+                'col6' => $valor->MONED_Simbolo . ' ' . number_format($valor->OCOMC_total, 4),
                 'col7' => $valor->aprobado,
                 'col8' => $valor->ingreso
             );

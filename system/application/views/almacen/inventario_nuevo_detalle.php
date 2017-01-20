@@ -365,10 +365,49 @@
 
 
             }
+  function ingresarInventario(){
 
+    var url= $("#baseurl").val();
+    var dataString=$("#frmInsertar").serialize();
+    var url4=url+"index.php/almacen/inventario/ingresarInventario2";
+    $.ajax({
+        type: "POST",
+        url: url4,
+        data: dataString,
+        success: function(result){
+            alert(result);
+        //$("#div1").html(result);
+    }});
+    }
+    function ingresarInventarioKardex(){
+       var url= $("#baseurl").val();
+        var url= $("#baseurl").val();
+    var dataString=$("#frmInsertar").serialize();
+    
+       var url4=url+"index.php/almacen/inventario/ingresar_kardex2";
+    $.ajax({type: "POST",
+        url: url4,
+        data: dataString,success: function(result){
+            alert(result);
+        //$("#div1").html(result);
+    }});
+    }
         </script>
 
         <div align="center">
+        <form id="frmInsertar">
+            Numero en que empesara
+            <input type="" name="inicio" id="inicio"><br><br>
+            Numero final de carga
+            <input type="" name="final" id="final"><br><br>
+            <input size="3" type="text" name="inventario" id="inventario" value="<?=$cod_inventario?>">
+          <input type="hidden" name="" id="baseurl" value="<?=base_url()?>">         
+<a href="#" onclick="ingresarInventario()">INGRESAR INVENTARIADO</a>
+
+<a href="#" onclick="ingresarInventarioKardex()">INGRESAR KARDEX</a>      
+           
+        </form>
+            
             <div id="tituloForm" class="header"><?php echo $titulo; ?></div>
             <div id="frmBusqueda">
                 <table class="" border="0" style="width: 100%; font: 12px helvetica">
@@ -402,11 +441,13 @@
                 </table>
 
                 <form id="frmGuardar" method="post" action="<?php echo $action; ?>">
+
                     <table class="" border="0" style="width: 100%; font: 12px helvetica">
                         <tr>
                             <td style="width: 17%; text-align: left">
                                 Producto:
                             </td>
+
                             <td colspan="3">
                                 <input type="hidden" name="cod_inventario"
                                        value="<?php echo $cod_inventario ?>">
