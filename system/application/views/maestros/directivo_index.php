@@ -27,7 +27,7 @@
             </div>
 <div class="acciones">
             <div id="botonBusqueda">
-               <?php if (FORMATO_IMPRESION != 8) { ?><!--<ul id="imprimirDirectivo" class="lista_botones"><li id="imprimir">Imprimir</li></ul>--><?php } ?>
+               <?php if (FORMATO_IMPRESION != 8) { ?><ul id="imprimirDirectivo" class="lista_botones"><li id="imprimir">Imprimir</li></ul><?php } ?>
                 <ul id="nuevoDirectivo" class="lista_botones"><li id="nuevo">Nuevo Empleado</li></ul>
                 <ul id="limpiarDirectivo" class="lista_botones"><li id="limpiar">Limpiar</li></ul>
                 <ul id="buscarDirectivo" class="lista_botones"><li id="buscar">Buscar</li></ul>

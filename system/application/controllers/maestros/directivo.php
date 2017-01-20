@@ -395,6 +395,109 @@ class Directivo extends Controller {
 
         $this->directivos();
     }
+    public function registro_directivo_pdf ($documento='', $nombre='')
+    {
+
+        $this->load->library('cezpdf');
+        $this->load->helper('pdf_helper');
+        //prep_pdf();
+        $this->cezpdf = new Cezpdf('a4');
+        $datacreator = array(
+            'Title' => 'Estadillo de ',
+            'Name' => 'Estadillo de ',
+            'Author' => 'Vicente Producciones',
+            'Subject' => 'PDF con Tablas',
+            'Creator' => 'info@vicenteproducciones.com',
+            'Producer' => 'http://www.vicenteproducciones.com'
+        );
+
+        $this->cezpdf->addInfo($datacreator);
+        $this->cezpdf->selectFont(APPPATH . 'libraries/fonts/Helvetica.afm');
+        $delta = 20;
+
+            
+
+//        $this->cezpdf->ezText('', '', array("leading" => 100));
+        $this->cezpdf->ezText('<b>LISTADO EMPLEADOS</b>', 14, array("leading" => 0, 'left' => 185));
+        $this->cezpdf->ezText('', '', array("leading" => 10));
+
+
+        /* Datos del cliente */
+
+
+//        /* Listado de detalles */
+
+        $db_data = array();
+
+
+        $listado_directivo = $this->directivo_model->listar_directivo_pdf($documento,$nombre);
+    
+            if (count($listado_directivo) > 0) {
+                foreach ($listado_directivo as $indice => $valor) {
+                    $dni = $valor->dni;
+                    $nombre = $valor->nombre." ".$valor->paterno." ".$valor->materno;
+                    $empresa = $valor->empresa;
+                    $cargo = $valor->cargo;
+                    $contrato = $valor->Nro_Contrato;
+                    $inicio = $valor->Inicio;
+                    $fin = $valor->Fin;
+
+
+                    $db_data[] = array(
+                        'cols1' => $indice + 1,
+                        'cols2' => $dni,
+                        'cols3' => $nombre,
+                        'cols4' => $empresa,
+                        'cols5' => $cargo,
+                        'cols6' => $contrato,
+                        'cols7' => $inicio,
+                        'cols8' => $fin
+
+                    );
+                }
+            }
+
+        
+
+
+        $col_names = array(
+            'cols1' => '<b>ITEM</b>',
+            'cols2' => '<b>DNI</b>',
+            'cols3' => '<b>NOMBRE</b>',
+            'cols4' => '<b>EMPRESA</b>',
+            'cols5' => '<b>CARGO</b>',
+            'cols6' => '<b>CONTRATO</b>',
+            'cols7' => '<b>FECH. INICIO</b>',
+            'cols8' => '<b>FECH. FIN</b>'
+        );
+
+        $this->cezpdf->ezTable($db_data, $col_names, '', array(
+            'width' => 650,
+            'showLines' => 1,
+            'shaded' => 1,
+            'showHeadings' => 1,
+            'xPos' => 'center',
+            'fontSize' => 7,
+            'cols' => array(
+                'cols1' => array('width' => 30, 'justification' => 'center'),
+                'cols2' => array('width' => 45, 'justification' => 'center'),
+                'cols3' => array('width' => 80, 'justification' => 'left'),
+                'cols4' => array('width' => 100, 'justification' => 'center'),
+                'cols5' => array('width' => 50, 'justification' => 'center'),
+                'cols6' => array('width' =>50, 'justification' => 'left'),
+                'cols7' => array('width' => 50, 'justification' => 'center'),
+                'cols8' => array('width' => 50, 'justification' => 'center')
+            )
+        ));
+
+
+        $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => $codificacion . '.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
+
+        ob_end_clean();
+
+        $this->cezpdf->ezStream($cabecera);
+    }
+
 
     //A_Editar
     public function editar_directivo($id) {

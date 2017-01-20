@@ -666,7 +666,7 @@ class Cliente extends Controller
         $this->cezpdf->selectFont(APPPATH . 'libraries/fonts/Helvetica.afm');
         $delta = 20;
 
-        $this->cezpdf->ezText('<b>LISTADO DE CLIENTES</b>'.$nombre.$documento, 14, array("leading" => 0, 'left' => 185));
+        $this->cezpdf->ezText('<b>LISTADO DE CLIENTES</b>', 14, array("leading" => 0, 'left' => 185));
         $this->cezpdf->ezText('', '', array("leading" => 10));
 
         $db_data = array();
