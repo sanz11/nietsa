@@ -24,16 +24,17 @@ jQuery(document).ready(function(){
     $("#imprimirCliente").click(function(){
             var docum = $("#txtNumDoc").val();
             var nomb = $("#txtNombre").val();
-            
+          
             
 
-            var documento = sintilde(docum);
-            var nombre = sintilde(nomb);
-        ///
-          if(docum==""){documento="--";}
-          if(nomb==""){nombre="--";}
+            var docum = sintilde(docum);
+            var nomb = sintilde(nomb);
+        ///  
+           if(docum==""){docum="--";}
+          if(nomb==""){nomb="--";}
+         
 
-        url = base_url+"index.php/ventas/cliente/registro_cliente_pdf/"+documento+"/"+ nombrest;
+        url = base_url+"index.php/ventas/cliente/registro_cliente_pdf/--/"+ docum +"/"+ nomb;
         window.open(url,'',"width=800,height=600,menubars=no,resizable=no;");
     });
 
@@ -275,6 +276,27 @@ jQuery(document).ready(function(){
 function editar_cliente(cliente){
         var url = base_url+"index.php/ventas/cliente/editar_cliente/"+cliente;
 	$("#zonaContenido").load(url);
+}
+function sintilde(cadena){
+   
+   var specialChars = "!@#$^&%*()+=[]\/{}|:<>?,.";
+
+   
+   for (var i = 0; i < specialChars.length; i++) {
+       cadena= cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
+   }   
+
+   // Lo queremos devolver limpio en minusculas
+   cadena = cadena.toLowerCase();
+
+   // Quitamos acentos y "ñ". Fijate en que va sin comillas el primer parametro
+   cadena = cadena.replace(/á/gi,"a");
+   cadena = cadena.replace(/é/gi,"e");
+   cadena = cadena.replace(/í/gi,"i");
+   cadena = cadena.replace(/ó/gi,"o");
+   cadena = cadena.replace(/ú/gi,"u");
+   cadena = cadena.replace(/ñ/gi,"n");
+   return cadena;
 }
 function eliminar_cliente(cliente){
 	if(confirm('Esta seguro desea eliminar este cliente?')){

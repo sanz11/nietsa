@@ -29,6 +29,8 @@ function seleccionar_producto(codigo,interno,familia,stock,costo){
     $("#producto").val(codigo);
     $("#codproducto").val(interno);
     $("#cantidad").focus();
+    $("#productoC").val(codigo);
+    $("#codproductoC").val(interno);
     obtener_nombre_producto(codigo);
 }
 function obtener_nombre_producto(producto){ 
@@ -39,6 +41,7 @@ function obtener_nombre_producto(producto){
                 nombre_producto = item.PROD_Nombre;
           });
            $("#nombre_producto").val(nombre_producto);
+            $("#nombre_productoC").val(nombre_producto);
     });
 }
 </script>
@@ -143,6 +146,7 @@ function obtener_nombre_producto(producto){
 										Reportes de Compra
 									</td>
 								</tr>
+
 								<tr>
 									<td>Seleccione A&ntilde;o</td>
 									<td>
@@ -175,13 +179,25 @@ function obtener_nombre_producto(producto){
                                             &nbsp;<input type="text" name="nombre_proveedorC" class="cajaGrande cajaSoloLectura" id="nombre_proveedorC" size="15" maxlength="15" readonly="readonly" value="" />
                                             <a href="<?php echo base_url();?>index.php/compras/proveedor/ventana_busqueda_proveedor/" id="linkVerProveedor"><img height='16' width='16' src='<?php echo base_url(); ?>/images/ver.png' title='Buscar' border='0' /></a>
                                     </td>
-                                </tr>
+                 </tr>
+                 <tr><td colspan="5"><hr></td></tr>
+                 <tr>
+                                    <td>Art&iacute;culo</td>
+                                    <td colspan="3">
+                                            <input name="productoC" type="hidden" class="cajaPequena" id="productoC" size="10" maxlength="11" />
+                                            <input name="codproductoC" type="text" class="cajaPequena" id="codproductoC" size="10" maxlength="11" onBlur="obtener_producto2();" onKeyPress="return numbersonly(this,event,'.');" />&nbsp;
+                                            <input NAME="nombre_productoC" type="text" class="cajaGrande cajaSoloLectura" id="nombre_productoC" size="15" maxlength="15" readonly="readonly" />
+                                            <a href="<?php echo base_url();?>index.php/almacen/producto/ventana_busqueda_producto/" id="linkVerProducto"><img height='16' width='16' src='<?php echo base_url(); ?>/images/ver.png' title='Buscar' border='0' /></a>
+                                    </td>
+                                 </tr>
 								<tr>
 									<td colspan="2">
 										<a href="javascript:;" onclick="ver_reporte_pdf_compras()" ><img  style="margin:15px 0px;"  src="<?php echo base_url();?>images/botonreporte.jpg" width="85" height="22" class="imgBoton" ></a>
 									</td>
-								</tr>
+                   </tr>
+
 							</table>
+
                             </div>
 							<div class="lienzoreporte" id="divRepo4">
 							<table>

@@ -1223,44 +1223,65 @@ public function getNombreForPago($datos_for){
         }
         return array();
     }
-    public function buscar_comprobante_compras2($anio,$mes,$rucp) {
+    public function buscar_comprobante_compras2($anio,$mes,$rucp,$producto='') {
         //CPC_TipoOperacion => V venta, C compra
         //CPC_TipoDocumento => F factura, B boleta
         //CPC_total => total de la FACTURA o BOLETA
         $where="";
-        if ($anio != '--' && $rucp == '--' && $mes == '--') {//año
-                $where .= ' and YEAR(c.CPC_FechaRegistro)=' . $anio;
-            }
-        else if ($anio != '--' && $rucp == '--' && $mes != '--') { //año y mes
-                $where .= ' and YEAR(c.CPC_FechaRegistro)=' . $anio.' and MONTH(CPC_FechaRegistro)=' . $mes;
-            }
-        else if ($anio != '--' && $rucp != '--' && $mes == '--'){ //año y cliente
-                $where .= ' and YEAR(c.CPC_FechaRegistro)=' . $anio;
-                $where .= ' and e.EMPRC_Ruc LIKE "%' . $rucp.'%"';
-                //$where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' .$rucp.'%"';
-            }
-        else if ($anio == '--' && $rucp != '--' && $mes == '--') {//cliente
-                $where .= ' and e.EMPRC_Ruc LIKE "%' . $rucp.'%"';
-                //$where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' .$rucp.'%"';
-            }
-        else if ($anio == '--' && $rucp != '--' && $mes != '--') {//cliente y mes con año actual
-               $where .= ' and YEAR(c.CPC_FechaRegistro)=' .date ("Y") .' and MONTH(c.CPC_FechaRegistro)=' . $mes;
-                $where .= ' and e.EMPRC_Ruc LIKE "%' .$rucp.'%"';
-                //$where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' .$rucp.'%"';
-            }
-        else if ($anio == '--' && $rucp== '--' && $mes != '--') {//mes con año actual
-               $where .= ' and YEAR(c.CPC_FechaRegistro)=' .date ("Y") .' and MONTH(c.CPC_FechaRegistro)=' . $mes;
-               
-            }
-        else if ($anio != '--' && $rucp!= '--' && $mes != '--') { //año  mes y cliente
-                $where .= ' and YEAR(c.CPC_FechaRegistro)=' . $anio.' and MONTH(c.CPC_FechaRegistro)=' . $mes;
-                $where .= ' and e.EMPRC_Ruc LIKE "%' . $rucp.'%"';
-                //$where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' . $rucp.'%"';
-            } 
-        else{
-                 $where .= '';
-            }
-            /*
+       
+                if ($anio != '--' && $rucp == '--' && $producto == '--' && $mes == '--') {//año
+                        $where .= ' and YEAR(c.CPC_FechaRegistro)=' . $anio;
+                    }
+                else if ($anio != '--' && $rucp == '--' && $producto == '--' && $mes != '--') { //año y mes
+                        $where .= ' and YEAR(c.CPC_FechaRegistro)=' . $anio.' and MONTH(CPC_FechaRegistro)=' . $mes;
+                    }
+                else if ($anio == '--' && $rucp== '--' && $producto == '--' && $mes != '--') {//mes con año actual
+                       $where .= ' and YEAR(c.CPC_FechaRegistro)=' .date ("Y") .' and MONTH(c.CPC_FechaRegistro)=' . $mes;
+                    }
+                else if ($anio == '--' && $rucp != '--' && $producto == '--' && $mes == '--') {//cliente
+                        $where .= ' and e.EMPRC_Ruc LIKE "%' . $rucp.'%"';
+                        //$where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' .$rucp.'%"';
+                    }
+                else if ($anio != '--' && $rucp != '--' && $producto == '--' && $mes == '--'){ //año y cliente
+                        $where .= ' and YEAR(c.CPC_FechaRegistro)=' . $anio;
+                        $where .= ' and e.EMPRC_Ruc LIKE "%' . $rucp.'%"';
+                        //$where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' .$rucp.'%"';
+                    }
+                else if ($anio == '--' && $rucp != '--' && $producto == '--' && $mes != '--') {//cliente y mes con año actual
+                       $where .= ' and YEAR(c.CPC_FechaRegistro)=' .date ("Y") .' and MONTH(c.CPC_FechaRegistro)=' . $mes;
+                        $where .= ' and e.EMPRC_Ruc LIKE "%' .$rucp.'%"';
+                        //$where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' .$rucp.'%"';
+                    }
+                
+                else if ($anio != '--' && $rucp!= '--' && $producto == '--' && $mes != '--') { //año  mes y cliente
+                        $where .= ' and YEAR(c.CPC_FechaRegistro)=' . $anio.' and MONTH(c.CPC_FechaRegistro)=' . $mes;
+                        $where .= ' and e.EMPRC_Ruc LIKE "%' . $rucp.'%"';
+                        //$where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' . $rucp.'%"';
+                    } 
+                else if ($anio == '--' && $rucp ==  '--' && $producto !=  '--' && $mes == '--') {//producto
+                        $where .= ' and e.EMPRC_Ruc LIKE "%' . $rucp.'%"';
+                        //$where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' .$rucp.'%"';
+                    }
+                else if ($anio != '--' && $rucp ==  '--' && $producto != '--' && $mes == '--'){ //año y producto
+                        $where .= ' and YEAR(c.CPC_FechaRegistro)=' . $anio;
+                        $where .= ' and e.EMPRC_Ruc LIKE "%' . $rucp.'%"';
+                        //$where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' .$rucp.'%"';
+                    }
+                else if ($anio == '--' && $rucp ==  '--' && $producto !=  '--' && $mes != '--') {//producto y mes con año actual
+                       $where .= ' and YEAR(c.CPC_FechaRegistro)=' .date ("Y") .' and MONTH(c.CPC_FechaRegistro)=' . $mes;
+                        $where .= ' and e.EMPRC_Ruc LIKE "%' .$rucp.'%"';
+                        //$where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' .$rucp.'%"';
+                    }
+                
+                else if ($anio != '--' && $rucp==  '--' && $producto !=  '--' && $mes != '--') { //año  mes y producto
+                        $where .= ' and YEAR(c.CPC_FechaRegistro)=' . $anio.' and MONTH(c.CPC_FechaRegistro)=' . $mes;
+                        $where .= ' and e.EMPRC_Ruc LIKE "%' . $rucp.'%"';
+                        //$where .= ' OR PERSC_NumeroDocIdentidad LIKE "%' . $rucp.'%"';
+                    }
+                else{
+                         $where .= '';
+                    }
+            /* if($rucp != '--' && $producto == '--'){
             //año date ("Y")
             //año y mes
             //año cliente

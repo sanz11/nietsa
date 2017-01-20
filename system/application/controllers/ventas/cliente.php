@@ -648,7 +648,7 @@ class Cliente extends Controller
         $data['lista'] = $lista;
         $this->layout->view("ventas/cliente_index", $data);
     }
-    public function registro_cliente_pdf($flagbs = 'B', $codigo='', $nombre=''){
+    public function registro_cliente_pdf($flagbs = 'B', $documento='', $nombre=''){
 
         $this->load->library('cezpdf');
         $this->load->helper('pdf_helper');
@@ -666,33 +666,46 @@ class Cliente extends Controller
         $this->cezpdf->selectFont(APPPATH . 'libraries/fonts/Helvetica.afm');
         $delta = 20;
 
-        $this->cezpdf->ezText('<b>LISTADO FAMILIA DE ARTICULOS</b>', 14, array("leading" => 0, 'left' => 185));
+        $this->cezpdf->ezText('<b>LISTADO DE CLIENTES</b>'.$nombre.$documento, 14, array("leading" => 0, 'left' => 185));
         $this->cezpdf->ezText('', '', array("leading" => 10));
 
         $db_data = array();
 
 
-        $listado_productos = $this->producto_model->listar_familia_pdf($flagbs,$codigo,$nombre);
+        $listado_clientes = $this->cliente_model->listar_cliente_pdf($flagbs,$documento,$nombre);
     
-            if (count($listado_productos) > 0) {
-                foreach ($listado_productos as $indice => $valor) {
-                    $codigo = $valor->FAMI_Codigo;
-                    $codigo_interno = $valor->FAMI_CodigoInterno;
-                    $descripcion = $valor->FAMI_Descripcion;
+            if (count($listado_clientes) > 0) {
+                foreach ($listado_clientes as $indice => $valor) {
+                    $ruc = $valor->ruc;
+                    $dni = $valor->dni;
+                    $nombre = $valor->nombre;
+                    $TipoP = $valor->CLIC_TipoPersona;
+                    $telefono = $valor->telefono;
+                    $fax = $valor->fax;
+
+                        if($TipoP==0){ $TipoPersona="P.NATURAL";  }else{$TipoPersona="P.JURIDICA";}
 
 
                     $db_data[] = array(
                         'cols1' => $indice + 1,
-                        'cols2' => $codigo_interno,
-                        'cols3' => $descripcion
+                        'cols2' => $ruc,
+                        'cols3' => $dni,
+                        'cols4' => $nombre,
+                        'cols5' => $TipoPersona,
+                        'cols6' => $telefono,
+                        'cols7' => $fax
                     );
                 }
             }
 
         $col_names = array(
             'cols1' => '<b>ITEM</b>',
-            'cols2' => '<b>CODIGO</b>',
-            'cols3' => '<b>DESCRIPCION</b>'
+            'cols2' => '<b>RUC</b>',
+            'cols3' => '<b>DNI</b>',
+            'cols4' => '<b>NOMBRE O RAZON SOCIAL</b>',
+            'cols5' => '<b>TIPO PERSONA</b>',
+            'cols6' => '<b>TELEFONO</b>',
+            'cols7' => '<b>FAX</b>'
         );
 
         $this->cezpdf->ezTable($db_data, $col_names, '', array(
@@ -705,7 +718,11 @@ class Cliente extends Controller
             'cols' => array(
                 'cols1' => array('width' => 30, 'justification' => 'center'),
                 'cols2' => array('width' => 70, 'justification' => 'center'),
-                'cols3' => array('width' => 245, 'justification' => 'left')
+                'cols3' => array('width' => 50, 'justification' => 'left'),
+                'cols4' => array('width' => 170, 'justification' => 'center'),
+                'cols5' => array('width' => 70, 'justification' => 'center'),
+                'cols6' => array('width' => 50, 'justification' => 'left'),
+                'cols7' => array('width' => 105, 'justification' => 'left')
             )
         ));
         $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => $codificacion . '.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
