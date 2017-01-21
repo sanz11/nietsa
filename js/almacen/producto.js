@@ -27,6 +27,7 @@ jQuery(document).ready(function(){
             var nombre = sintilde(nombre);
             var idfami = sintilde(idfami);
             var marca = sintilde(marca);
+            var flagBS    = $('#flagBS').val();
         ///
           if(codigo==""){codigo="--";}
           if(nombre==""){nombre="--";}
@@ -34,7 +35,7 @@ jQuery(document).ready(function(){
           if(marca==""){marca="--";}
 		
 		///
-        url = base_url+"index.php/almacen/producto/registro_productos_pdf2/b/"+codigo+"/"+nombre+"/"+idfami+"/"+marca;
+        url = base_url+"index.php/almacen/producto/registro_productos_pdf2/"+flagBS+"/"+codigo+"/"+nombre+"/"+idfami+"/"+marca;
         window.open(url,'',"width=800,height=600,menubars=no,resizable=no;")
     });
 	///
