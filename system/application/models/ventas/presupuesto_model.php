@@ -459,10 +459,54 @@ class Presupuesto_model extends Model {
                 return $data;
             }
     }
-	
-	
+public function buscar_presupuestos_pdf($filter=null,$tipo_oper){
+       $compania = $this->somevar['compania'];
+        
+        $where = '';
+        if (isset($filter->numero) && $filter->numero != '')
+            $where.=' and p.PRESUC_Serie="' . $filter->serie . '" and p.PRESUC_Numero=' . $filter->numero;
+
+        if (isset($filter->fechai) && $filter->fechai != '' && isset($filter->fechaf) && $filter->fechaf != '')
+            $where = ' and p.PRESUC_Fecha BETWEEN "' . ($filter->fechai) . '" AND "' . ($filter->fechaf) . '"';
+       
+        if (isset($filter->cliente) && $filter->cliente != '')
+            $where.=' and p.CLIP_Codigo=' . $filter->cliente;
+        if (isset($filter->producto) && $filter->producto != '')
+            $where.=' and pd.PROD_Codigo=' . $filter->producto;
+        $limit = "";
+       
+        $sql = "SELECT p.PRESUC_Fecha,
+                         p.PRESUP_Codigo,
+                         p.PRESUC_Serie,
+                         p.USUA_Codigo,
+                         p.PRESUC_Numero,
+                         p.CLIP_Codigo,
+                         p.PRESUC_NombreAuxiliar,
+                         p.PRESUC_CodigoUsuario,                        
+                       (CASE c.CLIC_TipoPersona  WHEN '1'
+                       THEN e.EMPRC_RazonSocial
+                       ELSE CONCAT(pe.PERSC_Nombre , ' ', pe.PERSC_ApellidoPaterno, ' ', pe.PERSC_ApellidoMaterno) end) nombre,
+                       (CASE p.PRESUC_TipoDocumento WHEN 'F' THEN 'Factura' ELSE 'Boleta' END) nom_tipodocu,
+                       m.MONED_Simbolo,
+                       p.PRESUC_total,
+                       p.PRESUC_FlagEstado
+                FROM cji_presupuesto p
+                LEFT JOIN cji_moneda m ON m.MONED_Codigo=p.MONED_Codigo
+                LEFT JOIN cji_presupuestodetalle pd ON pd.PRESUP_Codigo=p.PRESUP_Codigo
+                INNER JOIN cji_cliente c ON c.CLIP_Codigo=p.CLIP_Codigo
+                LEFT JOIN cji_persona pe ON pe.PERSP_Codigo=c.PERSP_Codigo AND c.CLIC_TipoPersona ='0'
+                LEFT JOIN cji_empresa e ON e.EMPRP_Codigo=c.EMPRP_Codigo AND c.CLIC_TipoPersona='1'
+                WHERE p.COMPP_Codigo =" . $compania . " " . $where . "
+                GROUP BY p.PRESUP_Codigo
+                ORDER BY p.PRESUC_Fecha DESC,p.PRESUC_Numero DESC";
+        $query = $this->db->query($sql);
+        if ($query->num_rows > 0) {
+            foreach ($query->result() as $fila) {
+                $data[] = $fila;
+            }
+            return $data;
+        }
+        return array();
 }
-
-
-
+}
 ?>

@@ -286,7 +286,7 @@ class Presupuesto_model extends Model{
         }
         return $numero;
     }
- public function buscar_presupuestos($filter,$tipo_oper){
+ public function buscar_presupuestos_pdf($filter=null,$tipo_oper){
         $compania = $this->somevar['compania'];
         $data_confi           = $this->companiaconfiguracion_model->obtener($compania);
         $data_confi_docu      = $this->companiaconfidocumento_model->obtener($data_confi[0]->COMPCONFIP_Codigo, 13);
@@ -298,7 +298,7 @@ class Presupuesto_model extends Model{
             case '1':  if(isset($filter->numero) && $filter->numero!='')
                         $where.=' and p.PRESUC_Numero='.$filter->numero; break;
             case '2':  if(isset($filter->serie) && $filter->serie!='' && isset($filter->numero) && $filter->numero!='')
-                        $where.=' and p.PRESUC_Serie="'.$filter->serie.'" and p.PRESUC_Numero='.$filter->numero; break;
+                        $where.='  and p.PRESUC_Numero='.$filter->numero; break;
             case '3':  if(isset($filter->codigo_usuario) && $filter->codigo_usuario!='')
                         $where.=' and p.PRESUC_CodigoUsuario='.$filter->codigo_usuario; break;
         }

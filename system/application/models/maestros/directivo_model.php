@@ -87,54 +87,6 @@ class Directivo_model extends Model {
             return $data;
         }
     }
-     public function listar_directivo_pdf($documento,$nombre)
-    {
-        
-       
-        $where_pers = '';
-
-        if ($documento!= "--"){
-            $where_pers.=' and (per.PERSC_NumeroDocIdentidad like "' . $documento . '") ';
-        }
-        if ($nombre != "--"){
-            $where_pers.=' and (per.PERSC_Nombre like "%' . $nombre . '%") ';
-        }
-        
-
-        $compania = $this->somevar['compania'];
-
-        $sql = "
-                    select
-                    dir.DIREP_Codigo DIREP_Codigo,
-                    dir.EMPRP_Codigo EMPRP_Codigo,
-                     dir.USUA_Codigo USUA_Codigo,
-                    dir.PERSP_Codigo PERSP_Codigo,
-                    dir.CARGP_Codigo CARGP_Codigo,
-                    dir.DIREC_FechaInicio Inicio,
-                    dir.DIREC_FechaFin Fin,
-                    dir.DIREC_NroContrato Nro_Contrato,
-                    emp.EMPRC_RazonSocial empresa,
-                    per.PERSC_Nombre nombre,
-                    per.PERSC_ApellidoPaterno paterno,
-                    per.PERSC_ApellidoMaterno materno,
-                    per.PERSC_NumeroDocIdentidad dni,
-                    car.CARGC_Descripcion cargo
-                    from cji_directivo as dir
-                    inner join cji_empresa as emp on dir.EMPRP_Codigo=emp.EMPRP_Codigo
-                    inner join cji_persona as per on dir.PERSP_Codigo=per.PERSP_Codigo
-                    inner join cji_cargo as car on dir.CARGP_Codigo=car.CARGP_Codigo
-                    where dir.DIREC_FlagEstado=1
-                    and dir.DIREP_Codigo!=0  " . $where_pers . "
-                    order by nombre
-                    ";
-        $query = $this->db->query($sql);
-        if ($query->num_rows > 0) {
-            foreach ($query->result() as $fila) {
-                $data[] = $fila;
-            }
-            return $data;
-        }
-    }
 
     public function listar_combodirectivo($empresa) {
         $sql = "SELECT 

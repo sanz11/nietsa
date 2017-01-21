@@ -21,9 +21,7 @@ class Inventario_model extends model {
             $this->db->where('cji_inventario.INVE_Codigo', $filter->cod_inventario);
 
         $compania = $this->somevar['compania'];
-        $this->db->select('cji_inventario.*, u.USUA_usuario name');
-		$this->db->where('cji_inventario.COMPP_Codigo', $compania);
-        $this->db->join('cji_usuario u','u.USUA_Codigo = cji_inventario.USUA_Codigo');
+        $this->db->where('cji_inventario.COMPP_Codigo', $compania);
         $this->db->orderby('cji_inventario.INVE_Codigo', 'DESC');
         $query = $this->db->get('cji_inventario', $number_items, $offset);
 
@@ -37,7 +35,7 @@ class Inventario_model extends model {
             return $data;
         }
     }
-
+ 
     public function buscar_inventario_detalles($filter = null, $number_items = "", $offset = "") {
 
         $compania = $this->somevar['compania'];
@@ -92,7 +90,7 @@ class Inventario_model extends model {
         }
     }
 
-    public function insertar($datos,$USUACodi) {
+    public function insertar($datos) {
 
         $filter = new stdClass();
         $filter->INVE_Titulo = $datos['titulo'];
@@ -101,20 +99,18 @@ class Inventario_model extends model {
         $filter->INVE_Numero = $datos['numero'];
         $filter->ALMAP_Codigo = $datos['almacen'];
         $filter->INVE_FechaInicio = human_to_mysql($datos['fecha_inicio']);
-        $filter->USUA_Codigo= $USUACodi;
 
         $result = $this->db->insert("cji_inventario", (array) $filter);
 
         return $result;
     }
 
-    public function editar($datos,$USUACodi) {
+    public function editar($datos) {
 
         $filter = new stdClass();
         $filter->INVE_Titulo = $datos['titulo'];
         $filter->ALMAP_Codigo = $datos['almacen'];
         $filter->INVE_FechaInicio = $datos['fecha_inicio'];
-        $filter->USUA_Codigo = $USUACodi;
 
         $this->db->where('cji_inventario.INVE_Codigo', $datos['cod_inventario']);
         $result = $this->db->update("cji_inventario", (array) $filter);
@@ -136,13 +132,73 @@ class Inventario_model extends model {
 
         return $result;
     }
+public function buscarProductoXInventario($limit,$final){
+    $this->db->select('PROD_Codigo');
+    $this->db->where('PROD_FlagBienServicio','B');
+    $this->db->where('PROD_FlagEstado','1');
+    
+    $this->db->order_by('PROD_Codigo','ASC');
+    $this->db->limit($final, $limit);
+    $query = $this->db->get('cji_producto');
+    if ($query->num_rows > 0) {
+            foreach ($query->result() as $fila) {
+                $data[] = $fila;
+            }
+            return $data;
+        }
+}
+
+public function buscar_inventario_($limit,$final){
+    $this->db->select('PROD_Codigo,INVD_Codigo,INVD_FlagActivacion,
+                    INVE_Codigo,INVD_Cantidad,INVD_Pcosto');
+    $this->db->order_by('PROD_Codigo','ASC');
+    $this->db->limit($final, $limit);
+    $query = $this->db->get('cji_inventariodetalle');
+    if ($query->num_rows > 0) {
+foreach ($query->result() as $fila) {
+ $data[] = $fila;
+            }
+    return $data;
+        }
+}
+public function buscarDetalleProducto($value='',$valuee=''){
+    $this->db->select('PROD_Codigo,INVE_Codigo');
+$this->db->where('PROD_Codigo',$value);
+$this->db->where('INVE_Codigo',$valuee);
+
+   $query = $this->db->get('cji_inventariodetalle');
+    if ($query->num_rows > 0) {
+            foreach ($query->result() as $fila) {
+                $data[] = $fila;
+            }
+            return $data;
+        } 
+}
+public function buscarkardexDetalle($cod){
+$this->db->select('PROD_Codigo');
+$this->db->where('PROD_Codigo',$value);
+   $query = $this->db->get('cji_inventariodetalle');
+    if ($query->num_rows > 0) {
+            foreach ($query->result() as $fila) {
+                $data[] = $fila;
+            }
+            return $data;
+        } 
+}
+
+    public function insertar_detalle2($filter){
+
+    $this->db->insert("cji_inventariodetalle", (array) $filter);
+
+    //    return $result; 
+    }
 
     public function editar_detalle($datos) {
 
         $filter = new stdClass();
         $filter->INVD_Cantidad = $datos['cantidad'];
-		$filter->INVD_Pcosto = $datos['p_costo'];
-		
+        $filter->INVD_Pcosto = $datos['p_costo'];
+        
         $this->db->where('cji_inventariodetalle.INVD_Codigo', $datos['cod_detalle']);
         $result = $this->db->update("cji_inventariodetalle", (array) $filter);
 
@@ -182,31 +238,31 @@ class Inventario_model extends model {
             return $data;
         }
     }
-	
-	///gcbq
-	   public function activacion_inventario($datos) {
+    
+    ///gcbq
+       public function activacion_inventario($datos) {
 
         $filter = new stdClass();
         $filter->INVE_FechaFin =  date('Y-m-d');
-		$filter->INVE_FechaRegistro = date('Y-m-d');
-		$filter->INVE_FlagEstado=1;
-	
-		
+        $filter->INVE_FechaRegistro = date('Y-m-d');
+        $filter->INVE_FlagEstado=1;
+    
+        
         $this->db->where('cji_inventario.INVE_Codigo', $datos['cod_inventario']);
         $result = $this->db->update("cji_inventario", (array) $filter);
 
         return $result;
     }
-	 public function eliminar_inventario_detalles($codigo) {
+     public function eliminar_inventario_detalles($codigo) {
 
         $this->db->where('cji_inventariodetalle.INVE_Codigo', $codigo);
         $result = $this->db->delete('cji_inventariodetalle');
-		
-		if ($result)
+        
+        if ($result)
                 $this->eliminar_inventario($codigo);
             
     }
-	 public function eliminar_inventario($codigo) {
+     public function eliminar_inventario($codigo) {
 
         $this->db->where('cji_inventario.INVE_Codigo', $codigo);
         $result = $this->db->delete('cji_inventario');

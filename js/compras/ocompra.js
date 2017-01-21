@@ -1,3 +1,31 @@
+function verpdf(){
+  var dataEviar="_____";
+    base_url2 = $("#base_url").val();
+    tipo_oper2 = $("#tipo_oper").val();
+    fechai2=$("#fechai").val().split("/");
+    fechafin=$("#fechaf").val().split("/");
+    series=$("#serie").val();
+    numeros=$("#numero").val();
+    codCliente=$("#cliente").val();
+
+    ruc_prove=$("#ruc_proveedor").val();
+    producto=$("#producto").val();
+    //fechafin=$("#fechaf").val().split("/");
+    var datafechaIni="";var datafechafin="";
+    if($("#fechai").val()!=""){
+     datafechaIni=fechai2[2]+"-"+fechai2[1]+"-"+fechai2[0];
+    }
+   if($("#fechaf").val()!=""){
+   datafechafin=fechafin[2]+"-"+fechafin[1]+"-"+fechafin[0];
+  }
+  dataEviar=datafechaIni+"_"+datafechafin+"_"+numeros+"_"+codCliente+"_"+producto;
+     
+   var url3 =base_url2+ "index.php/ventas/presupuesto/verPdfPresupuesto/" + tipo_oper2 + "/"+dataEviar;
+    window.open(url3, '', "width=800,height=600,menubars=no,resizable=no;");
+  
+}
+
+
 var base_url;
 var tipo_oper;
 var contiene_igv;
@@ -393,12 +421,10 @@ function ver_reporte_pdf_compras(){
     var anio = $("#anioVenta").val();
     var mes = $("#mesventa").val();
     var rucp = $("#ruc_proveedorC").val();
-    var producto = $("#productoC").val();
     if(anio=="0"){anio="--";}
     if(mes==""){mes="--";}
     if(rucp==""){rucp="--";}
-    if(producto==""){producto="--";}
-    url = base_url+"index.php/ventas/comprobante/ver_reporte_pdf_commpras/"+anio+"/"+mes+"/"+rucp+"/"+producto;
+    url = base_url+"index.php/ventas/comprobante/ver_reporte_pdf_commpras/"+anio+"/"+mes+"/"+rucp;
     window.open(url,'',"width=800,height=600,menubars=no,resizable=no;")
 }
 
@@ -664,10 +690,10 @@ function calcula_totales(){
       // }else{
         importetotal=money_format(importe_total);
      //  }
-    $("#preciototal").val(preciototal.toFixed(4)); 
-    $("#descuentotal").val(calcularDescuento.toFixed(4));
-    $("#igvtotal").val(igvtotal.toFixed(4));  //val(igv_total.toFixed(2))
-    $("#importetotal").val(importetotal.toFixed(4));
+    $("#preciototal").val(preciototal.toFixed(2)); 
+    $("#descuentotal").val(calcularDescuento.toFixed(2));
+    $("#igvtotal").val(igvtotal.toFixed(2));  //val(igv_total.toFixed(2))
+    $("#importetotal").val(importetotal.toFixed(2));
 }
 function modifica_pu_conigv(n){
     a  ="prodpu_conigv["+n+"]";
@@ -1261,31 +1287,6 @@ function obtener_producto(){
             }
             else{
                 $('#nombre_producto').val('No se encontró ningún registro');
-                $('#linkVerProducto').focus();
-            }
-                 
-        });
-    });
-    return true;
-}
-function obtener_producto2(){
-    var flagBS        = $("#flagBS").val();
-    var codproducto   = $("#codproductoC").val();
-    $("#productoC, #nombre_productoC").val('');
-    if(codproducto=='')
-        return false;
-    
-    var url = base_url+"index.php/almacen/producto/obtener_nombre_producto/"+flagBS+"/"+codproducto;
-    $.getJSON(url,function(data){
-        $.each(data,function(i,item){
-            if(item.PROD_Nombre!=''){
-                $("#productoC").val(item.PROD_Codigo);
-                $("#nombre_productoC").val(item.PROD_Nombre);
-                listar_unidad_medida_producto($("#productoC").val());
-                $('#cantidad').focus();
-            }
-            else{
-                $('#nombre_productoC').val('No se encontró ningún registro');
                 $('#linkVerProducto').focus();
             }
                  

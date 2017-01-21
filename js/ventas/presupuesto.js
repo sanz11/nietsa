@@ -18,15 +18,9 @@ function verpdf(){
    if($("#fechaf").val()!=""){
    datafechafin=fechafin[2]+"-"+fechafin[1]+"-"+fechafin[0];
   }
-  if(tipo_oper2=='V'){
-   dataEviar=datafechaIni+"_"+datafechafin+"_"+series+"_"+numeros+"_"+codCliente+"_"+producto;
+  dataEviar=datafechaIni+"_"+datafechafin+"_"+numeros+"_"+codCliente+"_"+producto;
      
-  }else{
-   dataEviar=datafechaIni+"_"+datafechafin+"_"+series+"_"+numeros+"_"+ruc_prove+"_"+nomb_proveer;
-     
-  }
-  
-    var url3 =base_url2+ "index.php/almacen/guiarem/verPdfGias/" + tipo_oper2 + "/"+dataEviar;
+   var url3 =base_url2+ "index.php/ventas/presupuesto/verPdfPresupuesto/" + tipo_oper2 + "/"+dataEviar;
     window.open(url3, '', "width=800,height=600,menubars=no,resizable=no;");
   
 }

@@ -1,5 +1,5 @@
 <?php
-ini_set('error_reporting', 1);
+//ini_set('error_reporting', 1);
 include("system/application/libraries/cezpdf.php");
 include("system/application/libraries/class.backgroundpdf.php");
 class Presupuesto extends Controller{
@@ -4740,7 +4740,7 @@ public function verPdfPresupuesto($tipo_oper = '',$dataEviar=""){
     if($tipo_oper=='V'){
       $titulo="REPORTE DE PRESUPUESTO" ; 
     }else{
-        $titulo="REPORTE DE COMPRAS" ;
+        $titulo="REPORTE DE PRESUPUESTO" ;
     }
 
     
@@ -4749,21 +4749,20 @@ public function verPdfPresupuesto($tipo_oper = '',$dataEviar=""){
      $explorarData =explode('_', $dataEviar);
      $fechaini=$explorarData[0];
      $fechafin=$explorarData[1];
-     $series=$explorarData[2];
-     $numero=$explorarData[3];
-     $codiogcliente=$explorarData[4];
-     $codroducto=$explorarData[5];
+     $numero=$explorarData[2];
+     $codiogcliente=$explorarData[3];
+     $codroducto=$explorarData[4];
      $this->somevar['compania'];
         $filter = new stdClass();
         $filter->fechai=$fechaini;//$fechaini;
         $filter->fechaf=$fechafin;//$fechaini;
-        $filter->serie =$series;
         $filter->numero =$numero;
         $filter->cliente =$codiogcliente;
         $filter->producto =$codroducto;
-     $listado_presupuestos = $this->presupuesto_model->buscar_presupuestos($filter, $tipo_oper);
-        $item = $j + 1;
+     $listado_presupuestos = $this->presupuesto_model->buscar_presupuestos_pdf($filter, $tipo_oper);
+     $tolta_suma=0;
         $lista = array();
+        $db_data=array();
         if (count($listado_presupuestos) > 0) {
             foreach ($listado_presupuestos as $indice => $valor) {
                 $codigo = $valor->PRESUP_Codigo;
@@ -4796,7 +4795,16 @@ public function verPdfPresupuesto($tipo_oper = '',$dataEviar=""){
                            
                         $nomusuario= strtolower($explorar[0]);
                     }
-                $lista[] = array($item++, $fecha, $serie, $numero, $codigo_usuario, $nombre_cliente, $nom_tipodocu, $total, $img_estado, $editar, $ver, $ver2, $ver3, $enviarcorreo, $vermensaje, $eliminar,  $nomusuario);
+              $db_data[] = array(
+                'col1' => ($indice + 1),
+                'col2' => $fecha,
+                'col3' =>$serie,
+                'col4' => $numero ,
+                'col6' => $nombre_cliente,
+                'col7' => $total,
+                'col8' => $nomusuario
+            );
+            $tolta_suma= $tolta_suma+$valor->PRESUC_total;
             }
         }
  $col_names = array(
@@ -4829,7 +4837,7 @@ public function verPdfPresupuesto($tipo_oper = '',$dataEviar=""){
         ));
         $db_data1[] = array(
                 'col1' =>'',
-                'col2' =>"S/. ". $tolta_suma ,
+                'col2' =>"S/. ".number_format($tolta_suma,4)
                 
             ); 
         $col_names1 = array(

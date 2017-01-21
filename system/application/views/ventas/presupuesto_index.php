@@ -124,6 +124,9 @@ if(empty($persona)) header("location:$url");
 						<tr>
 							<td align='left' width="10%">Fecha inicial</td>
 							<td align='left' width="90%">
+                            <input type="hidden" name="tipo_oper" id="tipo_oper" value="P">
+                                
+                         
                                                             <input name="fechai" id="fechai" value="<?php echo $fechai; ?>" type="text" class="cajaGeneral" size="10" maxlength="10"/>
                                                             <img src="<?php echo base_url();?>images/calendario.png" name="Calendario1" id="Calendario1" width="16" height="16" border="0" onMouseOver="this.style.cursor='pointer'" title="Calendario"/>
                                                             <script type="text/javascript">

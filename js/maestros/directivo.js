@@ -1,21 +1,6 @@
 var base_url
 jQuery(document).ready(function(){
     base_url   = $("#base_url").val();
-
-     $("#imprimirDirectivo").click(function(){
-            var docum = $("#txtNumDoc").val();
-            var nombre = $("#txtNombre").val();
-            
-
-            var docum = sintilde(docum);
-            var nombre = sintilde(nombre);
-        ///
-          if(docum==""){docum="--";}
-          if(nombre==""){nombre="--";}
-
-        url = base_url+"index.php/maestros/directivo/registro_directivo_pdf/"+docum+"/"+ nombre;
-        window.open(url,'',"width=800,height=600,menubars=no,resizable=no;");
-    });
     
     $("#imgGuardarDirectivo").click(function(){
         modo = $("#modo").val();             
@@ -125,8 +110,6 @@ jQuery(document).ready(function(){
         base_url = $("#base_url").val();
         location.href = base_url+"index.php/maestros/directivo/directivos";
     });
-
-    
    
     
     container = $('div.container');
@@ -174,8 +157,6 @@ jQuery(document).ready(function(){
     });
    
     container = $('div.container');
-
-   
         
     //Funcionalidades
     $("#nuevoRegistro").click(function(){
@@ -433,25 +414,4 @@ function cambiar_estado_campos(estado){
     $("#cboNacionalidad").attr('disabled', estado);
     $("#ruc_persona").attr('disabled', estado);
     
-}
-function sintilde(cadena){
-   
-   var specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,.";
-
-   
-   for (var i = 0; i < specialChars.length; i++) {
-       cadena= cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
-   }   
-
-   // Lo queremos devolver limpio en minusculas
-   cadena = cadena.toLowerCase();
-
-   // Quitamos acentos y "ñ". Fijate en que va sin comillas el primer parametro
-   cadena = cadena.replace(/á/gi,"a");
-   cadena = cadena.replace(/é/gi,"e");
-   cadena = cadena.replace(/í/gi,"i");
-   cadena = cadena.replace(/ó/gi,"o");
-   cadena = cadena.replace(/ú/gi,"u");
-   cadena = cadena.replace(/ñ/gi,"n");
-   return cadena;
 }

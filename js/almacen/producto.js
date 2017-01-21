@@ -19,23 +19,22 @@ jQuery(document).ready(function(){
 
             var codigo = $("#txtCodigo").val();
             var nombre = $("#txtNombre").val();
-            var idfami = $("#txtFamilia").val();
-            var marca = $("#txtMarca").val();
+            var docum = $("#txtNumDoc").val();
+            var nombre = $("#txtNombre").val();
 
 
             var codigo = sintilde(codigo);
             var nombre = sintilde(nombre);
-            var idfami = sintilde(idfami);
-            var marca = sintilde(marca);
-            var flagBS    = $('#flagBS').val();
+            var documento = sintilde(docum);
+            var nombre = sintilde(nombre);
         ///
           if(codigo==""){codigo="--";}
           if(nombre==""){nombre="--";}
-          if(idfami==""){idfami="--";}
-          if(marca==""){marca="--";}
+          if(docum==""){documento="--";}
+          if(nombre==""){nombre="--";}
 		
 		///
-        url = base_url+"index.php/almacen/producto/registro_productos_pdf2/"+flagBS+"/"+codigo+"/"+nombre+"/"+idfami+"/"+marca;
+        url = base_url+"index.php/almacen/producto/registro_productos_pdf/"+codigo+"/"+nombre+"/"+nombre+"/"+nombre;
         window.open(url,'',"width=800,height=600,menubars=no,resizable=no;")
     });
 	///

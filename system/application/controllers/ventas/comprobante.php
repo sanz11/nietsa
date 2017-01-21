@@ -1304,6 +1304,7 @@ $data["serie_numero_orden"]="";
         $tipo_docu = $this->input->post('tipo_docu');
         $serie = $this->input->post('serie');
         $numero = $this->input->post('numero');
+        $Numero_Automatico=$this->input->post('txtEnviarValor');
         $filter = new stdClass();
         $filter->CPC_TipoOperacion = $tipo_oper;
         $filter->CPC_TipoDocumento = $tipo_docu;
@@ -1331,8 +1332,10 @@ $data["serie_numero_orden"]="";
             $compania = $this->somevar['compania'];
             $configuracion_datos = $this->configuracion_model->obtener_numero_documento($compania, $tipo);
 
-            $num = $configuracion_datos[0]->CONFIC_Numero + 1;
-            $filter->CPC_Numero = '00' . $num;
+            //$num = $configuracion_datos[0]->CONFIC_Numero + 1;
+            $filter->CPC_Numero =$this->input->post('numero');// '00' . $num;
+
+
         } else {
             $filter->CPC_Numero = $this->input->post('numero');
         }
@@ -1440,8 +1443,11 @@ $data["serie_numero_orden"]="";
             $filter->GUIAREMP_Codigo = $dref;
         }
         $comprobante = $this->comprobante_model->insertar_comprobante($filter);
-        $this->ingresarConfiguracio($comprobante);
-
+        if($Numero_Automatico==1){
+          $this->ingresarConfiguracio($comprobante);
+  
+        }
+        
         $flagBS = $this->input->post('flagBS');
         $prodcodigo = $this->input->post('prodcodigo');
         $prodcantidad = $this->input->post('prodcantidad');
@@ -1660,7 +1666,7 @@ $hoy = date("Y-m-d");
             $cofiguracion_datos = $this->configuracion_model->obtener_numero_documento($compania, $tipo);
 
             if ($cofiguracion_datos) {
-                $filter->CPC_Numero = sprintf("%07d", $cofiguracion_datos[0]->CONFIC_Numero + 1);
+                //$filter->CPC_Numero = sprintf("%07d", $cofiguracion_datos[0]->CONFIC_Numero + 1);
             }
 
             $this->comprobante_model->insertar_disparador($codigo, $filter);

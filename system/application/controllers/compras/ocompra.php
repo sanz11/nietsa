@@ -4095,7 +4095,167 @@ $data['cboMiContacto'] = form_dropdown("formapago", $this->directivo_model->list
         $data['titulo'] = "VER GUIAS DE REMISION POR O. COMPRA";
         $this->load->view('compras/ocompra_ventana_seleccionar', $data);
     }
+public function verPdfOcompra(){
+$titulo=""; $subTitulo="";
+    if($tipo_oper=='V'){
+      $titulo="REPORTE DE PRESUPUESTO" ; 
+    }else{
+        $titulo="REPORTE DE PRESUPUESTO" ;
+    }
 
+    
+     $notimg="";
+     $this->cezpdf = new Cezpdf('a4', 'portrait');
+     $explorarData =explode('_', $dataEviar);
+     $fechaini=$explorarData[0];
+     $fechafin=$explorarData[1];
+     $numero=$explorarData[2];
+     $codiogcliente=$explorarData[3];
+     $codroducto=$explorarData[4];
+     $this->somevar['compania'];
+        $filter = new stdClass();
+        $filter->fechai=$fechaini;//$fechaini;
+        $filter->fechaf=$fechafin;//$fechaini;
+        $filter->numero =$numero;
+        $filter->cliente =$codiogcliente;
+        $filter->producto =$codroducto;
+     $listado_presupuestos = $this->presupuesto_model->buscar_presupuestos_pdf($filter, $tipo_oper);
+     $tolta_suma=0;
+        $lista = array();
+        $db_data=array();
+     $listado_ocompras = $this->ocompra_model->listarDataOcompra($tipo_oper,$filter);
+      
+        $lista = array();
+        if (count($listado_ocompras) > 0) {
+            foreach ($listado_ocompras as $indice => $valor) {
+                $arrfecha = explode(" ", $valor->OCOMC_FechaRegistro);
+                $fecha = mysql_to_human($arrfecha[0]);
+                $codigo = $valor->OCOMP_Codigo;
+
+                if ($tipo_oper == 'V')
+                    $cotizacion = $valor->PRESUP_Codigo;
+                else
+                    $cotizacion = $valor->COTIP_Codigo;
+
+                $pedido = $valor->PEDIP_Codigo;
+                $numero = $valor->OCOMC_Numero;
+                $cliente = $valor->CLIP_Codigo;
+                $proveedor = $valor->PROVP_Codigo;
+                $ccosto = $valor->CENCOSP_Codigo;
+                $total = $valor->OCOMC_total;
+                $flagIngreso = $valor->OCOMC_FlagIngreso;
+                $flagAprobado = $valor->OCOMC_FlagAprobado;
+                $moneda = $valor->MONED_Codigo;
+                $datos_moneda = $this->moneda_model->obtener($moneda);
+
+                if ($cliente != '' && $cliente != '0') {
+                    $datos_cliente = $this->cliente_model->obtener_datosCliente($cliente);
+                    $empresa = $datos_cliente[0]->EMPRP_Codigo;
+                    $persona = $datos_cliente[0]->PERSP_Codigo;
+                    $tipo = $datos_cliente[0]->CLIC_TipoPersona;
+                } elseif ($proveedor != '' && $proveedor != '0') {
+                    $datos_proveedor = $this->proveedor_model->obtener_datosProveedor($proveedor);
+                    $empresa = $datos_proveedor[0]->EMPRP_Codigo;
+                    $persona = $datos_proveedor[0]->PERSP_Codigo;
+                    $tipo = $datos_proveedor[0]->PROVC_TipoPersona;
+                }
+
+
+                $simbolo_moneda = $datos_moneda[0]->MONED_Simbolo;
+                $monto_total = $simbolo_moneda . " " . number_format($total, 2);
+
+                if ($tipo == 0) {
+                    $datos_persona = $this->persona_model->obtener_datosPersona($persona);
+                    $nombre_proveedor = $datos_persona[0]->PERSC_Nombre . " " . $datos_persona[0]->PERSC_ApellidoPaterno . " " . $datos_persona[0]->PERSC_ApellidoMaterno;
+                } elseif ($tipo == 1) {
+                    $datos_empresa = $this->empresa_model->obtener_datosEmpresa($empresa);
+                    $nombre_proveedor = $datos_empresa[0]->EMPRC_RazonSocial;
+                }
+
+                $msgaprob = '';
+                if ($flagAprobado == "0") {
+                    $msgaprob = "Pend.";
+                } elseif ($flagAprobado == "1") {
+                    $msgaprob = "Aprob.";
+                } elseif ($flagAprobado == "2") {
+                    $msgaprob = "Desaprob.";
+                }
+                if ($evalua == true)
+                    $check = "<input type='checkbox' name='checkO[" . $item . "]' id='checkO[" . $item . "]' value='" . $codigo . "'>";
+                else
+                    $check = "";
+                $estado = $valor->OCOMC_FlagEstado;
+                $img_estado = ($estado == '1' ? "<img src='" . base_url() . "images/active.png' alt='Activo' title='Activo' />" : "<img src='" . base_url() . "images/inactive.png' alt='Anulado' title='Anulado' />");
+
+                $detalle = $this->ocompra_model->obtener_detalle_ocompra($codigo);
+                $por_entregado = 0;
+                $por_no_entregado = 0;
+                $cantidad_total = 0;
+                $cantidad_entregada = 0;
+                if (count($detalle) > 0) {
+                    foreach ($detalle as $valor2) {
+                        $cantidad_total += $valor2->OCOMDEC_Cantidad;
+                        $cantidad_entregada += calcular_cantidad_entregada_x_producto($tipo_oper, $tipo_oper, $codigo, $valor2->PROD_Codigo);
+                    }
+                }
+                $por_entregado = ($cantidad_entregada * 100) / $cantidad_total;
+                $por_no_entregado = 100 - $por_entregado;
+                $por_entregado = round($por_entregado, 2);
+                $por_no_entregado = round($por_no_entregado, 2);
+                $url_img = "";
+                $title = "Entreagado : al " . $por_entregado . "%, No Entregado al " . $por_no_entregado . "%";
+                // Estado
+                $msguiain = '';
+                if ($cantidad_entregada == 0) {
+                    $url_img = "images/ninguno.png";
+                    $msguiain = "<span class='tooltip' style='color: #8c1a16; padding: 2px 15px 2px 15px; font-weight: bolder; font-size: 11px' title='Pendiente' >Pend.</span>";
+                }
+                if ($cantidad_entregada > 0) {
+                    $url_img = "images/proceso.png";
+                    $msguiain = "<span class='tooltip' style='color: #8c8b02; padding: 2px 15px 2px 15px; font-weight: bolder; font-size: 11px' title='Cargando' >Carg.</span>";
+                }
+                if ($cantidad_entregada == $cantidad_total) {
+                    $url_img = "images/entregado.png";
+                    $msguiain = "<span class='tooltip' style='color: #33d811; padding: 2px 15px 2px 15px; font-weight: bolder; font-size: 11px' title='Terminado' >Term.</span>";
+                }
+                $img = "<a href='javascript:;' title='" . $title . "' class='tooltip'><img src='" . base_url() . "" . $url_img . "' /></a>";
+                $estado = $img;
+
+                //$estado = $img_estado;
+                // }
+                if ($eval == '0') {
+                    $estado = $img_estado;
+                }
+
+                $contents = "<img height='16' width='16' src='" . base_url() . "images/icono-factura.gif' title='Factura' border='0'>";
+                $attribs = array('width' => 400, 'height' => 150, 'scrollbars' => 'yes', 'status' => 'yes', 'resizable' => 'yes', 'screenx' => '0', 'screeny' => '0');
+                $ver3 = anchor_popup('compras/ocompra/ventana_ocompra_factura/' . $codigo, $contents, $attribs);
+                if ($evalua) {
+                    $editar = "<a href='javascript:;' onclick='editar_ocompra(" . $codigo . ")'><img src='" . base_url() . "images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
+                } else {
+                    $editar = "<a href='javascript:;' onclick='ver_detalle_ocompra(" . $codigo . ")'><img src='" . base_url() . "images/ver_detalle.png' width='16' height='16' border='0' title='Ver Detalle'></a>";
+                }
+                $ver = "<a href='javascript:;' onclick='ocompra_ver_pdf(" . $codigo . ")'><img src='" . base_url() . "images/icono_imprimir.png' width='16' height='16' border='0' title='Imprimir'></a>";
+                $ver2 = "<a href='javascript:;' onclick='ocompra_ver_pdf_conmenbrete(" . $codigo . ")'><img src='" . base_url() . "images/pdf.png' width='16' height='16' border='0' title='Ver PDF'></a>";
+                $eliminar = "<a href='javascript:;' onclick='eliminar_ocompra(" . $codigo . ")'><img src='" . base_url() . "images/eliminar.png' width='16' height='16' border='0' title='Eliminar'></a>";
+
+                 $usua = $valor->USUA_Codigo;
+
+               $usuarioNom=$this->cliente_model->getUsuarioNombre($usua);
+                    $nomusuario="";
+                    if($usuarioNom[0]->ROL_Codigo==0){
+                     $nomusuario= $usuarioNom[0]->USUA_usuario;
+                        }else{
+                     $explorar= explode(" ",$usuarioNom[0]->PERSC_Nombre);
+                           
+                        $nomusuario= strtolower($explorar[0]);
+                    }
+
+
+                $lista[] = array($check, $item++, $fecha, $numero, $cotizacion, $pedido, $nombre_proveedor, $msguiain, $monto_total, $msgaprob, $estado, $ver3, $editar, $ver, $ver2, $nomusuario);
+            }
+        }
+}
 }
 
 ?>

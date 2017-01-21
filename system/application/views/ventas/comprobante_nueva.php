@@ -570,6 +570,8 @@ if (FORMATO_IMPRESION == 8) {
                                 <img src="<?php echo base_url(); ?>images/flecha.png" border="0"
                                        alt="Serie y número sugerido" title="Serie y número sugerido"/>
                             </a>
+                            <input type="checkbox" name="Numero_Automatico" id="Numero_Automatico"  checked="checked" onchange="Cambia()" >
+                            <input type="hidden" name="txtEnviarValor"  id="txtEnviarValor" value="1">
                         <?php } ?>
 
                         <label style="margin-left:20px;">IGV</label>

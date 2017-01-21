@@ -1,3 +1,11 @@
+function Cambia(){ 
+ if($("#Numero_Automatico").attr('checked')==true){
+    $("#txtEnviarValor").val(1);
+ }else{
+    $("#txtEnviarValor").val(2);
+ } 
+}
+
 jQuery(document).ready(function () {
 
     base_url = $("#base_url").val();
@@ -117,9 +125,7 @@ jQuery(document).ready(function () {
         dataString = $('#frmComprobante').serialize();
          if (click) {
             console.log("valor  "+click);
-            click = false;  
-
-           
+            click = false;    
        // return false;
         $.ajax({
             type: "POST",
@@ -145,7 +151,7 @@ jQuery(document).ready(function () {
                         if (tipoOperacion == 'C' || tipoOperacion == "C") {
                          modifcarDependi();
                         
-                            $('#cancelarImprimirComprobante').click();
+                           $('#cancelarImprimirComprobante').click();
                         } else {
                            $('#linkVerImpresion').click();
                         }
@@ -170,11 +176,9 @@ jQuery(document).ready(function () {
 
 
         });
-  
         }else{
             console.log("valor "+click);
         }
-
 
     });
 
@@ -862,8 +866,8 @@ function calcula_totales3() {
     $('#porcentaje').val('0.00');
     $('#descuentotal_conigv').val('0.00');
 
-    $('#importetotal').val(importe_total.toFixed(4));
-    $('#preciototal_conigv').val((importe_total / (1 + (parseFloat(igv) / 100))).toFixed(4));
+    $('#importetotal').val(importe_total.toFixed(2));
+    $('#preciototal_conigv').val((importe_total / (1 + (parseFloat(igv) / 100))).toFixed(2));
 
 }
 function descuento_porcentaje() {

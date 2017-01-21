@@ -2823,6 +2823,67 @@ $direccion=substr($datos_proveedor[0]->EMPRC_Direccion,0, 50);
 
         return array('numdoc' => $numdoc, 'nombre' => $nombre, 'direccion' => $direccion, 'telefono' => $telefono, 'movil' => $movil, 'fax' => $fax, 'email' => $email, 'contacto' => $contacto);
     }
+     public function buscar_presupuestos_pdf($filter,$tipo_oper){
+        $compania = $this->somevar['compania'];
+        $data_confi           = $this->companiaconfiguracion_model->obtener($compania);
+        $data_confi_docu      = $this->companiaconfidocumento_model->obtener($data_confi[0]->COMPCONFIP_Codigo, 13);
+        $where='';
+        if(isset($filter->fechai) && $filter->fechai!='' && isset($filter->fechaf) && $filter->fechaf!='')
+            $where=' and p.PRESUC_Fecha BETWEEN "'.($filter->fechai).'" AND "'.($filter->fechaf).'"';
+       
+       switch($data_confi_docu[0]->COMPCONFIDOCP_Tipo){
+            case '1':  if(isset($filter->numero) && $filter->numero!='')
+                        $where.=' and p.PRESUC_Numero='.$filter->numero; break;
+            case '2':  if(isset($filter->serie) && $filter->serie!='' && isset($filter->numero) && $filter->numero!='')
+                        $where.='  and p.PRESUC_Numero='.$filter->numero; break;
+            case '3':  if(isset($filter->codigo_usuario) && $filter->codigo_usuario!='')
+                        $where.=' and p.PRESUC_CodigoUsuario='.$filter->codigo_usuario; break;
+        }
+        
+        if(isset($filter->proveedor) && $filter->proveedor!='')
+            $where .=' and p.PROVP_Codigo='.$filter->proveedor;
+            
+        if(isset($filter->producto) && $filter->producto!='')
+            $where .=' and pd.PROD_Codigo='.$filter->producto;
+            
+        $limit="";
+        if((string)$offset!='' && $number_items!='')
+            $limit = 'LIMIT '.$offset.','.$number_items;
+        
+        $sql = "SELECT p.PRESUC_Fecha,
+                         p.PRESUP_Codigo,
+                         p.PRESUC_Serie,
+                         p.PRESUC_Numero,
+                        p.USUA_Codigo,
+                         p.PRESUC_CodigoUsuario,                        
+                       (CASE c.PERSP_Codigo  WHEN 0
+                       THEN e.EMPRC_RazonSocial
+                       ELSE CONCAT(pe.PERSC_Nombre , ' ', pe.PERSC_ApellidoPaterno, ' ', pe.PERSC_ApellidoMaterno) end) nombre,
+                       (CASE p.PRESUC_TipoDocumento WHEN 'F' THEN 'Factura' ELSE 'Boleta' END) nom_tipodocu,
+                       m.MONED_Simbolo,
+                       p.PRESUC_total,
+                       p.PRESUC_FlagEstado
+                FROM cji_presupuesto p
+                LEFT JOIN cji_moneda m ON m.MONED_Codigo=p.MONED_Codigo
+                LEFT JOIN cji_presupuestodetalle pd ON pd.PRESUP_Codigo=p.PRESUP_Codigo
+                INNER JOIN cji_proveedor c ON c.PROVP_Codigo=p.PROVP_Codigo
+                LEFT JOIN cji_persona pe ON pe.PERSP_Codigo=c.PERSP_Codigo 
+                LEFT JOIN cji_empresa e ON e.EMPRP_Codigo=c.EMPRP_Codigo 
+                WHERE p.COMPP_Codigo =".$compania." ".$where." AND CPC_TipoOperacion='".$tipo_oper."'
+                GROUP BY p.PRESUP_Codigo
+                ORDER BY p.PRESUC_Numero DESC ".$limit."
+
+                ";
+        $query = $this->db->query($sql);        
+        if($query->num_rows>0){
+                foreach($query->result() as $fila){
+                        $data[] = $fila;
+                }
+                return $data;
+        }
+        return array();
+    }
+
 
 }
 
