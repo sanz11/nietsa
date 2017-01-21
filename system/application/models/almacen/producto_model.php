@@ -1366,8 +1366,8 @@ and pro.PROD_FlagActivo = 1 and pro.PROD_FlagEstado = 1 order by pro.PROD_FechaR
     {
         $compania = $this->somevar['compania'];
 
-       
-            $this->db->select('cji_producto.*')
+
+            $this->db->select('cji_producto.*,cji_marca.*,cji_familia.*')
             ->join('cji_producto', 'cji_producto.PROD_Codigo = cji_productocompania.PROD_Codigo ', 'left')
             ->join('cji_familia', 'cji_familia.FAMI_Codigo = cji_producto.FAMI_Codigo ', 'left')
             ->join('cji_marca', 'cji_marca.MARCP_Codigo = cji_producto.MARCP_Codigo ', 'left')
@@ -1377,16 +1377,18 @@ and pro.PROD_FlagActivo = 1 and pro.PROD_FlagEstado = 1 order by pro.PROD_FechaR
             ->order_by('cji_producto.PROD_Nombre');
 
        
-        if ($codigo != "")
+        if ($codigo != "--")
             $this->db->where('cji_producto.PROD_CodigoUsuario', $codigo);
-        if ($nombre != "")
+        if ($nombre != "--")
             $this->db->like('cji_producto.PROD_Nombre', $nombre, 'both');
-        if ($idfami != "")
+        if ($idfami != "--")
             $this->db->like('cji_familia.FAMI_Descripcion', $idfami, 'both');
-        if ($marca != "")
+        if ($marca != "--")
             $this->db->like('cji_marca.MARCC_Descripcion', $marca, 'both');
+
         
-         $query = $this->db->get('cji_productocompania', $number_items, $offset);
+        
+          $query = $this->db->get('cji_productocompania', $number_items, $offset);
 
         if ($query->num_rows > 0) {
             foreach ($query->result() as $fila) {

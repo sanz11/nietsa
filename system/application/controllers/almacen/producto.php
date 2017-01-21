@@ -4346,15 +4346,19 @@ class Producto extends Controller
     
             if (count($listado_productos) > 0) {
                 foreach ($listado_productos as $indice => $valor) {
-                    $codigo = $valor->PROD_Nombre;
-                    $codigo_interno = $valor->FAMI_CodigoInterno;
-                    $descripcion = $valor->FAMI_Descripcion;
+                    $codigo = $valor->PROD_Codigo;
+                    $nombre = $valor->PROD_Nombre;
+                    $familia = $valor->FAMI_Descripcion; 
+                    $marca = $valor->MARCC_Descripcion;
+
 
 
                     $db_data[] = array(
                         'cols1' => $indice + 1,
-                        'cols2' => $codigo_interno,
-                        'cols3' => $descripcion
+                        'cols2' => $codigo,
+                        'cols3' => $nombre,
+                        'cols4' => $familia,
+                        'cols5' => $marca
                     );
                 }
             }
@@ -4365,20 +4369,24 @@ class Producto extends Controller
         $col_names = array(
             'cols1' => '<b>ITEM</b>',
             'cols2' => '<b>CODIGO</b>',
-            'cols3' => '<b>DESCRIPCION</b>'
+            'cols3' => '<b>DESCRIPCION</b>',
+            'cols4' =>'<b>FAMILIA</b>',
+            'cols5' => '<b>MARCA</b>'
         );
 
         $this->cezpdf->ezTable($db_data, $col_names, '', array(
-            'width' => 525,
+            'width' => 725,
             'showLines' => 1,
             'shaded' => 1,
             'showHeadings' => 1,
             'xPos' => 'center',
             'fontSize' => 8,
             'cols' => array(
-                'cols1' => array('width' => 30, 'justification' => 'center'),
-                'cols2' => array('width' => 70, 'justification' => 'center'),
-                'cols3' => array('width' => 245, 'justification' => 'left')
+                'cols1' => array('width' => 50, 'justification' => 'center'),
+                'cols2' => array('width' => 60, 'justification' => 'center'),
+                'cols3' => array('width' => 200, 'justification' => 'left'),
+                'cols4' => array('width' => 80, 'justification' => 'center'),
+                'cols5' => array('width' => 80, 'justification' => 'center')
             )
         ));
 
