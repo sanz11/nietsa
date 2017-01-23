@@ -1125,11 +1125,15 @@ class Comprobante_model extends Model {
                 $where ="AND ubigeo.UBIGC_CodDpto ='".$depar."'AND ubigeo.UBIGC_CodProv ='".$prov."'AND ubigeo.UBIGC_CodDist ='".$dist."' AND CPC_FechaRegistro >= '" . $fech1 . "AND CPC_FechaRegistro <= '" . $fech2 . "'";
             }
 
+            //CLIC_TipoPersona->cliente
+
 
         $sql = " SELECT com.*, UBIGC_CodDpto,UBIGC_CodProv,UBIGC_CodDist,UBIGC_Descripcion from cji_comprobante com
-        inner join cji_cliente cliente on cliente.CLIP_Codigo = com.CLIP_Codigo 
+        inner join cji_cliente cliente on cliente.CLIP_Codigo = com.CLIP_Codigo
         inner join cji_persona persona on persona.PERSP_Codigo = cliente.PERSP_Codigo
-        inner join cji_ubigeo ubigeo on persona.UBIGP_Domicilio = ubigeo.UBIGP_Codigo 
+        inner join cji_ubigeo ubigeo on persona.UBIGP_Domicilio = ubigeo.UBIGP_Codigo
+        inner join cji_emprestablecimiento es on em.EMPRP_Codigo = cliente.EMPRP_Codigo
+        inner join cji_ubigeo ubige on es.UBIGP_Codigo = ubige.UBIGP_Codigo
         WHERE CPC_TipoOperacion='V' AND CPC_TipoDocumento='F' ". $where."";
 
         //echo $sql;
