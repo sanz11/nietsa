@@ -10,7 +10,7 @@
 |	http://example.com/
 |
 */
-$config['base_url']	= "http://192.168.0.12:89/ws/osaerp/nietsa3/";
+$config['base_url']	= "http://localhost:85/ws/nietsa3/";
 //$config['base_url']	= "http://localhost/nietsa3/";
 
 /*

@@ -15,26 +15,27 @@ jQuery(document).ready(function(){
 	///
 //	+$("#txtCodigo").val()+"/"+$("#txtNombre").val()+"/"+$("#txtFamilia").val()+"/"+$("#familiaid").val()+"/"+$("#txtMarca").val()+"/"+$("#cboPublicacion").val();
 	///
-    $("#imprimirProducto").click(function(){
+   $("#imprimirProducto").click(function(){
 
             var codigo = $("#txtCodigo").val();
             var nombre = $("#txtNombre").val();
-            var docum = $("#txtNumDoc").val();
-            var nombre = $("#txtNombre").val();
+            var idfami = $("#txtFamilia").val();
+            var marca = $("#txtMarca").val();
 
 
             var codigo = sintilde(codigo);
             var nombre = sintilde(nombre);
-            var documento = sintilde(docum);
-            var nombre = sintilde(nombre);
+            var idfami = sintilde(idfami);
+            var marca = sintilde(marca);
+            var flagBS    = $('#flagBS').val();
         ///
           if(codigo==""){codigo="--";}
           if(nombre==""){nombre="--";}
-          if(docum==""){documento="--";}
-          if(nombre==""){nombre="--";}
-		
-		///
-        url = base_url+"index.php/almacen/producto/registro_productos_pdf/"+codigo+"/"+nombre+"/"+nombre+"/"+nombre;
+          if(idfami==""){idfami="--";}
+          if(marca==""){marca="--";}
+        
+        ///
+        url = base_url+"index.php/almacen/producto/registro_productos_pdf2/"+flagBS+"/"+codigo+"/"+nombre+"/"+idfami+"/"+marca;
         window.open(url,'',"width=800,height=600,menubars=no,resizable=no;")
     });
 	///
@@ -335,6 +336,8 @@ jQuery(document).ready(function(){
 
 
  }
+ 
+
 function mostrar_atributos(){
     var base_url  = $('#base_url').val();
     tipo_producto = $("#tipo_producto").val();

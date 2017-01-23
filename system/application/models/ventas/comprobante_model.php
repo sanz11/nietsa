@@ -1223,7 +1223,7 @@ public function getNombreForPago($datos_for){
         }
         return array();
     }
-    public function buscar_comprobante_compras2($anio,$mes,$rucp,$producto='') {
+    public function buscar_comprobante_compras2($anio,$mes,$rucp,$producto='--') {
         //CPC_TipoOperacion => V venta, C compra
         //CPC_TipoDocumento => F factura, B boleta
         //CPC_total => total de la FACTURA o BOLETA
