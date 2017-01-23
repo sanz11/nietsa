@@ -1,0 +1,1 @@
+INSERT INTO cji_permiso(PERM_Codigo, ROL_Codigo, MENU_Codigo, COMPP_Codigo, PERM_FlagEstado) VALUES (1,4,7,1,1),(2,4,49,1,1);
