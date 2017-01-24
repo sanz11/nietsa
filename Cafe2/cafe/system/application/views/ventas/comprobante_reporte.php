@@ -4,7 +4,44 @@
 <script type="text/javascript" src="<?php echo base_url();?>js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>js/jquery-ui-1.8.17.custom.min.js"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+     <script src="<?php echo base_url(); ?>js/jquery.columns.min.js"></script>
+ <style>		
+		
+	/***ESTILOS PARA EL AUTOCOMPLETE**/	
+	.cajaPadding {
 
+        padding: 2px 10px;
+
+    }
+    
+    .ui-autocomplete {
+        padding: 0;
+        margin: 0;
+        width: 500px;
+        list-style: none;
+    }
+
+    .ui-autocomplete a {
+        color: #000;
+        font-family: Arial;
+        font-size: 8pt;
+        display: block;
+        padding: 4px 10px;
+    }
+
+    .ui-autocomplete a:hover {
+        color: #000;
+        font-weight: bold;;
+
+    }
+
+    .ui-state-hover {
+        background: black !important;
+        color: #FFF !important;
+        border: 0px !important;
+    }
+
+    </style>
 <script type="text/javascript">
 $(document).ready(function(){
     $("a#linkVerProveedor, a#linkVerProducto").fancybox({
@@ -18,6 +55,41 @@ $(document).ready(function(){
             'type'	     : 'iframe'
     });
 });
+
+
+var base_url   = $("#base_url").val(); 
+	
+/***AUTOCOMPLETE DE PRODUCTO**/
+function busqueda_producto() {
+
+	$("#productoDescripcion").autocomplete({
+        source: function (request, response) {
+
+            $.ajax({
+                url: "<?php echo base_url(); ?>index.php/ventas/comprobante/encuentrax_producto",
+                type: "POST",
+                data: {
+                    codigo: $("#productoDescripcion").val()
+                },
+                dataType: "json",
+                success: function (data) {
+                    
+                    response(data);
+                },
+                error: function (data) {
+                    alert("Comunicarse con el Administrado !");
+                }
+            });
+        },
+        select: function (event, ui) {
+            $("#reporteProducto").val(ui.item.codigo);
+             
+        },
+        minLength: 3
+    });
+	
+}
+
 
 function seleccionar_cliente(codigo,ruc,razon_social, empresa, persona){
     $("#cliente").val(codigo);
@@ -234,19 +306,28 @@ function ver_reporte_productos(){
                       <option value="12">DICIEMBRE</option>
                     </select>
                   </td>
+                  <td>Seleccione tipo de documento</td>
+                   <td>
+                    <select id="tipodocumento" name="tipodocumento">
+                      <option value="">Seleccione...</option>
+                      <option value="F">FACTURA</option>
+                      <option value="B">BOLETA</option>
+                     
+                    </select>
+                  </td>
 								</tr>
-                <tr><td colspan="4"><hr></td></tr>
+                <tr><td colspan="6"><hr></td></tr>
                  <tr>
-                  <td align='left' width="20%">Fecha inicial</td>
-                   <td align='left' width="15%"><input type="text" id="fech1" name="fech1"></td>
-                   <td align='left' width="10%">Fecha final</td>
-                   <td align='left' width="45%"><input type="text" id="fech2" name="fech2"></td>
+                  <td align='left' >Fecha inicial</td>
+                   <td align='left' ><input type="text" id="fech1" name="fech1"></td>
+                   <td align='left' >Fecha final</td>
+                   <td align='left' ><input type="text" id="fech2" name="fech2"></td>
                  </tr>
-                 <tr><td colspan="4"><hr></td></tr>
+                 <tr><td colspan="6"><hr></td></tr>
                  <tr>
 
                    <td>Departamento&nbsp;</td>
-                   <td colspan="3">
+                   <td colspan="4">
                        <div id="divUbigeo">
                            <select id="cboDepartamento" name="cboDepartamento" class="comboMedio" onchange="cargar_provincia(this);">
                                <?php echo $cbo_dpto; ?>
@@ -262,7 +343,12 @@ function ver_reporte_productos(){
                        </div>
                    </td>
                </tr>
-
+				<tr><td colspan="6"><hr></td></tr>
+                 <tr>
+           		   <td> Producto<input type="hidden" name="reporteProducto" id="reporteProducto" ></td>
+	   	 			<td><input type="text"  name="productoDescripcion"  onfinishinput="busqueda_producto(this);" 
+	   	 			id="productoDescripcion" class="cajaGrande cajaPadding cajaBusquedaGrande"></td>	
+                 </tr>
 								<tr>
 									<td colspan="2">
 										<a href="javascript:;" onclick="ver_reporte_pdf_ventas()" ><img  style="margin:15px 0px;"  src="<?php echo base_url();?>images/botonreporte.jpg" width="85" height="22" class="imgBoton" ></a>

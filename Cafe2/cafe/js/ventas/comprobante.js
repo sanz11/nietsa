@@ -550,6 +550,8 @@ function ver_reporte_pdf() {
 
 function ver_reporte_pdf_ventas() {
 
+    var prod = $("#productoDescripcion").val();
+
     var anio = $("#anioVenta").val();
     var mes = $("#mesventa").val();
     var fech1 = $("#fech1").val();
@@ -557,11 +559,16 @@ function ver_reporte_pdf_ventas() {
     var depar = $("#cboDepartamento").val();
     var prov = $("#cboProvincia").val();
     var dist = $("#cboDistrito").val();
+    var tipodocumento = $("#tipodocumento").val();
+    var Prodcod = $("#reporteProducto").val();
     if(anio=="0") {anio="--";} 
     if(mes=="")   {mes="--";} 
     if(depar=="00")  {depar="--";}
     if(prov=="00")  {prov="--";}
     if(dist=="00")  {dist="--";}
+    if(Prodcod==""|| prod =="")  {Prodcod="--";}
+
+    if(tipodocumento=="")  {tipodocumento="--";}
 
     var datafechaIni="";var datafechafin="";
 
@@ -580,8 +587,10 @@ function ver_reporte_pdf_ventas() {
 
     }
 
-    url = base_url + "index.php/ventas/comprobante/ver_reporte_pdf_ventas/" + anio+"/" + mes+"/" + fech1+"/" + fech2+"/" + depar+"/" + prov+"/" + dist;
+    url = base_url + "index.php/ventas/comprobante/ver_reporte_pdf_ventas/" + anio+"/" + mes+"/" + fech1+"/" + fech2+"/" + depar+"/" + prov+"/" + dist +"/"+tipodocumento +"/"+Prodcod;
     window.open(url, '', "width=800,height=600,menubars=no,resizable=no;");
+ 
+   
 }
 
 function estadisticas_compras_ventas(tipo) {
@@ -774,11 +783,14 @@ function agregar_producto_comprobante() {
     fila += '<input type="text" style="display:none;" value="" name="detacodi[' + n + ']" id="detacodi[' + n + ']">';
     fila += '<input type="text" style="display:none;"  name="proddescuento100[' + n + ']" id="proddescuento100[' + n + ']" value="' + descuento + '">';
     if (tipo_docu != 'B' && tipo_docu != 'N') {
-//        if (tipo_oper == 'C')
-//            fila += '<input type="text"  size="1" name="proddescuento[' + n + ']" class="proddescuento" id="proddescuento[' + n + ']" onblur="calcula_importe2(' + n + ');" />';
-//        else
-//            fila += '<input type="text"  size="1" name="proddescuento[' + n + ']" class="proddescuento" id="proddescuento[' + n + ']" onblur="calcula_importe2(' + n + ');" />';//PRODUCTOIGV ES EL DESCUENTO
-
+        if (tipo_oper == 'C'){
+            fila += '<input type="text"  size="1" name="proddescuento[' + n + ']" class="proddescuento" id="proddescuento[' + n + ']" onblur="calcula_importe2(' + n + ');" />';
+        	fila += '<input type="hidden"  size="1" name="proddescuentopp[' + n + ']" class="proddescuentopp" id="proddescuentopp[' + n + ']"  />';
+        }else{
+        	fila += '<input type="text"  size="1" name="proddescuento[' + n + ']" class="proddescuento" id="proddescuento[' + n + ']" onblur="calcula_importe2(' + n + ');" />';//PRODUCTOIGV ES EL DESCUENTO
+        	fila += '<input type="hidden"  size="1" name="proddescuentopp[' + n + ']" class="proddescuentopp" id="proddescuentopp[' + n + ']"  />';
+        }
+        
     } else {
         fila += '<input type="text" style="display:none;"  name="proddescuento[' + n + ']" id="proddescuento[' + n + ']" onblur="calcula_importe2(' + n + ');" />'; 
     }
@@ -789,7 +801,7 @@ function agregar_producto_comprobante() {
     fila += '<input type="text" style="display:none;" name="prodstock[' + n + ']" id="prodstock[' + n + ']" value="' + stock + '"/>';
     fila += '<input type="text" style="display:none;" name="prodcosto[' + n + ']" id="prodcosto[' + n + ']" value="' + costo + '"/>';
     fila += '<input type="text" style="display:none;" name="almacenProducto[' + n + ']" id="almacenProducto[' + n + ']" value="' + almacenProducto + '"/>';
-    fila += '<input type="text" disabled="true"  size="1" name="proddescuento[' + n + ']" class="proddescuento" id="proddescuento[' + n + ']" onblur="calcula_importe2(' + n + ');"  />';	//PRODUCTOIGV ES EL DESCUENTO
+    fila += '<input type="text" style="display:none;"  size="1" name="proddescuento[' + n + ']" class="proddescuento" id="proddescuento[' + n + ']" onblur="calcula_importe2(' + n + ');"  />';	//PRODUCTOIGV ES EL DESCUENTO
     /**verificamos si es un servicio y a la vez verificampos si contiene guais de remiisiones asociadas**/
     var total=$('input[id^="accionAsociacionGuiarem"][value!="0"]').length;
     if(flagBS=='S'){
@@ -987,36 +999,58 @@ function calcula_importe_conigv(n) {
 
     calcula_totales_conigv();
 }
+
+
+function modifica_descuento_total() {
+
+    descuento = $('#descuento').val();
+    n     = document.getElementById('tblDetalleComprobante').rows.length;
+
+    for(i=0;i<n;i++){
+        a = "proddescuento["+i+"]";
+        document.getElementById(a).value = descuento;
+    }
+    for(j=0;j<n;j++){
+        calcula_importe2(j);
+    } 
+}
+
 function calcula_importe2(n) {
 
     var t_doc = $('#' + n).attr('t-doc');
-    if (t_doc === 'F') {
+    if (t_doc === 'F') {	
         a = "prodpu[" + n + "]";
-        b = "prodcantidad[" + n + "]";
-        e = "prodigv[" + n + "]";
+        c  = "proddescuento["+n+"]";
         f = "prodprecio[" + n + "]";
         g = "prodimporte[" + n + "]";
         h = "prodpu_conigv[" + n + "]";
-
-        valor_igv = $("#igv").val();
+        
         pu = parseFloat(document.getElementById(a).value);
-        cantidad = parseFloat(document.getElementById(b).value);
-
-        descuento = $('#' + n).find('.proddescuento').val();
-
-        total_igv = parseFloat(document.getElementById(e).value);
+        descuento = parseFloat(document.getElementById(c).value);
         precio_u = parseFloat(document.getElementById(h).value);
+        descuento_total_yo = (pu * descuento)/100;
+        importe_total_yo = precio_u - descuento_total_yo; 
+        document.getElementById(g).value = importe_total_yo.toFixed(2);
 
-
-        dsc = parseFloat(descuento / 100);
-        importe = money_format((pu * cantidad) - ((pu * cantidad) * dsc));
-
-        t_igv = money_format((importe * valor_igv) / 100);
-        importe_total = money_format(importe + t_igv);
-        document.getElementById(g).value = importe_total.toFixed(2);
-        document.getElementById(e).value = t_igv.toFixed(2);
-        document.getElementById(f).value = importe.toFixed(2);
-        calcula_totales();
+        n = document.getElementById('tblDetalleComprobante').rows.length;
+        descuento_total = 0;
+        precio_total = 0;
+      for(i=0;i<n;i++){
+    	  a = "prodimporte["+i+"]"
+          b = "prodigv["+i+"]";
+          c = "proddescuento["+i+"]";
+            e  = "detaccion["+i+"]";
+            
+            if(document.getElementById(e).value!='e'){
+            	importe = parseFloat(document.getElementById(a).value);
+                descuentover = parseFloat(document.getElementById(c).value);         
+                descontandototal =  (pu *descuentover )/100;        
+                precio_total = money_format(importe  + precio_total);
+            }
+        }
+        $("#descuentotal").val(descontandototal.toFixed(2));
+        $("#importetotal").val(precio_total.toFixed(2));
+        
     } else {
 
         a = "prodimporte[" + n + "]";
@@ -1034,30 +1068,33 @@ function calcula_importe2(n) {
     }
 }
 
-function calcula_totales3() {
-//	 n = document.getElementById('tblDetalleComprobante').rows.length;
-//	    importe_total = 0;
-//	    igv_total = 0;
-//	    descuento_total = 0;
-//	    precio_total = 0;
-//	    for(i=0;i<n;i++){//Estanb al reves los campos
-//	        a = "prodimporte["+i+"]"
-//	        b = "prodigv["+i+"]";
-//	        c = "proddescuento["+i+"]";
-//	        d = "prodprecio["+i+"]";
-//	        e  = "detaccion["+i+"]";
-//	        if(document.getElementById(e).value!='e'){
-//	            importe = parseFloat(document.getElementById(a).value);
-//	            igv = parseFloat(document.getElementById(b).value);
-//	            descuento = parseFloat(document.getElementById(c).value);
-//	            precio = parseFloat(document.getElementById(d).value);
-//	            importe_total = money_format(importe + importe_total);
-//	            igv_total = money_format(igv + igv_total);
-//	            descuento_total = money_format(descuento + descuento_total);
-//	            precio_total = money_format(precio + precio_total);
-//	        }
-//	    }
+function calcula_totales_conigv() {
+    n = document.getElementById('tblDetalleComprobante').rows.length;
+    importe_total = 0;
+    descuento_total_conigv = 0;
+    precio_total_conigv = 0;
+    for (i = 0; i < n; i++) {//Estanb al reves los campos
+        a = "prodimporte[" + i + "]"
+        c = "proddescuento_conigv[" + i + "]";
+        d = "prodprecio_conigv[" + i + "]";
+        e = "detaccion[" + i + "]";
+        if (document.getElementById(e).value != 'e') {
+        	alert(a);
+            importe = parseFloat(document.getElementById(a).value);
+            descuento_conigv = parseFloat(document.getElementById(c).value);
+            precio_conigv = parseFloat(document.getElementById(d).value);
+            importe_total = money_format(importe + importe_total);
+            descuento_total_conigv = money_format(descuento_conigv + descuento_total_conigv);
+            precio_total_conigv = money_format(precio_conigv + precio_total_conigv);
+        }
+    }
 
+
+    $("#importetotal").val(importe_total.toFixed(2));
+    $("#descuentotal_conigv").val(descuento_total_conigv.toFixed(2));
+    $("#preciototal_conigv").val(precio_total_conigv.toFixed(2));
+}
+function calcula_totales3() {
 	     
     var lht = $('#tblDetalleComprobante tr').length;
     var i = 0;
@@ -1077,36 +1114,6 @@ function calcula_totales3() {
     $('#preciototal_conigv').val((importe_total / (1 + (parseFloat(igv) / 100))).toFixed(2));
 
 }
-
-//function calcula_totales(){
-//    n = document.getElementById('tblDetalleComprobante').rows.length;
-//    importe_total = 0;
-//    igv_total = 0;
-//    descuento_total = 0;
-//    precio_total = 0;
-//    for(i=0;i<n;i++){//Estanb al reves los campos
-//        a = "prodimporte["+i+"]"
-//        b = "prodigv["+i+"]";
-//        c = "proddescuento["+i+"]";
-//        d = "prodprecio["+i+"]";
-//        e  = "detaccion["+i+"]";
-//        if(document.getElementById(e).value!='e'){
-//            importe = parseFloat(document.getElementById(a).value);
-//            igv = parseFloat(document.getElementById(b).value);
-//            descuento = parseFloat(document.getElementById(c).value);
-//            precio = parseFloat(document.getElementById(d).value);
-//            importe_total = money_format(importe + importe_total);
-//            igv_total = money_format(igv + igv_total);
-//            descuento_total = money_format(descuento + descuento_total);
-//            precio_total = money_format(precio + precio_total);
-//        }
-//    }
-//    $("#importetotal").val(importe_total.toFixed(2));
-//    $("#igvtotal").val(igv_total.toFixed(2));
-//    $("#descuentotal").val(descuento_total.toFixed(2));
-//     $("#preciototal").val(precio_total.toFixed(2));
-//}
-
 
 
 function descuento_porcentaje() {
@@ -1228,31 +1235,7 @@ function calcula_totales() {
 
 
 
-function calcula_totales_conigv() {
-    n = document.getElementById('tblDetalleComprobante').rows.length;
-    importe_total = 0;
-    descuento_total_conigv = 0;
-    precio_total_conigv = 0;
-    for (i = 0; i < n; i++) {//Estanb al reves los campos
-        a = "prodimporte[" + i + "]"
-        c = "proddescuento_conigv[" + i + "]";
-        d = "prodprecio_conigv[" + i + "]";
-        e = "detaccion[" + i + "]";
-        if (document.getElementById(e).value != 'e') {
-            importe = parseFloat(document.getElementById(a).value);
-            descuento_conigv = parseFloat(document.getElementById(c).value);
-            precio_conigv = parseFloat(document.getElementById(d).value);
-            importe_total = money_format(importe + importe_total);
-            descuento_total_conigv = money_format(descuento_conigv + descuento_total_conigv);
-            precio_total_conigv = money_format(precio_conigv + precio_total_conigv);
-        }
-    }
 
-
-    $("#importetotal").val(importe_total.toFixed(2));
-    $("#descuentotal_conigv").val(descuento_total_conigv.toFixed(2));
-    $("#preciototal_conigv").val(precio_total_conigv.toFixed(2));
-}
 function mostrar_productos_factura(guias) {
     for (i = 0; i < guias.length; i++) {
         var codigo_guia = guias[i];
@@ -1330,6 +1313,7 @@ function mostrar_productos_factura(guias) {
                     fila += '<td width="6%"><div align="center">';
                     fila += '<input type="hidden" name="proddescuento100[' + n + ']" id="proddescuento100[' + n + ']" value="0">';
                     fila += '<input type="text" size="5" maxlength="10" class="cajaGeneral" name="proddescuento[' + n + ']" class="proddescuento" id="proddescuento[' + n + ']" onblur="calcula_importe2(' + n + ');" />';
+                    fila += '<input type="hidden" size="5" maxlength="10" class="cajaGeneral" name="proddescuentopp[' + n + ']" class="proddescuento" id="proddescuentopp[' + n + ']"  />';
                     fila += '</div></td>';
                     fila += '<td width="6%" style="display:none;" ><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral cajaSoloLectura" name="prodigv[' + n + ']" id="prodigv[' + n + ']" readonly></div></td>';
                     fila += '<td width="6%" style="display:none;"><div align="center">';
@@ -1394,23 +1378,10 @@ function modifica_pu(n) {
 
     calcula_importe(n);
 }
-function modifica_descuento_total() {
-    descuento = $('#descuento').val();
-    n = document.getElementById('tblDetalleOcompra').rows.length;
-    for (i = 0; i < n; i++) {
-        a = "proddescuento100[" + i + "]";
-        document.getElementById(a).value = descuento;
-    }
-    for (i = 0; i < n; i++) {
-        calcula_importe(i);
-    }
-    calcula_totales();
-    
 
-}
 function modifica_igv_total() {
     igv = $('#igv').val();
-    n = document.getElementById('tblDetalleOcompra').rows.length;
+    n = document.getElementById('tblDetalleComprobante').rows.length;
     for (i = 0; i < n; i++) {
         a = "prodigv100[" + i + "]";
         document.getElementById(a).value = igv;
@@ -1701,6 +1672,7 @@ function agregar_todopresupuesto(guia, tipo_oper) {
 	                fila += '<input type="hidden" name="proddescuento_conigv[' + n + ']" id="proddescuento_conigv[' + n + ']" onblur="calcula_importe2_conigv(' + n + ');" value="0">';
 	                fila += '<input type="hidden" name="prodigv100[' + n + ']" id="prodigv100[' + n + ']" value="' + igv100 + '">';
 	                fila += '<input type="hidden" name="detaccion[' + n + ']" id="detaccion[' + n + ']" value="n">';
+	                fila += '<input type="hidden" size="5" maxlength="10" class="cajaGeneral" name="proddescuentopp[' + n + ']" class="proddescuento" id="proddescuentopp[' + n + ']"  />';
 	                fila += '<input type="text" value="0" size="1" name="proddescuento[' + n + ']" class="proddescuento" id="proddescuento[' + n + ']" onblur="calcula_importe2(' + n + ');" />';
 	                fila += '<input type="hidden" name="almacenProducto[' + n + ']" id="almacenProducto[' + n + ']" value="' + almacenProducto + '"/>';
 	                fila += '<input type="text" size="5" class="cajaGeneral cajaSoloLectura" name="prodimporte[' + n + ']" id="prodimporte[' + n + ']" value="' + total + '" readonly="readonly" value="0">';

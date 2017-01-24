@@ -108,24 +108,7 @@ class Persona_model extends Model {
         $this->db->update("cji_persona", $data);
     }
 
-//     public function modificar_datosPersonaCodificado($persona, $nombres, $paterno, $materno, $ruc_persona, $tipo_documento, $numero_documento, $direccion, $telefono, $movil, $email, $web ) {
-//     	$data = array(
-//     			"PERSC_Nombre" => strtoupper($nombres),
-//     			"PERSC_ApellidoPaterno" => strtoupper($paterno),
-//     			"PERSC_ApellidoMaterno" => strtoupper($materno),
-//     			"PERSC_Ruc" => $ruc_persona,
-//     			"PERSC_TipoDocIdentidad" => $tipo_documento,
-//     			"PERSC_NumeroDocIdentidad" => $numero_documento,
-//     			"PERSC_Direccion" => strtoupper($direccion),
-//     			"PERSC_Telefono" => $telefono,
-//     			"PERSC_Movil" => $movil,
-//     			"PERSC_Email" => strtolower($email),
-//     			"PERSC_Domicilio" => $direccion,
-//     			"PERSC_Web" => strtolower($web)
-//     	);
-//     	$this->db->where("PERSP_Codigo", $persona);
-//     	$this->db->update("cji_persona", $data);
-//     }
+
     
     public function modificar_datosPersonaCodificado($persona,$direccion, $telefono, $movil, $email, $web ) {
     	$data = array(

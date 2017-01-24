@@ -891,8 +891,8 @@ if (FORMATO_IMPRESION == 8) {
                                maxlength="2" value="<?php echo $igv; ?>"
                                onkeypress="return numbersonly(this,event,'.');" onblur="modifica_igv_total();"
                                readonly="readonly"/> % <br/>
- <td valign="middle">Descuento</td>
-                    <td><input NAME="descuento" type="text" class="cajaGeneral" id="descuento"  size="2" maxlength="2" value="<?php echo $descuento;?>" onkeypress="return numbersonly(this,event,'.');" onblur="modifica_descuento_total();">%  </td>                    
+ <td valign="middle" >Descuento General</td>
+                    <td><input NAME="descuento" type="text" class="cajaGeneral" id="descuento"  size="2" maxlength="2" value="<?php echo $descuento;?>" onkeypress="return numbersonly(this,event,'.');" onblur="modifica_descuento_total();"> % </td>                    
                     <!-- <td width="8%" valign="middle">Presupuesto</td>-->
                     <td width="5%" valign="middle">
                         <?php if ($tipo_oper == 'V') { ?>
@@ -1170,7 +1170,7 @@ if (FORMATO_IMPRESION == 8) {
                     </td>
                     <?php if ($tipo_docu == 'F') { ?>
                         <td  width="6%">
-                            <div align="center">DSCTO</div>
+                            <div align="center">DSCTO X Producto</div>
                         </td>
                     <?php } ?>
                     <td width="6%" >
@@ -1569,7 +1569,7 @@ if (FORMATO_IMPRESION == 8) {
 
                 <tr>
 
-                    <td class="busqueda">Descuento</td>
+                    <td class="busqueda">Descuento General</td>
 
                     <?php if ($tipo_docu != 'B' && $tipo_docu != 'N') {	 ?>
 

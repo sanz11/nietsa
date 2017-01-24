@@ -13,7 +13,7 @@
 
 //$config['base_url']	= "http://www.osa-erp.com/desarrollo/cafe";
 
-$config['base_url']	= "http://localhost:85/cafe2/cafe";
+$config['base_url']	= "http://localhost:85/cafe2/cafe/";
 
 
 /*

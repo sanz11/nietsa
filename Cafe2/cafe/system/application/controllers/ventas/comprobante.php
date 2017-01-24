@@ -6020,7 +6020,6 @@ if($_SESSION['compania']=='1'){
 
     public function reportes()
     {
-
         $anio = $this->comprobante_model->anios_para_reportes('V');
         $combo = '<select id="anioVenta" name="anioVenta">';
         $combo .= '<option value="0">Seleccione...</option>';
@@ -6407,7 +6406,7 @@ if($_SESSION['compania']=='1'){
         $this->cezpdf->ezStream($cabecera);
     }
 
-    public function ver_reporte_pdf_ventas($anio ,$mes ,$fech1 ,$fech2,$depar ,$prov  ,$dist)
+    public function ver_reporte_pdf_ventas($anio ,$mes ,$fech1 ,$fech2,$depar ,$prov  ,$dist, $tipodocumento,$Prodcod)
     {
         $usuario = $this->usuario_model->obtener($this->somevar['user']);
         $persona = $this->persona_model->obtener_datosPersona($usuario->PERSP_Codigo);
@@ -6420,7 +6419,7 @@ if($_SESSION['compania']=='1'){
         /* Cabecera */
         $delta = 20;
 
-        $listado = $this->comprobante_model->buscar_comprobante_venta_2($anio ,$mes ,$fech1 ,$fech2,$depar ,$prov  ,$dist);
+        $listado = $this->comprobante_model->buscar_comprobante_venta_2($anio ,$mes ,$fech1 ,$fech2,$depar ,$prov  ,$dist ,$tipodocumento,$Prodcod);
 
         $confi = $this->configuracion_model->obtener_configuracion($this->somevar['compania']);
         $serie = '';
@@ -6431,30 +6430,62 @@ if($_SESSION['compania']=='1'){
         }
 
         /* Listado */
+        $codigo="";
         $sum = 0;
         foreach ($listado as $key => $value) {
+            $dep=$value->UBIGC_CodDpto;
+            $pro=$value->UBIGC_CodProv;
+            $dis=$value->UBIGC_CodDist;
+           $cd=strlen($dep.$pro. $dis);
+
+           if($cd=="5"){
+                $dep="0".$dep;
+           }
+           $bsdepartamento= $dep."0000";
+           $bsprovincia= $dep.$pro."00";
+           $bsdistrito= $dep.$pro.$dis;
+
+            $depar = $this->comprobante_model->buscardep($bsdepartamento);
+            $provin = $this->comprobante_model->buscardep($bsprovincia);
+            $distri = $this->comprobante_model->buscardep($bsdistrito);
+
+            foreach ($depar as $ke => $val1) {
+                $departamento=$val1->UBIGC_Descripcion;
+            }
+            foreach ($provin as $ke => $val2) {
+                $provincia=$val2->UBIGC_Descripcion;
+            }
+            foreach ($distri as $ke => $val3) {
+                $distrito=$val3->UBIGC_Descripcion;
+            }
+
+
             $sum += $value->CPC_total;
             $db_data[] = array(
                 'col1' => $key + 1,
                 'col2' => substr($value->CPC_FechaRegistro, 0, 10),
-                'col3' => $serie,
-                'col4' => $value->CPC_Numero,
-                'col6' => $value->CPC_subtotal,
-                'col7' => $value->CPC_igv,
-                'col8' => $value->CPC_total,
-                'col9' => $value->UBIGC_CodDpto."-".$value->UBIGC_CodProv."-".$value->UBIGC_CodDist
+                'col3' => $departamento."-". $provincia."-". $distrito,
+                'col4' => $value->CPC_TipoDocumento,
+                'col5' => $serie,
+                'col6' => $value->CPC_Numero,
+                'col7' => $value->CPC_subtotal,
+                'col8' => $value->CPC_igv,
+                'col9' => $value->CPC_descuento,
+                'col10' => $value->CPC_total
             );
         }
 
         $col_names = array(
             'col1' => 'Itm',
-            'col2' => 'Fecha',
-            'col3' => 'SERIE',
-            'col4' => 'NRO',
-            'col6' => 'VALOR DE VENTA',
-            'col7' => 'I.G.V. 18%',
-            'col8' => 'TOTAL',
-            'col9' => 'depart'
+            'col2' => 'Fecha de Registro',
+            'col3' => 'Lugar',
+            'col4' => 'T. Doc.',
+            'col5' => 'SERIE',
+            'col6' => 'NRO',
+            'col7' => 'VALOR DE VENTA',
+            'col8' => 'I.G.V. 18%',
+            'col9' => 'Descuento',
+            'col10' => 'TOTAL'
 
         );
 
@@ -6465,10 +6496,12 @@ if($_SESSION['compania']=='1'){
             'col4' => "",
             'col5' => "",
             'col6' => "",
-            'col7' => "TOTAL",
-            'col8' => $sum,
-            'col9' => "",
-            'col10' => ""
+            'col7' => "",
+            'col8' => "",
+            'col9' => "TOTAL",
+            'col10' => $sum,
+            'col11' => "",
+            'col12' => ""
         );
 
         $this->cezpdf->ezTable($db_data, $col_names, '', array(
@@ -6481,13 +6514,16 @@ if($_SESSION['compania']=='1'){
             'cols' => array(
                 'col1' => array('width' => 25, 'justification' => 'center'),
                 'col2' => array('width' => 50, 'justification' => 'center'),
-                'col3' => array('width' => 50, 'justification' => 'center'),
-                'col4' => array('width' => 30, 'justification' => 'center'),
-                'col6' => array('width' => 50),
+                'col3' => array('width' => 100, 'justification' => 'center'),
+                'col4' => array('width' => 25, 'justification' => 'center'),
+                'col5' => array('width' => 30,'justification' => 'center'),
+                'col6' => array('width' => 30, 'justification' => 'center'),
                 'col7' => array('width' => 50, 'justification' => 'center'),
-                'col8' => array('width' => 50, 'justification' => 'center'),
+                'col8' => array('width' => 60, 'justification' => 'center'),
                 'col9' => array('width' => 60, 'justification' => 'center'),
-                 'col9' => array('width' => 60, 'justification' => 'center')
+                'col10' => array('width' => 60, 'justification' => 'center'),
+                'col11' => array('width' => 60, 'justification' => 'center'),
+                 'col12' => array('width' => 60, 'justification' => 'center')
             )
         ));
 
@@ -7652,6 +7688,33 @@ if($_SESSION['compania']=='1'){
 		/**eliminamos las series creadas**/
 		$this->seriedocumento_model->eliminarDocumetoCodigoAsociado($tipo,$comprobante);
 		/**FIN DE ELIMINACION DE DOCUMENTOS***/
+	
+	}
+	
+	
+	
+	
+	public function encuentrax_producto() {
+	
+		$codigoProducto = $this->input->post('codigo'); //captura de ajax mando un valor
+		$result = array();
+
+		 
+		if($codigoProducto!=null && count(trim($codigoProducto))>0){
+			
+				$consultaNombre =$datosTipoCaja = $this->comprobante_model->autocompleteProducto($keyword);
+				if($consultaNombre != null && count($consultaNombre)>0){
+					foreach ($datosTipoCaja as $indice => $valor) {
+						$nombre = $valor-> CPDEC_Descripcion;
+						$codigito = $valor->  CPDEP_Codigo;
+						$result[] = array( "value" => $nombre ,"codigo" => $codigito);
+	
+					}
+				}
+	
+		}
+	
+		echo json_encode($result);
 	
 	}
 	
