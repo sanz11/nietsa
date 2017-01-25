@@ -1,7 +1,0 @@
-"EMPRP_Codigo","CIIUP_Codigo","TIPCOD_Codigo","SECCOMP_Codigo","EMPRC_Ruc","EMPRC_RazonSocial","EMPRC_Telefono","EMPRC_Movil","EMPRC_Fax","EMPRC_Web","EMPRC_Email","EMPRC_CtaCteSoles","EMPRC_CtaCteDolares","EMPRC_FechaRegistro","EMPRC_FechaModificacion","EMPRC_FlagEstado","EMPRC_Direccion"
-"0","0","1",NULL,"0","Empresa no Definida                   ",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0000-00-00 00:00:00",NULL,"1",
-"1","0","1",NULL,"0000000000","EMPRESA PRINCIPAL",,,,"www.web.com","ventas@correo.com",,,"0000-00-00 00:00:00",NULL,"1",
-"334","0","1","3","48474144141","EMPRESA PRUEBA",,,,,,,,"2016-10-14 15:00:06",NULL,"1",
-"335","0","1","2","74514111111","PROVEEDOR PRUEBA",,,,,,,,"2016-10-14 15:00:33",NULL,"1",
-"336","0","1","2","74522223222","CLIENTE PRUEBA",,,,,,,,"2016-10-14 15:01:02",NULL,"1","DIRECCION"
-"337","0","1",NULL,"10726647793","RAZON SOCIAL EDSON ",,,,,,,,"2016-11-13 05:02:33",NULL,"1",
