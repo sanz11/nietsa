@@ -45,7 +45,7 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 |
 */
 
-define('TITULO',                                'NIPPON');
+define('TITULO',                                'DISELAC');
 define('URL_IMAGE',                             'http://localhost/translogint/images/');
 define('URL_JS',                                'http://localhost/translogint/system/application/views/javascript/');
 define('URL_CSS',                               'http://localhost/translogint/system/application/views/estilos/');
