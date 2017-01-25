@@ -713,7 +713,7 @@ class Proveedor extends Controller
             }
         }
         $data['lista'] = $lista;
-        $data['cbo_categoria'] = $this->OPTION_generador($this->sectorcomercial_model->listar(), 'SECCOMP_Codigo', 'SECCOMC_Descripcion', '');;
+        $data['cbo_categoria'] = $this->OPTION_generador($this->sectorcomercial_model->listar(), 'SECCOMP_Codigo', 'SECCOMC_Descripcion', '');
         $data['tipo_documento'] = $this->seleccionar_tipodocumento('1');
         $data['tipocodigo'] = $this->seleccionar_tipocodigo('1');
         $this->load->view('compras/proveedor_ventana_busqueda', $data);
