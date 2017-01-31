@@ -68,7 +68,6 @@ jQuery(document).ready(function(){
                             'tipo_documento'  : "required",
                             'cboSexo'         : "required",
                             'cboNacionalidad' : "required",
-                            'cboNacimiento' : "required",
                            },
 		debug    : true,
 		errorContainer      : "container",

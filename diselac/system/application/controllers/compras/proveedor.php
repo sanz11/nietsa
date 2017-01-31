@@ -144,6 +144,8 @@ class Proveedor extends Controller
                 exit ('{"result":"error", "campo":"paterno"}');
             if ($this->input->post('cboEstadoCivil') == '0')
                 exit ('{"result":"error", "campo":"cboEstadoCivil"}');
+              if ($this->input->post('cboNacimiento') == '0')
+                exit ('{"result":"error", "campo":"cboNacimiento"}');
         } else {
             if ($this->input->post('ruc') == '')
                 exit ('{"result":"error", "campo":"ruc"}');
@@ -213,9 +215,9 @@ class Proveedor extends Controller
             $persona = 0;
             if ($empresa_persona != '' && $empresa_persona != '0') {
                 $empresa = $empresa_persona;
-                $this->empresa_model->modificar_datosEmpresa($empresa, $tipocodigo, $ruc, $razon_social, $telefono, $movil, $fax, $web, $email, $sector_comercial, $ctactesoles, $ctactedolares);
+                $this->empresa_model->modificar_datosEmpresa($empresa, $tipocodigo, $ruc, $razon_social, $telefono, $movil, $fax, $web, $email, $sector_comercial, $ctactesoles, $ctactedolares,$direccion);
             } else
-                $empresa = $this->empresa_model->insertar_datosEmpresa($tipocodigo, $ruc, $razon_social, $telefono, $fax, $web, $movil, $email, $sector_comercial, $ctactesoles, $ctactedolares);
+                $empresa = $this->empresa_model->insertar_datosEmpresa($tipocodigo, $ruc, $razon_social, $telefono, $fax, $web, $movil, $email, $sector_comercial, $ctactesoles, $ctactedolares,$direccion);
             //Direccion Principal
             $this->empresa_model->insertar_sucursalEmpresaPrincipal('1', $empresa, $ubigeo_domicilio, 'PRINCIPAL', $direccion);
             $this->proveedor_model->insertar_datosProveedor($empresa, $persona, $tipo_persona);
@@ -454,7 +456,7 @@ class Proveedor extends Controller
         if ($tipo_persona == 0) {
             $this->persona_model->modificar_datosPersona($persona, $ubigeo_nacimiento, $ubigeo_domicilio, $estado_civil, $nacionalidad, $nombres, $paterno, $materno, $ruc_persona, $tipo_documento, $numero_documento, $direccion, $telefono, $movil, $email, $domicilio, $sexo, $fax, $web, $ctactesoles, $ctactedolares);
         } elseif ($tipo_persona == 1) {
-            $this->empresa_model->modificar_datosEmpresa($empresa, $tipocodigo, $ruc, $razon_social, $telefono, $movil, $fax, $web, $email, $sector_comercial, $ctactesoles, $ctactedolares);
+            $this->empresa_model->modificar_datosEmpresa($empresa, $tipocodigo, $ruc, $razon_social, $telefono, $movil, $fax, $web, $email, $sector_comercial, $ctactesoles, $ctactedolares,$direccion);
             $this->empresa_model->modificar_sucursalEmpresaPrincipal($empresa, '1', $ubigeo_domicilio, 'PRINCIPAL', $direccion);
             //Modificar contactows empresa
         }
@@ -636,7 +638,7 @@ class Proveedor extends Controller
                 $ver = "<a href='#' onclick='ver_proveedor(" . $codigo . ")'><img src='" . base_url() . "images/ver.png' width='16' height='16' border='0' title='Modificar'></a>";
                 $eliminar = "<a href='#' onclick='eliminar_proveedor(" . $codigo . ")'><img src='" . base_url() . "images/eliminar.png' width='16' height='16' border='0' title='Modificar'></a>";
                 $lista[] = array($item, $ruc, $dni, $razon_social, 
-                    $direccion,$tipo_proveedor,
+                    $tipo_proveedor,$direccion,
                  //$telefono, $movil,
                   $editar, $ver, $eliminar);
                 $item++;
