@@ -417,9 +417,9 @@ var urls = base_url() . "index.php/almacen/producto/buscar_productos/";
     <td>
          <div align="center"><?php echo $valor[15]; ?></div>
     </td>
-       <td>
+      <!-- <td>
              <div align="center"><?php echo $valor[11]; ?></div>
-        </td>
+        </td>-->
 
          <td>
              <div align="center"><?php echo $valor[12]; ?></div>

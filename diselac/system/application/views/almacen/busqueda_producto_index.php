@@ -339,10 +339,10 @@
                             </td>
                             <!--<td>
                                 <div align="center"><?php echo $valor[17]; ?></div>
-                            </td>-->
+                            </td>
                             <td>
                                 <div align="center"><?php echo $valor[11]; ?></div>
-                            </td>
+                            </td>-->
 
                             <td>
                                 <div align="center"><?php echo $valor[12]; ?></div>
