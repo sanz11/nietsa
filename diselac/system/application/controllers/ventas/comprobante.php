@@ -1235,6 +1235,7 @@ public function select_cmbVendedor($index){
                 $filter->CPDEC_Subtotal = $prodprecio[$indice];
                 $filter->CPDEC_Descuento = $proddescuento[$indice];
                 $filter->CPDEC_Igv = $prodigv[$indice];
+
                 /*} else {
                     $filter->CPDEC_Subtotal_ConIgv = $prodprecio_conigv[$indice];
                     $filter->CPDEC_Descuento_ConIgv = $proddescuento_conigv[$indice];
@@ -1273,6 +1274,9 @@ public function select_cmbVendedor($index){
                 	$filter->CPDEC_Descripcion = strtoupper($proddescri[$indice]);
                 	$filter->CPDEC_GenInd = $flagGenInd[$indice];
                 	$filter->CPDEC_Observacion = "";
+
+                    $filter->CPDEC_Pu = $prodpu[$indice];
+                    $filter->CPDEC_Subtotal = $prodprecio[$indice];
 
                 if ($detaccion[$indice] != 'e') {
 					$this->comprobantedetalle_model->insertar($filter);
@@ -1980,8 +1984,12 @@ public function select_cmbVendedor($index){
         $prodcantidad = $this->input->post('prodcantidad');
         $proddescri = $this->input->post('proddescri');
         $codigo = $this->input->post('codigo');
+
         $tipo_oper = $this->input->post('tipo_oper');
         $tipo_docu = $this->input->post('tipo_docu');
+
+        $prodpu= $this->input->post('prodpu');
+        $prodprecio= $this->input->post('prodprecio');
 
         $filter = new stdClass();
         $filter->FORPAP_Codigo = NULL;
@@ -2058,14 +2066,18 @@ public function select_cmbVendedor($index){
         $prodcodigo = $this->input->post('prodcodigo');
         $flagBS = $this->input->post('flagBS');
         $prodcantidad = $this->input->post('prodcantidad');
+        $prodpu= $this->input->post('prodpu');
+        $prodprecio= $this->input->post('prodprecio');
         if ($tipo_docu != 'B') {
             $prodpu = $this->input->post('prodpu');
             $prodprecio = $this->input->post('prodprecio');
             $proddescuento = $this->input->post('proddescuento');
             $prodigv = $this->input->post('prodigv');
+
         } else {
             $prodprecio_conigv = $this->input->post('prodprecio_conigv');
             $proddescuento_conigv = $this->input->post('proddescuento_conigv');
+
         }
         $prodimporte = $this->input->post('prodimporte');
         $prodpu_conigv = $this->input->post('prodpu_conigv');
@@ -2078,10 +2090,16 @@ public function select_cmbVendedor($index){
         $almacenProducto= $this->input->post('almacenProducto');
         $proddescri = $this->input->post('proddescri');
         $estado= $this->input->post('estado');
+
+        $prodpu= $this->input->post('prodpu');
+        $prodprecio= $this->input->post('prodprecio');
         
         if (is_array($detacodi) > 0) {
             foreach ($detacodi as $indice => $valor) {
                 $detalle_accion = $detaccion[$indice];
+
+                 $filter->CPDEC_Pu = $prodpu[$indice];
+                 $filter->CPDEC_Subtotal = $prodprecio[$indice];
 
                 $filter = new stdClass();
                 $filter->CPP_Codigo = $codigo;
@@ -2090,8 +2108,6 @@ public function select_cmbVendedor($index){
                     $filter->UNDMED_Codigo = $produnidad[$indice];
                 $filter->CPDEC_Cantidad = $prodcantidad[$indice];
                 if ($tipo_docu != 'B') {
-                    $filter->CPDEC_Pu = $prodpu[$indice];
-                    $filter->CPDEC_Subtotal = $prodprecio[$indice];
                     $filter->CPDEC_Descuento = $proddescuento[$indice];
                     $filter->CPDEC_Igv = $prodigv[$indice];
                 } else {
