@@ -67,7 +67,8 @@ jQuery(document).ready(function(){
                             'email'           : {required:false,email:true},
                             'tipo_documento'  : "required",
                             'cboSexo'         : "required",
-                            'cboNacionalidad' : "required"
+                            'cboNacionalidad' : "required",
+                            'cboNacimiento' : "required",
                            },
 		debug    : true,
 		errorContainer      : "container",

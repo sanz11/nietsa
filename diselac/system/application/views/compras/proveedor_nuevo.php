@@ -138,6 +138,8 @@
                                     </div>
                                     <div id="containerPersona">
                                         <li><label for="nombres" class="error">Por favor ingrese el nombre de la persona.</label></li>
+                                         <li><label for="cboNacimiento" class="error">Por favor seleccione el  Lugar de Nacimiento.</label></li>
+                                          <li><label for="cboEstadoCivil" class="error">Por favor seleccione  Estado Civil de la persona.</label></li>
                                         <li><label for="paterno" class="error">Por favor ingrese el apellido de la persoa.</label></li>
                                         <li><label for="email" class="error">Por favor ingrese el correo de la persona.</label></li>
                                         <li><label for="tipo_documento" class="error">Por favor seleccione un tipo de documento.</label></li>
@@ -243,9 +245,10 @@
                                             <td><input NAME="materno" type="text" class="cajaGrande" id="materno" size="45" maxlength="45" value="<?php echo $materno; ?>"></td>
                                             <td>Estado Civil</td>
                                             <td>
-                                                <select name="cboEstadoCivil" id="cboEstadoCivil" class="comboMedio">
+                                                <select required name="cboEstadoCivil" id="cboEstadoCivil" class="comboMedio">
                                                     <?php echo $cbo_estadoCivil; ?>
                                                 </select>
+                                            
                                             </td>
 
                                         </tr>
