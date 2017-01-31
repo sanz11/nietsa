@@ -1196,6 +1196,9 @@ public function select_cmbVendedor($index){
         $prodcosto = $this->input->post('prodcosto');
         $almacenProducto= $this->input->post('almacenProducto');
         $proddescri = $this->input->post('proddescri');
+        //producto datos
+        $prodpu= $this->input->post('prodpu');
+        $prodprecio= $this->input->post('prodprecio');
 
 
         // gcbq ---orden de compra total bienes que existe 
