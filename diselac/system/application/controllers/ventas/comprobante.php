@@ -2066,18 +2066,17 @@ public function select_cmbVendedor($index){
         $prodcodigo = $this->input->post('prodcodigo');
         $flagBS = $this->input->post('flagBS');
         $prodcantidad = $this->input->post('prodcantidad');
-        $prodpu= $this->input->post('prodpu');
-        $prodprecio= $this->input->post('prodprecio');
         if ($tipo_docu != 'B') {
             $prodpu = $this->input->post('prodpu');
             $prodprecio = $this->input->post('prodprecio');
             $proddescuento = $this->input->post('proddescuento');
             $prodigv = $this->input->post('prodigv');
 
+            $prodpu= $this->input->post('prodpu');
+        $prodprecio= $this->input->post('prodprecio');
         } else {
             $prodprecio_conigv = $this->input->post('prodprecio_conigv');
             $proddescuento_conigv = $this->input->post('proddescuento_conigv');
-
         }
         $prodimporte = $this->input->post('prodimporte');
         $prodpu_conigv = $this->input->post('prodpu_conigv');
@@ -2098,8 +2097,7 @@ public function select_cmbVendedor($index){
             foreach ($detacodi as $indice => $valor) {
                 $detalle_accion = $detaccion[$indice];
 
-                 $filter->CPDEC_Pu = $prodpu[$indice];
-                 $filter->CPDEC_Subtotal = $prodprecio[$indice];
+                
 
                 $filter = new stdClass();
                 $filter->CPP_Codigo = $codigo;
@@ -2108,9 +2106,15 @@ public function select_cmbVendedor($index){
                     $filter->UNDMED_Codigo = $produnidad[$indice];
                 $filter->CPDEC_Cantidad = $prodcantidad[$indice];
                 if ($tipo_docu != 'B') {
+
+                    $filter->CPDEC_Pu = $prodpu[$indice];
+                    $filter->CPDEC_Subtotal = $prodprecio[$indice];
+
                     $filter->CPDEC_Descuento = $proddescuento[$indice];
                     $filter->CPDEC_Igv = $prodigv[$indice];
                 } else {
+                    $filter->CPDEC_Pu = $prodpu[$indice];
+                    $filter->CPDEC_Subtotal = $prodprecio[$indice];
                     $filter->CPDEC_Subtotal_ConIgv = $prodprecio_conigv[$indice];
                     $filter->CPDEC_Descuento_ConIgv = $proddescuento_conigv[$indice];
                 }
