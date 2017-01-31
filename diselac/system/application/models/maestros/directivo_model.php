@@ -70,7 +70,9 @@ class Directivo_model extends Model {
             inner join cji_cargo as car on dir.CARGP_Codigo=car.CARGP_Codigo
             where dir.DIREC_FlagEstado=1 
             and dir.DIREP_Codigo!=0 ";
-        if ($empresa != '' && $empresa != '0') {
+
+
+         if ($empresa != '' && $empresa != '0') {
             $sql.=" and dir.EMPRP_Codigo=" . 2 . " ";
         }
         if ($cargo != '' && $cargo != '0') {
@@ -86,7 +88,7 @@ class Directivo_model extends Model {
             return $data;
         }
     }
-
+    
     public function listar_combodirectivo($empresa) {
         $sql = "SELECT 
             CONCAT(cji_persona.PERSC_Nombre,'-' , cji_persona.PERSC_ApellidoPaterno , ' ', cji_persona.PERSC_ApellidoMaterno,'_',cji_directivo.PERSP_Codigo) AS NOMBRE_VAL,

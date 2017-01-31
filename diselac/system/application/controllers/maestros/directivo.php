@@ -63,7 +63,7 @@ class Directivo extends Controller {
                 $codigo = $valor->DIREP_Codigo;
                 $numdoc = $valor->dni;
                 $nombres = $valor->nombre . " " . $valor->paterno . " " . $valor->materno;
-                $empresa = $valor->empresa;
+                $empresa = $valor->empresa;//empresa
                 $cargo = $valor->cargo;
                 $inicio = mysql_to_human($valor->Inicio);
                 $fin = mysql_to_human($valor->Fin);

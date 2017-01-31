@@ -84,7 +84,6 @@ jQuery(document).ready(function(){
             $('#cboCompania').focus();
             return false;
         }
-        
         dataString = $('#frmDirectivo').serialize();
         $("#container").show();
         $("#frmDirectivo").submit(); 
