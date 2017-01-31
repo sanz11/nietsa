@@ -193,6 +193,8 @@ class Directivo extends Controller {
                 exit('{"result":"error", "campo":"nombres"}');
             if ($this->input->post('paterno') == '')
                 exit('{"result":"error", "campo":"paterno"}');
+            if ($this->input->post('cboEstadoCivil') == '0')
+                exit('{"result":"error", "campo":"cboEstadoCivil"}');
         }else {
             if ($this->input->post('ruc') == '')
                 exit('{"result":"error", "campo":"ruc"}');
