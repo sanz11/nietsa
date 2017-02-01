@@ -362,7 +362,7 @@ class Cuentas extends controller
         	$codigoCajaMovimiento = $this->movimiento_model->insertar_cajamovimiento($filtero);
         }
         /*************************/
-        $pago_cajamov = $filter->CAJAMOV_Codigo = $codigoCajaMovimiento;
+        //$pago_cajamov = $filter->CAJAMOV_Codigo = $codigoCajaMovimiento;
         $cod_pago = $this->pago_model->insertar($filter, $this->input->post('tipo_cuenta'), $this->input->post('forma_pago'), $this->somevar['compania']);
 
         $listado_cuentas = $this->cuentas_model->buscar($this->input->post('tipo_cuenta'), ($this->input->post('tipo_cuenta') == '1' ? $this->input->post('cliente') : $this->input->post('proveedor')));
@@ -434,7 +434,7 @@ class Cuentas extends controller
 
         $datos = array(
         	'cod_cajamov' => $pago_cajamov,
-            'comprobanteAfectado' => $comprobanteAfectado,
+            'comprobanteAfectado' => $comprobanteAfectado."ABEL",
             'cod_pago' => $cod_pago,
             'cod_cuentaspago' => $cod_cuentaspago,
             'nota' => $insertNotaCredito,
