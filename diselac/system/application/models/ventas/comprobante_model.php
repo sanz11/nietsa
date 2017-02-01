@@ -139,7 +139,7 @@ $query = $this->db->get('cji_directivo u');
                 LEFT JOIN cji_empresa e ON e.EMPRP_Codigo=c.EMPRP_Codigo AND " . ($tipo_oper != 'C' ? "c.CLIC_TipoPersona" : "c.PROVC_TipoPersona") . "='1'
 
 					WHERE cp.CPC_TipoOperacion='" . $tipo_oper . "'
-                      AND cp.CPC_TipoDocumento='" . $tipo_docu . "' AND cp.COMPP_Codigo =" . $compania . " " . $where . "
+                     AND cp.COMPP_Codigo =" . $compania . " " . $where . " AND cp.CPC_TipoDocumento='" . $tipo_docu . "'
 
                 GROUP BY cp.CPP_Codigo
                 ORDER BY cp.CPC_FechaRegistro DESC ";

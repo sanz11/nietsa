@@ -572,12 +572,12 @@ class Comprobante extends Controller{
 
     ///////////////////
 
-    public function buscar($tipo_oper = '', $tipo_docu = '')
+    public function buscar($tipo_oper = '', $tipo_docu = 'b')
     {
         //$this->output->enable_profiler(TRUE);
         $data['compania'] = $this->somevar['compania'];
-        $tipo_oper = $this->uri->segment(4);
-        $tipo_docu = $this->uri->segment(5);
+       $tipo_oper = $this->uri->segment(4);
+       $tipo_docu = $this->uri->segment(5);
         $b_fecha_ini = trim($this->input->post('fechai'));
         $b_fecha_fin = trim($this->input->post('fechaf'));
         $filter = new stdClass();
