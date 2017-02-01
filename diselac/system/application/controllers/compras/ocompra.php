@@ -6,7 +6,6 @@ include("system/application/libraries/class.backgroundpdf.php");
 
 class Ocompra extends Controller
 {
-    
 
     public function __construct()
     {
@@ -552,8 +551,13 @@ class Ocompra extends Controller
         $data['cboMiContacto'] = $this->OPTION_generador($this->directivo_model->listar_directivo($this->session->userdata('empresa'), ($tipo_oper == 'V' ? '4' : '5')), 'DIREP_Codigo', array('PERSC_ApellidoPaterno', 'PERSC_ApellidoMaterno', 'PERSC_Nombre'), $mi_contacto, array('', '::Seleccione::'), ' ');
         $data['cboContacto'] = $this->OPTION_generador($this->directivo_model->listar_directivo($empresa, ($tipo_oper == 'V' ? '5' : '4')), 'DIREP_Codigo', array('PERSC_ApellidoPaterno', 'PERSC_ApellidoMaterno', 'PERSC_Nombre'), $contacto, array('', '::Seleccione::'), ' ');
         $data['cboPedidos'] = form_dropdown("pedidos", $this->pedido_model->seleccionar_finalizados(), "", " onchange='load_cotizaciones();' class='comboGrande' id='pedidos'");
-        $datos_usuario = $this->usuario_model->obtener($usuario);
-        $data['nombre_usuario'] = $datos_usuario->PERSC_Nombre . " " . $datos_usuario->PERSC_ApellidoPaterno;
+         $datos_usuario= $this->usuario_model->obtener($usuario);
+         $numun ="";
+         if(count($datos_usuario)>0){
+           $numun = $datos_usuario->PERSC_Nombre . " " . $datos_usuario->PERSC_ApellidoPaterno;
+
+         }
+        $data['nombre_usuario'] =$numun;
         $data['numero'] = $numero;
         $data['codigo_usuario'] = $codigo_usuario;
         $data['serie'] = $serie;

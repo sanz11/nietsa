@@ -270,6 +270,7 @@ class Ocompra_model extends Model
 
     public function obtenerOrdenCompra(stdClass $filter = NULL, $offset = '', $number_items = '')
     {
+
         $compania = $this->somevar['compania'];
         $where = '';
 
@@ -285,10 +286,13 @@ class Ocompra_model extends Model
             }
         } else {
             if (isset($filter->proveedor) && $filter->proveedor != '') {
-                $where .= ' and EMPRC_RazonSocial like "%' . $filter->proveedor . '%"';
+                $where .= ' and PERSC_Nombre LIKE "%' . $filter->proveedor .'%"';
+                $where .= ' OR PERSC_ApellidoPaterno LIKE "%' . $filter->proveedor .'%"';
+                $where .= ' OR EMPRC_RazonSocial like "%' . $filter->proveedor . '%"';
             }
             if(isset($filter->ruc_proveedor) && $filter->ruc_proveedor != ''){
                 $where .= ' and EMPRC_Ruc like "%' . $filter->ruc_proveedor . '%"';
+                $where .= ' OR PERSC_NumeroDocIdentidad like "%' . $filter->ruc_proveedor . '%"';
             }
         }
 

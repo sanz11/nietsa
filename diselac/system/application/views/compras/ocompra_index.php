@@ -255,7 +255,7 @@
                 <div class="acciones">
                     <div id="botonBusqueda">
                         <ul id="imprimirOcompra" class="lista_botones">
-                            <!--<li id="imprimir" style="background-position:44px 4px;width:90px;">Imprimir</li>-->
+                            <li id="imprimir" style="background-position:44px 4px;width:90px;">Imprimir</li>
                         </ul>
                         <?php
                         if ($evalua) {
@@ -274,12 +274,12 @@
                             <li id="buscar" style="background-position:44px 4px;width:90px;">Buscar</li>
                         </ul>
                         <?php if ($evalua == true) { ?>
-                            <ul id="desaprobarOcompra" class="lista_botones">
+                           <!-- <ul id="desaprobarOcompra" class="lista_botones">
                                 <li id="desaprobar" style="background-position:44px 4px;width:90px;">Desaprobar</li>
                             </ul>
                             <ul id="aprobarOcompra" class="lista_botones">
                                 <li id="aprobar" style="background-position:44px 4px;width:90px;">Aprobar</li>
-                            </ul>
+                            </ul>-->
                         <?php } ?>
                     </div>
                     <div id="lineaResultado">
@@ -299,7 +299,7 @@
                         <input type="hidden" value="" id="flag" name="flag"/>
                         <table class="fuente8" width="100%" cellspacing="0" cellpadding="3" border="0" ID="Table1">
                             <tr class="cabeceraTabla">
-                                <td width="3%"><?php if ($evalua == true) echo "<input type='checkbox' name='checkTodos' id='checkTodos' value='1'>"; ?></td>
+                              <!--  <td width="3%"><?php if ($evalua == true) echo "<input type='checkbox' name='checkTodos' id='checkTodos' value='1'>"; ?></td>-->
                                 <td width="3%">ITEM</td>
                                 <td width="7%">FECHA</td>
                                 <td width="5%">NUMERO</td>
@@ -319,9 +319,9 @@
                                     $class = $indice % 2 == 0 ? 'itemParTabla' : 'itemImparTabla';
                                     ?>
                                     <tr class="<?php echo $class; ?>">
-                                        <td>
+                                      <!--  <td>
                                             <div align="center"><?php echo $valor[0]; ?></div>
-                                        </td>
+                                        </td>-->
                                         <td>
                                             <div align="center"><?php echo $valor[1]; ?></div>
                                         </td>
