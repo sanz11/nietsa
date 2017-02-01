@@ -177,6 +177,7 @@
                                 </script>
                             </td>
                         </tr>
+                        <!--
                         <tr>
                             <td align='left'>Número</td>
                             <td align='left'><input type="text" name="serie" id="serie" value="" class="cajaGeneral"
@@ -184,7 +185,7 @@
                                 <input type="text" name="numero" id="numero" value="" class="cajaGeneral" size="10"
                                        maxlength="6" placeholder="Numero"/>
                             </td>
-                        </tr>
+                        </tr>-->
                         <tr>
                             <?php if ($tipo_oper == 'V') { ?>
                                 <td align='left'>Cliente</td>
