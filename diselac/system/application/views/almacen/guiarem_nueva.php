@@ -245,7 +245,7 @@
 	                $("#almacenProducto").val(ui.item.almacenProducto);
 	                $("#cantidad").focus();
 	                listar_unidad_medida_producto(ui.item.codigo);
-                    verificar_Inventariado_producto();
+                   /* verificar_Inventariado_producto();*/
 	                return !isEncuentra;
                 }else{
                 	$("#buscar_producto").val("");

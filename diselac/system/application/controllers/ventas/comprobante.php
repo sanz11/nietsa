@@ -611,6 +611,12 @@ class Comprobante extends Controller{
         $lista = array();
         if (count($listado_comprobantes) > 0) {
             foreach ($listado_comprobantes as $indice => $valor) {
+                
+                $letraParaConvertir = $valor->CPC_TipoDocumento; 
+                $arrayConversorDeNumero = $this->documento_model->obtenerAbreviatura($letraParaConvertir);  
+                foreach ($arrayConversorDeNumero as $valueConvert) {
+                    $ConversorDeNumero = $valueConvert->DOCUP_Codigo;
+                }
                 $codigo = $valor->CPP_Codigo;
                 $fecha = mysql_to_human($valor->CPC_Fecha);
                 $codigo_canje = $valor->CPP_Codigo_canje;
@@ -684,7 +690,11 @@ class Comprobante extends Controller{
                 }
 
                 // Ver pdf valor[11]
-                $ver2 = "<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(" . $codigo . ")' target='_parent'><img src='" . base_url() . "images/pdf.png' width='16' height='16' border='0' title='Ver PDF'></a>";
+/*"<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(" . $codigo . ")' target='_parent'><img src='" . base_url() . "images/pdf.png' width='16' height='16' border='0' title='Ver PDF'></a>";*/
+                $imp = 1;
+                $tipo_oper2='"'.$tipo_oper.'"';
+                $ver2 = "<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(" . $codigo .",".$ConversorDeNumero.",".$imp.",".$tipo_oper2.")'  target='_parent'><img src='" . base_url() . "images/pdf.png' width='16' height='16' border='0' title='Ver PDF'></a>";
+
 
                 $eliminar = "<a href='javascript:;' onclick='eliminar_comprobante(" . $codigo . ")' target='_parent'><img src='" . base_url() . "images/eliminar.png' width='16' height='16' border='0' title='Eliminar'></a>";
 

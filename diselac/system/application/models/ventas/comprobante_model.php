@@ -125,6 +125,7 @@ $query = $this->db->get('cji_directivo u');
                        cp.CPC_DocuRefeCodigo,
                        cp.CPC_NombreAuxiliar,
                        cp.CLIP_Codigo,
+                       cp.CPC_TipoDocumento,
                        (CASE " . ($tipo_oper != 'C' ? "c.CLIC_TipoPersona" : "c.PROVC_TipoPersona") . "  WHEN '1' THEN e.EMPRC_Ruc ELSE pe.PERSC_NumeroDocIdentidad end) numdoc,
                        (CASE " . ($tipo_oper != 'C' ? "c.CLIC_TipoPersona" : "c.PROVC_TipoPersona") . "  WHEN '1' THEN e.EMPRC_RazonSocial ELSE CONCAT(pe.PERSC_Nombre , ' ', pe.PERSC_ApellidoPaterno, ' ', pe.PERSC_ApellidoMaterno) end) nombre,
                        m.MONED_Simbolo,
