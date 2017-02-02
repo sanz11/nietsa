@@ -1226,6 +1226,100 @@ class Proveedor extends Controller
     ///
 
 
+    public function registro_proveedor_pdf($telefono, $docum, $nombre)
+    {
+
+        $this->load->library('cezpdf');
+        $this->load->helper('pdf_helper');
+        //prep_pdf();
+        $this->cezpdf = new Cezpdf('a4');
+        $datacreator = array(
+            'Title' => 'Estadillo de ',
+            'Name' => 'Estadillo de ',
+            'Author' => 'Vicente Producciones',
+            'Subject' => 'PDF con Tablas',
+            'Creator' => 'info@vicenteproducciones.com',
+            'Producer' => 'http://www.vicenteproducciones.com'
+        );
+
+        $this->cezpdf->addInfo($datacreator);
+        $this->cezpdf->selectFont(APPPATH . 'libraries/fonts/Helvetica.afm');
+        $delta = 20;
+
+            
+
+//        $this->cezpdf->ezText('', '', array("leading" => 100));
+        $this->cezpdf->ezText('<b>RELACION DE PROVEEDORES</b>', 14, array("leading" => 0, 'left' => 185));
+        $this->cezpdf->ezText('', '', array("leading" => 10));
+
+
+        /* Datos del cliente */
+
+
+//        /* Listado de detalles */
+
+        $db_data = array();
+
+
+        $listado_proveedor = $this->proveedor_model->listar_proveedor_pdf($telefono, $docum, $nombre);
+    
+            if (count($listado_proveedor) > 0) {
+                foreach ($listado_proveedor as $indice => $valor) {
+                    $ruc = $valor->ruc;
+                    $dni = $valor->dni;
+                    $razon_social = $valor->nombre;
+                    $direccion=$valor->direccion;
+                    $tipo_proveedor = $valor->PROVC_TipoPersona == 1 ? "P.JURIDICA" : "P.NATURAL";
+
+                    $db_data[] = array(
+                        'cols1' => $indice + 1,
+                        'cols2' => $ruc,
+                        'cols3' => $dni,
+                        'cols4' => $razon_social,
+                        'cols5' => $tipo_proveedor,
+                        'cols6' => $direccion
+                    );
+                }
+            }
+
+        
+
+
+        $col_names = array(
+            'cols1' => '<b>ITEM</b>',
+            'cols2' => '<b>RUC</b>',
+            'cols3' => '<b>DNI</b>',
+            'cols4' => '<b>NOMBRE O RAZÓN SOCIAL</b>',
+            'cols5' => '<b>T. P.</b>',
+            'cols6' => '<b>DIRECCION</b>'
+        );
+
+        $this->cezpdf->ezTable($db_data, $col_names, '', array(
+            'width' => 525,
+            'showLines' => 1,
+            'shaded' => 1,
+            'showHeadings' => 1,
+            'xPos' => 'center',
+            'fontSize' => 8,
+            'cols' => array(
+                'cols1' => array('width' => 30, 'justification' => 'center'),
+                'cols2' => array('width' => 70, 'justification' => 'center'),
+                'cols3' => array('width' => 50, 'justification' => 'center'),
+                'cols4' => array('width' => 150, 'justification' => 'center'),
+                'cols5' => array('width' => 70, 'justification' => 'center'),
+                'cols6' => array('width' => 100, 'justification' => 'center')
+            )
+        ));
+
+
+        $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => $codificacion . '.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
+
+        ob_end_clean();
+
+        $this->cezpdf->ezStream($cabecera);
+    }
+
+
 }
 
 ?>

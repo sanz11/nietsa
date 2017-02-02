@@ -1340,8 +1340,7 @@ public function registro_cliente_pdf($docum,$nombre,$telefono,$tipo)
                         'cols3' => $dni,
                         'cols4' => $razon_social,
                         'cols5' => $direccion,
-                        'cols6' => $telefono,
-                        'cols7' => $tipo_cliente,
+                        'cols6' => $telefono
                     );
                 }
             }
@@ -1355,8 +1354,7 @@ public function registro_cliente_pdf($docum,$nombre,$telefono,$tipo)
             'cols3' => '<b>DNI</b>',
             'cols4' => '<b>NOMBRE O RAZON SOCIAL</b>',
             'cols5' => '<b>DIRECCION</b>',
-            'cols6' => '<b>TELEFONO</b>',
-            'cols7' => '<b>TIPO CLIENTE</b>',
+            'cols6' => '<b>TELEFONO</b>'
         );
 
         $this->cezpdf->ezTable($db_data, $col_names, '', array(
@@ -1370,10 +1368,9 @@ public function registro_cliente_pdf($docum,$nombre,$telefono,$tipo)
                 'cols1' => array('width' => 30, 'justification' => 'center'),
                 'cols2' => array('width' => 60, 'justification' => 'center'),
                 'cols3' => array('width' => 50, 'justification' => 'center'),
-                'cols4' => array('width' => 200, 'justification' => 'center'),
+                'cols4' => array('width' => 180, 'justification' => 'center'),
                 'cols5' => array('width' => 100, 'justification' => 'center'),
-                'cols6' => array('width' => 60, 'justification' => 'center'),
-                'cols7' => array('width' => 60, 'justification' => 'center')
+                'cols6' => array('width' => 60, 'justification' => 'center')
             )
         ));
 

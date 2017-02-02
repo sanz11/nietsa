@@ -76,7 +76,7 @@ if (empty($persona)) header("location:$url");
                             <td>&nbsp;</td>
                         </tr>
                         <tr>
-                            <td>Tipo Proveedor</td>
+                            <td>Tipo Cliente</td>
                             <td>
                                 <select id="cboTipoProveedor" name="cboTipoProveedor" class="comboMedio">
                                     <option value="" selected>::Seleccionar::</option>

@@ -103,7 +103,7 @@
                                       <td>&nbsp;</td>
                                       <td>&nbsp;</td>
                                       </tr>
-                                        <tr>
+                                      <!--  <tr>
                                         <td>Tipo Persona</td>
                                         <td>
                                                 <select id="cboTipoProveedor" name="cboTipoProveedor" class="comboMedio">
@@ -134,11 +134,11 @@
 											</td>
 
                                         </tr>
-               <tr>
-                    <td>Dirección</td>
-                        <td>
-                       <input id="txtDireccion" name="txtDireccion" type="text"    maxlength="45" value="<?php echo $nombre; ?>"></td>
-                        </tr>
+                                         <tr>
+                                            <td>Dirección</td>
+                                             <td>
+                                             <input id="txtDireccion" name="txtDireccion" type="text"    maxlength="45" value="<?php echo $nombre; ?>"></td>
+                                         </tr>-->
                             </table>
                         </form>
                   </div>

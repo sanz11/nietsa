@@ -255,7 +255,7 @@ class Proveedor_model extends Model {
                 $where = ' and prov.PROVC_TipoPersona = "0"';
 
                 if (isset($filter->numdoc) && $filter->numdoc != "")
-                    $where_pers = ' and pers.PERSC_NumeroDocIdentidad like "' . $filter->numdoc . '"';
+                    $where_pers = ' and pers.PERSC_NumeroDocIdentidad like "' . $filter->numdoc . '" or pers.PERSC_Ruc like "' .  $filter->numdoc  . '"';
                 if (isset($filter->nombre) && $filter->nombre != "")
                     $where_pers = 'and (pers.PERSC_Nombre like "%' . $filter->nombre . '%" or  pers.PERSC_ApellidoPaterno like "%' . $filter->nombre . '%"  or pers.PERSC_ApellidoMaterno like "%' . $filter->nombre . '%")';
                 if (isset($filter->telefono) && $filter->telefono != "")
@@ -264,7 +264,7 @@ class Proveedor_model extends Model {
             else {
                 if (isset($filter->numdoc) && $filter->numdoc != "") {
                     $where_empr = ' and emp.EMPRC_Ruc like "' . $filter->numdoc . '"';
-                    $where_pers = ' and pers.PERSC_NumeroDocIdentidad like "' . $filter->numdoc . '"';
+                    $where_pers = ' and pers.PERSC_NumeroDocIdentidad like "' . $filter->numdoc . '" or pers.PERSC_Ruc like "' .  $filter->numdoc  . '"';
                 }
                 if (isset($filter->nombre) && $filter->nombre != "") {
                     $where_empr = ' and emp.EMPRC_RazonSocial like "%' . $filter->nombre . '%"';
@@ -574,6 +574,102 @@ class Proveedor_model extends Model {
     	 
     	 
     	 
+    }
+
+
+     public function listar_proveedor_pdf($telefono, $docum, $nombre){
+
+       
+        $where_empr = '';
+        $where_pers = '';
+
+      
+                if ($docum != "--") {
+                    $where_empr = ' and emp.EMPRC_Ruc like "' . $docum. '"';
+                     $where_pers = ' and pers.PERSC_NumeroDocIdentidad like "' . $docum . '" or pers.PERSC_Ruc like "' . $docum . '"';
+                }
+                if ($nombre != "--") {
+                    $where_empr = ' and emp.EMPRC_RazonSocial like "%' .$nombre . '%"';
+                    $where_pers = 'and (pers.PERSC_Nombre like "%' . $nombre . '%" or  pers.PERSC_ApellidoPaterno like "%' . $nombre . '%"  or pers.PERSC_ApellidoMaterno like "%' . $nombre . '%")';
+                }
+                if ($telefono != "--") {
+                    $where_empr = ' and (emp.EMPRC_Telefono like "%' . $telefono. '%" or emp.EMPRC_Movil like "%' . $telefono. '%")';
+                    $where_pers = 'and (pers.PERSC_Telefono like "%' . $telefono . '%" or pers.PERSC_Movil like "% ' . $telefono . ' %")';
+                }
+               
+       
+
+        $compania = $this->somevar['compania'];
+
+        /* $names = $this->companiaconfiguracion_model->listar('2');
+          $w_i = "";
+          if(count($names) > 0){
+          $w_i = " AND prov.COMPP_Codigo IN (SELECT COMPP_Codigo FROM cji_companiaconfiguracion WHERE COMPCONFIC_Proveedor='1')";
+          }else{
+          $w_i = " AND prov.COMPP_Codigo IN ($compania)";
+          } */
+        if(COMPARTIR_PROVCOMPANIA==1){
+              $provedorcompania="";
+        }else{
+              $provedorcompania=  "and cc.COMPP_Codigo=".$compania." ";
+        };
+        $sql = "
+                select
+                prov.PROVP_Codigo PROVP_Codigo,
+                prov.EMPRP_Codigo EMPRP_Codigo,
+                prov.PERSP_Codigo PERSP_Codigo,
+                prov.PROVC_TipoPersona PROVC_TipoPersona,
+                pc.COMPP_Codigo COMPP_Codigo,
+                emp.EMPRC_RazonSocial nombre,
+                emp.EMPRC_Ruc ruc,
+                '' dni,
+
+                emp.EMPRC_Direccion direccion,
+
+                emp.EMPRC_Telefono telefono,
+                emp.EMPRC_Fax fax,
+                emp.EMPRC_Movil movil
+                from cji_proveedorcompania as pc
+                inner join cji_proveedor as prov on prov.PROVP_Codigo=pc.PROVP_Codigo
+                inner join cji_empresa as emp on prov.EMPRP_Codigo=emp.EMPRP_Codigo
+                where prov.PROVC_TipoPersona=1
+                and prov.PROVC_FlagEstado=1
+                " .$provedorcompania . "
+                and prov.PROVP_Codigo!=0  " . $where_empr . "
+                UNION
+                select
+                prov.PROVP_Codigo as PROVP_Codigo,
+                prov.EMPRP_Codigo EMPRP_Codigo,
+                prov.PERSP_Codigo PERSP_Codigo,
+                prov.PROVC_TipoPersona PROVC_TipoPersona,
+                pc.COMPP_Codigo COMPP_Codigo,
+                concat(pers.PERSC_Nombre,' ',pers.PERSC_ApellidoPaterno) as nombre,
+                pers.PERSC_Ruc ruc,
+                pers.PERSC_NumeroDocIdentidad dni,
+
+                pers.PERSC_Direccion direccion,
+
+                pers.PERSC_Telefono telefono,
+                pers.PERSC_Fax fax,
+                pers.PERSC_Movil movil
+                from cji_proveedorcompania as pc
+                inner join cji_proveedor as prov on prov.PROVP_Codigo=pc.PROVP_Codigo
+                inner join cji_persona as pers on prov.PERSP_Codigo=pers.PERSP_Codigo
+                where prov.PROVC_TipoPersona=0
+                and prov.PROVC_FlagEstado=1
+                " .$provedorcompania . "
+                and prov.PROVP_Codigo!=0 " . $where_pers . "
+                order by nombre
+                " . $limit . "
+               ";
+        $query = $this->db->query($sql);
+        if ($query->num_rows > 0) {
+            foreach ($query->result() as $fila) {
+                $data[] = $fila;
+            }
+            return $data;
+        }
+        
     }
 
    
