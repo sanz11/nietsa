@@ -4520,9 +4520,9 @@ public function obtener_precios_producto($producto)
 
     ////
 
-    public function registro_familia_pdf($flagbs = 'B', $nombre = '')
+    public function registro_familia_pdf($flagbs = 'B',$codigo, $nombre)
     {
-        $codfamih = $this->Global_model->get_where('cji_familia', array('FAMI_Codigo2' => $nombre), 0);
+       
         $this->load->library('cezpdf');
         $this->load->helper('pdf_helper');
         //prep_pdf();
@@ -4554,7 +4554,7 @@ public function obtener_precios_producto($producto)
         $db_data = array();
 
 
-        $listado_productos = $this->producto_model->listar_familia_pdf($flagbs);
+        $codfamih = $this->producto_model->listar_familia_pdf($flagbs,$codigo, $nombre);
         //$lista = array();
         if ($nombre) {
             if (count($codfamih) > 0) {

@@ -108,15 +108,45 @@ var IdenSubFamilia=$("#txtCodigoFamilia").val();
 		parent.$.fancybox.close(); 
 	});
          $("#imprimirFamilia").click(function(){
-		
-		///
-        url = base_url+"index.php/almacen/producto/registro_familia_pdf/"+flagBS+"/"+$("#txtNombre").val();
+
+         	var codigo = $("#txtCodigo").val();
+         	var nombre = $("#txtNombre").val();
+         	flagBS="B";
+
+         	 var codigo = sintilde(codigo);
+            var nombre= sintilde(nombre);
+        ///
+          if(codigo==""){codigo="--";}
+          if(nombre==""){nombre="--";}
+          
+        url = base_url+"index.php/almacen/producto/registro_familia_pdf/"+flagBS+"/"+codigo+"/"+nombre;
         window.open(url,'',"width=800,height=600,menubars=no,resizable=no;");
     });
         //$("#frmResultado #codigousuario").focus();
         //$("#frmResultado input[name='codigousuario']").focus();
         
 });
+function sintilde(cadena){
+   
+   var specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,.";
+
+   
+   for (var i = 0; i < specialChars.length; i++) {
+       cadena= cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
+   }   
+
+   // Lo queremos devolver limpio en minusculas
+   cadena = cadena.toLowerCase();
+
+   // Quitamos acentos y "ñ". Fijate en que va sin comillas el primer parametro
+   cadena = cadena.replace(/á/gi,"a");
+   cadena = cadena.replace(/é/gi,"e");
+   cadena = cadena.replace(/í/gi,"i");
+   cadena = cadena.replace(/ó/gi,"o");
+   cadena = cadena.replace(/ú/gi,"u");
+   cadena = cadena.replace(/ñ/gi,"n");
+   return cadena;
+}
 function abrir_familia(codigo){
         url = base_url+"index.php/almacen/familia/familias/"+flagBS+'/'+codigo;
 	location.href = url

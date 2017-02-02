@@ -1305,11 +1305,20 @@ and pro.PROD_FlagActivo = 1 and pro.PROD_FlagEstado = 1 order by pro.PROD_FechaR
     }
 
 
-    public function listar_familia_pdf($flagBS)
+    public function listar_familia_pdf($flagBS,$codigo, $nombre)
     {
-        $compania = $this->somevar['compania'];
+        
+         $where="";
 
-        $sql = "SELECT * from cji_familia f where  f.FAMI_FlagBienServicio='" . $flagBS . "'  order by 1 asc ";
+        if($codigo!="--"){
+            $where .=" and FAMI_CodigoInterno ='".$codigo."'";
+        }
+        if($nombre!="--"){
+            $where .=" and FAMI_Descripcion  LIKE '%".$nombre."%'";
+        }
+
+
+        $sql = "SELECT * from cji_familia where  FAMI_FlagBienServicio ='" . $flagBS . "'". $where ."  order by 1 asc ";
 
         $query = $this->db->query($sql);
         if ($query->num_rows > 0) {
