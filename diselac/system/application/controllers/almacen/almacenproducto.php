@@ -412,6 +412,117 @@ class Almacenproducto extends controller {
     
     /**FIN DE DESCAR PARA EXCEL 2016 DICIEMBRE**/
     
+    public function registro_producto_pdf($flagbs = 'B', $codigo='', $nombre='')
+    {
+
+        $this->load->library('cezpdf');
+        $this->load->helper('pdf_helper');
+        //prep_pdf();
+        $this->cezpdf = new Cezpdf('a4');
+        $datacreator = array(
+            'Title' => 'Estadillo de ',
+            'Name' => 'Estadillo de ',
+            'Author' => 'Vicente Producciones',
+            'Subject' => 'PDF con Tablas',
+            'Creator' => 'info@vicenteproducciones.com',
+            'Producer' => 'http://www.vicenteproducciones.com'
+        );
+
+        $this->cezpdf->addInfo($datacreator);
+        $this->cezpdf->selectFont(APPPATH . 'libraries/fonts/Helvetica.afm');
+        $delta = 20;
+
+            
+
+//        $this->cezpdf->ezText('', '', array("leading" => 100));
+        $this->cezpdf->ezText('<b>LISTADO FAMILIA DE ARTICULOS</b>', 14, array("leading" => 0, 'left' => 185));
+        $this->cezpdf->ezText('', '', array("leading" => 10));
+
+
+        /* Datos del cliente */
+
+
+//        /* Listado de detalles */
+
+        $db_data = array();
+
+        //LIMPIAR
+
+       
+        $filter = new stdClass();
+        $filter->flagBS = 'B';
+        $filter->codigo = $codigo;
+        $filter->nombre = $nombre;
+      
+        $lista_producto = $this->producto_model->buscar_productos_general($filter);
+        $lista_establec = $this->emprestablecimiento_model->listar($this->session->userdata('empresa'));
+        $item = $j + 1;
+        $lista = array();
+        if (count($lista_producto) > 0) {
+            foreach ($lista_producto as $producto) {
+                $stock = array();
+                $total = 0;
+                foreach ($lista_establec as $establec) {
+                    $lista_almacen = $this->almacen_model->buscar_x_establec($establec->EESTABP_Codigo);
+                    $cantidad = 0;
+                    foreach ($lista_almacen as $almacen) {
+                        $cantidad += $this->producto_model->obtener_stock($producto->PROD_Codigo, '', $almacen->ALMAP_Codigo);
+                    }
+                    $total+=$cantidad;
+                    $stock[] = $cantidad;
+                }
+                $stock[] = $total;
+                $lista[] = array($item++, $producto->PROD_Codigo, $producto->PROD_GenericoIndividual, $producto->PROD_CodigoUsuario, $producto->PROD_Nombre, $stock);
+            }
+        }
+        $data['lista'] = $lista;
+       
+        //FIN
+            if(count($lista)>0){
+                    foreach($lista as $indice=>$valor){
+                    $codigo = $valor->FAMI_Codigo;
+                    $codigo_interno = $valor->FAMI_CodigoInterno;
+                    $descripcion = $valor->FAMI_Descripcion;
+
+
+                    $db_data[] = array(
+                        'cols1' => $indice + 1,
+                        'cols2' => $codigo_interno,
+                        'cols3' => $descripcion
+                    );
+                }
+            }
+
+        
+
+
+        $col_names = array(
+            'cols1' => '<b>ITEM</b>',
+            'cols2' => '<b>CODIGO</b>',
+            'cols3' => '<b>DESCRIPCION</b>'
+        );
+
+        $this->cezpdf->ezTable($db_data, $col_names, '', array(
+            'width' => 525,
+            'showLines' => 1,
+            'shaded' => 1,
+            'showHeadings' => 1,
+            'xPos' => 'center',
+            'fontSize' => 8,
+            'cols' => array(
+                'cols1' => array('width' => 30, 'justification' => 'center'),
+                'cols2' => array('width' => 70, 'justification' => 'center'),
+                'cols3' => array('width' => 245, 'justification' => 'left')
+            )
+        ));
+
+
+        $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => $codificacion . '.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
+
+        ob_end_clean();
+
+        $this->cezpdf->ezStream($cabecera);
+    }
 
 }
 

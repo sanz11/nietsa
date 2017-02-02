@@ -18,7 +18,7 @@
           
             <div class="acciones">	
 	            <div id="botonBusqueda" >
-	                <ul id="imprimirTipoProd" class="lista_botones"><li id="imprimir">Imprimir</li></ul>
+	               <!-- <ul id="imprimirTipoProd" class="lista_botones"><li id="imprimir">Imprimir</li></ul>-->
 	                <ul id="nuevoTipoProd" class="lista_botones"><li id="nuevo">Nuevo Tipo de <?php if($flagBS=='B') echo 'Artículo'; else echo 'Servicio';  ?></li></ul>
 	                <ul id="limpiarTipoProd" class="lista_botones"><li id="limpiar">Limpiar</li></ul>
 	                <ul id="buscarTipoProd" class="lista_botones"><li id="buscar">Buscar</li></ul>   

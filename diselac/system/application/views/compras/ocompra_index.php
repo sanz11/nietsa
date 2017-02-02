@@ -226,7 +226,7 @@
                                                              src='<?php echo base_url(); ?>/images/ver.png'
                                                              title='Buscar' border='0'/></a>
                             </td>
-                        </tr>-->
+                        </tr>
                         <tr>
                             <td>Aprobación</td>
                             <td colspan="3">
@@ -247,14 +247,14 @@
                                     <option value="3">Terminado</option>
                                 </select>
                             </td>
-                        </tr>
+                        </tr>-->
                     </table>
                 </form>
             </div>
             <div id="cargarBusqueda" >
                 <div class="acciones">
                     <div id="botonBusqueda">
-                        <ul id="imprimirOcompra" class="lista_botones">
+                       <ul id="imprimirOcompra" class="lista_botones">
                             <li id="imprimir" style="background-position:44px 4px;width:90px;">Imprimir</li>
                         </ul>
                         <?php

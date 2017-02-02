@@ -103,6 +103,28 @@ jQuery(document).ready(function(){
         $("#flag").val('2');
         $("#frmEvaluar").submit();
     }); 
+$("#imprimirOcompra").click(function(){
+
+    fechai2=$("#fechai").val().split("/");
+    datafechaIni=fechai2[2]+"-"+fechai2[1]+"-"+fechai2[0];
+
+    fechaf2=$("#fechaif").val().split("/");
+    datafechaFin=fechaf2[2]+"-"+fechaf2[1]+"-"+fechaf2[0];
+
+
+            var ruc = $("#ruc_cliente").val();
+            var nombre = $("#nombre_cliente").val();
+
+            var ruc = sintilde(ruc);
+            var nombre= sintilde(nombre);
+        ///
+          if(docum==""){docum="--";}
+          if(nombre==""){nombre="--";}
+
+        url = base_url+"index.php/compras/ocompras/registro_ocompras_pdf/"+tipo_oper+"/"+datafechaIni+"/"+datafechaFin+"/"+ruc+"/"+ nombre;
+        window.open(url,'',"width=800,height=600,menubars=no,resizable=no;");
+    });
+
 
     $("#checkTodos").change(function(){
         $('input').each( function() {					
@@ -1432,7 +1454,27 @@ function agregar_todopresupuesto(guia,tipo_oper){
     });
 
 	}
-	
+	function sintilde(cadena){
+   
+   var specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,.";
+
+   
+   for (var i = 0; i < specialChars.length; i++) {
+       cadena= cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
+   }   
+
+   // Lo queremos devolver limpio en minusculas
+   cadena = cadena.toLowerCase();
+
+   // Quitamos acentos y "ñ". Fijate en que va sin comillas el primer parametro
+   cadena = cadena.replace(/á/gi,"a");
+   cadena = cadena.replace(/é/gi,"e");
+   cadena = cadena.replace(/í/gi,"i");
+   cadena = cadena.replace(/ó/gi,"o");
+   cadena = cadena.replace(/ú/gi,"u");
+   cadena = cadena.replace(/ñ/gi,"n");
+   return cadena;
+}
 
 
 

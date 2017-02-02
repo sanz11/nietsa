@@ -627,6 +627,9 @@ class Ocompra_model extends Model
         }
         return array();
     }
+    public function ocompra_model->listar_ocompras_pdf($tipo_oper,$fecha_ini, $fecha_fin,$codigo,$nombre){
+        
+    }
 
 }
 

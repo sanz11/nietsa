@@ -80,7 +80,7 @@
         </div>
 <div class="acciones">
         <div id="botonBusqueda">
-                <ul id="imprimirProducto" class="lista_botones"><li id="imprimir">Imprimir</li></ul>
+               <!-- <ul id="imprimirProducto" class="lista_botones"><li id="imprimir">Imprimir</li></ul>-->
                 <ul id="limpiarProducto" class="lista_botones"><li id="limpiar">Limpiar</li></ul>
                 <ul id="buscarProducto" class="lista_botones"><li id="buscar">Buscar</li></ul>   
         </div>
