@@ -23,6 +23,8 @@ JS
 
 
     CONTROLLER
+
+//$this->cezpdf->ezImage("images/img_db/ferremax_cabe.jpg", -10, 555, 'none', 'left');
   ---------------------------------------------------------------------------------------
 public function registro_familia_pdf($flagbs = 'B', $codigo='', $nombre='')
     {

@@ -1221,17 +1221,34 @@ and pro.PROD_FlagActivo = 1 and pro.PROD_FlagEstado = 1 order by pro.PROD_FechaR
     ////
 
     ////
-    public function listar_productos_pdf($flagBS, $tipo, $opcion = "", $orden = "1", $number_items = "", $offset = "", $nombre = "")
+    public function listar_productos_pdf($flagbs , $codigo,  $nombre,  $idfami, $marca)
     {
         $compania = $this->somevar['compania'];
-     
 
 
-        $sql = "SELECT * from cji_producto p,cji_productocompania pc where p.PROD_Codigo=pc.PROD_Codigo
-		and p.PROD_FlagEstado=1 and p.PROD_FlagBienServicio='" . $flagBS . "' and pc.COMPP_Codigo='" . $compania . "'
-		and PROD_Nombre like '" . $nombre . "%' order by 1 asc ";
+            $this->db->select('cji_producto.*,cji_marca.*,cji_familia.*')
+            ->join('cji_producto', 'cji_producto.PROD_Codigo = cji_productocompania.PROD_Codigo ', 'left')
+            ->join('cji_familia', 'cji_familia.FAMI_Codigo = cji_producto.FAMI_Codigo ', 'left')
+            ->join('cji_marca', 'cji_marca.MARCP_Codigo = cji_producto.MARCP_Codigo ', 'left')
+            ->where('cji_productocompania.COMPP_Codigo', $compania)
+            ->where('PROD_FlagEstado', 1)
+            ->where('PROD_FlagBienServicio', $flagbs)
+            ->order_by('cji_producto.PROD_Nombre');
 
-        $query = $this->db->query($sql);
+       
+        if ($codigo != "--")
+            $this->db->where('cji_producto.PROD_CodigoUsuario', $codigo);
+        if ($nombre != "--")
+            $this->db->like('cji_producto.PROD_Nombre', $nombre, 'both');
+        if ($idfami != "--")
+            $this->db->like('cji_familia.FAMI_Descripcion', $idfami, 'both');
+        if ($marca != "--")
+            $this->db->like('cji_marca.MARCC_Descripcion', $marca, 'both');
+
+        
+        
+          $query = $this->db->get('cji_productocompania', $number_items, $offset);
+
         if ($query->num_rows > 0) {
             foreach ($query->result() as $fila) {
                 $data[] = $fila;

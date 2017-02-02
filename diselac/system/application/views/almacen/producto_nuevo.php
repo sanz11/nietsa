@@ -183,7 +183,7 @@
                                     </td>
                                     <td>C&oacute;digo de Usuario</td>
                                     <td>
-                                        <input type="text" class="cajaMedia cajaSoloLectura" name="codigo_usuario" style="width:125px;"id="codigo_usuario" readonly="readonly"  onblur="valida_codigo();" value="<?php echo $codigo_usuario; ?>" />   
+                                        <input type="text" class="cajaMedia cajaSoloLectura" name="codigo_usuario" style="width:125px;" id="codigo_usuario" readonly="readonly"  onblur="valida_codigo();" value="<?php echo $codigo_usuario; ?>" />   
                                     </td>
                                 </tr>
 
@@ -196,7 +196,7 @@
                                     </td>
                                     <td>C&oacute;digo Original</td>
                                     <td>
-                                        <input type="text" class="cajaMedia" name="codigo_original" style="width:125px;"id="codigo_original" onblur="valida_codigo_original();" value="<?php echo $codigo_original; ?>" />   
+                                        <input type="text" class="cajaMedia" onkeypress="validaCaractaer(event);" name="codigo_original" style="width:125px;" id="codigo_original" onblur="valida_codigo_original(); " value="<?php echo $codigo_original; ?>" />   
                                     </td>
                                 </tr>
                                 <!--////-->

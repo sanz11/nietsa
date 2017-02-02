@@ -4425,52 +4425,9 @@ public function obtener_precios_producto($producto)
     	echo json_encode($result);
     }
 
-    public function registro_productos_pdf($flagbs = 'B', $nombre = '')
+    public function registro_productos_pdf($flagbs = 'B', $codigo, $nombre, $familia, $marca)
     {
-
-
-        ////buscar
-        $codigo = $this->input->post('txtCodigo');
-        $nombre = $this->input->post('txtNombre');
-        $familia = $this->input->post('txtFamilia');
-        $familiaid = $this->input->post('familiaid');
-        $marca = $this->input->post('txtMarca');
-        $publicacion = $this->input->post('cboPublicacion');
-        $array_idfamilia = explode("-", $familiaid);
-        $ultimo_hijo = "";
-
-        $ultimo_hijo = $array_idfamilia[count($array_idfamilia) - 1];
-
-        $hijos = "";
-        if ($familiaid != '') {
-            //$fam        = $this->hijos($familiaid);
-            $hijos = $this->familia_model->busqueda_familia_hijos($familiaid);
-            $fam = $familiaid;
-            //var_dump($hijos);
-            if ($hijos != '') {
-                $fam .= "/" . $hijos;
-            } else {
-                //echo $fam;
-            }
-        } else {
-            $fam = "";
-        }
-
-        if (count($_POST) > 0) {
-            $this->session->set_userdata(array('codigo' => $codigo, 'nombre' => $nombre, 'familia' => $familia, 'marca' => $marca, 'publicacion' => $publicacion));
-        } else {
-            $codigo = $this->session->userdata('codigo');
-            $nombre = $this->session->userdata('nombre');
-            $familia = $this->session->userdata('familia');
-            $marca = $this->session->userdata('marca');
-            $publicacion = $this->session->userdata('publicacion');
-        }
-
-
-        ////
-
-
-        $this->load->library('cezpdf');
+         $this->load->library('cezpdf');
         $this->load->helper('pdf_helper');
         //prep_pdf();
         $this->cezpdf = new Cezpdf('a4');
@@ -4484,26 +4441,10 @@ public function obtener_precios_producto($producto)
         );
 
         $this->cezpdf->addInfo($datacreator);
-
-
-        ///
         $this->cezpdf->selectFont(APPPATH . 'libraries/fonts/Helvetica.afm');
-        ///////
-
-        /* Para las imagenes */
-        /*
-        if($img==0){
-        if ($this->somevar['compania'] == 1){
-            $this->cezpdf->ezImage("images/img_db/ferremax_cabe.jpg", -10, 555, 'none', 'left');
-        }else{
-            $this->cezpdf->ezImage("images/img_db/ferremax_cabe.jpg", -10, 555, 'none', 'left');
-        }
-        }
-        */
-
-
         $delta = 20;
 
+            
 
 //        $this->cezpdf->ezText('', '', array("leading" => 100));
         $this->cezpdf->ezText('<b>LISTADO DE ARTICULOS</b>', 14, array("leading" => 0, 'left' => 185));
@@ -4516,95 +4457,53 @@ public function obtener_precios_producto($producto)
 //        /* Listado de detalles */
 
         $db_data = array();
-        /*
-                $filter = new stdClass();
-                $filter->flagBS = $flagBS;
-                $filter->codigo = $codigo;
-                $filter->nombre = $nombre;
-                $filter->familia = $familia;
-                $filter->idfamilia = $ultimo_hijo;
-                $filter->marca = $marca;
-                $filter->publicacion = $publicacion;
-            */
 
-        $listado_productos = $this->producto_model->listar_productos_pdf($flagbs, 1, '', 1, '', '', $nombre);
-        //$lista = array();
-        if (count($listado_productos) > 0) {
-            foreach ($listado_productos as $indice => $valor) {
-                $codigo = $valor->PROD_Codigo;
-                $codigo_interno = $valor->PROD_CodigoUsuario;
-                $descripcion = $valor->PROD_Nombre;
-                $tipo_producto = $valor->TIPPROD_Codigo;
-                $familia = $valor->FAMI_Codigo;
-                //$descfamilia_largo="";
-                /* if(count(explode("-", $familia)>1)){
-                  $descfamilia_largo=$valor->DESCRIPCION;
-                  } */
-                $modelo = $valor->PROD_Modelo;
-                $flagEstado = $valor->PROD_FlagEstado;
-                $flagActivo = $valor->PROD_FlagActivo;
-                $fabricante = $valor->FABRIP_Codigo;
-                $datos_familia = $this->familia_model->obtener_familia($familia);
-                $datos_fabricante = $this->fabricante_model->obtener($fabricante);
-                if ($familia != '')
-                    $nombre_familia = $this->familia_model->obtener_nomfamilia_total($familia);
-                else
-                    $nombre_familia = "";
 
-                $temp = $this->obtener_precios_producto($codigo);
-                $precio_venta = $temp['precio_venta'];
-                $precio_costo = $temp['precio_costo'];
+        $listado_productos = $this->producto_model->listar_productos_pdf($flagbs , $codigo,  $nombre,  $familia, $marca);
+    
+            if (count($listado_productos) > 0) {
+                foreach ($listado_productos as $indice => $valor) {
+                    $codigo = $valor->PROD_CodigoUsuario;
+                    $nombre = $valor->PROD_Nombre;
+                    $familia = $valor->FAMI_Descripcion; 
+                    $marca = $valor->MARCC_Descripcion;
 
-                $nombre_tipoProd = '';
-                if ($tipo_producto != '') {
-                    $datos_tipoProducto = $this->tipoproducto_model->obtener_tipo_producto($tipo_producto);
-                    if (count($datos_tipoProducto) > 0)
-                        $nombre_tipoProd = $datos_tipoProducto[0]->TIPPROD_Descripcion;
+
+
+                    $db_data[] = array(
+                        'cols1' => $indice + 1,
+                        'cols2' => $codigo,
+                        'cols3' => $nombre,
+                        'cols4' => $familia,
+                        'cols5' => $marca
+                    );
                 }
-                $nombre_fabricante = count($datos_fabricante) > 0 ? $datos_fabricante[0]->FABRIC_Descripcion : '';
-
-                $marca = $valor->MARCP_Codigo;
-                $nombre_marca = '';
-                if ($marca != '0' && $marca != '') {
-                    $datos_marca = $this->marca_model->obtener($marca);
-                    if (count($datos_marca) > 0)
-                        $nombre_marca = $datos_marca[0]->MARCC_Descripcion;
-                }
-
-
-                $db_data[] = array(
-                    'cols1' => $indice + 1,
-                    'cols2' => $codigo_interno,
-                    'cols3' => $descripcion,
-                    'cols4' => $nombre_familia,
-                    'cols5' => $nombre_marca
-                );
-
             }
-        }
+
+        
 
 
         $col_names = array(
             'cols1' => '<b>ITEM</b>',
-            'cols2' => '<b>CODIGO</b>',
-            'cols3' => '                                 <b>DESCRIPCION</b>',
-            'cols4' => '<b>FAMILIA</b>',
+            'cols2' => '<b>CODIGO U.</b>',
+            'cols3' => '<b>DESCRIPCION</b>',
+            'cols4' =>'<b>FAMILIA</b>',
             'cols5' => '<b>MARCA</b>'
         );
 
         $this->cezpdf->ezTable($db_data, $col_names, '', array(
-            'width' => 525,
+            'width' => 725,
             'showLines' => 1,
             'shaded' => 1,
             'showHeadings' => 1,
             'xPos' => 'center',
             'fontSize' => 8,
             'cols' => array(
-                'cols1' => array('width' => 30, 'justification' => 'center'),
-                'cols2' => array('width' => 70, 'justification' => 'center'),
-                'cols3' => array('width' => 245, 'justification' => 'left'),
-                'cols4' => array('width' => 90, 'justification' => 'center'),
-                'cols5' => array('width' => 90, 'justificateion' => 'center')
+                'cols1' => array('width' => 50, 'justification' => 'center'),
+                'cols2' => array('width' => 60, 'justification' => 'center'),
+                'cols3' => array('width' => 200, 'justification' => 'left'),
+                'cols4' => array('width' => 80, 'justification' => 'center'),
+                'cols5' => array('width' => 80, 'justification' => 'center')
             )
         ));
 
@@ -4614,6 +4513,7 @@ public function obtener_precios_producto($producto)
         ob_end_clean();
 
         $this->cezpdf->ezStream($cabecera);
+
 
 
     }

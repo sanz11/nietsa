@@ -6,6 +6,7 @@ jQuery(document).ready(function(){
     
     
     $("#nuevoProducto").click(function(){
+
         url = base_url+"index.php/almacen/producto/nuevo_producto/"+flagBS;
         location.href = url;
     });
@@ -23,9 +24,25 @@ jQuery(document).ready(function(){
 //	+$("#txtCodigo").val()+"/"+$("#txtNombre").val()+"/"+$("#txtFamilia").val()+"/"+$("#familiaid").val()+"/"+$("#txtMarca").val()+"/"+$("#cboPublicacion").val();
 	///
     $("#imprimirProducto").click(function(){
+
+        var codigo = $("#txtCodigo").val();
+        var nombre = $("#txtNombre").val();
+        var familia = $("#txtFamilia").val();
+        var marca = $("#txtMarca").val();
+
+        
+        var nombre= sintilde(nombre);
+         var familia = sintilde(familia);
+        var marca= sintilde(marca);
+        ///
+          if(codigo==""){codigo="--";}
+          if(nombre==""){nombre="--";}
+           if(familia==""){familia="--";}
+          if(marca==""){marca="--";}
+
 		
 		///
-        url = base_url+"index.php/almacen/producto/registro_productos_pdf/"+flagBS+"/"+$("#txtNombre").val();
+        url = base_url+"index.php/almacen/producto/registro_productos_pdf/"+flagBS+"/"+codigo+"/"+nombre+"/"+familia+"/"+marca+"/";
         window.open(url,'',"width=800,height=600,menubars=no,resizable=no;")
     });
 	///
@@ -79,6 +96,7 @@ jQuery(document).ready(function(){
     });	
     
     $("#GuardarCarga").click(function(){
+
         $("#frmdocumento").submit();
     });
     $('#imgCancelarcarga').click(function(){ 
@@ -282,6 +300,7 @@ jQuery(document).ready(function(){
     });
      
     $("#imgGuardarPro").click(function(){
+
         $("#producto").submit();
     // parent.$.fancybox.close();
     });
@@ -328,6 +347,19 @@ jQuery(document).ready(function(){
 
 
  }
+ function validaCaractaer(pEvent){
+
+    if (pEvent.keyCode==241){ //esta es la letra ñ
+        alert("Evite escribir el signo 'ñ'");
+      pEvent.keyCode=0;//Cuando le haces esto le impides la escritura del caracter en la caja
+    }
+      if (pEvent.keyCode==47){ 
+         alert("Evite escribir el signo '/'");
+        pEvent.keyCode = 0; //Cuando le haces esto le impides la escritura del caracter en la caja
+    }
+
+}
+
 function mostrar_atributos(){
     var base_url  = $('#base_url').val();
     tipo_producto = $("#tipo_producto").val();
@@ -451,6 +483,8 @@ function valida_codigo(){ //ya tambien por modelo
 function valida_codigo_original(){ //ya tambien por modelo
     codigo_original = $("#codigo_original").val();
     producto        = $("#codigo").val();
+
+
     url = base_url+"index.php/almacen/producto/obtener_producto_x_codigo_original/"+codigo_original;
     if(codigo_original!=""){
         $.post(url,'',function(data){
@@ -719,6 +753,30 @@ function buscar_productoint(){
         });
         
     }
+
+
+    function sintilde(cadena){
+   
+   var specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,.";
+
+   
+   for (var i = 0; i < specialChars.length; i++) {
+       cadena= cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
+   }   
+
+   // Lo queremos devolver limpio en minusculas
+   cadena = cadena.toLowerCase();
+
+   // Quitamos acentos y "ñ". Fijate en que va sin comillas el primer parametro
+   cadena = cadena.replace(/á/gi,"a");
+   cadena = cadena.replace(/é/gi,"e");
+   cadena = cadena.replace(/í/gi,"i");
+   cadena = cadena.replace(/ó/gi,"o");
+   cadena = cadena.replace(/ú/gi,"u");
+   cadena = cadena.replace(/ñ/gi,"n");
+   return cadena;
+}
+
 /*
 $("#grabarSeries").click(function(){
     $('img#loading').css('visibility','visible');

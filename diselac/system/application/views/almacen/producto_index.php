@@ -238,7 +238,7 @@ var urls = base_url() . "index.php/almacen/producto/buscar_productos/";
                 <form id="form_busqueda" name="form_busqueda" method="post" action="<?php echo $action; ?>">
                     <table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
                         <tr>
-                            <td width="16%">Código</td>
+                            <td width="16%">Código Usuario</td>
                             <td width="34%">
                             
                             <input id="txtCodigo" type="text" class="cajaPequena" NAME="txtCodigo" placeholder="Codigo"
@@ -330,14 +330,14 @@ var urls = base_url() . "index.php/almacen/producto/buscar_productos/";
                         <tr class="cabeceraTabla">
                             <td width="3%">ITEM</td>
 
-                            <td width="5%" align='center'>&nbsp;CODIGO&nbsp;&nbsp;&nbsp;</td>
+                            <td width="5%" align='center'>&nbsp;CODIGO&nbsp; U.</td>
                             <td>DESCRIPCION&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 
                             <?php if (FORMATO_IMPRESION != 4) { ?>
                                 <td width="20%">FAMILIA</td><?php } ?>
                             <?php if ($flagBS == 'B') { ?>
-                                <td width="7%">PRECIO 1</td>
-                                <td width="7%">PRECIO 2</td>
+                               <!-- <td width="7%">PRECIO 1</td>
+                                <td width="7%">PRECIO 2</td>-->
                                 <td width="15%">MARCA</td>
                                 <?php if (FORMATO_IMPRESION == 4) { ?>
                                     <td width="5%">P. VENTA</td><?php } ?>
@@ -379,7 +379,7 @@ var urls = base_url() . "index.php/almacen/producto/buscar_productos/";
             ?>
 
          <?php if ($flagBS == 'B') { ?>
-        <td>
+       <!-- <td>
             <div align="left"><?php echo number_format($valor[6],2);   ?>
                 
             </div>
@@ -388,7 +388,7 @@ var urls = base_url() . "index.php/almacen/producto/buscar_productos/";
             <div align="left"><?php  echo  number_format($valor[7], 2);  ?>
                  
             </div>
-         </td>
+         </td>-->
          <td>
         <div align="center"><?php echo $valor[5 ]; ?></div>
          </td>
