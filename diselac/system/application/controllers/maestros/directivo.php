@@ -82,7 +82,8 @@ class Directivo extends Controller {
     public function buscar_directivos($j = '0') {
         $numdoc = $this->input->post('txtNumDoc');
         $nombre = $this->input->post('txtNombre');
-        $empresa = $this->input->post('cboEmpresa');
+       
+        $empresa = $this->input->post('cboCompania');
         $filter = new stdClass();
         $filter->numdoc = $numdoc;
         $filter->nombre = $nombre;
@@ -744,6 +745,109 @@ class Directivo extends Controller {
             }
         }
         echo $resultado;
+    }
+
+
+    public function registro_directivo_pdf($documento='', $nombre='', $empresa='')
+    {
+
+        $this->load->library('cezpdf');
+        $this->load->helper('pdf_helper');
+        //prep_pdf();
+        $this->cezpdf = new Cezpdf('a4');
+        $datacreator = array(
+            'Title' => 'Estadillo de ',
+            'Name' => 'Estadillo de ',
+            'Author' => 'Vicente Producciones',
+            'Subject' => 'PDF con Tablas',
+            'Creator' => 'info@vicenteproducciones.com',
+            'Producer' => 'http://www.vicenteproducciones.com'
+        );
+
+        $this->cezpdf->addInfo($datacreator);
+        $this->cezpdf->selectFont(APPPATH . 'libraries/fonts/Helvetica.afm');
+        $delta = 20;
+
+            
+
+        $this->cezpdf->ezText('', '', array("leading" => 35));
+        $this->cezpdf->ezText('<b>RELACION DE EMPLEADOS</b>', 14, array("leading" => 0, 'left' => 185));
+        $this->cezpdf->ezText('', '', array("leading" => 10));
+
+
+        /* Datos del cliente */
+
+
+//        /* Listado de detalles */
+
+        $db_data = array();
+
+
+        $listado_productos = $this->directivo_model->listar_directivo_pdf($documento,$nombre,$empresa);
+    
+            if (count($listado_productos) > 0) {
+                foreach ($listado_productos as $indice => $valor) {
+                    $dni = $valor->dni;
+                    $nombre = $valor->nombre." ".$valor->paterno." ".$valor->materno;
+                    $empresa = $valor->empresa;
+                    $cargo = $valor->cargo;
+                    $inicio = $valor->Inicio;
+                    $fin = $valor->Fin;
+                    $contrato = $valor->Nro_Contrato;
+
+
+                    $db_data[] = array(
+                        'cols1' => $indice + 1,
+                        'cols2' => $dni,
+                        'cols3' => $nombre,
+                        'cols4' => $empresa,
+                        'cols5' => $cargo,
+                        'cols6' => $contrato,
+                        'cols7' => $fin,
+                        'cols8' => $inicio,
+                    );
+                }
+            }
+
+        
+
+
+        $col_names = array(
+            'cols1' => '<b>ITEM</b>',
+            'cols2' => '<b>DNI</b>',
+            'cols3' => '<b>NOMBRE</b>',
+            'cols4' => '<b>EMPRESA</b>',
+            'cols5' => '<b>CARGO</b>',
+            'cols6' => '<b>CONTRATO</b>',
+            'cols7' => '<b>INICIO</b>',
+            'cols8' => '<b>FIN</b>'
+        );
+
+        $this->cezpdf->ezTable($db_data, $col_names, '', array(
+            'width' => 525,
+            'showLines' => 1,
+            'shaded' => 1,
+            'showHeadings' => 1,
+            'xPos' => 'center',
+            'fontSize' => 8,
+            'cols' => array(
+                'cols1' => array('width' => 30, 'justification' => 'center'),
+                'cols2' => array('width' => 50, 'justification' => 'center'),
+                'cols3' => array('width' => 120, 'justification' => 'center'),
+                'cols4' => array('width' => 100, 'justification' => 'center'),
+                'cols5' => array('width' => 70, 'justification' => 'center'),
+                'cols6' => array('width' => 60, 'justification' => 'center'),
+                'cols7' => array('width' => 60, 'justification' => 'center'), 
+                'cols8' => array('width' => 60, 'justification' => 'center')
+            )
+        ));
+
+
+        $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => $codificacion . '.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
+
+        ob_end_clean();
+
+        $this->cezpdf->ezStream($cabecera);
     }
 
 }

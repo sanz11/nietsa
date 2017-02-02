@@ -35,6 +35,8 @@ jQuery(document).ready(function(){
             return false;
         }
         
+         
+
         
         if($('#fechanac').val()==''){
             alert('Ingrese el a\u00F1o de nacimiento del empleado');
@@ -113,6 +115,22 @@ jQuery(document).ready(function(){
         base_url = $("#base_url").val();
         location.href = base_url+"index.php/maestros/directivo/directivos";
     });
+    $("#imprimirDirectivo").click(function(){
+            var docum = $("#txtNumDoc").val();
+            var nombre = $("#txtNombre").val();
+            var empresa = $("#cboCompania").val();
+            
+
+            var docum = sintilde(docum);
+            var nombre = sintilde(nombre);
+        ///
+          if(docum==""){docum="--";}
+          if(nombre==""){nombre="--";}
+           if(empresa==""){empresa="--";}
+
+        url = base_url+"index.php/maestros/directivo/registro_directivo_pdf/"+docum+"/"+ nombre+"/"+empresa;
+        window.open(url,'',"width=800,height=600,menubars=no,resizable=no;");
+        });
    
     
     container = $('div.container');
@@ -417,4 +435,25 @@ function cambiar_estado_campos(estado){
     $("#cboNacionalidad").attr('disabled', estado);
     $("#ruc_persona").attr('disabled', estado);
     
+}
+function sintilde(cadena){
+   
+   var specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,.";
+
+   
+   for (var i = 0; i < specialChars.length; i++) {
+       cadena= cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
+   }   
+
+   // Lo queremos devolver limpio en minusculas
+   cadena = cadena.toLowerCase();
+
+   // Quitamos acentos y "ñ". Fijate en que va sin comillas el primer parametro
+   cadena = cadena.replace(/á/gi,"a");
+   cadena = cadena.replace(/é/gi,"e");
+   cadena = cadena.replace(/í/gi,"i");
+   cadena = cadena.replace(/ó/gi,"o");
+   cadena = cadena.replace(/ú/gi,"u");
+   cadena = cadena.replace(/ñ/gi,"n");
+   return cadena;
 }

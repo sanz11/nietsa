@@ -28,9 +28,31 @@ jQuery(document).ready(function(){
         url = base_url+"index.php/ventas/cliente/clientes";
         location.href=url;
     });
+
     $("#imgCancelarCliente").click(function(){
 	base_url = $("#base_url").val();
         location.href = base_url+"index.php/ventas/cliente/clientes";
+    });
+
+    $("#imprimirCliente").click(function(){
+            var docum = $("#txtNumDoc").val();
+            var nombre = $("#txtNombre").val();
+            var telefono = $("#txtTelefono").val();
+            var tipo = $("#cboTipoProveedor").val();
+            
+            var flagBS = "B";
+
+            var docum = sintilde(docum);
+            var nombre = sintilde(nombre);
+            var telefono = sintilde(telefono);
+        ///
+          if(docum==""){docum="--";}
+          if(nombre==""){nombre="--";}
+           if(telefono==""){telefono="--";}
+          if(tipo==""){tipo="--";}
+
+        url = base_url+"index.php/ventas/cliente/registro_cliente_pdf/"+docum+"/"+ nombre+"/"+ telefono+"/"+ tipo;
+        window.open(url,'',"width=800,height=600,menubars=no,resizable=no;");
     });
     $(":radio").click(function(){
         valor = $(this).attr("value");
@@ -725,3 +747,25 @@ function cambiar_estado_campos(estado){
     $("#ruc_persona").attr('disabled', estado);
     
 }
+function sintilde(cadena){
+   
+   var specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,.";
+
+   
+   for (var i = 0; i < specialChars.length; i++) {
+       cadena= cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
+   }   
+
+   // Lo queremos devolver limpio en minusculas
+   cadena = cadena.toLowerCase();
+
+   // Quitamos acentos y "ñ". Fijate en que va sin comillas el primer parametro
+   cadena = cadena.replace(/á/gi,"a");
+   cadena = cadena.replace(/é/gi,"e");
+   cadena = cadena.replace(/í/gi,"i");
+   cadena = cadena.replace(/ó/gi,"o");
+   cadena = cadena.replace(/ú/gi,"u");
+   cadena = cadena.replace(/ñ/gi,"n");
+   return cadena;
+}
+

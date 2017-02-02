@@ -17,7 +17,7 @@
                         </tr>
                         <tr>
                             <td>Nombre </td>
-                            <td><input id="txtNombre" name="txtNombre" type="text" class="cajaGrande" maxlength="45" value=""></td>
+                            <td><input id="txtNombre" name="txtNombre" type="text" class="cajaGrande" maxlength="45" value="<?php echo $nombre; ?>"></td>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
                         </tr>

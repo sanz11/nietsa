@@ -256,11 +256,11 @@ PERSC_Nombre , PERSC_ApellidoMaterno, PERSC_ApellidoPaterno  and DIREC_FlagEstad
         $where_pers = '';
 
         if (isset($filter->numdoc) && $filter->numdoc != "")
-            $where_pers.=' and (per.PERSC_NumeroDocIdentidad like "' . $filter->numdoc . '") ';
+            $where_pers.=' and per.PERSC_NumeroDocIdentidad like "' . $filter->numdoc . '" ';
         if (isset($filter->nombre) && $filter->nombre != "")
-            $where_pers.=' and (per.PERSC_Nombre like "%' . $filter->nombre . '%") ';
+            $where_pers.=' and per.PERSC_Nombre like "%' . $filter->nombre . '%" ';
         if (isset($filter->empresa) && $filter->empresa != "" && $filter->empresa != "0")
-            $where_pers.=' and (dir.EMPRP_Codigo = "' . $filter->empresa . '") ';
+            $where_pers.=' and dir.EMPRP_Codigo = "' . $filter->empresa . '" ';
 
         if ($number_items == "" && $offset == "") {
             $limit = "";
@@ -421,6 +421,55 @@ and cji_usuario_compania.COMPP_Codigo='".$this->somevar ['compania']."' $where "
     	} catch (Exception $e) {
     		 
     	}
+    }
+
+    public function listar_directivo_pdf($documento,$nombre,$empresa)
+    {
+         $where = '';
+        $where_empr = '';
+        $where_pers = '';
+
+        if ($documento != "--")
+            $where_pers.=' and (per.PERSC_NumeroDocIdentidad like "' . $documento . '") ';
+        if ($nombre != "--")
+            $where_pers.=' and (per.PERSC_Nombre like "%' .$nombre. '%") ';
+       /* if ($empresa!= "--" && $empresa != "0")
+            $where_pers.=' and (dir.EMPRP_Codigo = "' . $empresa . '") ';*/
+
+        
+        $compania = $this->somevar['compania'];
+
+        $sql = "
+                    select
+                    dir.DIREP_Codigo DIREP_Codigo,
+                    dir.EMPRP_Codigo EMPRP_Codigo,
+                    dir.PERSP_Codigo PERSP_Codigo,
+                    dir.CARGP_Codigo CARGP_Codigo,
+                    dir.DIREC_FechaInicio Inicio,
+                    dir.DIREC_FechaFin Fin,
+                    dir.DIREC_NroContrato Nro_Contrato,
+                    emp.EMPRC_RazonSocial empresa,
+                    per.PERSC_Nombre nombre,
+                    per.PERSC_ApellidoPaterno paterno,
+                    per.PERSC_ApellidoMaterno materno,
+                    per.PERSC_NumeroDocIdentidad dni,
+                    car.CARGC_Descripcion cargo
+                    from cji_directivo as dir
+                    inner join cji_empresa as emp on dir.EMPRP_Codigo=emp.EMPRP_Codigo
+                    inner join cji_persona as per on dir.PERSP_Codigo=per.PERSP_Codigo
+                    inner join cji_cargo as car on dir.CARGP_Codigo=car.CARGP_Codigo
+                    where dir.DIREC_FlagEstado=1
+                    and dir.DIREP_Codigo!=0 " . $where . " " . $where_pers . "
+                    order by nombre
+                    ";
+        $query = $this->db->query($sql);
+        if ($query->num_rows > 0) {
+            foreach ($query->result() as $fila) {
+                $data[] = $fila;
+            }
+            return $data;
+        }
+       
     }
 
 }

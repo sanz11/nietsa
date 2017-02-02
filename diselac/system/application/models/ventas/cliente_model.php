@@ -453,6 +453,125 @@ class Cliente_model extends Model{
         return $data;
     }
 }  
+
+    public function listar_cliente_pdf($docum,$nombre,$telefono,$tipo){
+ $where='';
+            $where_empr='';
+            $where_pers='';
+            $where_calif='';
+
+            if($tipo=="J"){
+                $where=' and cli.CLIC_TipoPersona = "1"';
+
+                if($docum !="--")
+                    $where_empr.=' and emp.EMPRC_Ruc like "'.$docum.'"';
+                if($nombre!="--")
+                    #Cambio10-08-2016
+                    $where_empr.=' and emp.EMPRC_RazonSocial like "%'.$nombre.'%"';
+                if($telefono!="--")
+                    $where_empr.=' and (emp.EMPRC_Telefono like "%'.$telefono.'%" or emp.EMPRC_Movil like "%'.$telefono.'%")';
+            }
+            else{
+                if($tipo=="N"){
+                    $where=' and cli.CLIC_TipoPersona = "0"';
+
+                    if($docum!="--")
+                        $where_pers.=' and (pers.PERSC_NumeroDocIdentidad like "'.$docum.'" or pers.PERSC_Ruc like "'.$docum.'")';
+                    if($nombre!="--")
+                        $where_pers.='and (pers.PERSC_Nombre like "%'.$nombre.'%" or  pers.PERSC_ApellidoPaterno like "%'.$nombre.'%"  or pers.PERSC_ApellidoMaterno like "%'.$nombre.'%")';
+                    if($telefono!="--")
+                        $where_pers.='and (pers.PERSC_Telefono like "%'.$telefono.'%" or pers.PERSC_Movil like "%'.$telefono.'%")';
+                }
+                else{
+                    if($docum!="--"){
+                        $where_empr.=' and emp.EMPRC_Ruc like "'.$docum.'"';
+                        $where_pers.=' and (pers.PERSC_NumeroDocIdentidad like "'.$docum.'" or pers.PERSC_Ruc like "'.$docum.'")';
+                    }
+                    if($nombre!="--"){
+                        $where_empr.=' and emp.EMPRC_RazonSocial like "%'.$nombre.'%"';
+                        $where_pers.='and (pers.PERSC_Nombre like "%'.$nombre.'%" or  pers.PERSC_ApellidoPaterno like "%'.$nombre.'%"  or pers.PERSC_ApellidoMaterno like "%'.$nombre.'%")';                   
+                    }
+                    if($telefono!="--"){
+                        $where_empr.=' and (emp.EMPRC_Telefono like "%'.$telefono.'%" or emp.EMPRC_Movil like "%'.$telefono.'%")';
+                        $where_pers.='and (pers.PERSC_Telefono like "%'.$telefono.'%" or pers.PERSC_Movil like "% '.$telefono.' %")';
+                    }
+                }      
+            }
+           
+            $compania = $this->somevar['compania'];
+ 
+        //------------------------------------- 
+                if(COMPARTIR_CLICOMPANIA==1){
+                    $clientecompania="";
+                }else{
+                    $clientecompania=  "and cc.COMPP_Codigo=".$compania." ";
+                };
+            
+        ///-------------------------------------    
+            
+            
+            
+            $sql = "
+                    select 
+                    CLIC_flagCalifica,
+                    cli.CLIP_Codigo CLIP_Codigo,
+                    cli.EMPRP_Codigo EMPRP_Codigo,
+                    cli.PERSP_Codigo PERSP_Codigo,
+                    cli.CLIC_TipoPersona CLIC_TipoPersona,
+                    cc.COMPP_Codigo COMPP_Codigo,
+                    emp.EMPRC_RazonSocial nombre,
+                    emp.EMPRC_Ruc ruc,
+                    '' dni,
+
+                    emp.EMPRC_Direccion direccion,
+
+
+                    emp.EMPRC_Telefono telefono,
+                    emp.EMPRC_Fax fax
+                    from cji_clientecompania as  cc
+                    inner join cji_cliente as cli on cli.CLIP_Codigo=cc.CLIP_Codigo
+                    inner join cji_empresa as emp on cli.EMPRP_Codigo=emp.EMPRP_Codigo
+                    where cli.CLIC_TipoPersona=1
+                    and cli.CLIC_FlagEstado=1
+                     ".$clientecompania."
+                    and cli.CLIP_Codigo!=0 ".$where." ".$where_empr." ".$where_calif."
+                    UNION
+                    select
+                    CLIC_flagCalifica,
+                    cli.CLIP_Codigo as CLIP_Codigo,
+                    cli.EMPRP_Codigo EMPRP_Codigo,
+                    cli.PERSP_Codigo PERSP_Codigo,
+                    cli.CLIC_TipoPersona CLIC_TipoPersona,
+                    cc.COMPP_Codigo COMPP_Codigo,
+                    concat(pers.PERSC_Nombre,' ',pers.PERSC_ApellidoPaterno) as nombre,
+                    pers.PERSC_Ruc ruc,
+                    pers.PERSC_NumeroDocIdentidad dni,
+
+
+                    pers.PERSC_Direccion direccion,
+
+                    pers.PERSC_Telefono telefono,
+                    pers.PERSC_Fax fax
+                    from cji_clientecompania as cc
+                    inner join cji_cliente as cli on cli.CLIP_Codigo=cc.CLIP_Codigo
+                    inner join cji_persona as pers on cli.PERSP_Codigo=pers.PERSP_Codigo
+                    where cli.CLIC_TipoPersona=0
+                    and cli.CLIC_FlagEstado=1
+                     ".$clientecompania."
+                    and cli.CLIP_Codigo!=0 ".$where." ".$where_pers." ".$where_calif."
+                    order by nombre
+                    ".$limit."
+                    ";
+            $query = $this->db->query($sql);
+            if($query->num_rows>0){
+                    foreach($query->result() as $fila){
+                            $data[] = $fila;
+                    }
+                    return $data;
+            }
+
+
+    }
      
     
     
