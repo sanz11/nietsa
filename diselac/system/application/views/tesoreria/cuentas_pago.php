@@ -46,6 +46,17 @@ if (empty($persona))
                 'modal': true,
                 'type': 'iframe'
             });
+             $("a#linkVerCliente, a#linkSelecCliente, a#linkVerProveedor, a#linkSelecProveedor, a#linkedicliente").fancybox({
+                'width': 800,
+                'height': 550,
+                'autoScale': false,
+                'transitionIn': 'none',
+                'transitionOut': 'none',
+                'showCloseButton': true,
+                'modal': false,
+                'type': 'iframe'
+
+            });
 
             /*$('#notaCredito').change(function () {
                 var nota = $(this).val();
@@ -380,11 +391,8 @@ if (empty($persona))
                         <input type="text" name="ruc_cliente" class="cajaGeneral" id="ruc_cliente" size="10"
                                maxlength="11" placeholder="Ruc" onkeypress="return numbersonly(this,event,'.');" />
                         <input type="text" name="nombre_cliente" class="cajaGeneral cajaSoloLectura" id="nombre_cliente"
-                               size="40" maxlength="50" placeholder="Nombre cliente" disabled/>
-                        <a href="<?php echo base_url(); ?>index.php/ventas/cliente/ventana_busqueda_cliente/"
-                           id="linkVerCliente"><img height='16' width='16'
-                                                    src='<?php echo base_url(); ?>/images/ver.png' title='Buscar'
-                                                    border='0'/></a>
+                               size="40" maxlength="50" placeholder="Nombre cliente" />
+                       <a href="<?php echo base_url(); ?>index.php/ventas/cliente_ventana_busqueda/" id="linkSelecCliente"></a>
                     </td>
                 <?php } else { ?>
                     <td>Proveedor *</td>
@@ -393,11 +401,9 @@ if (empty($persona))
                         <input type="text" name="ruc_proveedor" class="cajaGeneral" id="ruc_proveedor" size="10"
                                maxlength="11" onkeypress="return numbersonly(this,event,'.');" placeholder="Ruc" />
                         <input type="text" name="nombre_proveedor" class="cajaGeneral cajaSoloLectura"
-                               id="nombre_proveedor" size="40" maxlength="50" readonly="readonly" placeholder="Nombre Proveedor" />
+                               id="nombre_proveedor" size="40" maxlength="50" placeholder="Nombre Proveedor" />
                         <a href="<?php echo base_url(); ?>index.php/compras/proveedor/ventana_busqueda_proveedor/"
-                           id="linkVerProveedor"><img height='16' width='16'
-                                                      src='<?php echo base_url(); ?>/images/ver.png' title='Buscar'
-                                                      border='0'/></a>
+                           id="linkSelecProveedor"></a>
                     </td>
                 <?php } ?>
             </tr>

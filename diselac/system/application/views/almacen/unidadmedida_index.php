@@ -24,7 +24,7 @@
         </div>
 <div class="acciones">
         <div id="botonBusqueda">
-            <ul id="imprimirUnidadmedida" class="lista_botones"><li id="imprimir">Imprimir</li></ul>
+            <!-- <ul id="imprimirUnidadmedida" class="lista_botones"><li id="imprimir">Imprimir</li></ul>-->
             <ul id="nuevoUnidadmedida" class="lista_botones"><li id="nuevo">Nueva Unidad de Medida</li></ul>
             <ul id="limpiarUnidadmedida" class="lista_botones"><li id="limpiar">Limpiar</li></ul>
             <ul id="buscarUnidadmedida" class="lista_botones"><li id="buscar">Buscar</li></ul> 

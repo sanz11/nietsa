@@ -25,7 +25,7 @@
         </div>
 <div class="acciones">
         <div id="botonBusqueda">
-            <ul id="imprimirTipoCambio" class="lista_botones"><li id="imprimir">Imprimir</li></ul>
+            <!--<ul id="imprimirTipoCambio" class="lista_botones"><li id="imprimir">Imprimir</li></ul>-->
             <ul id="limpiarTipoCambio" class="lista_botones"><li id="limpiar">Limpiar</li></ul>
             <ul id="buscarTipoCambio" class="lista_botones"><li id="buscar">Buscar</li></ul> 
         </div>

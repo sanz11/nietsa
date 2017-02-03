@@ -214,7 +214,7 @@ $CI = get_instance();
                         </div>
 <div class="acciones">
                         <div id="botonBusqueda">
-                            <ul id="imprimirCuenta" class="lista_botones"><li id="imprimir">Imprimir</li></ul>
+                           <!-- <ul id="imprimirCuenta" class="lista_botones"><li id="imprimir">Imprimir</li></ul>-->
                             <ul id="nuevoCuenta" class="lista_botones">
                                 <li id="nuevo">
                                     <?php

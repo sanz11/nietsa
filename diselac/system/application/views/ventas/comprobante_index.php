@@ -294,9 +294,11 @@ $CI = get_instance();
                 </div>
                 <div class="acciones">
                     <div id="botonBusqueda">
+                   <?php if ($tipo_oper == 'V' && $tipo_docu != 'N'){ ?>
                         <ul id="imprimirComprobante" class="lista_botones">
                             <li id="imprimir">Imprimir</li>
                         </ul>
+                        <?php } ?>
                         <ul id="nuevaComprobante" class="lista_botones">
                             <li id="nuevo">Nueva <?php echo ucwords($CI->obtener_tipo_documento($tipo_docu)); ?></li>
                         </ul>

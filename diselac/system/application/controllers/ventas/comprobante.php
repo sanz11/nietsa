@@ -7762,10 +7762,9 @@ $db_data=array();
                 'col2' => $fecha,
                 'col3' => $serie,
                 'col4' => $numero,
-                'col5' => $numero_ref,
-                'col6' => $nombre,
-                'col7' => $total,
-                'col8' => $nomusuario
+                //'col5' => $numero_ref,
+                'col5' => $nombre,
+                'col6' => $total
             ); 
  
         }
@@ -7775,10 +7774,9 @@ $db_data=array();
             'col2' => 'Fecha',
             'col3' => 'SERIE',
             'col4' => 'NRO',
-            'col5' => 'GUIA REMISION',
-            'col6' => 'RAZON SOCIAL',
-            'col7' => 'TOTAL',
-            'col8' => 'USUARIO'
+            //'col5' => 'GUIA REMISION',
+            'col5' => 'RAZON SOCIAL',
+            'col6' => 'TOTAL'
             
         );
 
@@ -7792,12 +7790,11 @@ $db_data=array();
             'cols' => array(
                 'col1' => array('width' => 25, 'justification' => 'center'),
                 'col2' => array('width' => 50, 'justification' => 'center'),
-                'col3' => array('width' => 30, 'justification' => 'center'),
-                'col4' => array('width' => 30, 'justification' => 'center'),
-                'col5' => array('width' => 55, 'justification' => 'center'),
-                'col6' => array('width' => 200),
-                'col7' => array('width' => 59, 'justification' => 'center'),
-                'col8' => array('width' => 50, 'justification' => 'center')
+                'col3' => array('width' => 50, 'justification' => 'center'),
+                'col4' => array('width' => 50, 'justification' => 'center'),
+                //'col5' => array('width' => 55, 'justification' => 'center'),
+                'col5' => array('width' => 220),
+                'col6' => array('width' => 60, 'justification' => 'center')
             )
         ));
 

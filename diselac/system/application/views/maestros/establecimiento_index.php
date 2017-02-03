@@ -26,7 +26,7 @@ if(empty($persona)) header("location:$url");
             
             <div class="acciones">
             <div id="botonBusqueda">
-                <ul id="imprimirEstablecimiento" class="lista_botones"><li id="imprimir">Imprimir</li></ul>
+                <!-- <ul id="imprimirEstablecimiento" class="lista_botones"><li id="imprimir">Imprimir</li></ul>-->
                 <ul id="nuevoEstablecimiento" class="lista_botones"><li id="nuevo">Nuevo Establecimiento</li></ul>
                 <ul id="limpiarEstablecimiento" class="lista_botones"><li id="limpiar">Limpiar</li></ul>
                 <ul id="buscarEstablecimiento" class="lista_botones"><li id="buscar">Buscar</li></ul> 

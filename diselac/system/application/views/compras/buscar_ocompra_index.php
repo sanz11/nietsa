@@ -41,9 +41,9 @@
 
 <div class="acciones">
     <div id="botonBusqueda">
-        <ul id="imprimirOcompra" class="lista_botones">
+       <!-- <ul id="imprimirOcompra" class="lista_botones">
             <li id="imprimir" style="background-position:44px 4px;width:90px;">Imprimir</li>
-        </ul>
+        </ul>-->
         <?php
         if ($evalua) {
             ?>

@@ -19,7 +19,7 @@
     </div>
 <div class="acciones">
     <div id="botonBusqueda">
-        <ul id="imprimirRol" class="lista_botones"><li id="imprimir">Imprimir</li></ul>
+        <!--<ul id="imprimirRol" class="lista_botones"><li id="imprimir">Imprimir</li></ul>-->
         <ul id="nuevoRol" class="lista_botones"><li id="nuevo">Nuevo Rol</li></ul>
         <ul id="limpiarRol" class="lista_botones"><li id="limpiar">Limpiar</li></ul>
         <ul id="buscarRol" class="lista_botones"><li id="buscar">Buscar</li></ul>

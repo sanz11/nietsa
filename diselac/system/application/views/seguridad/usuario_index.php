@@ -32,7 +32,7 @@
     </div>
 <div class="acciones">
     <div id="botonBusqueda">
-        <ul id="imprimirUsuario" class="lista_botones"><li id="imprimir">Imprimir</li></ul>
+        <!--<ul id="imprimirUsuario" class="lista_botones"><li id="imprimir">Imprimir</li></ul>-->
         <ul id="nuevoUsuario" class="lista_botones"><li id="nuevo">Nuevo Usuario</li></ul>
         <ul id="limpiarUsuario" class="lista_botones"><li id="limpiar">Limpiar</li></ul>
         <ul id="buscarUsuario" class="lista_botones"><li id="buscar">Buscar</li></ul> 

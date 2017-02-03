@@ -17,7 +17,7 @@
         </div>
 <div class="acciones">
         <div id="botonBusqueda">
-            <ul id="imprimirTipoCliente" class="lista_botones"><li id="imprimir">Imprimir</li></ul>
+           <!-- <ul id="imprimirTipoCliente" class="lista_botones"><li id="imprimir">Imprimir</li></ul>-->
             <ul id="nuevoTipoCliente" class="lista_botones"><li id="nuevo">Nueva Categoría</li></ul>
             <ul id="limpiarTipoCliente" class="lista_botones"><li id="limpiar">Limpiar</li></ul>
             <ul id="buscarTipoCliente" class="lista_botones"><li id="buscar">Buscar</li></ul> 

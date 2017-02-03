@@ -243,9 +243,9 @@
             </div>
             <div class="acciones">
                 <div id="botonBusqueda">
-                    <ul id="imprimirGuiarem" class="lista_botones">
+                   <!-- <ul id="imprimirGuiarem" class="lista_botones">
                         <li id="imprimir">Imprimir</li>
-                    </ul>
+                    </ul>-->
                     <ul id="nuevaGuiarem" class="lista_botones">
                         <li id="nuevo">Nueva G. de Remisión</li>
                     </ul>

@@ -23,9 +23,9 @@
             </div>
             <div class="acciones">
                 <div id="botonBusqueda">
-                    <ul id="imprimirAlmacen" class="lista_botones">
+                     <!--<ul id="imprimirAlmacen" class="lista_botones">
                         <li id="imprimir">Imprimir</li>
-                    </ul>
+                    </ul>-->
                     <ul id="nuevoAlmacen" class="lista_botones">
                         <li id="nuevo">Nuevo Almacen</li>
                     </ul>

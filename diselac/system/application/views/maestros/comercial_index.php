@@ -117,7 +117,7 @@ function cancelar_commercial(){
             <div id="cargarContenedor">
              <div class="acciones">
             <div id="botonBusqueda">
-                <ul onclick="verPdf()" id="imprimirComercial" class="lista_botones"><li id="imprimir">Imprimir</li></ul>
+                 <!--<ul onclick="verPdf()" id="imprimirComercial" class="lista_botones"><li id="imprimir">Imprimir</li></ul>-->
                 <ul onclick="nuevo_comercial()" id="nuevoComercial" class="lista_botones"><li id="nuevo">Nuevo Comercial</li></ul>
                 <ul id="limpiarComercial" class="lista_botones"><li id="limpiar">Limpiar</li></ul>
                 <ul onclick="buscar_sector_comercial()" id="buscarComercial" class="lista_botones"><li id="buscar">Buscar</li></ul> 
