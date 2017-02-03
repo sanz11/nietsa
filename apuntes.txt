@@ -190,3 +190,6 @@ $sumt= '$' . number_format($resul0,4);
    return cadena;
 }
 
+----------------------
+tilde en cezpdf $html = '<head><meta charset="UTF-8"></head>';
+                $pdf->writeHTML($html, true, false, true, false, '');
