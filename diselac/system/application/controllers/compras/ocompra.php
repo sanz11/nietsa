@@ -3424,7 +3424,7 @@ class Ocompra extends Controller
         $this->layout->view('compras/ocompra_reporte', $data);
     }
 
-    public function ver_reporte_pdf($params)
+    public function ver_reporte_pdf($params,$tipo_oper)
     {
         $temp = (explode('_', $params));
         $fechai = $temp[0];
@@ -3437,7 +3437,7 @@ class Ocompra extends Controller
         $usuario = $this->usuario_model->obtener($this->somevar['user']);
         $persona = $this->persona_model->obtener_datosPersona($usuario->PERSP_Codigo);
         $fechahoy = date('d/m/Y');
-        $listado = $this->ocompra_model->buscar_ocompra($fechai, $fechaf, $proveedor, $producto, $aprobado, $ingreso);
+        $listado = $this->ocompra_model->buscar_ocompra($tipo_oper,$fechai, $fechaf, $proveedor, $producto, $aprobado, $ingreso);
 
         if ($fechai != '') {
             $temp = explode('-', $fechai);

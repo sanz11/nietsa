@@ -6086,7 +6086,7 @@ if($_SESSION['compania']=='1'){
 
     public function reportes()
     {
-        $anio = $this->comprobante_model->anios_para_reportes('V');
+         $anio = $this->comprobante_model->anios_para_reportes('V');
         $combo = '<select id="anioVenta" name="anioVenta">';
         $combo .= '<option value="0">Seleccione...</option>';
         foreach ($anio as $key => $value) {
@@ -6127,6 +6127,9 @@ if($_SESSION['compania']=='1'){
         $data['combo2'] = $combo2;
         $data['combo3'] = $combo3;
         $data['combo4'] = $combo4;
+         $data['cbo_dpto'] = $this->seleccionar_departamento('00');
+        $data['cbo_prov'] = $this->seleccionar_provincia('00', '01');
+        $data['cbo_dist'] = $this->seleccionar_distritos('00', '01');
         $this->layout->view('ventas/comprobante_reporte', $data);
     }
 
@@ -6327,8 +6330,48 @@ if($_SESSION['compania']=='1'){
           echo 'Considerando las ventas en el presente aÃ±o<br />
           <img style="margin-top:5px; margin-bottom:20px;" src="'.base_url().'images/img_dinamic/imagen5.png" alt="Imagen 5" />'; */
     }
+     public function seleccionar_departamento($indDefault = '') {
+        $array_dpto = $this->ubigeo_model->listar_departamentos();
+        $arreglo = array();
+        if (count($array_dpto) > 0) {
+            foreach ($array_dpto as $indice => $valor) {
+                $indice1 = $valor->UBIGC_CodDpto;
+                $valor1 = $valor->UBIGC_Descripcion;
+                $arreglo[$indice1] = $valor1;
+            }
+        }
+        $resultado = $this->html->optionHTML($arreglo, $indDefault, array('00', '::Seleccione::'));
+        return $resultado;
+    }
 
-    public function ver_reporte_pdf($params)
+    public function seleccionar_provincia($departamento, $indDefault = '') {
+        $array_prov = $this->ubigeo_model->listar_provincias($departamento);
+        $arreglo = array();
+        if (count($array_prov) > 0) {
+            foreach ($array_prov as $indice => $valor) {
+                $indice1 = $valor->UBIGC_CodProv;
+                $valor1 = $valor->UBIGC_Descripcion;
+                $arreglo[$indice1] = $valor1;
+            }
+        }
+        $resultado = $this->html->optionHTML($arreglo, $indDefault, array('00', '::Seleccione::'));
+        return $resultado;
+    }
+    public function seleccionar_distritos($departamento, $provincia, $indDefault = '') {
+        $array_dist = $this->ubigeo_model->listar_distritos($departamento, $provincia);
+        $arreglo = array();
+        if (count($array_dist) > 0) {
+            foreach ($array_dist as $indice => $valor) {
+                $indice1 = $valor->UBIGC_CodDist;
+                $valor1 = $valor->UBIGC_Descripcion;
+                $arreglo[$indice1] = $valor1;
+            }
+        }
+        $resultado = $this->html->optionHTML($arreglo, $indDefault, array('00', '::Seleccione::'));
+        return $resultado;
+    }
+
+    public function ver_reporte_pdf($params,$tipo_oper)
     {
         $temp = (explode('_', $params));
         $fechai = $temp[0];
@@ -6341,7 +6384,7 @@ if($_SESSION['compania']=='1'){
         $usuario = $this->usuario_model->obtener($this->somevar['user']);
         $persona = $this->persona_model->obtener_datosPersona($usuario->PERSP_Codigo);
         $fechahoy = date('d/m/Y');
-        $listado = $this->comprobante_model->buscar_comprobante_venta($fechai, $fechaf, $proveedor, $producto, $aprobado, $ingreso);
+        $listado = $this->comprobante_model->buscar_comprobante_venta($fechai, $fechaf, $proveedor, $producto, $aprobado, $ingreso,$tipo_oper);
 
         if ($fechai != '') {
             $temp = explode('-', $fechai);
@@ -6469,7 +6512,8 @@ if($_SESSION['compania']=='1'){
         $this->cezpdf->ezStream($cabecera);
     }
 
-    public function ver_reporte_pdf_ventas($anio)
+   
+    public function ver_reporte_pdf_ventas($anio ,$mes ,$fech1 ,$fech2,$depar ,$prov  ,$dist, $tipodocumento,$Prodcod)
     {
         $usuario = $this->usuario_model->obtener($this->somevar['user']);
         $persona = $this->persona_model->obtener_datosPersona($usuario->PERSP_Codigo);
@@ -6482,7 +6526,7 @@ if($_SESSION['compania']=='1'){
         /* Cabecera */
         $delta = 20;
 
-        $listado = $this->comprobante_model->buscar_comprobante_venta_2($anio);
+        $listado = $this->comprobante_model->buscar_comprobante_venta_3($anio ,$mes ,$fech1 ,$fech2,$depar ,$prov  ,$dist ,$tipodocumento,$Prodcod);
 
         $confi = $this->configuracion_model->obtener_configuracion($this->somevar['compania']);
         $serie = '';
@@ -6493,28 +6537,63 @@ if($_SESSION['compania']=='1'){
         }
 
         /* Listado */
+        $codigo="";
         $sum = 0;
         foreach ($listado as $key => $value) {
+            $dep=$value->UBIGC_CodDpto;
+            $pro=$value->UBIGC_CodProv;
+            $dis=$value->UBIGC_CodDist;
+           $cd=strlen($dep.$pro. $dis);
+
+           if($cd=="5"){
+                $dep="0".$dep;
+           }
+           $bsdepartamento= $dep."0000";
+           $bsprovincia= $dep.$pro."00";
+           $bsdistrito= $dep.$pro.$dis;
+
+            $depar = $this->comprobante_model->buscardep($bsdepartamento);
+            $provin = $this->comprobante_model->buscardep($bsprovincia);
+            $distri = $this->comprobante_model->buscardep($bsdistrito);
+
+            foreach ($depar as $ke => $val1) {
+                $departamento=$val1->UBIGC_Descripcion;
+            }
+            foreach ($provin as $ke => $val2) {
+                $provincia=$val2->UBIGC_Descripcion;
+            }
+            foreach ($distri as $ke => $val3) {
+                $distrito=$val3->UBIGC_Descripcion;
+            }
+
+
             $sum += $value->CPC_total;
             $db_data[] = array(
                 'col1' => $key + 1,
                 'col2' => substr($value->CPC_FechaRegistro, 0, 10),
-                'col3' => $serie,
-                'col4' => $value->CPC_Numero,
-                'col6' => $value->CPC_subtotal,
-                'col7' => $value->CPC_igv,
-                'col8' => $value->CPC_total
+                'col3' => $departamento."-". $provincia."-". $distrito,
+                'col4' => $value->CPC_TipoDocumento,
+                'col5' => $serie,
+                'col6' => $value->CPC_Numero,
+                'col7' => $value->CPC_subtotal,
+                'col8' => $value->CPC_igv,
+                'col9' => $value->CPC_descuento,
+                'col10' => $value->CPC_total
             );
         }
 
         $col_names = array(
             'col1' => 'Itm',
-            'col2' => 'Fecha',
-            'col3' => 'SERIE',
-            'col4' => 'NRO',
-            'col6' => 'VALOR DE VENTA',
-            'col7' => 'I.G.V. 18%',
-            'col8' => 'TOTAL',
+            'col2' => 'Fecha de Registro',
+            'col3' => 'Lugar',
+            'col4' => 'T. Doc.',
+            'col5' => 'SERIE',
+            'col6' => 'NRO',
+            'col7' => 'VALOR DE VENTA',
+            'col8' => 'I.G.V. 18%',
+            'col9' => 'Descuento',
+            'col10' => 'TOTAL'
+
         );
 
         $db_data[] = array(
@@ -6524,9 +6603,12 @@ if($_SESSION['compania']=='1'){
             'col4' => "",
             'col5' => "",
             'col6' => "",
-            'col7' => "TOTAL",
-            'col8' => $sum,
-            'col9' => ""
+            'col7' => "",
+            'col8' => "",
+            'col9' => "TOTAL",
+            'col10' => $sum,
+            'col11' => "",
+            'col12' => ""
         );
 
         $this->cezpdf->ezTable($db_data, $col_names, '', array(
@@ -6539,19 +6621,22 @@ if($_SESSION['compania']=='1'){
             'cols' => array(
                 'col1' => array('width' => 25, 'justification' => 'center'),
                 'col2' => array('width' => 50, 'justification' => 'center'),
-                'col3' => array('width' => 50, 'justification' => 'center'),
-                'col4' => array('width' => 30, 'justification' => 'center'),
-                'col6' => array('width' => 50),
+                'col3' => array('width' => 100, 'justification' => 'center'),
+                'col4' => array('width' => 25, 'justification' => 'center'),
+                'col5' => array('width' => 30,'justification' => 'center'),
+                'col6' => array('width' => 30, 'justification' => 'center'),
                 'col7' => array('width' => 50, 'justification' => 'center'),
-                'col8' => array('width' => 50, 'justification' => 'center'),
-                'col9' => array('width' => 60, 'justification' => 'center')
+                'col8' => array('width' => 60, 'justification' => 'center'),
+                'col9' => array('width' => 60, 'justification' => 'center'),
+                'col10' => array('width' => 60, 'justification' => 'center'),
+                'col11' => array('width' => 60, 'justification' => 'center'),
+                 'col12' => array('width' => 60, 'justification' => 'center')
             )
         ));
 
         $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'nama_file.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
         $this->cezpdf->ezStream($cabecera);
     }
-
     public function ver_reporte_pdf_commpras($anio)
     {
         $usuario = $this->usuario_model->obtener($this->somevar['user']);

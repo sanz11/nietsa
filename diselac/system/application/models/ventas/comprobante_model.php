@@ -150,7 +150,150 @@ $query = $this->db->get('cji_directivo u');
         }
         return array();
     }
+ public function buscar_comprobante_venta_3($anio ,$mes ,$fech1 ,$fech2,$depar ,$prov  ,$dist ,$tipodocumento,$Prodcod) {
+        //CPC_TipoOperacion => V venta, C compra
+        //CPC_TipoDocumento => F factura, B boleta
+        //CPC_total => total de la FACTURA o BOLETA CPC_FechaRegistro  BETWEEN '20121201' AND '20121202'
 
+        $where="";
+        //----------
+        if($anio!="--" && $mes =="--"  && $depar=="--" && $prov=="--" && $dist=="--"){// SOLO AÑO
+        $where="AND YEAR(CPC_FechaRegistro)='" . $anio . "'";
+        }
+        if($anio!="--" && $mes !="--" && $depar=="--" && $prov=="--" && $dist=="--"){// MES Y  AÑO
+            $where="AND YEAR(CPC_FechaRegistro)='" . $anio . "' AND MONTH(CPC_FechaRegistro)='" . $mes ."'";
+        }
+         if($anio=="--" && $mes !="--" && $depar=="--" && $prov=="--" && $dist=="--"){//MES CON AÑO ACTUAL
+            $where="AND YEAR(CPC_FechaRegistro)=' ".date("Y")."' AND MONTH(CPC_FechaRegistro)='" . $mes ."'";
+        }
+
+        //-----------------
+       
+        if($anio=="--" && $mes =="--" && $fech1!="--" && $fech2=="--" && $depar=="--" && $prov=="--" && $dist=="--"){//FECHA INICIAL
+                $where="AND CPC_FechaRegistro > '" . $fech1 . "'";
+            }
+        if($anio=="--" && $mes =="--" && $fech1!="--" && $fech2!="--" && $depar=="--" && $prov=="--" && $dist=="--"){//FECHA INICIAL Y FECHA FINAL
+                $where="AND CPC_FechaRegistro >= '" . $fech1 . "' AND CPC_FechaRegistro <= '" . $fech2 . "'";
+            }
+        
+        //-----------------------
+         if($anio =="--" && $mes =="--" && $fech1 =="--" && $fech2 =="--" && $depar!="--" && $prov=="--" && $dist=="--"){//DEPARTAMENTO
+                $where ="AND ubi.UBIGC_CodDpto ='".$depar."'";
+            }
+        if($anio =="--" && $mes =="--" && $fech1 =="--" && $fech2 =="--" && $depar!="--" && $prov!="--" && $dist=="--"){//DEPARTAMENTO Y PROVINCIA
+                $where ="AND ubi.UBIGC_CodDpto ='".$depar."'AND ubi.UBIGC_CodProv ='".$prov."'";
+            }
+         if($anio =="--" && $mes =="--" && $fech1 =="--" && $fech2 =="--" && $depar!="--" && $prov!="--" && $dist!="--"){//DEPARTAMENTO , PROVINCIA Y DISTRITO
+                $where ="AND ubi.UBIGC_CodDpto ='".$depar."'AND ubi.UBIGC_CodProv ='".$prov."'AND ubi.UBIGC_CodDist ='".$dist."'";
+            }
+
+        //------------------
+
+         if($anio !="--" && $mes =="--" && $fech1 =="--" && $fech2 =="--" && $depar!="--" && $prov=="--" && $dist=="--"){//AÑO Y DEPARTAMENTO 
+               $where ="AND ubi.UBIGC_CodDpto ='".$depar."' AND YEAR(CPC_FechaRegistro)='" . $anio . "'";
+            }
+
+        if($anio !="--" && $mes =="--" && $fech1 =="--" && $fech2 =="--" && $depar!="--" && $prov!="--" && $dist=="--"){//AÑO , DEPARTAMENTO Y PROVINCIA
+                $where ="AND ubi.UBIGC_CodDpto ='".$depar."' AND ubi.UBIGC_CodProv ='".$prov."'AND YEAR(CPC_FechaRegistro)='" . $anio . "'";
+            }
+        if($anio !="--" && $mes =="--" && $fech1 =="--" && $fech2 =="--" && $depar!="--" && $prov!="--" && $dist!="--"){//AÑO , DEPARTAMENTO , PROVINCIA Y DISTRITO
+                $where ="AND ubi.UBIGC_CodDpto ='".$depar."'AND ubi.UBIGC_CodProv ='".$prov."'AND ubi.UBIGC_CodDist ='".$dist."' AND YEAR(CPC_FechaRegistro)='" . $anio . "'";
+            }
+        if($anio !="--" && $mes !="--" && $fech1 =="--" && $fech2 =="--" && $depar!="--" && $prov=="--" && $dist=="--"){//AÑO ,MES Y DEPARTAMENTO 
+                $where ="AND ubi.UBIGC_CodDpto ='".$depar."'' AND YEAR(CPC_FechaRegistro)='" . $anio . "' AND MONTH(CPC_FechaRegistro)='" . $mes ."'";
+            }
+
+        if($anio !="--" && $mes !="--" && $fech1 =="--" && $fech2 =="--" && $depar!="--" && $prov!="--" && $dist=="--"){//AÑO ,MES, DEPARTAMENTO Y PROVINCIA
+               $where ="AND ubi.UBIGC_CodDpto ='".$depar."'AND ubi.UBIGC_CodProv ='".$prov."'AND YEAR(CPC_FechaRegistro)='" . $anio . "' AND MONTH(CPC_FechaRegistro)='" . $mes ."'";
+            }
+        if($anio !="--" && $mes !="--" && $fech1 =="--" && $fech2 =="--" && $depar!="--" && $prov!="--" && $dist!="--"){//AÑO ,MES , DEPARTAMENTO , PROVINCIA Y DISTRITO
+               $where ="AND ubi.UBIGC_CodDpto ='".$depar."'AND ubi.UBIGC_CodProv ='".$prov."'AND ubi.UBIGC_CodDist ='".$dist."' AND YEAR(CPC_FechaRegistro)='" . $anio . "' AND MONTH(CPC_FechaRegistro)='" . $mes ."'";
+            }
+            //--------
+
+        if($anio =="--" && $mes !="--" && $fech1 =="--" && $fech2 =="--" && $depar!="--" && $prov=="--" && $dist=="--"){//AÑO actual ,MES Y DEPARTAMENTO 
+               $where ="AND ubi.UBIGC_CodDpto ='".$depar."'' AND YEAR(CPC_FechaRegistro)='" . date("Y") . "' AND MONTH(CPC_FechaRegistro)='" . $mes ."'";
+            }
+
+        if($anio =="--" && $mes !="--" && $fech1 =="--" && $fech2 =="--" && $depar!="--" && $prov!="--" && $dist=="--"){//AÑO actual ,MES, DEPARTAMENTO Y PROVINCIA
+                $where ="AND ubi.UBIGC_CodDpto ='".$depar."'AND ubi.UBIGC_CodProv ='".$prov."'AND YEAR(CPC_FechaRegistro)='" . date("Y"). "' AND MONTH(CPC_FechaRegistro)='" . $mes ."'";
+            }
+        if($anio =="--" && $mes !="--" && $fech1 =="--" && $fech2 =="--" && $depar!="--" && $prov!="--" && $dist!="--"){//AÑO  actual,MES , DEPARTAMENTO , PROVINCIA Y DISTRITO
+              
+               $where ="AND ubi.UBIGC_CodDpto ='".$depar."'AND ubi.UBIGC_CodProv ='".$prov."'AND ubi.UBIGC_CodDist ='".$dist."' AND YEAR(CPC_FechaRegistro)='" . date("Y") . "' AND MONTH(CPC_FechaRegistro)='" . $mes ."'";
+            }
+
+            //------------
+
+        if($anio =="--" && $mes =="--" && $fech1 !="--" && $fech2 =="--" && $depar!="--" && $prov=="--" && $dist=="--"){//FECHIN  Y DEPARTAMENTO 
+                 $where ="AND ubi.UBIGC_CodDpto ='".$depar."'AND CPC_FechaRegistro >= '" . $fech1 . "'";
+            }
+
+        if($anio =="--" && $mes =="--" && $fech1 !="--" && $fech2 =="--" && $depar!="--" && $prov!="--" && $dist=="--"){//FECHIN, DEPARTAMENTO Y PROVINCIA
+                $where ="AND ubi.UBIGC_CodDpto ='".$depar."'AND ubi.UBIGC_CodProv ='".$prov."' AND CPC_FechaRegistro >= '" . $fech1 . "'";
+            }
+        if($anio =="--" && $mes =="--" && $fech1  !="--" && $fech2 =="--" && $depar!="--" && $prov!="--" && $dist !="--"){//FECHIN, DEPARTAMENTO , PROVINCIA Y DISTRITO
+               $where ="AND ubi.UBIGC_CodDpto ='".$depar."'AND ubi.UBIGC_CodProv ='".$prov."'AND ubi.UBIGC_CodDist ='".$dist."' AND CPC_FechaRegistro >= '" . $fech1 . "'";
+            }
+
+        if($anio =="--" && $mes =="--" && $fech1  !="--" && $fech2  !="--" && $depar!="--" && $prov=="--" && $dist=="--"){//FECHIN ,FECHfin  Y DEPARTAMENTO 
+                 $where ="AND ubi.UBIGC_CodDpto ='".$depar."'AND CPC_FechaRegistro >= '" . $fech1 . "'AND CPC_FechaRegistro <= '" . $fech2 . "'";
+            }
+
+        if($anio =="--" && $mes =="--" && $fech1  !="--" && $fech2  !="--" && $depar!="--" && $prov!="--" && $dist=="--"){//FECHIN ,FECHfin, DEPARTAMENTO Y PROVINCIA
+                $where ="AND ubi.UBIGC_CodDpto ='".$depar."'AND ubi.UBIGC_CodProv ='".$prov."' AND CPC_FechaRegistro >= '" . $fech1 . "'AND CPC_FechaRegistro <= '" . $fech2 . "'";
+            }
+        if($anio =="--" && $mes =="--" && $fech1  !="--" && $fech2  !="--" && $depar!="--" && $prov!="--" && $dist !="--"){//FECHIN,FECHfin,  DEPARTAMENTO , PROVINCIA Y DISTRITO
+                $where ="AND ubi.UBIGC_CodDpto ='".$depar."'AND ubi.UBIGC_CodProv ='".$prov."'AND ubi.UBIGC_CodDist ='".$dist."' AND CPC_FechaRegistro >= '" . $fech1 . "' AND CPC_FechaRegistro <= '" . $fech2 . "'";
+            }
+
+
+            $wheretdoc= "";
+            if($tipodocumento !="--")
+                $wheretdoc= " AND CPC_TipoDocumento='".$tipodocumento."' ";
+
+            $wherepro= "";
+            if($Prodcod !="--")
+                $wherepro= " AND CPDEP_Codigo='".$Prodcod."' ";
+            
+
+        $sql = " SELECT com.*, UBIGC_CodDpto,UBIGC_CodProv,UBIGC_CodDist,UBIGC_Descripcion from cji_comprobante com
+        inner join cji_comprobantedetalle cd on cd.CPP_Codigo = com.CPP_Codigo
+        inner join cji_cliente cl on cl.CLIP_Codigo = com.CLIP_Codigo
+        inner join cji_persona pe on pe.PERSP_Codigo = cl.PERSP_Codigo
+        inner join cji_ubigeo ubi on pe.UBIGP_Domicilio = ubi.UBIGP_Codigo
+        WHERE CPC_TipoOperacion='V' ".$wherepro.$wheretdoc.$where."
+        UNION 
+ SELECT com.*, UBIGC_CodDpto,UBIGC_CodProv,UBIGC_CodDist,UBIGC_Descripcion from cji_comprobante com
+        inner join cji_comprobantedetalle cd on cd.CPP_Codigo = com.CPP_Codigo
+        inner join cji_cliente cl on cl.CLIP_Codigo = com.CLIP_Codigo
+        inner join cji_emprestablecimiento es on es.EMPRP_Codigo = cl.EMPRP_Codigo
+        inner join cji_ubigeo ubi on es.UBIGP_Codigo = ubi.UBIGP_Codigo
+        WHERE CPC_TipoOperacion='V' ".$wherepro.$wheretdoc.$where."";
+
+        //echo $sql;
+        $query = $this->db->query($sql);
+        if ($query->num_rows > 0) {
+            foreach ($query->result() as $fila) {
+                $data[] = $fila;
+            }
+            return $data;
+        }
+        return array();
+    }
+    public function buscardep($dato) {
+       
+        $sql = " SELECT * FROM cji_ubigeo  WHERE UBIGP_Codigo=" . $dato . "";
+
+        $query = $this->db->query($sql);
+        if ($query->num_rows > 0) {
+            foreach ($query->result() as $fila) {
+                $data[] = $fila;
+            }
+            return $data;
+        }
+        return array();
+    }
     public function contar_comprobantes($tipo_oper = 'V', $tipo_docu = 'F', $number_items = '', $offset = '', $fecha_registro = '') {
         $compania = $this->somevar['compania'];
 
@@ -977,12 +1120,12 @@ $query = $this->db->get('cji_directivo u');
         return array();
     }
 
-    public function buscar_comprobante_venta($fechai, $fechaf, $proveedor, $producto, $aprobado, $ingreso, $number_items = '', $offset = '') {
+    public function buscar_comprobante_venta($fechai, $fechaf, $proveedor, $producto, $aprobado, $ingreso,$tipo_oper ,$number_items = '', $offset = '') {
         $where = '';
         if ($fechai != '' && $fechaf != '')
             $where = ' and o.OCOMC_FechaRegistro BETWEEN "' . $fechai . '" AND "' . $fechaf . '"';
         if ($proveedor != '')
-            $where.=' and o.PROVP_Codigo=' . $proveedor;
+            $where.=' and o.CLIP_Codigo=' . $proveedor;//PROVP_Codigo &&  CLIP_Codigo
         if ($producto != '')
             $where.=' and od.PROD_Codigo=' . $producto;
         if ($aprobado != '')
@@ -1026,7 +1169,7 @@ $query = $this->db->get('cji_directivo u');
                 LEFT JOIN cji_persona pe ON pe.PERSP_Codigo=p.PERSP_Codigo AND p.CLIC_TipoPersona='0'
                 LEFT JOIN cji_empresa e ON e.EMPRP_Codigo=p.EMPRP_Codigo AND p.CLIC_TipoPersona='1'
                 LEFT JOIN cji_cotizacion ct ON ct.COTIP_Codigo=o.COTIP_Codigo
-                WHERE o.OCOMC_FlagEstado='1' " . $where . " AND o.OCOMC_TipoOperacion='V'
+                WHERE o.OCOMC_FlagEstado='1' " . $where . " AND o.OCOMC_TipoOperacion='".$tipo_oper."'
                 GROUP BY o.OCOMP_Codigo
                 ORDER BY o.OCOMC_Numero DESC " . $limit . "
                 ";

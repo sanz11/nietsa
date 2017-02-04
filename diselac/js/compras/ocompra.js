@@ -470,8 +470,10 @@ function ver_reporte_pdf(){
     var producto=$('#producto').val();
     var aprobado=$('#aprobado').val();
     var ingreso=$('#ingreso').val();
+     var tipo_oper = $("#tipo_oper").val();
+    tipo_oper="C";
     
-    url = base_url+"index.php/compras/ocompra/ver_reporte_pdf/"+fechai+'_'+fechaf+'_'+proveedor+'_'+producto+'_'+aprobado+'_'+ingreso;
+    url = base_url+"index.php/compras/ocompra/ver_reporte_pdf/"+fechai+'_'+fechaf+'_'+proveedor+'_'+producto+'_'+aprobado+'_'+ingreso+"/"+tipo_oper;
     window.open(url,'',"width=800,height=600,menubars=no,resizable=no;")
 }
 function agregar_producto_ocompra(){

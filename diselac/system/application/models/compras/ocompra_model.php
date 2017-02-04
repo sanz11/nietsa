@@ -380,7 +380,7 @@ class Ocompra_model extends Model
                 $where .= ' and o.CLIP_Codigo LIKE "%' . $proveedor . '%"';
         } else {
             if (isset($proveedor) && $proveedor != '')
-                $where .= ' and o.PROVP_Codigo= "%' . $proveedor . '%"';
+                $where .= ' and o.PROVP_Codigo LIKE "%' . $proveedor . '%"';
         }
 
 

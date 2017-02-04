@@ -580,20 +580,61 @@ function setLimite(limite) {
 function ver_reporte_pdf() {
     var fechai = $('#fechai').val();
     var fechaf = $('#fechaf').val();
-    var cliente = $('#cliente').val();
+    var cliente = $('#cliente').val();//ruc_proveedor
     var producto = $('#producto').val();
     var aprobado = $('#aprobado').val();
     var ingreso = $('#ingreso').val();
 
-    url = base_url + "index.php/ventas/comprobante/ver_reporte_pdf/" + fechai + '_' + fechaf + '_' + cliente + '_' + producto + '_' + aprobado + '_' + ingreso;
+    var tipo_oper = $("#tipo_oper").val();
+    tipo_oper="V";
+
+    url = base_url + "index.php/ventas/comprobante/ver_reporte_pdf/" + fechai + '_' + fechaf + '_' + cliente + '_' + producto + '_' + aprobado + '_' + ingreso+"/"+tipo_oper;
     window.open(url, '', "width=800,height=600,menubars=no,resizable=no;");
 }
 
 function ver_reporte_pdf_ventas() {
+    
+    var prod = $("#productoDescripcion").val();
+
     var anio = $("#anioVenta").val();
-    url = base_url + "index.php/ventas/comprobante/ver_reporte_pdf_ventas/" + anio;
+    var mes = $("#mesventa").val();
+    var fech1 = $("#fech1").val();
+    var fech2 = $("#fech2").val();
+    var depar = $("#cboDepartamento").val();
+    var prov = $("#cboProvincia").val();
+    var dist = $("#cboDistrito").val();
+    var tipodocumento = $("#tipodocumento").val();
+    var Prodcod="";
+    //var Prodcod = $("#reporteProducto").val();
+    if(anio=="0") {anio="--";} 
+    if(mes=="")   {mes="--";} 
+    if(depar=="00")  {depar="--";}
+    if(prov=="00")  {prov="--";}
+    if(dist=="00")  {dist="--";}
+    if(Prodcod==""|| prod =="")  {Prodcod="--";}
+
+    if(tipodocumento=="")  {tipodocumento="--";}
+
+    var datafechaIni="";var datafechafin="";
+
+    if(fech1=="") {
+        fech1="--";
+    }else{
+        fechai=$("#fech1").val().split("/"); 
+        fech1=fechai[2]+"-"+fechai[1]+"-"+fechai[0];
+    }
+
+    if(fech2=="") {
+        fech2="--";
+    }else{
+        fechaf=$("#fech2").val().split("/");
+        fech2=fechaf[2]+"-"+fechaf[1]+"-"+fechaf[0];
+
+    }
+
+    url = base_url + "index.php/ventas/comprobante/ver_reporte_pdf_ventas/" + anio+"/" + mes+"/" + fech1+"/" + fech2+"/" + depar+"/" + prov+"/" + dist +"/"+tipodocumento +"/"+Prodcod;
     window.open(url, '', "width=800,height=600,menubars=no,resizable=no;");
-}
+ }
 
 function estadisticas_compras_ventas(tipo) {
     var anio = $("#anioVenta2").val();
@@ -1066,6 +1107,22 @@ function incremento_visa() {
     //if($('#visa').val()== 0 ){ calcula_totales();}
 
 
+}
+function cargar_provincia(obj){
+    departamento = obj.value;
+    provincia    = "01";
+   
+        url = base_url+"index.php/maestros/ubigeo/cargar_ubigeo/"+departamento+"/"+provincia;
+        $("#divUbigeo").load(url);
+   
+}
+function cargar_distrito(obj){
+    departamento = $("#cboDepartamento").val();
+    provincia    = obj.value;
+   
+        url = base_url+"index.php/maestros/ubigeo/cargar_ubigeo/"+departamento+"/"+provincia;
+        $("#divUbigeo").load(url);
+   
 }
 function descuento_nuevo() {
     alert('aki');
