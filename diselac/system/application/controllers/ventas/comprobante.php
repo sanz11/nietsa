@@ -1041,7 +1041,7 @@ class Comprobante extends Controller{
         }
     }
 public function select_cmbVendedor($index){
-    $array_dist= $this->comprobante_model->select_cmbVendedor($index);
+    $array_dist= $this->comprobante_model->select_cmbVendedor();
     $arreglo = array();
     foreach ($array_dist as $indice => $valor) {
         $indice1 = $valor->PERSP_Codigo;
@@ -7882,6 +7882,9 @@ $db_data=array();
                 'col6' => array('width' => 60, 'justification' => 'center')
             )
         ));
+        
+        $options2 = array("leading" => 17, "left" => 420);
+        $this->cezpdf->ezText("Total: $200", 10, $options2);
 
  $this->cezpdf->ezText('', 8);
         $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => $tipo_doc . '.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
