@@ -21,6 +21,7 @@ class Presupuesto extends Controller {
         $this->load->model('compras/pedido_model');
         $this->load->model('compras/proveedor_model');
         $this->load->model('ventas/presupuesto_model');
+        $this->load->model('ventas/comprobante_model');
         $this->load->model('compras/presupuesto_model');
         $this->load->model('ventas/presupuestodetalle_model');
         $this->load->model('ventas/cliente_model');
@@ -375,7 +376,7 @@ class Presupuesto extends Controller {
         $data['cboMoneda'] = $this->OPTION_generador($this->moneda_model->listar(), 'MONED_Codigo', 'MONED_Descripcion', '1');
         $data['cboFormaPago'] = $this->OPTION_generador($this->formapago_model->listar(), 'FORPAP_Codigo', 'FORPAC_Descripcion', '12'); //12: Al contado
         $data['cboContacto'] = form_dropdown("contacto", array('' => ':: Seleccione ::'), "", " class='comboGrande' style='width:307px;' id='contacto'");
-        $data['cboVendedor'] = $this->OPTION_generador($this->directivo_model->listar_directivo($this->session->userdata('empresa'), '4'), 'PERSP_Codigo', array('PERSC_ApellidoPaterno', 'PERSC_ApellidoMaterno', 'PERSC_Nombre'), '', array('', '::Seleccione::'), ' ');
+       $data['cboVendedor'] = $this->OPTION_generador($this->directivo_model->listar_directivo($this->session->userdata('empresa'), '4'), 'DIREP_Codigo', array('PERSC_ApellidoPaterno', 'PERSC_ApellidoMaterno', 'PERSC_Nombre'), '', array('', '::Seleccione::'), ' ');
 
 
 
@@ -444,9 +445,20 @@ class Presupuesto extends Controller {
         // $ultimo_serie_numero = $this->comprobante_model->ultimo_serie_numero($tipo_oper, 'B');
         $data['serie_suger'] = $cofiguracion_datos[0]->CONFIC_Serie;
         $data['numero_suger'] = $this->getOrderNumeroSerie($cofiguracion_datos[0]->CONFIC_Numero + 1);
+        $data['cmbVendedor']=$this->select_cmbVendedor($this->session->set_userdata('codUsuario'));
         $this->layout->view('ventas/presupuesto_nuevo', $data);
     }
-
+public function select_cmbVendedor($index){
+    $array_dist= $this->comprobante_model->select_cmbVendedor();
+    $arreglo = array();
+    foreach ($array_dist as $indice => $valor) {
+        $indice1 = $valor->PERSP_Codigo;
+        $valor1 = $valor->PERSC_Nombre." ".$valor->PERSC_ApellidoPaterno;
+        $arreglo[$indice1] = $valor1;
+        }
+        $resultado = $this->html->optionHTML($arreglo, $index, array('', '::Seleccione::'));
+        return $resultado;
+}
     public function presupuesto_insertar() {
 
         $data_confi = $this->companiaconfiguracion_model->obtener($this->somevar['compania']);
@@ -685,6 +697,10 @@ class Presupuesto extends Controller {
         $igv100 = $datos_presupuesto[0]->PRESUC_igv100;
         $descuento100 = $datos_presupuesto[0]->PRESUC_descuento100;
 
+         $vendedor = $datos_presupuesto[0]->PRESUC_VendedorPersona;
+      
+        $data['cmbVendedor']=$this->select_cmbVendedor($vendedor);
+
         $datos_cliente = $this->cliente_model->obtener($cliente);
         $tipo = '';
         $ruc_cliente = '';
@@ -724,6 +740,9 @@ class Presupuesto extends Controller {
         $data['cboVendedor'] = form_dropdown("vendedor", $this->emprcontacto_model->seleccionar($my_empresa), $vendedor_contacto, " class='comboGrande' style='width:207px;' id='vendedor'");
         $data['cboFormaPago'] = $this->OPTION_generador($this->formapago_model->listar(), 'FORPAP_Codigo', 'FORPAC_Descripcion', ($forma_pago != '' ? $forma_pago : '12'));  //12: Al contado
         $data['cboMoneda'] = $this->OPTION_generador($this->moneda_model->listar(), 'MONED_Codigo', 'MONED_Descripcion', $moneda);
+
+
+
 
         $data['lugar_entrega'] = $lugar_entrega;
         $data['tiempo_entrega'] = $tiempo_entrega;

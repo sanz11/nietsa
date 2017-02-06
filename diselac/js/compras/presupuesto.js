@@ -16,6 +16,7 @@ jQuery(document).ready(function(){
 		url = base_url+"index.php/compras/presupuesto/presupuesto_nueva/B";
 		location.href = url;
 	});
+ 
     var click =0;
 
  	$("#grabarCotizacion").click(function(){ 

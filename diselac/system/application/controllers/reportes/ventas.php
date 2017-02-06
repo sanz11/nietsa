@@ -103,14 +103,16 @@ class Ventas extends Controller {
     
     public function filtroDiario() {
         $this->load->library('layout', 'layout');
-        $data['fecha_inicio'] = '';
-        $data['fecha_fin'] = '';
+       $fecha_actual = date('Y-m-d'); 
+        $data['fecha_inicio'] =   $fecha_actual;
+        $data['fecha_fin'] =   $fecha_actual;
 
         if (isset($_POST['reporte'])) {
             $data['fecha_inicio'] = $_POST['fecha_inicio'];
             $data['fecha_fin'] = $_POST['fecha_fin'];
-            $data['resumen'] = $this->ventas_model->ventas_por_dia($data['fecha_inicio'], $data['fecha_fin']);
+            //$data['resumen'] = $this->ventas_model->ventas_por_dia($data['fecha_inicio'], $data['fecha_fin']);
         }
+        $data['resumen'] = $this->ventas_model->ventas_por_dia($data['fecha_inicio'], $data['fecha_fin']);
         $data['oculto'] = form_hidden(array('base_url' => base_url()));
         $this->layout->view('reportes/ventas_por_dia', $data);
     }

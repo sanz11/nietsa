@@ -1041,7 +1041,7 @@ class Comprobante extends Controller{
         }
     }
 public function select_cmbVendedor($index){
-    $array_dist= $this->comprobante_model->select_cmbVendedor();
+    $array_dist= $this->comprobante_model->select_cmbVendedor($index);
     $arreglo = array();
     foreach ($array_dist as $indice => $valor) {
         $indice1 = $valor->PERSP_Codigo;

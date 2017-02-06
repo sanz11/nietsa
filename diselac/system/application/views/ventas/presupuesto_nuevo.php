@@ -335,7 +335,10 @@ if (empty($persona))
                                 <select name="moneda" id="moneda" class="comboMedio"><?php echo $cboMoneda; ?></select>
                             </td>
                             <td valign="middle">Vendedor</td>
-                            <td><select id="vendedor" name="vendedor" class="comboMedio"><?php echo $cboVendedor; ?></select></td>
+                            <td><!--<select id="vendedor" name="vendedor" class="comboMedio"><?php echo $cboVendedor; ?></select>-->
+                            <select  class="cajaGeneral" id="vendedor" name="vendedor">
+    <?=$cmbVendedor?>
+</select></td>
                         </tr>
                         <tr>
                             <td>Contacto </td>

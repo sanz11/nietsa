@@ -31,10 +31,13 @@ class Comprobante_model extends Model {
         $this->somevar ['user'] = $this->session->userdata('user');
         $this->somevar['hoy'] = mdate("%Y-%m-%d %h:%i:%s", time());
     }
-public function select_cmbVendedor(){
+public function select_cmbVendedor($dato=""){
      
     $this->db->select('p.PERSP_Codigo,p.PERSC_Nombre,p.PERSC_ApellidoPaterno');
     $this->db->join('cji_persona p','p.PERSP_Codigo=u.PERSP_Codigo');
+    if($dato != ""){
+     $this->db->where('u.PERSP_Codigo',$dato);
+    }
 $query = $this->db->get('cji_directivo u');
         if ($query->num_rows > 0) {
             foreach ($query->result() as $fila) {

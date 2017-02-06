@@ -35,8 +35,10 @@
 ?>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script>
+
   $(document).ready(function(){
       base_url = $("#base_url").val();
+
     $(".fuente8 tbody tr:odd").addClass("itemParTabla");
     $(".fuente8 tbody tr:even").addClass("itemImparTabla");
     
@@ -71,8 +73,10 @@
     location.href=base_url+ "index.php/reportes/ventas/descargarExcel/"+startDate+"/"+endDate+"";
     //$('#generar_reporte').submit();           
      //return true;       
-      });            
-     
+      }); 
+  
+      
+       
   });
  
     function factura(oper,tipo,codigo){
@@ -110,13 +114,19 @@
     <div id="tituloForm" class="header">REPORTES DE VENTAS POR DIA</div>
     <div id="frmBusqueda">
       <form method="post" action="" id="generar_reporte">
-        Desde: <input type="text" id="fecha_inicio" name="fecha_inicio" readonly class="fecha" value="<?php echo ((isset($_POST['reporte'])) ? $_POST['fecha_inicio'] : ''); ?>"> Hasta: <input type="text" id="fecha_fin" name="fecha_fin" class="fecha" readonly value="<?php echo ((isset($_POST['reporte'])) ? $_POST['fecha_fin'] : ''); ?>"> <input type="hidden" name="reporte" value=""><input type="button" id="reporte" value="Generar">
+     <!-- <h3 style=" text-align:center; color:#3E4554; font-size:15px; font-family:arial; margin-top:20px">Ver reporte por rango de fechas</h3>
+        <hr>-->
+        Desde: <input type="text" id="fecha_inicio" name="fecha_inicio" readonly class="fecha" value="<?php $fecha_actual = date('Y-m-d'); echo ((isset($_POST['reporte'])) ? $_POST['fecha_inicio'] : $fecha_actual); ?>"> 
+        Hasta: <input type="text" id="fecha_fin" name="fecha_fin" class="fecha" readonly value="<?php $fecha_actual = date('Y-m-d'); echo ((isset($_POST['reporte'])) ? $_POST['fecha_fin'] : $fecha_actual); ?>"> <input type="hidden" name="reporte" value=""><input style="background: #0489B1;padding: 5px 5px; border-radius: 7px; cursor: pointer; color: white;" type="button" id="reporte" value="Generar">
 
+
+        <!--<br> <h3 style=" text-align:center; color:#3E4554; font-size:15px;font-family:arial;">Ver reporte de hoy</h3><hr><input style="background: #0489B1;padding: 5px 5px; border-radius: 7px; cursor: pointer; color: white;"type="button" id="reportehoy" value="Generar">
+-->
       </form>
       <br>
         
 
-      <?php if(isset($_POST['reporte'])): ?>
+      <?php if(isset($_POST['reporte'])){ ?>
         <div colspan="4" style="float: right; margin-right: 10%;"><label style="margin-right: 10px; font-size:16px; ">Descargar plantilla</label><a href="javascript:;" id="verReporte"><img src="<?php echo base_url();?>images/xls.png" class="imgBoton" align="absmiddle"/></a></div>
       <br><br><br>
       Reporte de ventas por familia desde <?php echo $fecha_inicio; ?> hasta el <?php echo $fecha_fin; ?><br/>
@@ -206,8 +216,99 @@
       </tbody>
       </table>
       
-      <?php endif; ?>
-      <?php echo $oculto?>
+      <?php }else{ ?>
+      
+
+     <div colspan="4" style="float: right; margin-right: 10%;"><label style="margin-right: 10px; font-size:16px; ">Descargar plantilla</label><a href="javascript:;" id="verReporte"><img src="<?php echo base_url();?>images/xls.png" class="imgBoton" align="absmiddle"/></a></div>
+      <br><br><br>
+      Reporte de ventas por familia desde <?php echo $fecha_inicio; ?> hasta el <?php echo $fecha_fin; ?><br/>
+      <table class="fuente8" cellspacing="0" cellpadding="3" border="0" id="Table1">
+      <thead>
+        <tr class="cabeceraTablaResultado"><th colspan="5">Resumen</th></tr>
+        <tr class="cabeceraTabla">
+            <th>Fecha</th>
+            <th colspan="2">Nro Factura</th>
+            <th> Venta S/.</th>
+            <th> Venta US$.</th>
+            
+        </tr>
+      </thead>
+      <tbody>
+      <?php 
+    $total = 0;
+    $total2 = 0;
+
+    ?>
+      <?php $total_filas = count($resumen); ?>
+      <?php foreach($resumen as $fila): ?>
+        <?php 
+    
+    if( $fila['MONED_Codigo']==2 ){
+    //$total += $fila['VENTAS']*$fila['CPC_TDC']; 
+    $total2 += $fila['VENTAS']; 
+    
+    }else{ 
+    
+    $total += $fila['VENTAS'];
+    //$total2 += $fila['VENTAS']/$fila['CPC_TDC']; 
+    
+    }
+    
+    
+    
+    
+    ?>
+        <?php
+    if($fila['CPC_TipoOperacion']=="C"){
+    $operacion=0;
+    }else{
+    $operacion=1;
+    };
+    if($fila['TIPO']=='N'){
+    $fila['TIPO']=1;
+    }
+    if($fila['TIPO']=='F'){
+    $fila['TIPO']=2;
+    }
+            echo "<tr>
+                    <td>{$fila['FECHA']}</td>
+                    <td>
+                        {$fila['SERIE']}-{$fila['NUMERO']}
+                    </td>
+                    <td>";
+            if($fila['TIPO']=="B")
+                echo "<a href='javascript:;' onclick='boleta({$operacion},{$fila['CODIGO']})'target='_parent'>
+                        <img src='".base_url()."images/pdf.png' width='12px'/>
+                      </a>";
+            else
+                echo "<a href='javascript:;' onclick='factura({$operacion},".$fila['TIPO'].",{$fila['CODIGO']})' target='_parent'>
+                        <img src='".base_url()."images/pdf.png' width='12px'/>
+                      </a>";
+            echo"   </td>";
+      if( $fila['MONED_Codigo']==2 ){
+      
+      echo "<td></td>"; 
+      echo "<td align='right'>".number_format($fila['VENTAS'],2,'.','')."</td>";
+      }else{
+      
+      echo "<td align='right'>".number_format($fila['VENTAS'],2,'.','')."</td>";
+      echo "<td align='right'></td>";
+      }
+                 
+                   
+
+           "</tr>"; 
+        ?>
+      <?php endforeach; ?>
+        <tr>
+            <td colspan="3">TOTAL</td>
+            <td align="right"><?php echo number_format($total,2,'.',''); ?></td>
+            <td align="right"><?php echo number_format($total2,2,'.',''); ?></td>
+        </tr>
+      </tbody>
+      </table>
+       <?php } ?>
+       <?php echo $oculto?>
     </div>
 		</div>
     </div>
