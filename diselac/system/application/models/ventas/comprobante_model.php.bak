@@ -129,7 +129,6 @@ $query = $this->db->get('cji_directivo u');
                        cp.CPC_NombreAuxiliar,
                        cp.CLIP_Codigo,
                        cp.CPC_TipoDocumento,
-                       m.MONED_Simbolo,
                        (CASE " . ($tipo_oper != 'C' ? "c.CLIC_TipoPersona" : "c.PROVC_TipoPersona") . "  WHEN '1' THEN e.EMPRC_Ruc ELSE pe.PERSC_NumeroDocIdentidad end) numdoc,
                        (CASE " . ($tipo_oper != 'C' ? "c.CLIC_TipoPersona" : "c.PROVC_TipoPersona") . "  WHEN '1' THEN e.EMPRC_RazonSocial ELSE CONCAT(pe.PERSC_Nombre , ' ', pe.PERSC_ApellidoPaterno, ' ', pe.PERSC_ApellidoMaterno) end) nombre,
                        m.MONED_Simbolo,
@@ -261,20 +260,18 @@ $query = $this->db->get('cji_directivo u');
                 $wherepro= " AND CPDEP_Codigo='".$Prodcod."' ";
             
 
-        $sql = " SELECT com.*, UBIGC_CodDpto,UBIGC_CodProv,UBIGC_CodDist,UBIGC_Descripcion , MONED_Simbolo from cji_comprobante com
+        $sql = " SELECT com.*, UBIGC_CodDpto,UBIGC_CodProv,UBIGC_CodDist,UBIGC_Descripcion from cji_comprobante com
         inner join cji_comprobantedetalle cd on cd.CPP_Codigo = com.CPP_Codigo
         inner join cji_cliente cl on cl.CLIP_Codigo = com.CLIP_Codigo
         inner join cji_persona pe on pe.PERSP_Codigo = cl.PERSP_Codigo
         inner join cji_ubigeo ubi on pe.UBIGP_Domicilio = ubi.UBIGP_Codigo
-         LEFT JOIN cji_moneda m ON m.MONED_Codigo=com.MONED_Codigo
         WHERE CPC_TipoOperacion='V' ".$wherepro.$wheretdoc.$where."
         UNION 
- SELECT com.*, UBIGC_CodDpto,UBIGC_CodProv,UBIGC_CodDist,UBIGC_Descripcion ,MONED_Simbolo from cji_comprobante com
+ SELECT com.*, UBIGC_CodDpto,UBIGC_CodProv,UBIGC_CodDist,UBIGC_Descripcion from cji_comprobante com
         inner join cji_comprobantedetalle cd on cd.CPP_Codigo = com.CPP_Codigo
         inner join cji_cliente cl on cl.CLIP_Codigo = com.CLIP_Codigo
         inner join cji_emprestablecimiento es on es.EMPRP_Codigo = cl.EMPRP_Codigo
         inner join cji_ubigeo ubi on es.UBIGP_Codigo = ubi.UBIGP_Codigo
-        LEFT JOIN cji_moneda m ON m.MONED_Codigo=com.MONED_Codigo
         WHERE CPC_TipoOperacion='V' ".$wherepro.$wheretdoc.$where."";
 
         //echo $sql;
@@ -1211,7 +1208,7 @@ $query = $this->db->get('cji_directivo u');
         //CPC_TipoOperacion => V venta, C compra
         //CPC_TipoDocumento => F factura, B boleta
         //CPC_total => total de la FACTURA o BOLETA
-        $sql = " SELECT c.*, m.MONED_Simbolo FROM cji_comprobante c  inner JOIN cji_moneda m ON m.MONED_Codigo=c.MONED_Codigo WHERE c.CPC_TipoOperacion='C' AND c.CPC_TipoDocumento='F' AND YEAR(c.CPC_FechaRegistro)=" . $anio . "";
+        $sql = " SELECT * FROM cji_comprobante c WHERE CPC_TipoOperacion='C' AND CPC_TipoDocumento='F' AND YEAR(CPC_FechaRegistro)=" . $anio . "";
         //echo $sql;
         $query = $this->db->query($sql);
         if ($query->num_rows > 0) {

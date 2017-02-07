@@ -1,7 +1,5 @@
 jQuery(document).ready(function(){
     base_url   = $("#base_url").val();
-      flagBS  = $('#flagBS').val();
-
     tipo_docu   = $("#tipo_docu").val();
     contiene_igv = $("#contiene_igv").val();
     tipo_codificacion = $("#tipo_codificacion").val();
@@ -18,50 +16,6 @@ jQuery(document).ready(function(){
         url = base_url+"index.php/ventas/presupuesto/presupuesto_nueva/B";
         location.href = url;
     });
-
-////////////////////////////////////////////////////////////////////////////////////
-
-
-  $("#imprimirPresupuesto").click(function(){
-
-       var fechai = $("#fechai").val();
-       var fechaf = $("#fechaf").val();
-       var numero = $("#numero").val();
-       var ruc_cliente = $("#ruc_cliente").val();
-       var nombre_cliente= $("#nombre_cliente").val();
-       var codproducto = $("#codproducto").val();
-       var nombre_producto = $("#nombre_producto").val();
-
-
-  
-             ///
-          if(fechai==""){fechai="--";}
-          if(fechaf==""){fechaf="--";}
-          if(numero==""){numero="--";}
-          if(ruc_cliente==""){ruc_cliente="--";}
-          if(ruc_cliente==""){ruc_cliente="--";}
-          if(nombre_cliente==""){nombre_cliente="--";}
-          if(codproducto==""){codproducto="--";}
-          if(nombre_producto==""){nombre_producto="--";}
- 
-         ///
-        var url = base_url+"index.php/ventas/presupuesto/presupuesto_ver_pdf/"+fechai+"/"+fechaf + "/" +numero+"/"+ruc_cliente+"/"+nombre_cliente+"/"+codproducto+'/'+nombre_producto+'/';
-    window.open(url,'',"width=800,height=600,menubars=no,resizable=no;")
-      
-    });
-
-
-
-
-
-
-
-
-
-/////////////////////////////////////////////////////////////////////////////////
-
-
-
     $("#grabarPresupuesto").click(function(){          
         $('img#loading').css('visibility','visible');
         var codigo=$('#codigo').val();
@@ -199,12 +153,6 @@ function eliminar_presupuesto(presupuesto){
     }
 }
 function ver_presupuesto_ver_pdf(presupuesto){
-
-
-    
-    
-
-
     var url = base_url+"index.php/ventas/presupuesto/presupuesto_ver_pdf/"+presupuesto+"/1";
     window.open(url,'',"width=800,height=600,menubars=no,resizable=no;")
 }
@@ -875,30 +823,5 @@ function limpiar_datos(){
         document.getElementById(b).value = "e";
     }
 }
-
-
-
- function sintilde(cadena){
-   
-   var specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,.";
-
-   
-   for (var i = 0; i < specialChars.length; i++) {
-       cadena= cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
-   }   
-
-   // Lo queremos devolver limpio en minusculas
-   cadena = cadena.toLowerCase();
-
-   // Quitamos acentos y "ñ". Fijate en que va sin comillas el primer parametro
-   cadena = cadena.replace(/á/gi,"a");
-   cadena = cadena.replace(/é/gi,"e");
-   cadena = cadena.replace(/í/gi,"i");
-   cadena = cadena.replace(/ó/gi,"o");
-   cadena = cadena.replace(/ú/gi,"u");
-   cadena = cadena.replace(/ñ/gi,"n");
-   return cadena;
-}
-
 
 

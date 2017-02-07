@@ -6508,8 +6508,6 @@ if($_SESSION['compania']=='1'){
         ));
 
 
-            $this->cezpdf->ezText((''), 7, array("left" => 30));
-
         $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'nama_file.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
         $this->cezpdf->ezStream($cabecera);
     }
@@ -6517,20 +6515,9 @@ if($_SESSION['compania']=='1'){
    
     public function ver_reporte_pdf_ventas($anio ,$mes ,$fech1 ,$fech2,$depar ,$prov  ,$dist, $tipodocumento,$Prodcod)
     {
-
-        $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
-    $meses = array("enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre");
- 
-
-
-
         $usuario = $this->usuario_model->obtener($this->somevar['user']);
         $persona = $this->persona_model->obtener_datosPersona($usuario->PERSP_Codigo);
         $fechahoy = date('d/m/Y');
-
-
-          $titulo="REPORTE DE VENTAS AL: ".$dias[date('w')]." ".date('d')." de ".$meses[date('n')-1]. " del ".date('Y');
-
 //$this->load->library('cezpdf');
 //$this->load->helper('pdf_helper');
 //prep_pdf();
@@ -6549,10 +6536,7 @@ if($_SESSION['compania']=='1'){
             }
         }
 
-        $this->cezpdf->ezText($titulo ."  ", 17, $options);
-        $this->cezpdf->ezText(" " ."  ", 17, $options);
-        
-        
+        /* Listado */
         $codigo="";
         $sum = 0;
         foreach ($listado as $key => $value) {
@@ -6581,13 +6565,9 @@ if($_SESSION['compania']=='1'){
             foreach ($distri as $ke => $val3) {
                 $distrito=$val3->UBIGC_Descripcion;
             }
-            
-       
-
 
 
             $sum += $value->CPC_total;
-     
             $db_data[] = array(
                 'col1' => $key + 1,
                 'col2' => substr($value->CPC_FechaRegistro, 0, 10),
@@ -6595,13 +6575,13 @@ if($_SESSION['compania']=='1'){
                 'col4' => $value->CPC_TipoDocumento,
                 'col5' => $serie,
                 'col6' => $value->CPC_Numero,
-                'col7' => $value->MONED_Simbolo.$value->CPC_subtotal,
-                'col8' => $value->MONED_Simbolo.$value->CPC_igv,
-                'col9' => $value->MONED_Simbolo.$value->CPC_descuento,
-                'col10' => $value->MONED_Simbolo.$value->CPC_total
+                'col7' => $value->CPC_subtotal,
+                'col8' => $value->CPC_igv,
+                'col9' => $value->CPC_descuento,
+                'col10' => $value->CPC_total
             );
         }
-          
+
         $col_names = array(
             'col1' => 'Itm',
             'col2' => 'Fecha de Registro',
@@ -6616,13 +6596,20 @@ if($_SESSION['compania']=='1'){
 
         );
 
-     $sum = $valor->MONED_Simbolo . ' ' . number_format($sum, 2);
-      
-
-
-
-
-
+        $db_data[] = array(
+            'col1' => "",
+            'col2' => "",
+            'col3' => "",
+            'col4' => "",
+            'col5' => "",
+            'col6' => "",
+            'col7' => "",
+            'col8' => "",
+            'col9' => "TOTAL",
+            'col10' => $sum,
+            'col11' => "",
+            'col12' => ""
+        );
 
         $this->cezpdf->ezTable($db_data, $col_names, '', array(
             'width' => 555,
@@ -6646,76 +6633,19 @@ if($_SESSION['compania']=='1'){
                  'col12' => array('width' => 60, 'justification' => 'center')
             )
         ));
-        $this->cezpdf->ezText((''), 7, array("left" => 420));
-
-         $this->cezpdf->ezText(('TOTAL'.'            '.$value->MONED_Simbolo.$sum), 7, array("left" => 415));
-
 
         $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'nama_file.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
         $this->cezpdf->ezStream($cabecera);
     }
     public function ver_reporte_pdf_commpras($anio)
     {
-
-          $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
-          $meses = array("enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre");
-
         $usuario = $this->usuario_model->obtener($this->somevar['user']);
         $persona = $this->persona_model->obtener_datosPersona($usuario->PERSP_Codigo);
         $fechahoy = date('d/m/Y');
-      
- 
-     //$titulo=""; $subTitulo=""; 
-
-     $titulo="REPORTE DE COMPRAS AL: ".$dias[date('w')]." ".date('d')." de ".$meses[date('n')-1]. " del ".date('Y');
-
-
-      $this->cezpdf = new Cezpdf('a4');
-
-      ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-/*
-      $notimg="";
-     $this->cezpdf = new Cezpdf('a4', 'portrait');
-     $explorarData =explode('_', $dataEviar);
-     $fechaini=$explorarData[0];
-     $fechafin=$explorarData[1];
-     $series=$explorarData[2];
-     $numero=$explorarData[3];
-     $ruc_clente=$explorarData[4];
-     $nombre_cliente=$explorarData[5];
-     $this->somevar['compania'];
-        $filter = new stdClass();
-        $filter->fecha_ini=$fechaini;//$fechaini;
-        $filter->fecha_fin=$fechafin;//$fechaini;
-        $filter->seriei =$series;
-        $filter->numero =$numero;
-        $filter->ruc_cliente =$ruc_clente;
-        $filter->nombre_cliente =$nombre_cliente;
-        $filter->ruc_proveedor =$ruc_clente;
-        $filter->nombre_proveedor =$nombre_cliente;
-        $listado_comprobantes = $this->comprobante_model->busqueda_comprobante($tipo_oper, $tipo_docu, $filter);
-
-     
-
- $usuario = $this->usuario_model->obtener($this->somevar['user']);
-        $persona = $this->persona_model->obtener_datosPersona($usuario->PERSP_Codigo);
-        $fechahoy = date('d/m/Y');
-
-   
-*/
-        $this->cezpdf->ezText($titulo ."  ", 17, $options);
-        
-       //$this->cezpdf->ezText("<center>".$subTitulo."</center>", 17, $options);  
-
-         $this->cezpdf->ezText(("  "), 17, array("left" => 200));
-
-        $this->cezpdf->ezText(($subTitulo), 17, array("left" => 200));
-
-       
 //$this->load->library('cezpdf');
 //$this->load->helper('pdf_helper');
-//pr
+//prep_pdf();
+        $this->cezpdf = new Cezpdf('a4');
 
         /* Cabecera */
         $delta = 20;
@@ -6739,9 +6669,9 @@ if($_SESSION['compania']=='1'){
                 'col2' => substr($value->CPC_FechaRegistro, 0, 10),
                 'col3' => $serie,
                 'col4' => $value->CPC_Numero,
-                'col6' => $value->MONED_Simbolo.$value->CPC_subtotal,
-                'col7' => $value->MONED_Simbolo.$value->CPC_igv,
-                'col8' => $value->MONED_Simbolo.$value->CPC_total
+                'col6' => $value->CPC_subtotal,
+                'col7' => $value->CPC_igv,
+                'col8' => $value->CPC_total
             );
         }
 
@@ -6755,8 +6685,6 @@ if($_SESSION['compania']=='1'){
             'col8' => 'TOTAL',
         );
 
-          $sum = $valor->MONED_Simbolo . ' ' . number_format($sum, 2);
-
         $db_data[] = array(
             'col1' => "",
             'col2' => "",
@@ -6764,8 +6692,8 @@ if($_SESSION['compania']=='1'){
             'col4' => "",
             'col5' => "",
             'col6' => "",
-            'col7' => "",
-            'col8' => "",
+            'col7' => "TOTAL",
+            'col8' => $sum,
             'col9' => ""
         );
 
@@ -6788,18 +6716,9 @@ if($_SESSION['compania']=='1'){
             )
         ));
 
-
-       
-          $this->cezpdf->ezText(" ", 7, array("left" => 322));
-  
-         $this->cezpdf->ezText(('TOTAL'.'            '.$value->MONED_Simbolo.$sum), 7, array("left" => 325));
-
         $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'nama_file.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
         $this->cezpdf->ezStream($cabecera);
-    
     }
-
-
 
     public function estadisticas_compras_ventas($tipo, $anio)
     {
@@ -7835,38 +7754,13 @@ if($_SESSION['compania']=='1'){
 		/**FIN DE ELIMINACION DE DOCUMENTOS***/
 	
 	}
-//////////////////////////////////////////////
-
 
 public function verPdf($tipo_oper = '', $tipo_docu = '',$dataEviar=""){
-
-
-    $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
-    $meses = array("enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre");
- 
-  
- 
-
-echo $dias[date('w')]." ".date('d')." de ".$meses[date('n')-1]. " del ".date('Y') ;
-//Salida: Viernes 24 de Febrero del 2012
- 
-
-
-
-
     $titulo=""; $subTitulo="";
     if($tipo_oper=='V'){
-      $titulo="REPORTE DE VENTAS AL: ".$dias[date('w')]." ".date('d')." de ".$meses[date('n')-1]. " del ".date('Y');
-
-       
-
-     
-     // $time = time();
-      //echo date("d-m-Y (H:i:s)", $time);
+      $titulo="REPORTE DE VENTA" ; 
     }else{
-        $titulo="REPORTE DE VENTAS Al ".$dias[date('w')]." ".date('d')." de ".$meses[date('n')-1]. " del ".date('Y');
-
-
+        $titulo="REPORTE DE COMPRAS" ;
     }
 
     if($tipo_docu=='F'){
@@ -7902,21 +7796,10 @@ echo $dias[date('w')]." ".date('d')." de ".$meses[date('n')-1]. " del ".date('Y'
         $listado_comprobantes = $this->comprobante_model->busqueda_comprobante($tipo_oper, $tipo_docu, $filter);
 
      
-        $this->cezpdf->ezText($titulo ."  ", 17, $options);
-        
-       //$this->cezpdf->ezText("<center>".$subTitulo."</center>", 17, $options);  
-
-         $this->cezpdf->ezText(("  "), 17, array("left" => 200));
-
-        $this->cezpdf->ezText(($subTitulo), 17, array("left" => 200));
-
-      
-
-
+        $this->cezpdf->ezText($titulo ."  ". $subTitulo, 17, $options);
         $this->cezpdf->ezText("", 17, $options);
-        
+        //$this->cezpdf->ezText(($titulo), 11, array("left" => 180));
 $nombre="";
-$sum=0;
 $db_data=array();
         if (count($listado_comprobantes) > 0) {
             foreach ($listado_comprobantes as $indice => $valor) {
@@ -7959,11 +7842,6 @@ $db_data=array();
                     $nombre = $valor->nombre;
                 }
                 $total = $valor->MONED_Simbolo . ' ' . number_format($valor->CPC_total, 2);
-
-
-                 $sum += $valor->CPC_total;
-
-
                $db_data[] = array(
                 'col1' => $indice + 1,
                 'col2' => $fecha,
@@ -7976,11 +7854,6 @@ $db_data=array();
  
         }
         }
-
-
-
-
-
          $col_names = array(
             'col1' => 'Itm',
             'col2' => 'Fecha',
@@ -7991,20 +7864,6 @@ $db_data=array();
             'col6' => 'TOTAL'
             
         );
-
- $sum = $valor->MONED_Simbolo . ' ' . number_format($sum, 2);
-  $col_names2 = array(
-             'col5' => 'total',
-            'col6' => $sum
-
-            
-        );
-
-        $db_data2[] = array(
-             'col5' => '',
-            'col6' => ''
-        );
-  
 
         $this->cezpdf->ezTable($db_data, $col_names, '', array(
             'width' => 555,
@@ -8023,28 +7882,11 @@ $db_data=array();
                 'col6' => array('width' => 60, 'justification' => 'center')
             )
         ));
-        $this->cezpdf->ezText("", 7, '');
-       /* $this->cezpdf->ezTable($db_data2, $col_names2, '', array(
-            'width' => 555,
-            'showLines' => 1,
-            'shaded' => 0,
-            'showHeadings' => 1,
-            'xPos' => 'center',
-            'fontSize' => 7,
-            'cols' => array(
+        
+        $options2 = array("leading" => 17, "left" => 420);
+        $this->cezpdf->ezText("Total: $200", 10, $options2);
 
-
-     
-                'col5' => array('width' => 60),
-                'col6' => array('width' => 60, 'justification' => 'center')
-            )
-        ));
-
-*/
-      $this->cezpdf->ezText(('TOTAL'.'                  '.$sum), 7, array("left" => 388));
-
-
- //$this->cezpdf->ezText('', 8);
+ $this->cezpdf->ezText('', 8);
         $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => $tipo_doc . '.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
         $this->cezpdf->ezStream($cabecera);       
 
