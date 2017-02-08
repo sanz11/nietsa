@@ -92,7 +92,7 @@
       $total_filas = count($resumen);
 
 	  if($total_filas > 0){
-		  $cont=0;
+		  //$cont=0;
 		foreach($resumen as $fila):
 			/*if($cont==0){
 				$codigo1=$fila['Code'];
@@ -108,16 +108,17 @@
 				echo "<tr><td>{$fila['PATERNO']}</td><td>{$fila['NOMBRE']}</td><td>{$totalt}</td>"; 
 			}*/
 			
-			ECHO "<tr><td>{$fila['PATERNO']}</td><td>{$fila['NOMBRE']}</td><td>{$fila['VENTAS']}</td>"; 
-			 $cont++;
+			 //$cont++;
+			 
+			 ECHO "<tr><td>{$fila['PATERNO']}</td><td>{$fila['NOMBRE']}</td><td>S/.{$fila['VENTAS']}</td>"; 
 			 $total += $fila['VENTAS'];
 		endforeach;
 		//echo $ver;
 	  }else{
-		echo "<script>alert('No hay filas!!!');</script>";
+		echo "<tr><td>No hay filas!!!</td>";
 	  }
 	?>
-      <tr><td colspan="2">TOTAL</td><td><?php echo $total; ?></td></tr>
+      <tr><td colspan="2">TOTAL</td><td>S/.<?php echo $total; ?></td></tr>
       </tbody>
       </table>
       
