@@ -130,19 +130,20 @@
             function drawChart() {
               var data = google.visualization.arrayToDataTable([
                 ['Vendedor', 'Ventas S/.'],
-                ['EMPRESA','100.00'],
-                <?php 
-                //$i = 0;
-                //foreach($resumen as $fila):
                 
-                  //$nombre = $fila['PATERNO'].' '.$fila['NOMBRE'];
-                  //$i++;
-                  //if($i == $total_filas)
-                    //echo "['{$nombre}',{$fila['VENTAS']}]";
-                  //else
-                    //echo "['{$nombre}',{$fila['VENTAS']}],";
+				
+                <?php 
+                $i = 0;
+                foreach($resumen as $fila):
+                
+                  $nombre = $fila['PATERNO'].' '.$fila['NOMBRE'];
+                  $i++;
+                  if($i == $total_filas)
+                    echo "['{$nombre}',{$fila['VENTAS']}]";
+                  else
+                    echo "['{$nombre}',{$fila['VENTAS']}],";
 
-                //endforeach; ?>
+                endforeach; ?>
               ]);
 
               var options = {
