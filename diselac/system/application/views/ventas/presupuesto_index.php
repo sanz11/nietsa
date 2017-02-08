@@ -170,7 +170,7 @@ if(empty($persona)) header("location:$url");
                                                     <td align='left'>Artículo</td>
                                                     <td align='left'>
                                                         <input name="compania" type="hidden" id="compania" value="<?php echo $compania; ?>">
-										<input name="producto" type="hidden" class="cajaPequena" id="producto" size="10" maxlength="11" />
+										<input name="producto" type="hidden" class="cajaPequena" id="producto" size="10" maxlength="11"  value="<?php echo $producto; ?>"/>
 										<input name="codproducto" type="text" class="cajaGeneral" id="codproducto" size="10" maxlength="20" value="<?php echo $codproducto; ?>" onblur="obtener_producto();" readonly="readonly" />
 										<input name="buscar_producto" type="hidden" class="cajaGeneral" id="buscar_producto" size="40" />
 										<input name="nombre_producto" type="text" value="<?php echo $nombre_producto; ?>" class="cajaGrande cajaSoloLectura" id="nombre_producto" size="40"  />
