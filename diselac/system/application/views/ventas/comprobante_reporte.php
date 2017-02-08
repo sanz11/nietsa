@@ -244,9 +244,12 @@ function ver_reporte_productos(){
                                               </select>
                                      </td>
                                  </tr>
-                            </table> 
-                            <a href="javascript:;" onclick="ver_reporte_pdf()" id="verReporte"><img  style="margin:15px 0px;"  src="<?php echo base_url();?>images/botonreporte.jpg" width="85" height="22" class="imgBoton" ></a>
+								</table> 
+								<a href="javascript:;" onclick="ver_reporte_pdf()" id="verReporte"><img  style="margin:15px 0px;"  src="<?php echo base_url();?>images/botonreporte.jpg" width="85" height="22" class="imgBoton" ></a>
                             
+                            </div>
+							 <div class="lienzoreporte" id="divRepo2">
+                                
                             </div>
                             <div class="lienzoreporte" id="divRepo6">
                         <table>
@@ -273,9 +276,7 @@ function ver_reporte_productos(){
                       
                       </div>
                             </div>
-                            <div class="lienzoreporte" id="divRepo2">
-                                
-                            </div>
+                           
 							<div class="lienzoreporte" id="divRepo3">
 							<table>
 								<tr>

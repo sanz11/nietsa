@@ -4977,11 +4977,15 @@ public function select_cmbVendedor($index){
         $this->cezpdf->selectFont(APPPATH . 'libraries/fonts/Helvetica.afm');
         $delta = 20;
 
-            
+        $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
+    $meses = array("enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre");
+ 
+$fechhoy="".$dias[date('w')]." ".date('d')." de ".$meses[date('n')-1]. " del ".date('Y');
 
         $this->cezpdf->ezText('', '', array("leading" => 50));
         $this->cezpdf->ezText('<b>RELACION DE PRE-VENTA
-</b>', 14, array("leading" => 0, 'left' => 185));
+</b>', 14, array("leading" => 0, 'left' => 40));
+$this->cezpdf->ezText(($fechhoy), 9, array("left" => 350));
         $this->cezpdf->ezText('', '', array("leading" => 10));
 
 

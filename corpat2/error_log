@@ -1,0 +1,30 @@
+[07-Feb-2017 19:08:46 UTC] PHP Fatal error:  Uncaught exception 'Exception' with message 'FPDF error: Not a JPEG file: images/documentos/blanco.png' in /home/osaerp/public_html/desarrollo/corpat2/system/application/libraries/fpdf/fpdf.php:271
+Stack trace:
+#0 /home/osaerp/public_html/desarrollo/corpat2/system/application/libraries/fpdf/fpdf.php(1247): FPDF->Error('Not a JPEG file...')
+#1 /home/osaerp/public_html/desarrollo/corpat2/system/application/libraries/fpdf/fpdf.php(888): FPDF->_parsejpg('images/document...')
+#2 /home/osaerp/public_html/desarrollo/corpat2/system/application/controllers/maestros/configuracionimpresion.php(479): FPDF->Image('images/document...', '0', '0', '210', '297', 'JPG')
+#3 [internal function]: Configuracionimpresion->impresionDocumento('17', '8', '1', 'V')
+#4 /home/osaerp/public_html/desarrollo/corpat2/system/codeigniter/CodeIgniter.php(471): call_user_func_array(Array, Array)
+#5 /home/osaerp/public_html/desarrollo/corpat2/index.php(229): require_once('/home/osaerp/pu...')
+#6 {main}
+  thrown in /home/osaerp/public_html/desarrollo/corpat2/system/application/libraries/fpdf/fpdf.php on line 271
+[07-Feb-2017 19:08:51 UTC] PHP Fatal error:  Uncaught exception 'Exception' with message 'FPDF error: Not a JPEG file: images/documentos/blanco.png' in /home/osaerp/public_html/desarrollo/corpat2/system/application/libraries/fpdf/fpdf.php:271
+Stack trace:
+#0 /home/osaerp/public_html/desarrollo/corpat2/system/application/libraries/fpdf/fpdf.php(1247): FPDF->Error('Not a JPEG file...')
+#1 /home/osaerp/public_html/desarrollo/corpat2/system/application/libraries/fpdf/fpdf.php(888): FPDF->_parsejpg('images/document...')
+#2 /home/osaerp/public_html/desarrollo/corpat2/system/application/controllers/maestros/configuracionimpresion.php(479): FPDF->Image('images/document...', '0', '0', '210', '297', 'JPG')
+#3 [internal function]: Configuracionimpresion->impresionDocumento('17', '8', '1', 'V')
+#4 /home/osaerp/public_html/desarrollo/corpat2/system/codeigniter/CodeIgniter.php(471): call_user_func_array(Array, Array)
+#5 /home/osaerp/public_html/desarrollo/corpat2/index.php(229): require_once('/home/osaerp/pu...')
+#6 {main}
+  thrown in /home/osaerp/public_html/desarrollo/corpat2/system/application/libraries/fpdf/fpdf.php on line 271
+[07-Feb-2017 19:10:26 UTC] PHP Fatal error:  Uncaught exception 'Exception' with message 'FPDF error: Not a JPEG file: images/documentos/blanco.png' in /home/osaerp/public_html/desarrollo/corpat2/system/application/libraries/fpdf/fpdf.php:271
+Stack trace:
+#0 /home/osaerp/public_html/desarrollo/corpat2/system/application/libraries/fpdf/fpdf.php(1247): FPDF->Error('Not a JPEG file...')
+#1 /home/osaerp/public_html/desarrollo/corpat2/system/application/libraries/fpdf/fpdf.php(888): FPDF->_parsejpg('images/document...')
+#2 /home/osaerp/public_html/desarrollo/corpat2/system/application/controllers/maestros/configuracionimpresion.php(479): FPDF->Image('images/document...', '0', '0', '210', '297', 'JPG')
+#3 [internal function]: Configuracionimpresion->impresionDocumento('17', '8', '1', 'V')
+#4 /home/osaerp/public_html/desarrollo/corpat2/system/codeigniter/CodeIgniter.php(471): call_user_func_array(Array, Array)
+#5 /home/osaerp/public_html/desarrollo/corpat2/index.php(229): require_once('/home/osaerp/pu...')
+#6 {main}
+  thrown in /home/osaerp/public_html/desarrollo/corpat2/system/application/libraries/fpdf/fpdf.php on line 271
