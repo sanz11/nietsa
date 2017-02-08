@@ -19,35 +19,32 @@ jQuery(document).ready(function(){
         location.href = url;
     });
 
-////////////////////////////////////////////////////////////////////////////////////
 
 
   $("#imprimirPresupuesto").click(function(){
+            var numero = $("#numero").val();
+            var cliente = $("#cliente").val();
+            var producto = $("#producto").val();
+            var fechai=$("#fechai").val().split("/");
+            var fechaf=$("#fechaf").val().split("/");
+    
+            var datafechaIni="";
+            var datafechafin="";
+            var flagBS = "B";
 
-       var fechai = $("#fechai").val();
-       var fechaf = $("#fechaf").val();
-       var numero = $("#numero").val();
-       var ruc_cliente = $("#ruc_cliente").val();
-       var nombre_cliente= $("#nombre_cliente").val();
-       var codproducto = $("#codproducto").val();
-       var nombre_producto = $("#nombre_producto").val();
-
-
-  
-             ///
-          if(fechai==""){fechai="--";}
-          if(fechaf==""){fechaf="--";}
+            var numero = sintilde(numero);
+            var cliente= sintilde(cliente);
+            var producto = sintilde(producto);
+        ///
+          if(fechai==""){fechai="--";}else{fechai=fechai[2]+"-"+fechai[1]+"-"+fechai[0];}
+          if(fechaf==""){fechaf="--";}else{fechaf=fechaf[2]+"-"+fechaf[1]+"-"+fechaf[0];}
           if(numero==""){numero="--";}
-          if(ruc_cliente==""){ruc_cliente="--";}
-          if(ruc_cliente==""){ruc_cliente="--";}
-          if(nombre_cliente==""){nombre_cliente="--";}
-          if(codproducto==""){codproducto="--";}
-          if(nombre_producto==""){nombre_producto="--";}
- 
-         ///
-        var url = base_url+"index.php/ventas/presupuesto/presupuesto_ver_pdf/"+fechai+"/"+fechaf + "/" +numero+"/"+ruc_cliente+"/"+nombre_cliente+"/"+codproducto+'/'+nombre_producto+'/';
-    window.open(url,'',"width=800,height=600,menubars=no,resizable=no;")
-      
+          if(cliente==""){cliente="--";}
+          if(producto==""){producto="--";}
+
+        
+        url = base_url+"index.php/ventas/presupuesto/registro_presupuesto_pdf/"+flagBS+"/"+fechai+"/"+ fechaf+"/"+numero+"/"+ cliente+"/"+producto;
+        window.open(url,'',"width=800,height=600,menubars=no,resizable=no;");
     });
 
 

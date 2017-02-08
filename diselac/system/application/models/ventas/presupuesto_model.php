@@ -464,6 +464,59 @@ class Presupuesto_model extends Model {
     	$this->db->where($where);
     	$this->db->update('cji_presupuesto',$data);
     }
+	public function listar_presupuesto_pdf($flagBS, $fechain, $fechafin, $numero, $cliente, $producto){
+		
+		$compania = $this->somevar['compania'];
+        $data_confi = $this->companiaconfiguracion_model->obtener($compania);
+        $data_confi_docu = $this->companiaconfidocumento_model->obtener($data_confi[0]->COMPCONFIP_Codigo, 13);
+
+        $where = '';
+        if ($fechain != '--' && $fechafin != '--')
+            $where = ' and p.PRESUC_Fecha BETWEEN "' . human_to_mysql($fechain) . '" AND "' . human_to_mysql($fechafin) . '"';
+        switch ($data_confi_docu[0]->COMPCONFIDOCP_Tipo) {
+            case '1': if ($numero!= '--')
+                    $where.=' and p.PRESUC_Numero=' . $numero; break;
+            
+        }
+        if ($cliente != '--')
+            $where.=' and p.CLIP_Codigo=' . $cliente;
+        if ($producto != '--')
+            $where.=' and pd.PROD_Codigo=' . $producto;
+       
+        $sql = "SELECT p.PRESUC_Fecha,
+                         p.PRESUP_Codigo,
+                         p.PRESUC_Serie,
+                         p.PRESUC_Numero,
+                         p.CLIP_Codigo,
+                         p.PRESUC_NombreAuxiliar,
+                         p.PRESUC_CodigoUsuario,                        
+                       (CASE c.CLIC_TipoPersona  WHEN '1'
+                       THEN e.EMPRC_RazonSocial
+                       ELSE CONCAT(pe.PERSC_Nombre , ' ', pe.PERSC_ApellidoPaterno, ' ', pe.PERSC_ApellidoMaterno) end) nombre,
+                       (CASE p.PRESUC_TipoDocumento WHEN 'F' THEN 'Factura' ELSE 'Boleta' END) nom_tipodocu,
+                       m.MONED_Simbolo,
+                       p.PRESUC_total,
+                       p.PRESUC_FlagEstado
+                FROM cji_presupuesto p
+                LEFT JOIN cji_moneda m ON m.MONED_Codigo=p.MONED_Codigo
+                LEFT JOIN cji_presupuestodetalle pd ON pd.PRESUP_Codigo=p.PRESUP_Codigo
+                INNER JOIN cji_cliente c ON c.CLIP_Codigo=p.CLIP_Codigo
+                LEFT JOIN cji_persona pe ON pe.PERSP_Codigo=c.PERSP_Codigo AND c.CLIC_TipoPersona ='0'
+                LEFT JOIN cji_empresa e ON e.EMPRP_Codigo=c.EMPRP_Codigo AND c.CLIC_TipoPersona='1'
+                WHERE p.COMPP_Codigo =" . $compania . " " . $where . "
+                GROUP BY p.PRESUP_Codigo
+                ORDER BY p.PRESUC_Fecha DESC,p.PRESUC_Numero DESC 
+
+                ";
+        $query = $this->db->query($sql);
+        if ($query->num_rows > 0) {
+            foreach ($query->result() as $fila) {
+                $data[] = $fila;
+            }
+            return $data;
+        }
+        return array();
+	}
 	
 }
 

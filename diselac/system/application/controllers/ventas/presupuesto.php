@@ -4947,6 +4947,115 @@ public function select_cmbVendedor($index){
             echo "2";
         }
     }
+	
+	public function registro_presupuesto_pdf($flagBS, $fechai, $fechaf, $numero, $cliente, $producto)
+    {
+		IF($fechai!="--" && $fechaf!="--"){
+        $fi = explode("-",$fechai);
+        $ff = explode("-",$fechaf);
+        $fechain = $fi[2].'/'.$fi[1].'/'.$fi[0];
+        $fechafin = $ff[2].'/'.$ff[1].'/'.$ff[0];
+		}else{
+		$fechain = "--";
+        $fechafin = "--";
+		}
+
+        $this->load->library('cezpdf');
+        $this->load->helper('pdf_helper');
+        //prep_pdf();
+        $this->cezpdf = new Cezpdf('a4');
+        $datacreator = array(
+            'Title' => 'Estadillo de ',
+            'Name' => 'Estadillo de ',
+            'Author' => 'Vicente Producciones',
+            'Subject' => 'PDF con Tablas',
+            'Creator' => 'info@vicenteproducciones.com',
+            'Producer' => 'http://www.vicenteproducciones.com'
+        );
+
+        $this->cezpdf->addInfo($datacreator);
+        $this->cezpdf->selectFont(APPPATH . 'libraries/fonts/Helvetica.afm');
+        $delta = 20;
+
+            
+
+        $this->cezpdf->ezText('', '', array("leading" => 50));
+        $this->cezpdf->ezText('<b>RELACION DE PRE-VENTA
+</b>', 14, array("leading" => 0, 'left' => 185));
+        $this->cezpdf->ezText('', '', array("leading" => 10));
+
+
+        /* Datos del cliente */
+
+
+//        /* Listado de detalles */
+
+        $db_data = array();
+
+
+        $listado_presupuesto = $this->presupuesto_model->listar_presupuesto_pdf($flagBS, $fechain, $fechafin, $numero, $cliente, $producto);
+    
+            if (count($listado_presupuesto) > 0) {
+                foreach ($listado_presupuesto as $indice => $valor) {
+                    $fecha = $valor->PRESUC_Fecha;
+                    $serie = $valor->PRESUC_Serie;
+                    $numero = $valor->PRESUC_Numero;
+                    $codigo = $valor->CLIP_Codigo;
+                    $nombre = $valor->nombre;
+                    $total = $valor->MONED_Simbolo.$valor->PRESUC_total;
+                    $Stotal+= $valor->PRESUC_total;
+
+                    $db_data[] = array(
+                        'cols1' => $indice + 1,
+                        'cols2' => $fecha,
+                        'cols3' => $serie,
+                        'cols4' => $numero,
+                        'cols5' => $codigo,
+                        'cols6' => $nombre,
+                        'cols7' => $total
+                    );
+                }
+            }
+
+        
+
+
+        $col_names = array(
+            'cols1' => '<b>ITEM</b>',
+            'cols2' => '<b>FECHA</b>',
+            'cols3' => '<b>SERIE</b>',
+            'cols4' => '<b>NUMERO</b>',
+            'cols5' => '<b>CODIGO</b>',
+            'cols6' => '<b>NOMBRE</b>',
+            'cols7' => '<b>TOTAL</b>'
+        );
+
+        $this->cezpdf->ezTable($db_data, $col_names, '', array(
+            'width' => 525,
+            'showLines' => 1,
+            'shaded' => 1,
+            'showHeadings' => 1,
+            'xPos' => 'center',
+            'fontSize' => 8,
+            'cols' => array(
+                'cols1' => array('width' => 30, 'justification' => 'center'),
+                'cols2' => array('width' => 60, 'justification' => 'center'),
+                'cols3' => array('width' => 40, 'justification' => 'center'),
+                'cols4' => array('width' => 50, 'justification' => 'center'),
+                'cols5' => array('width' => 50, 'justification' => 'center'),
+                'cols6' => array('width' => 165, 'justification' => 'center'),
+                'cols7' => array('width' => 50, 'justification' => 'center')
+            )
+        ));
+        $this->cezpdf->ezText('TOTAL:   '. $valor->MONED_Simbolo.number_format($Stotal,2), '8', array("leading" => 15, 'left' => 400));
+
+
+        $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => $codificacion . '.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
+
+        ob_end_clean();
+
+        $this->cezpdf->ezStream($cabecera);
+    }
 
 }
 
