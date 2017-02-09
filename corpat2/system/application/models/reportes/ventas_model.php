@@ -74,11 +74,10 @@ class Ventas_Model extends Model
       $sql = substr($sql,0,strlen($sql)-1);
       
       $sql.= "
-      FROM cji_usuario u
-      LEFT JOIN cji_comprobante c ON c.USUA_Codigo = u.USUA_Codigo 
-      JOIN cji_persona p ON u.PERSP_Codigo = p.PERSP_Codigo 
+      FROM cji_persona p 
+      LEFT JOIN cji_comprobante c ON c.CPC_Vendedor = p.PERSP_Codigo 
       WHERE YEAR(c.CPC_Fecha) BETWEEN '$anioInicio' AND '$anioFin'
-      GROUP BY c.USUA_Codigo";
+      GROUP BY p.PERSP_Codigo ORDER BY 1 ASC";
     
     }elseif($anioFin == $anioInicio){
       $sql = " SELECT 
@@ -97,11 +96,10 @@ class Ventas_Model extends Model
       }
       
       $sql.= "
-      FROM cji_usuario u
-      LEFT JOIN cji_comprobante c ON c.USUA_Codigo = u.USUA_Codigo 
-      LEFT JOIN cji_persona p ON u.PERSP_Codigo = p.PERSP_Codigo 
+      FROM cji_persona p 
+      LEFT JOIN cji_comprobante c ON c.CPC_Vendedor = p.PERSP_Codigo
       WHERE YEAR(c.CPC_Fecha) = '$anioInicio'
-      GROUP BY c.USUA_Codigo";
+      GROUP BY p.PERSP_Codigo ORDER BY 1 ASC";
     }
 
     $query = $this->db->query($sql);
@@ -146,11 +144,11 @@ class Ventas_Model extends Model
       $sql = substr($sql,0,strlen($sql)-1);
       
       $sql.= "
-      FROM cji_usuario u
-      LEFT JOIN cji_comprobante c ON c.USUA_Codigo = u.USUA_Codigo 
-      JOIN cji_persona p ON u.PERSP_Codigo = p.PERSP_Codigo 
+      FROM cji_persona p 
+      LEFT JOIN cji_comprobante c ON c.CPC_Vendedor = p.PERSP_Codigo
       WHERE YEAR(c.CPC_Fecha) BETWEEN '$anioInicio' AND '$anioFin'
-      GROUP BY c.USUA_Codigo";
+      GROUP BY p.PERSP_Codigo ORDER BY 1 ASC";
+	   
     
     }elseif($anioFin == $anioInicio){
     
@@ -160,11 +158,10 @@ class Ventas_Model extends Model
       ";
       $sql .= "SUM(IF(c.MONED_Codigo=2,c.CPC_TDC*c.CPC_Total,c.CPC_Total)) as y$anioFin ";
       $sql.= "
-      FROM cji_usuario u
-      LEFT JOIN cji_comprobante c ON c.USUA_Codigo = u.USUA_Codigo 
-      LEFT JOIN cji_persona p ON u.PERSP_Codigo = p.PERSP_Codigo 
+      FROM cji_persona p 
+      LEFT JOIN cji_comprobante c ON c.CPC_Vendedor = p.PERSP_Codigo
       WHERE YEAR(c.CPC_Fecha) = '$anioInicio'
-      GROUP BY c.USUA_Codigo";
+     GROUP BY p.PERSP_Codigo ORDER BY 1 ASC";
     }
 	
     $query = $this->db->query($sql);

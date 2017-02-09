@@ -78,9 +78,15 @@
         $mesFin = $fin[1];
         $anioFin = $fin[0];
       ?>
-      <br><br><br>
-      Reporte de ventas por vendedor desde <?php echo $fecha_inicio; ?> hasta el <?php echo $fecha_fin; ?><br/>
+	  <style>
+	  .fechase{
+		  color:rgb(38, 152, 219);
+	  }
+	  </style>
+      <br><br>
+      Reporte de ventas por vendedor desde <span class="fechase"> <?php echo $fecha_inicio; ?></span> hasta el <span class="fechase"><?php echo $fecha_fin; ?></span><br/>
 			<table class="fuente8" cellspacing="0" cellpadding="3" border="0" id="Table1">
+			<br>
       <thead>
       <tr class="cabeceraTablaResultado"><th colspan="3">Resumen</th></tr>
       <tr class="cabeceraTabla"><th colspan="2">Vendedor</th><th> Ventas S/.</th></tr>
@@ -94,22 +100,7 @@
 	  if($total_filas > 0){
 		  //$cont=0;
 		foreach($resumen as $fila):
-			/*if($cont==0){
-				$codigo1=$fila['Code'];
-			}
 			
-			if($codigo1==$fila['Code']){
-				$totalt+=$fila['VENTAS'];
-				$ver="<tr><td>{$fila['PATERNO']}</td><td>{$fila['NOMBRE']}</td><td>{$totalt}</td>"; 
-			}else{
-				$cont=0;
-				$codigo1=$fila['Code'];
-				$totalt=$fila['VENTAS'];
-				echo "<tr><td>{$fila['PATERNO']}</td><td>{$fila['NOMBRE']}</td><td>{$totalt}</td>"; 
-			}*/
-			
-			 //$cont++;
-			 
 			 ECHO "<tr><td>{$fila['PATERNO']}</td><td>{$fila['NOMBRE']}</td><td>S/.{$fila['VENTAS']}</td>"; 
 			 $total += $fila['VENTAS'];
 		endforeach;
@@ -138,9 +129,9 @@
                 
                   $nombre = $fila['PATERNO'].' '.$fila['NOMBRE'];
                   $i++;
-                  if($i == $total_filas)
+                  /*if($i == $total_filas)
                     echo "['{$nombre}',{$fila['VENTAS']}]";
-                  else
+                  else*/
                     echo "['{$nombre}',{$fila['VENTAS']}],";
 
                 endforeach; ?>
@@ -164,7 +155,7 @@
       <thead>
       <tr class="cabeceraTablaResultado"><th colspan="<?php echo $months; ?>">Detalle Mensual</th></tr>
       <tr class="cabeceraTabla">
-      <th rowspan="2" colspan="2">Vendedor</th>
+      <th rowspan="2" colspan="1">Vendedor</th>
       <?php 
         for($i = $anioInicio; $i<=$anioFin;$i++):
           if($anioInicio == $anioFin):
@@ -187,6 +178,7 @@
       </tr>
       <tr class="cabeceraTabla">
       <?php
+	  echo "<th></th>";
         for($i = $anioInicio; $i<=$anioFin;$i++):
           if($anioInicio == $anioFin):
             for($j = intval($mesInicio); $j <= intval($mesFin); $j++):
