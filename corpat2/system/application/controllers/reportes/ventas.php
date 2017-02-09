@@ -37,6 +37,20 @@ class Ventas extends Controller {
         }
         $this->layout->view('reportes/ventas_por_vendedor', $data);
     }
+	public function filtroTienda() {
+        $this->load->library('layout', 'layout');
+        $data['fecha_inicio'] = '';
+        $data['fecha_fin'] = '';
+
+        if (isset($_POST['reporte'])) {
+            $data['fecha_inicio'] = $_POST['fecha_inicio'];
+            $data['fecha_fin'] = $_POST['fecha_fin'];
+            $data['resumen'] = $this->ventas_model->ventas_por_tienda_resumen($data['fecha_inicio'], $data['fecha_fin']);
+            $data['mensual'] = $this->ventas_model->ventas_por_tienda_mensual($data['fecha_inicio'], $data['fecha_fin']);
+            $data['anual'] = $this->ventas_model->ventas_por_tienda_anual($data['fecha_inicio'], $data['fecha_fin']);
+        }
+        $this->layout->view('reportes/ventas_por_tienda', $data);
+    }
 
     public function filtroMarca() {
         $this->load->library('layout', 'layout');
