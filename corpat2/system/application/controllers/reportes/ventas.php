@@ -37,7 +37,9 @@ class Ventas extends Controller {
         }
         $this->layout->view('reportes/ventas_por_vendedor', $data);
     }
+	 
 	public function filtroTienda() {
+		
         $this->load->library('layout', 'layout');
         $data['fecha_inicio'] = '';
         $data['fecha_fin'] = '';

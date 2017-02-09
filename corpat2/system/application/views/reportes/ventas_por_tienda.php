@@ -240,7 +240,7 @@
             $nombres = array();
             foreach($mensual as $fila):
             
-              $nombre = $fila['PATERNO'];
+              $nombre = $fila['nombre'];
               $nombres[] = $nombre;
               $i++;
               $cadena .= "'$nombre',";
@@ -255,26 +255,26 @@
               for($i = $anioInicio; $i<=$anioFin;$i++):
                 if($anioInicio == $anioFin):
                   for($j = intval($mesInicio); $j <= intval($mesFin); $j++):
-                    $arreglo[$fila['PATERNO']][getMes($j).'-'.$i] = $fila['m'.$i.$j];
+                    $arreglo[$fila['nombre']][getMes($j).'-'.$i] = $fila['m'.$i.$j];
                     if(!in_array(getMes($j).'-'.$i,$periodo))
                       $periodo[] = getMes($j).'-'.$i;
                   endfor;
                 else:
                   if($i == $anioFin):
                     for($j = 1; $j <= intval($mesFin); $j++):
-                      $arreglo[$fila['PATERNO']][getMes($j).'-'.$i] = $fila['m'.$i.$j];
+                      $arreglo[$fila['nombre']][getMes($j).'-'.$i] = $fila['m'.$i.$j];
                       if(!in_array(getMes($j).'-'.$i,$periodo))
                         $periodo[] = getMes($j).'-'.$i;
                     endfor;
                   elseif($i == $anioInicio):
                     for($j = intval($mesInicio); $j <= 12; $j++):
-                      $arreglo[$fila['PATERNO']][getMes($j).'-'.$i] = $fila['m'.$i.$j];
+                      $arreglo[$fila['nombre']][getMes($j).'-'.$i] = $fila['m'.$i.$j];
                       if(!in_array(getMes($j).'-'.$i,$periodo))
                         $periodo[] = getMes($j).'-'.$i;
                     endfor;
                   else:
                     for($j = 1; $j <= 12; $j++):
-                      $arreglo[$fila['PATERNO']][getMes($j).'-'.$i] = $fila['m'.$i.$j];
+                      $arreglo[$fila['nombre']][getMes($j).'-'.$i] = $fila['m'.$i.$j];
                       if(!in_array(getMes($j).'-'.$i,$periodo))
                         $periodo[] = getMes($j).'-'.$i;
                     endfor;
@@ -363,7 +363,7 @@
           foreach($anual as $fila):
             $keys = array_keys($fila);
             foreach($keys as $key):
-              $arreglo[$fila['PATERNO']][$key] = $fila[$key];
+              $arreglo[$fila['nombre']][$key] = $fila[$key];
             endforeach;
           endforeach;
           
