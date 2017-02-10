@@ -632,7 +632,7 @@ function ver_reporte_pdf_ventas() {
 
     }
 
-    url = base_url + "index.php/ventas/comprobante/ver_reporte_pdf_ventas/" + anio+"/" + mes+"/" + fech1+"/" + fech2+"/"+tipodocumento +"/"+Prodcod;
+    url = base_url + "index.php/ventas/comprobante/ver_reporte_pdf_ventas/" + anio+"/" + mes+"/" + fech1+"/" + fech2+"/"+tipodocumento ;
     window.open(url, '', "width=800,height=600,menubars=no,resizable=no;");
  }
 

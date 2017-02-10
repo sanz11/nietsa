@@ -6513,7 +6513,7 @@ if($_SESSION['compania']=='1'){
     }
 
    
-    public function ver_reporte_pdf_ventas($anio ,$mes ,$fech1 ,$fech2, $tipodocumento,$Prodcod)
+    public function ver_reporte_pdf_ventas($anio ,$mes ,$fech1 ,$fech2, $tipodocumento)
     {
          $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
     $meses = array("enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre");
@@ -6534,7 +6534,7 @@ if($_SESSION['compania']=='1'){
         /* Cabecera */
         $delta = 20;
 
-        $listado = $this->comprobante_model->buscar_comprobante_venta_3($anio ,$mes ,$fech1 ,$fech2 ,$tipodocumento,$Prodcod);
+        $listado = $this->comprobante_model->buscar_comprobante_venta_3($anio ,$mes ,$fech1 ,$fech2 ,$tipodocumento);
 
         $confi = $this->configuracion_model->obtener_configuracion($this->somevar['compania']);
         $serie = '';

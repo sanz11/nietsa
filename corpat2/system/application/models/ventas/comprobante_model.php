@@ -153,45 +153,33 @@ $query = $this->db->get('cji_directivo u');
         }
         return array();
     }
- public function buscar_comprobante_venta_3($anio ,$mes ,$fech1 ,$fech2 ,$tipodocumento,$Prodcod) {
+ public function buscar_comprobante_venta_3($anio ,$mes ,$fech1 ,$fech2 ,$tipodocumento) {
         //CPC_TipoOperacion => V venta, C compra
         //CPC_TipoDocumento => F factura, B boleta
         //CPC_total => total de la FACTURA o BOLETA CPC_FechaRegistro  BETWEEN '20121201' AND '20121202'
 
         $where="";
         //----------
-        if($anio!="--" && $mes =="--"  && $depar=="--" && $prov=="--" && $dist=="--"){// SOLO AÑO
+        if($anio!="--" && $mes =="--"){// SOLO AÑO
         $where="AND YEAR(CPC_FechaRegistro)='" . $anio . "'";
         }
-        if($anio!="--" && $mes !="--" && $depar=="--" && $prov=="--" && $dist=="--"){// MES Y  AÑO
+        if($anio!="--" && $mes !="--" ){// MES Y  AÑO
             $where="AND YEAR(CPC_FechaRegistro)='" . $anio . "' AND MONTH(CPC_FechaRegistro)='" . $mes ."'";
         }
-         if($anio=="--" && $mes !="--" && $depar=="--" && $prov=="--" && $dist=="--"){//MES CON AÑO ACTUAL
+         if($anio=="--" && $mes !="--"){//MES CON AÑO ACTUAL
             $where="AND YEAR(CPC_FechaRegistro)=' ".date("Y")."' AND MONTH(CPC_FechaRegistro)='" . $mes ."'";
         }
 
         //-----------------
        
-        if($anio=="--" && $mes =="--" && $fech1!="--" && $fech2=="--" && $depar=="--" && $prov=="--" && $dist=="--"){//FECHA INICIAL
+        if($anio=="--" && $mes =="--" && $fech1!="--" && $fech2=="--"){//FECHA INICIAL
                 $where="AND CPC_FechaRegistro > '" . $fech1 . "'";
             }
-        if($anio=="--" && $mes =="--" && $fech1!="--" && $fech2!="--" && $depar=="--" && $prov=="--" && $dist=="--"){//FECHA INICIAL Y FECHA FINAL
+        if($anio=="--" && $mes =="--" && $fech1!="--" && $fech2!="--" ){//FECHA INICIAL Y FECHA FINAL
                 $where="AND CPC_FechaRegistro >= '" . $fech1 . "' AND CPC_FechaRegistro <= '" . $fech2 . "'";
             }
         
       
-        if($anio =="--" && $mes !="--" && $fech1 =="--" && $fech2 =="--" && $depar!="--" && $prov=="--" && $dist=="--"){//AÑO actual ,MES Y DEPARTAMENTO 
-               $where ="AND ubi.UBIGC_CodDpto ='".$depar."'' AND YEAR(CPC_FechaRegistro)='" . date("Y") . "' AND MONTH(CPC_FechaRegistro)='" . $mes ."'";
-            }
-
-        if($anio =="--" && $mes !="--" && $fech1 =="--" && $fech2 =="--" && $depar!="--" && $prov!="--" && $dist=="--"){//AÑO actual ,MES, DEPARTAMENTO Y PROVINCIA
-                $where ="AND ubi.UBIGC_CodDpto ='".$depar."'AND ubi.UBIGC_CodProv ='".$prov."'AND YEAR(CPC_FechaRegistro)='" . date("Y"). "' AND MONTH(CPC_FechaRegistro)='" . $mes ."'";
-            }
-        if($anio =="--" && $mes !="--" && $fech1 =="--" && $fech2 =="--" && $depar!="--" && $prov!="--" && $dist!="--"){//AÑO  actual,MES , DEPARTAMENTO , PROVINCIA Y DISTRITO
-              
-               $where ="AND ubi.UBIGC_CodDpto ='".$depar."'AND ubi.UBIGC_CodProv ='".$prov."'AND ubi.UBIGC_CodDist ='".$dist."' AND YEAR(CPC_FechaRegistro)='" . date("Y") . "' AND MONTH(CPC_FechaRegistro)='" . $mes ."'";
-            }
-
             //------------
 
         
@@ -199,23 +187,20 @@ $query = $this->db->get('cji_directivo u');
             if($tipodocumento !="--")
                 $wheretdoc= " AND CPC_TipoDocumento='".$tipodocumento."' ";
 
-            $wherepro= "";
-            if($Prodcod !="--")
-                $wherepro= " AND CPDEP_Codigo='".$Prodcod."' ";
-			
+           
 
         $sql = " SELECT com.*,CONCAT(pe.PERSC_Nombre , ' ', pe.PERSC_ApellidoPaterno, ' ', pe.PERSC_ApellidoMaterno) as nombre , MONED_Simbolo from cji_comprobante com
         inner join cji_cliente cl on cl.CLIP_Codigo = com.CLIP_Codigo
         inner join cji_persona pe on pe.PERSP_Codigo = cl.PERSP_Codigo
 		inner JOIN cji_moneda m ON m.MONED_Codigo=com.MONED_Codigo 
-        WHERE CPC_TipoOperacion='V' ".$wherepro.$wheretdoc.$where."
+        WHERE CPC_TipoOperacion='V' ".$wheretdoc.$where."
 		
         UNION 
 		SELECT com.* ,EMPRC_RazonSocial as nombre ,MONED_Simbolo from cji_comprobante com
         inner join cji_cliente cl on cl.CLIP_Codigo = com.CLIP_Codigo
         inner join cji_empresa es on es.EMPRP_Codigo = cl.EMPRP_Codigo
 		inner JOIN cji_moneda m ON m.MONED_Codigo = com.MONED_Codigo 
-        WHERE CPC_TipoOperacion='V' ".$wherepro.$wheretdoc.$where."";
+        WHERE CPC_TipoOperacion='V' ".$wheretdoc.$where."";
 
         //echo $sql;
         $query = $this->db->query($sql);
