@@ -6513,11 +6513,19 @@ if($_SESSION['compania']=='1'){
     }
 
    
-    public function ver_reporte_pdf_ventas($anio ,$mes ,$fech1 ,$fech2,$depar ,$prov  ,$dist, $tipodocumento,$Prodcod)
+    public function ver_reporte_pdf_ventas($anio ,$mes ,$fech1 ,$fech2, $tipodocumento,$Prodcod)
     {
+         $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
+    $meses = array("enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre");
+ 
+
         $usuario = $this->usuario_model->obtener($this->somevar['user']);
         $persona = $this->persona_model->obtener_datosPersona($usuario->PERSP_Codigo);
         $fechahoy = date('d/m/Y');
+
+
+          $titulo="REPORTE DE VENTAS AL: ".$dias[date('w')]." ".date('d')." de ".$meses[date('n')-1]. " del ".date('Y');
+
 //$this->load->library('cezpdf');
 //$this->load->helper('pdf_helper');
 //prep_pdf();
@@ -6526,7 +6534,7 @@ if($_SESSION['compania']=='1'){
         /* Cabecera */
         $delta = 20;
 
-        $listado = $this->comprobante_model->buscar_comprobante_venta_3($anio ,$mes ,$fech1 ,$fech2,$depar ,$prov  ,$dist ,$tipodocumento,$Prodcod);
+        $listado = $this->comprobante_model->buscar_comprobante_venta_3($anio ,$mes ,$fech1 ,$fech2 ,$tipodocumento,$Prodcod);
 
         $confi = $this->configuracion_model->obtener_configuracion($this->somevar['compania']);
         $serie = '';
@@ -6535,57 +6543,34 @@ if($_SESSION['compania']=='1'){
                 $serie = $value->CONFIC_Serie;
             }
         }
-
+$this->cezpdf->ezText($titulo ."  ", 17, $options);
+        $this->cezpdf->ezText(" " ."  ", 17, $options);
         /* Listado */
         $codigo="";
         $sum = 0;
         foreach ($listado as $key => $value) {
-            $dep=$value->UBIGC_CodDpto;
-            $pro=$value->UBIGC_CodProv;
-            $dis=$value->UBIGC_CodDist;
-           $cd=strlen($dep.$pro. $dis);
-
-           if($cd=="5"){
-                $dep="0".$dep;
-           }
-           $bsdepartamento= $dep."0000";
-           $bsprovincia= $dep.$pro."00";
-           $bsdistrito= $dep.$pro.$dis;
-
-            $depar = $this->comprobante_model->buscardep($bsdepartamento);
-            $provin = $this->comprobante_model->buscardep($bsprovincia);
-            $distri = $this->comprobante_model->buscardep($bsdistrito);
-
-            foreach ($depar as $ke => $val1) {
-                $departamento=$val1->UBIGC_Descripcion;
-            }
-            foreach ($provin as $ke => $val2) {
-                $provincia=$val2->UBIGC_Descripcion;
-            }
-            foreach ($distri as $ke => $val3) {
-                $distrito=$val3->UBIGC_Descripcion;
-            }
+            
 
 
             $sum += $value->CPC_total;
             $db_data[] = array(
                 'col1' => $key + 1,
                 'col2' => substr($value->CPC_FechaRegistro, 0, 10),
-                'col3' => $departamento."-". $provincia."-". $distrito,
+                'col3' => $value->nombre,
                 'col4' => $value->CPC_TipoDocumento,
                 'col5' => $serie,
                 'col6' => $value->CPC_Numero,
-                'col7' => $value->CPC_subtotal,
-                'col8' => $value->CPC_igv,
-                'col9' => $value->CPC_descuento,
-                'col10' => $value->CPC_total
+                 'col7' => $value->MONED_Simbolo.$value->CPC_subtotal,
+                'col8' => $value->MONED_Simbolo.$value->CPC_igv,
+                'col9' => $value->MONED_Simbolo.$value->CPC_descuento,
+                'col10' => $value->MONED_Simbolo.$value->CPC_total
             );
         }
 
         $col_names = array(
             'col1' => 'Itm',
             'col2' => 'Fecha de Registro',
-            'col3' => 'Lugar',
+            'col3' => 'Nombre o Razon Social',
             'col4' => 'T. Doc.',
             'col5' => 'SERIE',
             'col6' => 'NRO',
@@ -6595,21 +6580,8 @@ if($_SESSION['compania']=='1'){
             'col10' => 'TOTAL'
 
         );
+		 $sum = $valor->MONED_Simbolo . ' ' . number_format($sum, 2);
 
-        $db_data[] = array(
-            'col1' => "",
-            'col2' => "",
-            'col3' => "",
-            'col4' => "",
-            'col5' => "",
-            'col6' => "",
-            'col7' => "",
-            'col8' => "",
-            'col9' => "TOTAL",
-            'col10' => $sum,
-            'col11' => "",
-            'col12' => ""
-        );
 
         $this->cezpdf->ezTable($db_data, $col_names, '', array(
             'width' => 555,
@@ -6633,6 +6605,10 @@ if($_SESSION['compania']=='1'){
                  'col12' => array('width' => 60, 'justification' => 'center')
             )
         ));
+		  $this->cezpdf->ezText((''), 7, array("left" => 420));
+
+         $this->cezpdf->ezText(('TOTAL'.'            '.$value->MONED_Simbolo.$sum), 7, array("left" => 415));
+
 
         $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'nama_file.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
         $this->cezpdf->ezStream($cabecera);

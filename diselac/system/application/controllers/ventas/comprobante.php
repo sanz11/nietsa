@@ -6515,10 +6515,10 @@ if($_SESSION['compania']=='1'){
     }
 
    
-    public function ver_reporte_pdf_ventas($anio ,$mes ,$fech1 ,$fech2,$depar ,$prov  ,$dist, $tipodocumento,$Prodcod)
+    public function ver_reporte_pdf_ventas($anio ,$mes ,$fech1 ,$fech2, $tipodocumento)
     {
 
-        $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
+    $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
     $meses = array("enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre");
  
 
@@ -6539,7 +6539,7 @@ if($_SESSION['compania']=='1'){
         /* Cabecera */
         $delta = 20;
 
-        $listado = $this->comprobante_model->buscar_comprobante_venta_3($anio ,$mes ,$fech1 ,$fech2,$depar ,$prov  ,$dist ,$tipodocumento,$Prodcod);
+        $listado = $this->comprobante_model->buscar_comprobante_venta_3($anio ,$mes ,$fech1 ,$fech2 ,$tipodocumento);
 
         $confi = $this->configuracion_model->obtener_configuracion($this->somevar['compania']);
         $serie = '';
@@ -6556,42 +6556,14 @@ if($_SESSION['compania']=='1'){
         $codigo="";
         $sum = 0;
         foreach ($listado as $key => $value) {
-            $dep=$value->UBIGC_CodDpto;
-            $pro=$value->UBIGC_CodProv;
-            $dis=$value->UBIGC_CodDist;
-           $cd=strlen($dep.$pro. $dis);
-
-           if($cd=="5"){
-                $dep="0".$dep;
-           }
-           $bsdepartamento= $dep."0000";
-           $bsprovincia= $dep.$pro."00";
-           $bsdistrito= $dep.$pro.$dis;
-
-            $depar = $this->comprobante_model->buscardep($bsdepartamento);
-            $provin = $this->comprobante_model->buscardep($bsprovincia);
-            $distri = $this->comprobante_model->buscardep($bsdistrito);
-
-            foreach ($depar as $ke => $val1) {
-                $departamento=$val1->UBIGC_Descripcion;
-            }
-            foreach ($provin as $ke => $val2) {
-                $provincia=$val2->UBIGC_Descripcion;
-            }
-            foreach ($distri as $ke => $val3) {
-                $distrito=$val3->UBIGC_Descripcion;
-            }
             
-       
-
-
 
             $sum += $value->CPC_total;
      
             $db_data[] = array(
                 'col1' => $key + 1,
                 'col2' => substr($value->CPC_FechaRegistro, 0, 10),
-                'col3' => $departamento."-". $provincia."-". $distrito,
+                'col3' => $value->nombre,
                 'col4' => $value->CPC_TipoDocumento,
                 'col5' => $serie,
                 'col6' => $value->CPC_Numero,

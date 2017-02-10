@@ -324,7 +324,7 @@ function ver_reporte_productos(){
                    <td align='left' >Fecha final</td>
                    <td align='left' ><input type="text" id="fech2" name="fech2"></td>
                  </tr>
-                 <tr><td colspan="6"><hr></td></tr>
+                 <!--  <tr><td colspan="6"><hr></td></tr>
                  <tr>
 
                    <td>Departamento&nbsp;</td>
