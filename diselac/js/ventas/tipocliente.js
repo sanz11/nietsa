@@ -25,8 +25,8 @@ function editar_tipocliente(tipocliente){
 }
 function eliminar_tipocliente(tipocliente){
     if(confirm('¿Está seguro que desea eliminar esta categoría?')){
-        dataString        = "tipocliente = "+ tipocliente;
-        location.href = base_url+"index.php/ventas/tipocliente/eliminar";
+        dataString = "tipocliente = "+ tipocliente;
+        location.href = base_url+"index.php/ventas/tipocliente/eliminar/"+tipocliente;
         /*$.post(
             url,
             dataString,
