@@ -64,7 +64,7 @@
 <div id="pagina">
     <div id="zonaContenido">
 		<div align="center">
-    <div id="tituloForm" class="header">REPORTES DE VENTAS POR VENDEDOR</div>
+    <div id="tituloForm" class="header">REPORTES DE VENTAS POR TIENDA</div>
     <div id="frmBusqueda">
       <form method="post" action="" id="generar_reporte">
         Desde: <input type="text" id="fecha_inicio" name="fecha_inicio" readonly class="fecha" value="<?php echo ((isset($_POST['reporte'])) ? $_POST['fecha_inicio'] : ''); ?>"> Hasta: <input type="text" id="fecha_fin" name="fecha_fin" class="fecha" readonly value="<?php echo ((isset($_POST['reporte'])) ? $_POST['fecha_fin'] : ''); ?>"> <input type="hidden" name="reporte" value=""><input type="button" id="reporte" value="Generar">
@@ -84,12 +84,12 @@
 	  }
 	  </style>
       <br><br>
-      Reporte de ventas por vendedor desde <span class="fechase"> <?php echo $fecha_inicio; ?></span> hasta el <span class="fechase"><?php echo $fecha_fin; ?></span><br/>
+      Reporte de ventas por tienda desde <span class="fechase"> <?php echo $fecha_inicio; ?></span> hasta el <span class="fechase"><?php echo $fecha_fin; ?></span><br/>
 			<table class="fuente8" cellspacing="0" cellpadding="3" border="0" id="Table1">
 			<br>
       <thead>
       <tr class="cabeceraTablaResultado"><th colspan="3">Resumen</th></tr>
-      <tr class="cabeceraTabla"><th colspan="2">Vendedor</th><th> Ventas S/.</th></tr>
+      <tr class="cabeceraTabla"><th >TIENDA</th><th >DIRECCIÓN</th><th> Ventas S/.</th></tr>
       </thead>
       <tbody>
       <?php 
@@ -101,7 +101,7 @@
 		  //$cont=0;
 		foreach($resumen as $fila):
 			
-			 ECHO "<tr><td>{$fila['PATERNO']}</td><td>{$fila['NOMBRE']}</td><td>S/.{$fila['VENTAS']}</td>"; 
+			 ECHO "<tr STYLE='text-align: center;'><td>{$fila['nombre']}</td><td>{$fila['direccion']}</td><td>S/.{$fila['VENTAS']}</td>"; 
 			 $total += $fila['VENTAS'];
 		endforeach;
 		//echo $ver;
@@ -109,7 +109,7 @@
 		echo "<tr><td>No hay filas!!!</td>";
 	  }
 	?>
-      <tr><td colspan="2">TOTAL</td><td>S/.<?php echo $total; ?></td></tr>
+      <tr><td colspan="2" STYLE='text-align: right;'>TOTAL</td><td STYLE='text-align: center;'>S/.<?php echo $total; ?></td></tr>
       </tbody>
       </table>
       
@@ -127,7 +127,7 @@
                 $i = 0;
                 foreach($resumen as $fila):
                 
-                  $nombre = $fila['PATERNO'].' '.$fila['NOMBRE'];
+                  $nombre = $fila['nombre'];
                   $i++;
                   /*if($i == $total_filas)
                     echo "['{$nombre}',{$fila['VENTAS']}]";
@@ -155,7 +155,7 @@
       <thead>
       <tr class="cabeceraTablaResultado"><th colspan="<?php echo $months; ?>">Detalle Mensual</th></tr>
       <tr class="cabeceraTabla">
-      <th rowspan="2" colspan="1">Vendedor</th>
+      <th  style="text-align:right"></th>
       <?php 
         for($i = $anioInicio; $i<=$anioFin;$i++):
           if($anioInicio == $anioFin):
@@ -178,7 +178,7 @@
       </tr>
       <tr class="cabeceraTabla">
       <?php
-	  echo "<th></th>";
+	  echo "<th STYLE='text-align:left;'>TIENDA</th>";
         for($i = $anioInicio; $i<=$anioFin;$i++):
           if($anioInicio == $anioFin):
             for($j = intval($mesInicio); $j <= intval($mesFin); $j++):
@@ -208,9 +208,9 @@
         $sumas = array();
         foreach($mensual as $fila):
           $keys = array_keys($fila);
-          echo "<tr>";
+          echo "<tr STYLE='text-align:left;'>";
           foreach($keys as $key):
-            if(!in_array($key,array('VENTAS','PATERNO','NOMBRE')))
+            if(!in_array($key,array('VENTAS','nombre')))
             {
               if(isset($sumas[$key]))
               $sumas[$key] += $fila[$key];
@@ -222,9 +222,9 @@
           echo "</tr>";
         endforeach; 
       ?>
-      <tr><td colspan="2">TOTALES</td>
+      <tr><td >TOTALES</td>
       <?php foreach($sumas as $suma):?>
-        <?php echo '<td>'.number_format($suma,2,'.','').'</td>'; ?>
+        <?php echo '<td STYLE="text-align:left;">'.number_format($suma,2,'.','').'</td>'; ?>
       <?php endforeach; ?>
       </tr>
       </tbody>
@@ -240,7 +240,7 @@
             $nombres = array();
             foreach($mensual as $fila):
             
-              $nombre = $fila['PATERNO'];
+              $nombre = $fila['nombre'];
               $nombres[] = $nombre;
               $i++;
               $cadena .= "'$nombre',";
@@ -255,26 +255,26 @@
               for($i = $anioInicio; $i<=$anioFin;$i++):
                 if($anioInicio == $anioFin):
                   for($j = intval($mesInicio); $j <= intval($mesFin); $j++):
-                    $arreglo[$fila['PATERNO']][getMes($j).'-'.$i] = $fila['m'.$i.$j];
+                    $arreglo[$fila['nombre']][getMes($j).'-'.$i] = $fila['m'.$i.$j];
                     if(!in_array(getMes($j).'-'.$i,$periodo))
                       $periodo[] = getMes($j).'-'.$i;
                   endfor;
                 else:
                   if($i == $anioFin):
                     for($j = 1; $j <= intval($mesFin); $j++):
-                      $arreglo[$fila['PATERNO']][getMes($j).'-'.$i] = $fila['m'.$i.$j];
+                      $arreglo[$fila['nombre']][getMes($j).'-'.$i] = $fila['m'.$i.$j];
                       if(!in_array(getMes($j).'-'.$i,$periodo))
                         $periodo[] = getMes($j).'-'.$i;
                     endfor;
                   elseif($i == $anioInicio):
                     for($j = intval($mesInicio); $j <= 12; $j++):
-                      $arreglo[$fila['PATERNO']][getMes($j).'-'.$i] = $fila['m'.$i.$j];
+                      $arreglo[$fila['nombre']][getMes($j).'-'.$i] = $fila['m'.$i.$j];
                       if(!in_array(getMes($j).'-'.$i,$periodo))
                         $periodo[] = getMes($j).'-'.$i;
                     endfor;
                   else:
                     for($j = 1; $j <= 12; $j++):
-                      $arreglo[$fila['PATERNO']][getMes($j).'-'.$i] = $fila['m'.$i.$j];
+                      $arreglo[$fila['nombre']][getMes($j).'-'.$i] = $fila['m'.$i.$j];
                       if(!in_array(getMes($j).'-'.$i,$periodo))
                         $periodo[] = getMes($j).'-'.$i;
                     endfor;
@@ -315,11 +315,11 @@
       <table class="fuente8"  cellspacing="0" cellpadding="3" border="0" id="Table1">
       <thead>
         <tr class="cabeceraTablaResultado"><th colspan="<?php echo (2+(1+($anioFin-$anioInicio))); ?>" align="center">Detalle Anual</th></tr>
-        <tr class="cabeceraTabla">
-        <th colspan="2">Vendedor</th>
+        <tr class="cabeceraTabla" STYLE='text-align:left;'>
+        <th >TIENDA</th>
         <?php 
           for($i = $anioInicio; $i<=$anioFin;$i++):
-              echo "<th>$i</th>";
+              echo "<th >$i</th>";
           endfor;
         ?>
         </tr>
@@ -329,9 +329,10 @@
         $sumas = array();
         foreach($anual as $fila):
           $keys = array_keys($fila);
-          echo "<tr>";
+          echo "<tr STYLE='text-align:left;'>";
+		  
           foreach($keys as $key):
-            if(!in_array($key,array('VENTAS','PATERNO','NOMBRE')))
+            if(!in_array($key,array('VENTAS','nombre')))
             {
               if(isset($sumas[$key]))
               $sumas[$key] += $fila[$key];
@@ -344,9 +345,9 @@
         endforeach;
         
       ?>
-      <tr><td colspan="2">TOTALES</td>
+      <tr><td colspan="1">TOTALES</td>
       <?php foreach($sumas as $suma):?>
-        <?php echo '<td>'.number_format($suma,2,'.','').'</td>'; ?>
+        <?php echo '<td STYLE="text-align:left;">'.number_format($suma,2,'.','').'</td>'; ?>
       <?php endforeach; ?>
       </tr>
       </tbody>
@@ -358,14 +359,11 @@
         var data = google.visualization.arrayToDataTable([
         <?php
           
-          
-          
-          
           $arreglo = array();
           foreach($anual as $fila):
             $keys = array_keys($fila);
             foreach($keys as $key):
-              $arreglo[$fila['PATERNO']][$key] = $fila[$key];
+              $arreglo[$fila['nombre']][$key] = $fila[$key];
             endforeach;
           endforeach;
           
