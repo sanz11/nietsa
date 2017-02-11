@@ -560,7 +560,7 @@ function listar_unidad_medida_producto(producto){
         nombre=nombre_producto;
         if(flagBS=='B'){
             if(marca)
-                nombre+=' / Marca:'+marca;
+                nombre+=' / '+marca;
             if(modelo)
                 nombre+=' / Modelo: '+modelo;
             if(presentacion)
