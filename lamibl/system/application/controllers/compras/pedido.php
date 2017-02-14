@@ -82,6 +82,8 @@ class Pedido extends Controller{
 
    public function nuevo_pedido()
     {
+		  $compania = $this->somevar['compania'];
+		 $comp_confi = $this->companiaconfiguracion_model->obtener($compania);
         $combo = '';
         $listado_tipo_doc = $this->documento_model->listar();
         if(count($listado_tipo_doc) > 0){
@@ -97,22 +99,20 @@ class Pedido extends Controller{
         $data = array();
         $hoy = date("Y-m-d");
          $data['cboContacto'] = form_dropdown("contacto", array('' => ':: Seleccione ::'), "", " class='comboGrande'  id='contacto'");
-        $data['hora'] = date("H:i:s");
         $data['fechai'] = form_input(array("name" => "fechai", "id" => "fechai", "class" => "cajaPequena", "readonly" => "readonly", "maxlength" => "10", "value" => "$hoy"));
-        $data['centro_costo'] = $this->seleccionar_centrocosto(7);
         $document = $this->pedido_model->traerNumeroDoc();
-        $data['numero_documento'] = $document[0]->PEDIC_Numero + 1 ;
-        $data['nombre_pedido'] = '';
-        $data['datos'] = '';
+		$docum = $this->pedido_model->traerSerieDoc();
+        $data['numero'] = $document[0]->PEDIC_Numero + 1 ;
+		 $data['serie'] = $docum[0]->PEDIC_Serie ;
         $data['cliente'] = "";
         $data['ruc_cliente'] = "";
+		$data['modo'] = "";
+        $data['id'] = "";
         $data['nombre_cliente'] = "";
-        $data['id'] = '';
+      $data['igv'] = $comp_confi[0]->COMPCONFIC_Igv;
         $data['contacto'] = "";
-        $data['responsable_value'] = '';
         $data['modo'] = 'insertar';
-        $data['tipo_pedido'] = '';
-        $data['num_refe'] = '';
+		$data['num_refe'] = '';
         $data['compania'] = $this->somevar['compania'];
         $data['combo'] = $combo;
         $data['titulo'] = "REGISTRAR PEDIDOS / REQUERIMIENTOS";

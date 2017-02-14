@@ -364,9 +364,19 @@ WHERE CPC_TipoOperacion="C" AND PEDIP_Codigo ='.$pedido.' ORDER BY PRESUP_Codigo
     $this->db->where($where);
     $this->db->update('cji_pedidodetalle',$data);
     }
-       public function traerNumeroDoc(){
+    public function traerNumeroDoc(){
 
          $this->db->select_max('PEDIC_Numero');
+        $query = $this->db->get('cji_pedido');   
+
+         foreach($query->result() as $fila){
+        $data[] = $fila;
+      }
+      return $data;
+    }
+	public function traerSerieDoc(){
+
+         $this->db->select_max('PEDIC_Serie');
         $query = $this->db->get('cji_pedido');   
 
          foreach($query->result() as $fila){
