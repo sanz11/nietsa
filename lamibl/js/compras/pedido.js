@@ -29,6 +29,23 @@ jQuery(document).ready(function(){
 		base_url = $("#base_url").val();
         location.href = base_url+"index.php/compras/pedido/pedidos";
     });
+	$('#ruc_cliente').keyup(function (e) {
+        var key = e.keyCode || e.which;
+        if (key == 13) {
+            if ($(this).val() != '') {
+                $('#linkSelecCliente').attr('href', base_url + 'index.php/ventas/cliente/ventana_selecciona_cliente/' + $('#ruc_cliente').val()).click();
+            }
+        }
+    });
+
+    $('#nombre_cliente').keyup(function (e) {
+        var key = e.keyCode || e.which;
+        if (key == 13) {
+            if ($(this).val() != '') {
+                $('#linkSelecCliente').attr('href', base_url + 'index.php/ventas/cliente/ventana_selecciona_cliente/' + $('#nombre_cliente').val()).click();
+            }
+        }
+    });
     
 	container = $('div.container');
  	$("#frmPedido").validate({

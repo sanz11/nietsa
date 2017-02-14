@@ -119,6 +119,23 @@ class Pedido extends Controller{
         $data['array_detalle'] = array();
         $this->layout->view("compras/pedido_nuevo",$data);
     }
+
+  public function contacto()
+	{
+		if($this->input->post('cliente'))
+		{
+			$codigo = $this->input->post('cliente');
+			$respuesta = $this->pedido_model->contactos($codigo);
+			foreach($respuesta as $fila)
+			{
+			
+			echo "<option value='".$fila ->PERSP_Codigo."'>".$fila ->PERSC_Nombre."</option>";
+			
+			}
+		}
+	}
+	/*
+	*/
     
     
     public function seleccionar_centrocosto($indDefault=''){

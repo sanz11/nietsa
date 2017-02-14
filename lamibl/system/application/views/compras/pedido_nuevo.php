@@ -25,6 +25,20 @@
 					'type'	     : 'iframe'
 				});
 				
+				
+				setInterval(function() {
+					var cliente=$("#cliente").val()
+					
+					if(cliente.length>0){
+						$.post("<?php echo base_url(); ?>index.php/compras/pedido/contacto", {
+							cliente : cliente
+						}, function(data) {
+							$('#contacto').html(data);
+						});
+						}
+					},600);
+					
+					
 				$(function () {
 					  $("#buscar_producto").autocomplete({
                 source: function (request, response) {
@@ -136,14 +150,42 @@
 			}
 			
 		
-        function seleccionar_cliente(codigo, ruc, razon_social) {
+        
+		
+		$("a#linkVerCliente, a#linkSelecCliente, a#linkVerProveedor, a#linkSelecProveedor, a#linkedicliente").fancybox({
+                'width': 800,
+                'height': 550,
+                'autoScale': false,
+                'transitionIn': 'none',
+                'transitionOut': 'none',
+                'showCloseButton': true,
+                'modal': false,
+                'type': 'iframe'
+
+            });
+		
+
+        });
+		function seleccionar_cliente(codigo, ruc, razon_social) {
             $("#cliente").val(codigo);
-            $("#buscar_cliente").val(ruc);
+            $("#ruc_cliente").val(ruc);
             $("#nombre_cliente").val(razon_social);
 
         }
+		/*function valor() {
+			var c =$("#cliente").val();
+            var r = $("#ruc_cliente").val();
+            var n = $("#nombre_cliente").val()
+			
+			alert("hola"+ c + "-" + r + "-" + n + "");
+			alert('hola');
 
-        });
+        }<a href="javascript:;" onClick="valor();"><img src="<?php echo base_url();?>images/botonagregar.jpg" border="1" align="absbottom"></a>
+								*/
+								
+		function ver(){
+					alert("hola");
+				}					
 		</script>
 		
 	</head>
@@ -216,12 +258,15 @@
 							</td>
 							<td colspan="2">
 								
-								<input type="hidden" name="cliente" id="cliente" size="5"value="<?php echo $cliente; ?>"/>
-                                <input placeholder="ruc" name="buscar_cliente" type="text" class="cajaGeneral"id="buscar_cliente" size="10" value="<?php echo $ruc_cliente; ?>" title="Ingrese parte del nombre o el nro. de documento, luego presione ENTER."/>&nbsp;
-                                <input type="hidden" name="ruc_cliente" class="cajaGeneral" id="ruc_cliente" size="10"maxlength="11" onblur="obtener_cliente();" value="<?php echo $ruc_cliente; ?>" onkeypress="return numbersonly(this,event,'.');"/>
-                                <input placeholder="razon social" type="text" name="nombre_cliente" class="cajaGeneral"id="nombre_cliente" size="37" maxlength="50"value="<?php echo $nombre_cliente; ?>"/>
-                                <a href="<?php echo base_url(); ?>index.php/ventas/cliente/ventana_selecciona_cliente/"id="linkSelecCliente"></a>
-							</td>
+								 <input type="text" name="cliente" id="cliente" size="5" hidden value=""/>
+                        <input type="text" name="ruc_cliente" class="cajaGeneral" id="ruc_cliente" size="10"
+                               maxlength="11" placeholder="Ruc"  onkeypress="return numbersonly(this,event,'.');" value="" />
+                        <input type="text" name="nombre_cliente" class="cajaGeneral cajaSoloLectura" id="nombre_cliente"
+                               size="40" maxlength="50" placeholder="Nombre cliente" value="" />
+                        
+
+                         <a href="<?php echo base_url(); ?>index.php/ventas/cliente_ventana_busqueda/" id="linkSelecCliente"></a>
+                    </td>
 							<td>
 								Contacto:	<?php echo $cboContacto;?>
 							</td>
@@ -254,6 +299,7 @@
 								<?php if($tipo_docu!='B' && $contiene_igv==true) echo ' (Con IGV)'?>
 								&nbsp;&nbsp;<input NAME="precio" type="text" class="cajaGeneral" id="precio" size="5" maxlength="10" onkeypress="return numbersonly(this,event,'.');" />
 							    <a href="javascript:;" onClick="agregar_producto_presupuesto();"><img src="<?php echo base_url();?>images/botonagregar.jpg" border="1" align="absbottom"></a>
+								
 							</td>
 					   </tr>
 					   </table>			

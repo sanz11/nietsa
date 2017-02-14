@@ -14,6 +14,17 @@ $("a#linkVerCliente, a#linkSelecCliente, a#linkVerProveedor, a#linkSelecProveedo
 
             });
 
+---------------fuera del funtion ready//////
+
+	
+function seleccionar_cliente(codigo, ruc, razon_social) {
+            $("#cliente").val(codigo);
+            $("#ruc_cliente").val(ruc);
+            $("#nombre_cliente").val(razon_social);
+
+        }
+--------------------------------
+
 <td>Cliente *</td>
                     <td valign="middle" colspan="6">
                         <input type="text" name="cliente" id="cliente" size="5" hidden/>
@@ -21,10 +32,7 @@ $("a#linkVerCliente, a#linkSelecCliente, a#linkVerProveedor, a#linkSelecProveedo
                                maxlength="11" placeholder="Ruc" onkeypress="return numbersonly(this,event,'.');" />
                         <input type="text" name="nombre_cliente" class="cajaGeneral cajaSoloLectura" id="nombre_cliente"
                                size="40" maxlength="50" placeholder="Nombre cliente" />
-                        <!--<a href="<?php echo base_url(); ?>index.php/ventas/cliente/ventana_busqueda_cliente/"
-                           id="linkVerCliente"><img height='16' width='16'
-                                                    src='<?php echo base_url(); ?>/images/ver.png' title='Buscar'
-                                                    border='0'/></a>-->
+                        
 
                          <a href="<?php echo base_url(); ?>index.php/ventas/cliente_ventana_busqueda/" id="linkSelecCliente"></a>
                     </td>

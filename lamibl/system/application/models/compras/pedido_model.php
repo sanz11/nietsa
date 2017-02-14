@@ -82,6 +82,23 @@ public function updateSolicitudCotizacion($pedido){
         }     
 
   }
+  public function contactos($emp)
+	{
+		$sql="select p.PERSC_Nombre, p.PERSP_Codigo 
+		from cji_persona as p
+		join cji_emprcontacto as c on c.ECONC_Persona=PERSP_Codigo
+		inner join cji_empresa as e  on e.EMPRP_Codigo =c.EMPRP_Codigo
+		where EMPRP_Codigo = ".$emp."
+		";
+		 $query = $this->db->query($sql);
+        if ($query->num_rows > 0) {
+            foreach ($query->result() as $fila) {
+                $data[] = $fila;
+            }
+            return $data;
+        }
+        return array();
+	}
   public function getPedigoCliente($codigo){
     $this->db->select('*');
     $this->db->where('CLIP_Codigo',$codigo);
