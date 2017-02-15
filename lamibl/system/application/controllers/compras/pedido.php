@@ -110,6 +110,11 @@ class Pedido extends Controller{
 		$data['modo'] = "";
         $data['id'] = "";
         $data['nombre_cliente'] = "";
+		 $data['descuento'] = "0";
+		 $data['preciototal'] = "0";
+		 $data['descuentotal'] = "0";
+		 $data['igvtotal'] = "0";
+		 $data['importetotal'] = "0";
       $data['igv'] = $comp_confi[0]->COMPCONFIC_Igv;
         $data['contacto'] = "";
         $data['modo'] = 'insertar';

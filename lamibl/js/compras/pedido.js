@@ -113,13 +113,14 @@ function agregar_producto_presupuesto(){
 	nombre_producto = $("#nombre_producto").val();
 	descuento = $("#descuento").val();
 	igv = parseInt($("#igv").val());
+	
 	cantidad = $("#cantidad").val();
         if( $("#precio").val()!='')
             precio_conigv = $("#precio").val();
         else
             precio_conigv=0;
         if(contiene_igv=='1')
-            precio=money_format(precio_conigv*100/(igv+100))
+            precio=money_format(precio_conigv*100/(igv+100));
         else{
             precio=precio_conigv;
             precio_conigv = money_format(precio_conigv*(100+igv)/100);
@@ -145,48 +146,39 @@ function agregar_producto_presupuesto(){
             alert('Seleccine una unidad de medida.');
             return false;
         }
-        fila  = '<tr class="'+clase+'">';
-        fila+='<td width="3%"><div align="center"><font color="red"><strong><a href="javascript:;" onclick="eliminar_producto_presupuesto('+n+');">';
-        fila+='<span style="border:1px solid red;background: #ffffff;">&nbsp;X&nbsp;</span>';
-        fila+='</a></strong></font></div></td>';
-        fila +=	'<td width="4%"><div align="center">'+j+'</div></td>';
-        fila += '<td width="10%"><div align="center">';
-        //fila+= '<input type="hidden" name="prodcodigo['+n+']" id="prodcodigo['+n+']" value="'+producto+'">'+codproducto;
-        fila+= '<input type="hidden" name="prodcodigo['+n+']" id="prodcodigo['+n+']" value="'+producto+'">'+producto;
-        fila+= '<input type="hidden" name="produnidad['+n+']" id="produnidad['+n+']" value="'+unidad_medida+'">';
-        fila+= '<input type="hidden" name="eliminado['+n+']" id="eliminado['+n+']" value="no">';
-        fila+= '</div></td>';
-        fila +=	'<td><div align="left"><input type="text" class="cajaGeneral" style="width:395px;" maxlength="250" name="proddescri['+n+']" id="proddescri['+n+']" value="'+nombre_producto+'" /></div></td>';
-        if(tipo_docu!='B')
-            fila+= '<td width="10%"><div align="center"><input type="text" size="1" maxlength="5" class="cajaGeneral" name="prodcantidad['+n+']" id="prodcantidad['+n+']" value="'+cantidad+'" onblur="calcula_importe('+n+');" onkeypress="return numbersonly(this,event,\'.\');">'+nombre_unidad+'</div></td>';
-        else
-            fila+= '<td width="10%"><div align="center"><input type="text" size="1" maxlength="5" class="cajaGeneral" name="prodcantidad['+n+']" id="prodcantidad['+n+']" value="'+cantidad+'" onblur="calcula_importe_conigv('+n+');" onkeypress="return numbersonly(this,event,\'.\');">'+nombre_unidad+'</div></td>';
-        if(tipo_docu!='B'){
-            fila += '<td width="6%" style="display:none;"><div align="center"><input type text" size="5" maxlength="10" class="cajaGeneral" value="'+precio+'" name="prodpu['+n+']" id="prodpu['+n+']" onblur="modifica_pu('+n+');" onkeypress="return numbersonly(this,event,\'.\');">'
-            fila += '<td width="6%" style="display:none;"><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral cajaSoloLectura" name="prodprecio['+n+']" id="prodprecio['+n+']" value="0" readonly="readonly"></div></td>';
-            fila += '<input type="hidden"  value="'+precio_conigv+'" name="prodpu_conigv['+n+']" id="prodpu_conigv['+n+']"></div></td>';
-        }
-        else{
-            fila += '<td width="6%" style="display:none;"><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral" value="'+precio_conigv+'" name="prodpu_conigv['+n+']" id="prodpu_conigv['+n+']" onblur="calcula_importe_conigv('+n+');" /></div></td>';
-            fila += '<td width="6%" style="display:none;"><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral cajaSoloLectura" name="prodprecio_conigv['+n+']" id="prodprecio_conigv['+n+']" value="0" readonly="readonly"></div></td>';
-        }
+         fila = '<tr class="'+clase+'">';
+    fila+= '<td width="3%"><div align="center"><font color="red"><strong><a href="javascript:;" onclick="eliminar_producto_ocompra('+n+');">';
+    fila+= '<span style="border:1px solid red;background: #ffffff;">&nbsp;X&nbsp;</span>';
+    fila+= '</a></strong></font></div></td>';
+    fila+= '<td width="4%"><div align="center">'+j+'</div></td>';
+    fila+= '<td width="10%"><div align="center">';
+    fila+= '<input type="hidden" class="cajaMinima" name="prodcodigo['+n+']" id="prodcodigo['+n+']" value="'+producto+'">'+codproducto;
+    fila+= '<input type="hidden" class="cajaMinima" name="produnidad['+n+']" id="produnidad['+n+']" value="'+unidad_medida+'">';
+    fila+= '<input type="hidden" class="cajaMinima" name="flagGenIndDet['+n+']" id="flagGenIndDet['+n+']" value="'+flagGenInd+'">';
+    fila+= '</div></td>';
+    fila+= '<td><div align="left">';
+    fila+= '<input type="text" class="cajaGeneral" style="width:395px;" maxlength="250" name="proddescri['+n+']" id="proddescri['+n+']" value="'+nombre_producto+'">';
+    fila+= '</div></td>';
+    fila+= '<td width="10%"><div align="left">';
+    fila+= '<input type="text" class="cajaGeneral" size="1" maxlength="5" name="prodcantidad['+n+']" id="prodcantidad['+n+']" value="'+cantidad+'" onblur="calcula_importe('+n+');" onkeypress="return numbersonly(this,event,\'.\');"> ' + nombre_unidad;
 
-        fila += '<td width="6%" style="display:none;"><div align="center">';           
-        fila+= '<input type="hidden" name="proddescuento100['+n+']" id="proddescuento100['+n+']" value="'+descuento+'">';
-        if(tipo_docu!='B')
-            fila+= '<input type="text" size="5" maxlength="10" class="cajaGeneral" name="proddescuento['+n+']" id="proddescuento['+n+']" onblur="calcula_importe2('+n+');" />';
-        else
-            fila+= '<input type="text" size="5" maxlength="10" class="cajaGeneral" name="proddescuento_conigv['+n+']" id="proddescuento_conigv['+n+']" onblur="calcula_importe2_conigv('+n+');" />';
-        fila+= '</div></td>';
-        if(tipo_docu!='B')
-            fila += '<td width="6%" style="display:none;"><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral cajaSoloLectura" name="prodigv['+n+']" id="prodigv['+n+']" readonly></div></td>';
-        fila += '<td width="6%" style="display:none;"><div align="center">';
-        fila+='<input type="hidden" value="n" name="detaccion['+n+']" id="detaccion['+n+']">';
-        fila+= '<input type="hidden" name="prodigv100['+n+']" id="prodigv100['+n+']" value="'+igv+'">';
-        fila+='<input type="hidden" name="detacodi['+n+']" id="detacodi['+n+']">';
-        fila+= '<input type="text" size="5" maxlength="10" class="cajaGeneral cajaSoloLectura" name="prodimporte['+n+']" id="prodimporte['+n+']" value="0" readonly="readonly">';
-        fila+= '</div></td>';
-        fila += '</tr>';
+    fila+= '</div></td>';
+    fila += '<td width="6%"><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral" value="'+precio+'" name="prodpu_conigv['+n+']" id="prodpu_conigv['+n+']" onblur="modifica_pu_conigv('+n+');" onkeypress="return numbersonly(this,event,\'.\');" /></div></td>'
+    fila += '<td width="6%"><div align="center"><input type text" size="5" maxlength="10" class="cajaGeneral" value="'+precio+'" name="prodpu['+n+']" id="prodpu['+n+']" onblur="modifica_pu('+n+');" onkeypress="return numbersonly(this,event,\'.\');">'
+    fila += '<td width="6%"><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral cajaSoloLectura" name="prodprecio['+n+']" id="prodprecio['+n+']" value="'+(precio_conigv*cantidad)+'" readonly="readonly"></div></td>';
+    fila+= '<td width="6%"><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral cajaSoloLectura" name="prodigv['+n+']" id="prodigv['+n+']" value="'+(((precio*cantidad)*18)/100)+'"readonly></div></td>';
+    fila+= '<td width="6%"><div align="center">';
+    fila+= '<input type="hidden" name="detacodi['+n+']" id="detacodi['+n+']">';
+    fila+= '<input type="hidden" name="detaccion['+n+']" id="detaccion['+n+']" value="n">';
+    fila+= '<input type="hidden" name="prodigv100['+n+']" id="prodigv100['+n+']" value="'+igv+'">';
+    fila+= '<input type="hidden" name="prodstock['+n+']" id="prodstock['+n+']" value="'+stock+'"/>';
+    fila+= '<input type="hidden" name="prodcosto['+n+']" id="prodcosto['+n+']" value="'+costo+'" readonly="readonly">';
+    fila += '<input type="hidden" name="almacenProducto[' + n + ']" id="almacenProducto[' + n + ']" value="' + almacenProducto + '"/>';
+    fila+= '<input type="hidden" name="proddescuento100['+n+']" id="proddescuento100['+n+']" value="0">';
+    fila+= '<input type="hidden" name="proddescuento['+n+']" id="proddescuento['+n+']" onblur="calcula_importe2('+n+');" />';
+    fila+= '<input type="text" size="5" maxlength="10" class="cajaGeneral cajaSoloLectura" name="prodimporte['+n+']" id="prodimporte['+n+']" value="0" readonly="readonly">';
+    fila+= '</div></td>';
+    fila+= '</tr>';
         $("#tblDetalleCotizacion").append(fila);
 		
         inicializar_cabecera_item(); 
@@ -270,6 +262,39 @@ function listar_unidad_medida_producto(producto){
           if(presentacion)
             nombre+=' / Prest: '+presentacion;  
            $("#nombre_producto").val(nombre);
+		   listar_precios_x_producto_unidad(producto);
+    });
+}
+function listar_precios_x_producto_unidad(){
+    producto = $("#producto").val();
+    unidad = $("#unidad_medida").val();
+    moneda = $("#moneda").val();
+    base_url = $("#base_url").val();
+    flagBS = $("#flagBS").val();
+    url          = base_url+"index.php/almacen/producto/listar_precios_x_producto_unidad/"+producto+"/"+unidad+"/"+moneda;
+    select_precio   = document.getElementById('precioProducto');
+    options_umedida = select_precio.getElementsByTagName("option"); 
+
+    var num_option=options_umedida.length;
+    for(i=1;i<=num_option;i++){
+        select_precio.remove(0)
+    }
+    opt = document.createElement("option");
+    texto = document.createTextNode("::Seleccion::");
+    opt.appendChild(texto);
+    opt.value = "";
+    select_precio.appendChild(opt);
+    $.getJSON(url,function(data){
+        $.each(data, function(i,item){
+            codigo		= item.codigo;
+            moneda		= item.moneda;
+            precio		= item.precio;
+            opt         = document.createElement('option');
+            texto       = document.createTextNode(moneda+" "+precio);
+            opt.appendChild(texto);
+            opt.value = precio;
+            select_precio.appendChild(opt);
+        });
     });
 }
 

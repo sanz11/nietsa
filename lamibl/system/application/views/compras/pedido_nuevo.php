@@ -40,11 +40,12 @@
 					
 					
 				$(function () {
+							
 					  $("#buscar_producto").autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: "<?php echo base_url(); ?>index.php/almacen/producto/autocomplete/B/" + $("#compania").val()+"/"+$("#almacen").val(),
-                        type: "POST",
+                        url: "<?php echo base_url(); ?>index.php/almacen/producto/autocomplete/" + $("#flagBS").val() + "/" + $("#compania").val()+"/"+$("#almacen").val(),
+                    type: "POST",
                         data: {
                             term: $("#buscar_producto").val()
                         },
@@ -55,12 +56,6 @@
                     });
                 },
                 select: function (event, ui) {
-                	/**si el producto tiene almacen : es que no esta inventariado en ese almacen , se le asigna el almacen general de cabecera**/
-                    if(ui.item.almacenProducto==0){
-                    	ui.item.almacenProducto=$("#almacen").val();
-                    }
-                    /**fin de asignacion**/
-               
 	                    $("#buscar_producto").val(ui.item.codinterno);
 	                    $("#producto").val(ui.item.codigo);
 	                    $("#codproducto").val(ui.item.codinterno);
@@ -226,7 +221,7 @@
                     <div id="nuevoRegistro" style="display:none;float:right;width:150px;height:20px;border:0px solid #000;margin-top:7px;"><a href="#">Nuevo <image src="<?php echo base_url();?>images/add.png" name="agregarFila" id="agregarFila" border="0" alt="Agregar"></a></div><br><br>				
 					<div id="datosGenerales">
                        <div id="datosPedido" >
-					   <table id="customised">
+					   <table id="customised" class="fuente8">
 					   
 					   <tr>
 							<td>
@@ -272,12 +267,18 @@
 								Contacto:	<?php echo $cboContacto;?>
 							</td>
 							<td>
-								I.G.V:	<input type="text" name="igv" id="igv" size="5" value="<?php echo $igv; ?>" readonly disabled />%
+								I.G.V:	<input style="width:30px" type="text" name="igv" id="igv" size="5" value="<?php echo $igv; ?>" readonly disabled />%
+								Descuento:<input type="text" name="descuento" id="descuento" size="5" value="<?php echo $descuento; ?>" />%
 							</td>
 					   </tr>
+					   
 					   <tr>
-							<td>
-								Art&iacute;culo;
+							<td >
+								 <select name="flagBS" id="flagBS" style="width:50px;" class="comboMedio"
+                                onchange="limpiar_campos_producto()">
+									<option value="B" selected="selected" title="Producto">P</option>
+									<option value="S" title="Servicio">S</option>
+								</select>
 							</td>
 							<td colspan="2">
 								
@@ -293,9 +294,13 @@
 							<td colspan="1">
 								Cantidad
 								<input NAME="cantidad" type="text" class="cajaGeneral"  id="cantidad" value="" size="3" maxlength="5" onkeypress="return numbersonly(this,event,'.');" />
-								<select name="unidad_medida" id="unidad_medida" class="comboMedio" onchange="obtener_precio_producto();"><option value="">::Seleccione::</option></select>
+								<select style="width:100px;" name="unidad_medida" id="unidad_medida" onchange="obtener_precio_producto();"><option value="0">::Seleccione::</option></select>
 							</td>
 							<td colspan="1">
+							 <select name="precioProducto" id="precioProducto" class="comboPequeno"
+                                onchange="mostrar_precio();" style="width:84px;">
+								<option value="0">::Seleccion::</option>
+							</select>
 								PU 
 								<?php if($tipo_docu!='B' && $contiene_igv==true) echo ' (Con IGV)'?>
 								&nbsp;&nbsp;<input NAME="precio" type="text" class="cajaGeneral" id="precio" size="5" maxlength="10" onkeypress="return numbersonly(this,event,'.');" />
@@ -374,44 +379,29 @@
 							</table>
 							</div>					
 						</div>	
-						<div id="frmBusqueda3">
-						<br>
-							<table width="100%" border="0" align="right" cellpadding=3 cellspacing=0 class="fuente8" style="display:none;">
-								<tr>
-									<td width="10%" valign="top">
-										<table  style ="display:none;" width="100%" border="0" align="right" cellpadding=3 cellspacing=0 class="fuente8" style="margin-top:20px;">
-											<tr>
-											<td>Sub-total</td>
-												<?php if($tipo_docu!='B'){ ?>
-												<td width="10%" align="right"><div align="right"><input class="cajaTotales" name="preciototal" type="text" id="preciototal" size="12" align="right" readonly="readonly" value="<?php echo round($preciototal,2);?>" /></div></td>
-												<?php }else{ ?>
-												<td width="10%" align="right"><div align="right"><input class="cajaTotales" name="preciototal_conigv" type="text" id="preciototal_conigv" size="12" align="right" readonly="readonly" value="<?php echo round($preciototal_conigv,2);?>" /></div></td>
-												<?php } ?>
-												</tr>
-												<tr>
-												<td>Descuento</td>
-												<?php if($tipo_docu!='B'){ ?>
-													<td align="right"><div align="right"><input class="cajaTotales" name="descuentotal" type="text" id="descuentotal" size="12" align="right" readonly="readonly" value="<?php echo round($descuentotal,2);?>" /></div></td>
-												<?php }else{ ?>
-													<td align="right"><div align="right"><input class="cajaTotales" name="descuentotal_conigv" type="text" id="descuentotal_conigv" size="12" align="right" readonly="readonly" value="<?php echo round($descuentotal_conigv,2);?>" /></div></td>
-												<?php } ?>
-												</tr>
-												<?php if($tipo_docu!='B'){ ?>
-												<tr>
-													<td>IGV</td>
-													<td align="right"><div align="right"><input class="cajaTotales" name="igvtotal" type="text" id="igvtotal" size="12" align="right" readonly="readonly" value="<?php echo round($igvtotal,2);?>" /></div></td>
-												</tr>
-												<?php } ?>
-												<tr>
-													<td>Precio Total</td>
-													<td align="right"><div align="right"><input class="cajaTotales" name="importetotal" type="text" id="importetotal" size="12" align="right" readonly="readonly" value="<?php echo round($importetotal,2);?>" /></div></td>
-												</tr> 
-											</table>
-										</td>
-									</tr>
-								</table>
-						</div>		
+					<table   border="0'" align="right" cellpadding=3 cellspacing=0  style="width:200px;">
+                                    <tr>
+                                        <td>Sub-total</td>
+                                            <td width="10%" align="right"><div align="right"><input class="cajaTotales" name="preciototal" type="text" id="preciototal" size="12" align="right" readonly="readonly" value="<?php echo round($preciototal, 2); ?>" /></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Descuento</td>
+                                      <td align="right"><div align="right"><input class="cajaTotales" name="descuentotal" type="text" id="descuentotal" size="12" align="right" readonly="readonly" value="<?php echo round($descuentotal, 2); ?>" /></div></td>
+                                       
+                                    </tr>
+                                    <?php //if ($tipo_docu != 'B') { ?>
+                                        <tr>
+                                            <td>IGV</td>
+                                            <td align="right"><div align="right"><input class="cajaTotales" name="igvtotal" type="text" id="igvtotal" size="12" align="right" readonly="readonly" value="<?php echo round($igvtotal, 2); ?>" /></div></td>
+                                        </tr>
+                                    <?php //} ?>
+                                    <tr>
+                                        <td>probando</td>
+                                        <td align="right"><div align="right"><input class="cajaTotales" name="importetotal" type="text" id="importetotal" size="12" align="right" readonly="readonly" value="<?php echo round($importetotal, 2); ?>" /></div></td>
+                                    </tr> 
+					</table>	
 						<br />
+						
 						
 						<div style="margin-top:100px; text-align: right;" class="fuente8">
 							<a href="#" id="imgGuardarPedido"><img src="<?php echo base_url();?>images/botonaceptar.jpg" width="85" height="22" class="imgBoton" onMouseOver="style.cursor=cursor"></a>
@@ -431,7 +421,7 @@
 	</body>
 	 <style>
 					   #customised{
-						   font-size: 15px;
+						   
 						   text-align:left;
 						   margin-top:-40px;
 					   }
