@@ -99,6 +99,7 @@ class Pedido extends Controller{
         $data = array();
         $hoy = date("Y-m-d");
          $data['cboContacto'] = form_dropdown("contacto", array('' => ':: Seleccione ::'), "", " class='comboGrande'  id='contacto'");
+		  $data['cboObra'] = form_dropdown("obra", array('' => ':: Seleccione ::'), "", " class='comboGrande'  id='obra'");
         $data['fechai'] = form_input(array("name" => "fechai", "id" => "fechai", "class" => "cajaPequena", "readonly" => "readonly", "maxlength" => "10", "value" => "$hoy"));
         $document = $this->pedido_model->traerNumeroDoc();
 		$docum = $this->pedido_model->traerSerieDoc();
@@ -120,23 +121,21 @@ class Pedido extends Controller{
         $this->layout->view("compras/pedido_nuevo",$data);
     }
 
-  public function contacto()
-	{
-		if($this->input->post('cliente'))
-		{
-			$codigo = $this->input->post('cliente');
+  public function contacto(){
+			$codigo = $this->input->post('codigoempre');
 			$respuesta = $this->pedido_model->contactos($codigo);
-			foreach($respuesta as $fila)
-			{
 			
-			echo "<option value='".$fila ->PERSP_Codigo."'>".$fila ->PERSC_Nombre."</option>";
-			
-			}
-		}
+			echo json_encode($respuesta);
+		
 	}
-	/*
-	*/
-    
+public function obra(){
+	
+			$codigo = $this->input->post('codigoempre');
+			$respuesta = $this->pedido_model->obras($codigo);
+			
+			echo json_encode($respuesta);
+		
+	}
     
     public function seleccionar_centrocosto($indDefault=''){
             $array_dist = $this->centrocosto_model->listar_centros_costo();

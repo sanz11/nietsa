@@ -26,7 +26,7 @@
 				});
 				
 				
-				setInterval(function() {
+				/*setInterval(function() {
 					var cliente=$("#cliente").val()
 					
 					if(cliente.length>0){
@@ -36,7 +36,7 @@
 							$('#contacto').html(data);
 						});
 						}
-					},600);
+					},600);*/
 					
 					
 				$(function () {
@@ -60,8 +60,7 @@
                     	ui.item.almacenProducto=$("#almacen").val();
                     }
                     /**fin de asignacion**/
-                //	isEncuentra=verificarProductoDetalle(ui.item.codigo,ui.item.almacenProducto);
-                  //  if(!isEncuentra){
+               
 	                    $("#buscar_producto").val(ui.item.codinterno);
 	                    $("#producto").val(ui.item.codigo);
 	                    $("#codproducto").val(ui.item.codinterno);
@@ -71,19 +70,7 @@
 	                    $("#almacenProducto").val(ui.item.almacenProducto);
 	                    $("#cantidad").focus();
 	                    listar_unidad_medida_producto(ui.item.codigo);
-                   /* }else{
-                    	$("#buscar_producto").val("");
-     	                $("#producto").val("");
-     	                $("#codproducto").val("");
-     	                $("#costo").val("");
-     	                $("#stock").val("");
-     	                $("#flagGenInd").val("");
-     	               	$("#nombre_producto").val("");
-     	                $("#almacenProducto").val("");
-                    	$("#buscar_producto").val("");
-                    	alert("El producto ya se encuentra ingresado en la lista de detalles.");
-                    	return !isEncuentra;
-                    }*/
+                  
                 },
                 minLength: 1
             });
@@ -166,26 +153,40 @@
 		
 
         });
-		function seleccionar_cliente(codigo, ruc, razon_social) {
+		function seleccionar_cliente(codigo, ruc, razon_social,empresa) {
             $("#cliente").val(codigo);
             $("#ruc_cliente").val(ruc);
             $("#nombre_cliente").val(razon_social);
+			get_contacto(empresa);
+			get_obra(codigo);
 
         }
-		/*function valor() {
-			var c =$("#cliente").val();
-            var r = $("#ruc_cliente").val();
-            var n = $("#nombre_cliente").val()
-			
-			alert("hola"+ c + "-" + r + "-" + n + "");
-			alert('hola');
-
-        }<a href="javascript:;" onClick="valor();"><img src="<?php echo base_url();?>images/botonagregar.jpg" border="1" align="absbottom"></a>
-								*/
-								
-		function ver(){
-					alert("hola");
-				}					
+		
+		function get_contacto(empresa) {
+			//alert(codigo);
+			$.post("<?php echo base_url(); ?>index.php/compras/pedido/contacto", {
+							"codigoempre" : empresa
+				}, function(data) {
+					//alert("hola"+data);
+					var c = JSON.parse(data);
+					$.each(c,function(i,item){
+						$('#contacto').append("<option value='"+item.PERSP_Codigo+"'>"+item.PERSC_Nombre+"</option>");
+					});
+			});
+		}
+		function get_obra(codigo) {
+			//alert(codigo);
+			$.post("<?php echo base_url(); ?>index.php/compras/pedido/obra", {
+							"codigoempre" : codigo
+				}, function(data) {
+					//alert("hola"+data);
+					var c = JSON.parse(data);
+					$.each(c,function(i,item){
+						$('#obra').append("<option value='"+item.PROYP_Codigo+"'>"+item.proyecto+"</option>");
+					});
+			});
+		}		
+						
 		</script>
 		
 	</head>
@@ -249,7 +250,7 @@
                                         </script>
 							</td>
 							<td>
-								OBRA:	<?php echo $cboContacto;?>	
+								OBRA:	<?php echo $cboObra;?>	
 							</td>
 					   </tr>
 					    <tr>
