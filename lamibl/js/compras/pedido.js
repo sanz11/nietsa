@@ -97,7 +97,7 @@ jQuery(document).ready(function(){
 	container = $('div.container');   
 });
 
-function eliminar_producto_presupuesto(n){
+function eliminar_producto_pedido(n){
 	if(confirm('Esta seguro que desea eliminar este producto?')){
 		a                	= "prodcodigo["+n+"]";
 		b					= "eliminado["+n+"]";
@@ -149,7 +149,7 @@ function agregar_producto_pedido(){
     
     flagGenInd      = $("#flagGenInd").val();
     almacenProducto	=$("#almacenProducto").val();
-    n = document.getElementById('tblDetalleOcompra').rows.length;
+    n = document.getElementById('tblDetallePedido').rows.length;
     j = n+1;
     if(j%2==0){
         clase="itemParTabla";
@@ -159,7 +159,7 @@ function agregar_producto_pedido(){
     
     
     fila = '<tr class="'+clase+'">';
-    fila+= '<td width="3%"><div align="center"><font color="red"><strong><a href="javascript:;" onclick="eliminar_producto_ocompra('+n+');">';
+    fila+= '<td width="3%"><div align="center"><font color="red"><strong><a href="javascript:;" onclick="eliminar_producto_pedido('+n+');">';
     fila+= '<span style="border:1px solid red;background: #ffffff;">&nbsp;X&nbsp;</span>';
     fila+= '</a></strong></font></div></td>';
     fila+= '<td width="4%"><div align="center">'+j+'</div></td>';
@@ -191,7 +191,7 @@ function agregar_producto_pedido(){
     fila+= '<input type="text" size="5" maxlength="10" class="cajaGeneral cajaSoloLectura" name="prodimporte['+n+']" id="prodimporte['+n+']" value="0" readonly="readonly">';
     fila+= '</div></td>';
     fila+= '</tr>';
-    $("#tblDetalleOcompra").append(fila);
+    $("#tblDetallePedido").append(fila);
     
     inicializar_cabecera_item();  
     calcula_importe(n);
@@ -246,7 +246,8 @@ function calcula_importe(n){
     calcula_totales();
 } 
 function calcula_totales(){
-    n = document.getElementById('tblDetalleOcompra').rows.length;
+	
+    n = document.getElementById('tblDetallePedido').rows.length;
     importe_total = 0;
     igv_total = 0;
     descuento_total = 0;
@@ -258,7 +259,8 @@ function calcula_totales(){
     importetotal=0;
     preciototal=0;
     ///
-
+	 descuentoa = $("#descuento").val();
+	 alert(descuentoa);
     for(i=0;i<n;i++){//Estanb al reves los campos
         a = "prodimporte["+i+"]"
         b = "prodigv["+i+"]";
@@ -279,16 +281,20 @@ function calcula_totales(){
 
 
     ///aumentado
+		desc=(importe_total*descuentoa)/100;
+		importe_total=importe_total-desc;
+		
        igvtotal=money_format((importe_total*18)/118);
        preciototal=money_format(importe_total-igvtotal);
        importetotal=money_format(importe_total);
 
     ///
+	
 
-
+	$("#descuentotal").val(desc.toFixed(2));
     $("#importetotal").val(importetotal.toFixed(2));  //val(importe_total.toFixed(2))
     $("#igvtotal").val(igvtotal.toFixed(2));  //val(igv_total.toFixed(2))
-    $("#descuentotal").val(0);
+   // $("#descuentotal").val(descuento);
     $("#preciototal").val(preciototal.toFixed(2));  //val(precio_total.toFixed(2))
 }
 function obtener_precio_producto(){

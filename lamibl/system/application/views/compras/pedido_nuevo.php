@@ -208,7 +208,7 @@
 				<div id="tituloForm" class="header"><?php echo $titulo;?></div>
 				<div id="frmBusqueda">
 				<form id="frmPedido" name="frmPedido" method="post" action="">
-					 <div id="container" class="container">
+				  <div id="container" class="container">
 						<ol>
 						<h4>Primero debe completar los siguientes campos antes de enviar.</h4>						
 							<div id="containerPedido">
@@ -217,9 +217,9 @@
 								<li><label for="responsable_value" class="error">Por favor seleccione un responsable.</label></li>
 							</div>
 						</ol>
-					</div>
-                    <div id="nuevoRegistro" style="display:none;float:right;width:150px;height:20px;border:0px solid #000;margin-top:7px;"><a href="#">Nuevo <image src="<?php echo base_url();?>images/add.png" name="agregarFila" id="agregarFila" border="0" alt="Agregar"></a></div><br><br>				
-					<div id="datosGenerales">
+				  </div>
+                  <div id="nuevoRegistro" style="display:none;float:right;width:150px;height:20px;border:0px solid #000;margin-top:7px;"><a href="#">Nuevo <image src="<?php echo base_url();?>images/add.png" name="agregarFila" id="agregarFila" border="0" alt="Agregar"></a></div><br><br>				
+				  <div id="datosGenerales">
                        <div id="datosPedido" >
 					   <table id="customised" class="fuente8">
 					   
@@ -317,10 +317,11 @@
 							</td>
 					   </tr>
 					   </table>			
-                        </div>
-				 </div>	
+                       </div>
+				   </div>	
+				  
 				  <div id="frmBusqueda" style="height:250px; overflow: auto">
-            <table class="fuente8" width="100%" cellspacing="0" cellpadding="3" border="1" ID="Table1">
+            	  	<table class="fuente8" width="100%" cellspacing="0" cellpadding="3" border="1" ID="Table1">
                 <tr class="cabeceraTabla">
                     <td width="3%">
                         <div align="center">&nbsp;</div>
@@ -354,9 +355,8 @@
                     </td>
                 </tr>
             </table>
-
-            <div>
-                <table id="tblDetalleOcompra" class="fuente8" width="100%" border="0">
+		          	<div>
+                    	<table id="tblDetallePedido" class="fuente8" width="100%" border="0">
                     <?php
                     if (count($detalle_pedido) > 0) {
                         foreach ($detalle_pedido as $indice => $valor) {
@@ -388,7 +388,7 @@
                                     <div align="center">
                                     <font color="red">
 	                                    <strong>
-		                                    <a href="javascript:;" onClick="eliminar_producto_ocompra(<?php echo $indice; ?>);">
+		                                    <a href="javascript:;" onClick="eliminar_producto_pedido(<?php echo $indice; ?>);">
 		                                    	<span style="border:1px solid red;background: #ffffff;">&nbsp;X&nbsp;</span>
 		                                    </a>
 	                                    </strong>
@@ -499,61 +499,87 @@
                     }
                     ?>
                 </table>
-            </div>
-        </div>
-        <div id="frmBusqueda3">
-            <table border="0" align="center" cellpadding='3' cellspacing='0' class="fuente8" style="position: relative">
-                <tr>
-                    <td width="90%">
-                        
-                    </td>
-                    <td>
-                        <table width="100%" border="0" align="top" cellpadding='3' cellspacing='0' class=""
-                               style="margin-top:-100px;">
-                            <tr>
-                                <td>Sub-total</td>
-                                <td width="10%" align="top">
-                                    <div align="right"><input class="cajaTotales" name="preciototal" type="text"
-                                                              id="preciototal" size="12" align="right"
+                	 </div>
+        		 </div>
+        		
+        			<br/>
+        		<br>
+        			  <div id="zonaContenid">
+		  <div align="center">
+				<div id="frmBusqueda">
+				
+				<div id="frmBusqueda3">
+            		<table border="0" align="center" cellpadding='3' cellspacing='0' class="fuente8" id="tablecustom">
+                		
+                            	<tr>
+                                	<td style="text-align:right;">Importe Bruto</td>
+                                	<td width="10%" >
+                                    		<div align="right"><input class="cajaTotales" name="preciototal" type="text"
+                                                              id="preciototal" size="12" 
                                                               readonly="readonly"
                                                               value="<?php echo round($preciototal, 2); ?>"/></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="busqueda">Descuento</td>
-                                <td align="right">
-                                    <div align="right"><input class="cajaTotales" name="descuentotal" type="text"
-                                                              id="descuentotal" size="12" align="right"
+                                	</td>
+                            	
+                                	<td class="busqueda" style="text-align:right">Descuento</td>
+                                	<td >
+                                    	<div ><input class="cajaTotales" name="descuentotal" type="text"
+                                                              id="descuentotal" size="12" 
                                                               readonly="readonly"
                                                               value="<?php echo round($descuentotal, 2); ?>"/></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="busqueda">IGV</td>
-                                <td align="right">
-                                    <div align="right"><input class="cajaTotales" name="igvtotal" type="text"
-                                                              id="igvtotal" size="12" align="right" readonly="readonly"
+                                	</td>
+                               <td class="busqueda" style="text-align:right;">Valor de Venta</td>
+                                <td >
+                                    <div><input class="cajaTotales" name="vventa" type="text"
+                                                              id="vventa" size="12"  readonly="readonly"
                                                               value="<?php echo round($igvtotal, 2); ?>"/></div>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td class="busqueda">Precio Total</td>
-                                <td align="right">
-                                    <div align="right"><input class="cajaTotales" name="importetotal" type="text"
-                                                              id="importetotal" size="12" align="right"
+                            	
+                                <td class="busqueda" style="text-align:right;">IGV</td>
+                                <td >
+                                    <div><input class="cajaTotales" name="igvtotal" type="text"
+                                                              id="igvtotal" size="12"  readonly="readonly"
+                                                              value="<?php echo round($igvtotal, 2); ?>"/></div>
+                                </td>
+                           
+                                <td class="busqueda" style="text-align:right;">Precio Total</td>
+                                <td >
+                                    <div><input class="cajaTotales" name="importetotal" type="text"
+                                                              id="importetotal" size="12" 
                                                               readonly="readonly"
                                                               value="<?php echo round($importetotal, 2); ?>"/></div>
                                 </td>
                             </tr>
-                        </table>
-                    </td>
-                </tr>
             </table>
 
-        </div>
-        <br/>
+        		  </div>
+        			<br/>
 
-<style type="text/css">
+				<div style="margin:10px 0 10px 0; clear:both">
+            		<img id="loading" src="<?php echo base_url(); ?>images/loading.gif" style="visibility: hidden"/>
+            			<a href="javascript:;" id="imgGuardarPedido"><img src="<?php echo base_url(); ?>images/botonaceptar.jpg"
+                                                           width="85" height="22" class="imgBoton"></a>
+           			 <a href="javascript:;" id="limpiarPedido"><img src="<?php echo base_url(); ?>images/botonlimpiar.jpg"
+                                                            width="69" height="22" class="imgBoton"></a>
+            		<a href="javascript:;" id="imgCancelarPedido"><img src="<?php echo base_url(); ?>images/botoncancelar.jpg"
+                                                             width="85" height="22" class="imgBoton"></a>
+          			 <?php echo $oculto ?>
+       		 	</div>
+		  	</div>
+		  	</div>
+		  		</div>
+
+			</form>
+				</div>
+				</div>
+				
+		  
+		  </div>
+		  
+	
+	</div>
+	
+	
+	<style type="text/css">
 #popup {
     left: 0;
     position: absolute;
@@ -579,6 +605,7 @@
     border-bottom: 1px solid #48484B;
     margin-top: 0;
     padding-bottom: 4px;
+   
 }
 
 .popup-overlay {
@@ -627,17 +654,12 @@ background-color:rgba(199, 255, 206, 1);
 					   .f1{
 						  width:70px; 
 					   }
+					   #zonaContenid{
+					   border-top: 15px solid white;
+					   }
+					   #tablecustom td{
+					   width:10% !important;
+					   }
+					   
 </style>
-        <div style="margin:10px 0 10px 0; clear:both">
-            <img id="loading" src="<?php echo base_url(); ?>images/loading.gif" style="visibility: hidden"/>
-            <a href="javascript:;" id="grabarOcompra"><img src="<?php echo base_url(); ?>images/botonaceptar.jpg"
-                                                           width="85" height="22" class="imgBoton"></a>
-            <a href="javascript:;" id="limpiarOcompra"><img src="<?php echo base_url(); ?>images/botonlimpiar.jpg"
-                                                            width="69" height="22" class="imgBoton"></a>
-            <a href="javascript:;" id="cancelarOcompra"><img src="<?php echo base_url(); ?>images/botoncancelar.jpg"
-                                                             width="85" height="22" class="imgBoton"></a>
-           <?php echo $oculto ?>
-        </div>
-    </div>
-</form>
 </html>
