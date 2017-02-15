@@ -636,7 +636,7 @@ background-color:rgba(199, 255, 206, 1);
                                                             width="69" height="22" class="imgBoton"></a>
             <a href="javascript:;" id="cancelarOcompra"><img src="<?php echo base_url(); ?>images/botoncancelar.jpg"
                                                              width="85" height="22" class="imgBoton"></a>
-          
+           <?php echo $oculto ?>
         </div>
     </div>
 </form>

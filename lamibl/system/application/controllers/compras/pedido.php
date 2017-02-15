@@ -96,8 +96,13 @@ class Pedido extends Controller{
         }
 
         
+		 $accion = "";
+        $modo = "insertar";
+		 $codigo = "";
         $data = array();
         $hoy = date("Y-m-d");
+		$data['contiene_igv'] = (($comp_confi[0]->COMPCONFIC_PrecioContieneIgv == '1') ? true : false);
+        
          $data['cboContacto'] = form_dropdown("contacto", array('' => ':: Seleccione ::'), "", " class='comboGrande'  id='contacto'");
 		  $data['cboObra'] = form_dropdown("obra", array('' => ':: Seleccione ::'), "", " class='comboGrande'  id='obra'");
         $data['fechai'] = form_input(array("name" => "fechai", "id" => "fechai", "class" => "cajaPequena", "readonly" => "readonly", "maxlength" => "10", "value" => "$hoy"));
@@ -117,9 +122,9 @@ class Pedido extends Controller{
 		 $data['igvtotal'] = "0";
 		 $data['importetotal'] = "0";
 		 $data['detalle_pedido'] = array();
-		 //$oculto = form_hidden(array('accion' => $accion, 'codigo' => $codigo, 'empresa' => '', 'persona' => '', 'modo' => $modo, 'base_url' => base_url(), 'tipo_oper' => $tipo_oper, 'contiene_igv' => ($data['contiene_igv'] == true ? '1' : '0')));
+		 $oculto = form_hidden(array('accion' => $accion, 'codigo' => $codigo, 'empresa' => '', 'persona' => '', 'modo' => $modo, 'base_url' => base_url(), 'tipo_oper' => $tipo_oper, 'contiene_igv' => ($data['contiene_igv'] == true ? '1' : '0')));
         
-        //$data['oculto'] = $oculto;
+        $data['oculto'] = $oculto;
 		 
       $data['igv'] = $comp_confi[0]->COMPCONFIC_Igv;
         $data['contacto'] = "";
