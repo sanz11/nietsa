@@ -274,7 +274,7 @@
 					   
 					   <tr>
 							<td >
-								 <select name="flagBS" id="flagBS" style="width:50px;" class="comboMedio"
+								 <select name="flagBS" id="flagBS" style="width:68px;" class="comboMedio"
                                 onchange="limpiar_campos_producto()">
 									<option value="B" selected="selected" title="Producto">P</option>
 									<option value="S" title="Servicio">S</option>
@@ -282,144 +282,333 @@
 							</td>
 							<td colspan="2">
 								
-								<input name="producto" type="hidden" class="cajaGeneral" id="producto"/>
-								<input name="buscar_producto" type="text" class="cajaGeneral" id="buscar_producto" size="10" placeholder="Producto" title="Ingrese parte del nombre o el nro. de serie del producto, luego presione ENTER."/>&nbsp;
-								<input name="codproducto" type="hidden" class="cajaGeneral" id="codproducto" size="10" maxlength="20" onblur="obtener_producto();"/>
-								<input name="nombre_producto" type="text" class="cajaGeneral cajaSoloLectura"id="nombre_producto" size="39" readonly="readonly" placeholder="Descripcion producto" />
+								 <input name="producto" type="hidden" class="cajaGeneral" id="producto"/>
+								<input name="buscar_producto" type="text" class="cajaGeneral" id="buscar_producto" size="10"
+                               placeholder="producto"/>&nbsp;
+								<input name="codproducto" type="hidden" class="cajaGeneral" id="codproducto" size="10"
+                               maxlength="20" onblur="obtener_producto();"/>
+								<input NAME="nombre_producto" type="text" class="cajaGeneral cajaSoloLectura"
+                               placeholder="Descripcion producto"
+                               id="nombre_producto" size="40" readonly="readonly"/>
 								<input name="stock" type="hidden" id="stock"/>
 								<input name="costo" type="hidden" id="costo"/>
 								<input name="flagGenInd" type="hidden" id="flagGenInd"/>
 								<input name="almacenProducto" type="hidden" id="almacenProducto"/>
-							</td>
+                        </td>
 							<td colspan="1">
 								Cantidad
-								<input NAME="cantidad" type="text" class="cajaGeneral"  id="cantidad" value="" size="3" maxlength="5" onkeypress="return numbersonly(this,event,'.');" />
-								<select style="width:100px;" name="unidad_medida" id="unidad_medida" onchange="obtener_precio_producto();"><option value="0">::Seleccione::</option></select>
-							</td>
+								 <input NAME="cantidad" type="text" class="cajaGeneral" id="cantidad" value="" size="3"
+                               maxlength="5" onKeyPress="return numbersonly(this,event,'.');"/>
+								<select name="unidad_medida" id="unidad_medida"
+                                class="comboMedio"  <?php if ($tipo_oper == 'V') echo 'onchange="obtener_precio_producto();"'; ?>>
+								<option value="0">::Seleccione::</option>
+								</select>
+						</td>
 							<td colspan="1">
 							 <select name="precioProducto" id="precioProducto" class="comboPequeno"
                                 onchange="mostrar_precio();" style="width:84px;">
-								<option value="0">::Seleccion::</option>
+                            <option value="0">::Seleccion::</option>
 							</select>
 								PU 
-								<?php if($tipo_docu!='B' && $contiene_igv==true) echo ' (Con IGV)'?>
-								&nbsp;&nbsp;<input NAME="precio" type="text" class="cajaGeneral" id="precio" size="5" maxlength="10" onkeypress="return numbersonly(this,event,'.');" />
-							    <a href="javascript:;" onClick="agregar_producto_presupuesto();"><img src="<?php echo base_url();?>images/botonagregar.jpg" border="1" align="absbottom"></a>
-								
+								 <input NAME="precio" type="text" class="cajaGeneral" id="precio" size="5" maxlength="10"
+                               onkeypress="return numbersonly(this,event,'.');" title="Precio con IGV"/>
+                    
+								<a href="javascript:;" onClick="agregar_producto_pedido();"><img     src="<?php echo base_url(); ?>images/botonagregar.jpg" class="imgBoton" align="absbottom"></a>
 							</td>
 					   </tr>
 					   </table>			
                         </div>
 				 </div>	
-					<div id="frmBusqueda" style="height:250px; overflow: auto">
-							<table class="fuente8" width="100%" cellspacing="0" cellpadding="3" border="1" ID="Table1">
-						<tr class="cabeceraTabla">
-							<td width="3%"><div align="center">&nbsp;</div></td>
-                            <td width="4%"><div align="center">ITEM</div></td>
-                            <td width="10%"><div align="center">C&Oacute;DIGO</div></td>
-                            <td><div align="center">DESCRIPCI&Oacute;N</div></td>
-                            <td width="10%"><div align="center">CANTIDAD</div></td>
-                            <td width="6%"><div align="center">PU C/IGV</div></td>
-                            <td width="6%"><div align="center">PU S/IGV</div></td>
-                            <td width="6%"><div align="center">PRECIO</div></td>
-                            <td width="6%"><div align="center">I.G.V.</div></td>
-                            <td width="6%"><div align="center">IMPORTE</div></td>
-						</tr>
-							</table>
-						<div>
-							<table id="tblDetalleCotizacion" class="fuente8" width="100%" border="0">
-								<?php
-								if(count($array_detalle) > 0){
-									foreach($array_detalle as $indice=>$value){
-										?>
-										 <tr class="<?php echo $clase; ?>">
-                                        <td width="3%"><div align="center"><font color="red"><strong><a href="javascript:;" onclick="eliminar_producto_presupuesto(<?php echo $indice; ?>);"><span style="border:1px solid red;background: #ffffff;">&nbsp;X&nbsp;</span></a></strong></font></div></td>
-                                        <td width="4%"><div align="center"><?php echo $indice + 1; ?></div></td>
-                                        <td width="10%"><div align="center"><?php echo $codigo_interno; ?></div></td>
-                                        <td><div align="left"><input type="text" class="cajaGeneral" style="width:395px;" maxlength="250" name="proddescri[<?php echo $indice; ?>]" id="proddescri[<?php echo $indice; ?>]" value="<?php echo $nombre_producto; ?>" /></div></td>
-                                        <?php //if ($tipo_docu != 'B') { ?>
-                                            <td width="10%"><div align="left"><input type="text" size="1" maxlength="10" class="cajaGeneral" name="prodcantidad[<?php echo $indice; ?>]" id="prodcantidad[<?php echo $indice; ?>]" value="<?php echo $prodcantidad; ?>" onblur="calcula_importe(<?php echo $indice; ?>);" onkeypress="return numbersonly(this,event,'.');" /><?php echo $nombre_unidad; ?></div></td>
-                                            <td width="6%"><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral" name="prodpu_conigv[<?php echo $indice; ?>]" id="prodpu_conigv[<?php echo $indice; ?>]" value="<?php echo $prodpu_conigv; ?>" onblur="modifica_pu_conigv(<?php echo $indice; ?>);" onkeypress="return numbersonly(this,event,'.');" /></div></td>
-                                            <td width="6%"><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral" name="prodpu[<?php echo $indice; ?>]" id="prodpu[<?php echo $indice; ?>]" value="<?php echo $prodpu; ?>" onblur="modifica_pu(<?php echo $indice; ?>);" onkeypress="return numbersonly(this,event,'.');" />
-                                                    <td width="6%"><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral cajaSoloLectura" name="prodprecio[<?php echo $indice; ?>]" id="prodprecio[<?php echo $indice; ?>]" value="<?php echo $prodsubtotal; ?>" readonly="readonly" />
-                                                        </div></td>
-                                               <!-- <?php //} else { ?>
-                                                    <td width="6%"><div align="left"><input type="text" size="1" maxlength="10" class="cajaGeneral" name="prodcantidad[<?php echo $indice; ?>]" id="prodcantidad[<?php echo $indice; ?>]" value="<?php echo $prodcantidad; ?>" onblur="calcula_importe_conigv(<?php echo $indice; ?>);" onkeypress="return numbersonly(this,event,'.');" /><?php echo $nombre_unidad; ?></div></td>
-                                                    <td width="6%"><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral" name="prodpu_conigv[<?php echo $indice; ?>]" id="prodpu_conigv[<?php echo $indice; ?>]" value="<?php echo $prodpu_conigv; ?>" onblur="calcula_importe_conigv(<?php echo $indice; ?>);" onkeypress="return numbersonly(this,event,'.');" /></div></td>
-                                                    <td width="6%"><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral cajaSoloLectura" name="prodprecio_conigv[<?php echo $indice; ?>]" id="prodprecio_conigv[<?php echo $indice; ?>]" value="<?php echo $prodsubtotal_conigv; ?>" readonly="readonly" /></div></td>
-                                                <?php //} ?>    -->
-                                                <?php //if ($tipo_docu != 'B') { ?>
-                                                    <td width="6%">
-                                                        <div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral cajaSoloLectura" name="prodigv[<?php echo $indice; ?>]" id="prodigv[<?php echo $indice; ?>]" readonly="readonly" value="<?php echo $prodigv; ?>" /></div>
-                                                    </td>
-                                                <?php //} ?>
-                                                <td width="6%">
-                                                    <div align="center">
-                                                        <input type="hidden" name="detaccion[<?php echo $indice; ?>]" id="detaccion[<?php echo $indice; ?>]" value="m">
-                                                        <input type="hidden" name="prodigv100[<?php echo $indice; ?>]" id="prodigv100[<?php echo $indice; ?>]" value="<?php echo $igv; ?>" />
-                                                        <input type="hidden" name="detacodi[<?php echo $indice; ?>]" id="detacodi[<?php echo $indice; ?>]" value="<?php echo $detacodi; ?>" />
-                                                        <input type="hidden" name="flagBS[<?php echo $indice; ?>]" id="flagBS[<?php echo $indice; ?>]" value="<?php echo $flagBS; ?>" />
-                                                        <input type="hidden" name="prodcodigo[<?php echo $indice; ?>]" id="prodcodigo[<?php echo $indice; ?>]" value="<?php echo $prodproducto; ?>" />
-                                                        <input type="hidden"  name="produnidad[<?php echo $indice; ?>]" id="produnidad[<?php echo $indice; ?>]" value="<?php echo $unidad_medida; ?>" />
-                                                        <input type="hidden" name="proddescuento100[<?php echo $indice; ?>]" id="proddescuento100[<?php echo $indice; ?>]" value="<?php echo $descuento; ?>" />
-                                                        <?php //if ($tipo_docu != 'B') { ?>
-                                                            <input type="hidden" name="proddescuento[<?php echo $indice; ?>]" id="proddescuento[<?php echo $indice; ?>]" value="<?php echo $proddescuento; ?>" onblur="calcula_importe2(<?php echo $indice; ?>);" />
-                                                        <?php //} else { ?>
-                                                          <!--  <input type="hidden" name="proddescuento_conigv[<?php echo $indice; ?>]" id="proddescuento_conigv[<?php echo $indice; ?>]" value="<?php echo $proddescuento_conigv; ?>" onblur="calcula_importe2_conigv(<?php echo $indice; ?>);" />-->
-                                                        <?php //} ?>
-                                                            <input type="text" size="5" maxlength="10" class="cajaGeneral cajaSoloLectura" name="prodimporte[<?php echo $indice; ?>]" id="prodimporte[<?php echo $indice; ?>]" readonly="readonly" value="<?php echo number_format($prodtotal,2); ?>" />
-                                                    </div>
-                                                </td>
-                                    </tr>
-										<?php
-									}
-								}
-								
-								?>
-							</table>
-							</div>					
-						</div>	
-					<table   border="0'" align="right" cellpadding=3 cellspacing=0  style="width:200px;">
-                                    <tr>
-                                        <td>Sub-total</td>
-                                            <td width="10%" align="right"><div align="right"><input class="cajaTotales" name="preciototal" type="text" id="preciototal" size="12" align="right" readonly="readonly" value="<?php echo round($preciototal, 2); ?>" /></div></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Descuento</td>
-                                      <td align="right"><div align="right"><input class="cajaTotales" name="descuentotal" type="text" id="descuentotal" size="12" align="right" readonly="readonly" value="<?php echo round($descuentotal, 2); ?>" /></div></td>
+				  <div id="frmBusqueda" style="height:250px; overflow: auto">
+            <table class="fuente8" width="100%" cellspacing="0" cellpadding="3" border="1" ID="Table1">
+                <tr class="cabeceraTabla">
+                    <td width="3%">
+                        <div align="center">&nbsp;</div>
+                    </td>
+                    <td width="4%">
+                        <div align="center">ITEM</div>
+                    </td>
+                    <td width="10%">
+                        <div align="center">C&Oacute;DIGO</div>
+                    </td>
+                    <td>
+                        <div align="center">DESCRIPCI&Oacute;N</div>
+                    </td>
+                    <td width="10%">
+                        <div align="center">CANTIDAD</div>
+                    </td>
+                    <td width="6%">
+                        <div align="center">PU C/IGV</div>
+                    </td>
+                    <td width="6%">
+                        <div align="center">PU S/IGV</div>
+                    </td>
+                    <td width="6%">
+                        <div align="center">PRECIO</div>
+                    </td>
+                    <td width="6%">
+                        <div align="center">I.G.V.</div>
+                    </td>
+                    <td width="6%">
+                        <div align="center">IMPORTE</div>
+                    </td>
+                </tr>
+            </table>
+
+            <div>
+                <table id="tblDetalleOcompra" class="fuente8" width="100%" border="0">
+                    <?php
+                    if (count($detalle_pedido) > 0) {
+                        foreach ($detalle_pedido as $indice => $valor) {
+                            $detacodi = $valor->OCOMDEP_Codigo;
+                            $flagBS = $valor->flagBS;
+                            $prodproducto = $valor->PROD_Codigo;
+                            $unidad_medida = $valor->UNDMED_Codigo;
+                            $codigo_interno = $valor->PROD_CodigoInterno;
+                            $nombre_producto = $valor->PROD_Nombre;
+                            $nombre_unidad = $valor->UNDMED_Simbolo;
+                            $flagGenInd = $valor->OCOMDEC_GenInd;
+                            $costo = $valor->OCOMDEC_Costo;
+                            $prodcantidad = $valor->OCOMDEC_Cantidad;
+                            $prodpu = $valor->OCOMDEC_Pu;
+                            $prodsubtotal = $valor->OCOMDEC_Subtotal;
+                            $prodpu_conigv = $valor->OCOMDEC_Pu_ConIgv;
+                            $proddescuento = $valor->OCOMDEC_Descuento;
+                            $proddescuento2 = $valor->OCOMDEC_Descuento2;
+                            $prodigv = $valor->OCOMDEC_Igv;
+                            $prodtotal = $valor->OCOMDEC_Total;
+                            if (($indice + 1) % 2 == 0) {
+                                $clase = "itemParTabla";
+                            } else {
+                                $clase = "itemImparTabla";
+                            }
+                            ?>
+                            <tr class="<?php echo $clase; ?>">
+                                <td width="3%">
+                                    <div align="center">
+                                    <font color="red">
+	                                    <strong>
+		                                    <a href="javascript:;" onClick="eliminar_producto_ocompra(<?php echo $indice; ?>);">
+		                                    	<span style="border:1px solid red;background: #ffffff;">&nbsp;X&nbsp;</span>
+		                                    </a>
+	                                    </strong>
+                                    </font>
+                                    </div>
+                                </td>
+                                <td width="4%">
+                                    <div align="center"><?php echo $indice + 1; ?></div>
+                                </td>
+                                <td width="10%">
+                                    <div align="center">
+                                        <?php echo $codigo_interno; ?>
+                                        <input type="hidden" class="cajaMinima"
+                                               name="prodcodigo[<?php echo $indice; ?>]"
+                                               id="prodcodigo[<?php echo $indice; ?>]"
+                                               value="<?php echo $prodproducto; ?>"/>
+                                        <input type="hidden" class="cajaMinima"
+                                               name="produnidad[<?php echo $indice; ?>]"
+                                               id="produnidad[<?php echo $indice; ?>]"
+                                               value="<?php echo $unidad_medida; ?>"/>
                                        
-                                    </tr>
-                                    <?php //if ($tipo_docu != 'B') { ?>
-                                        <tr>
-                                            <td>IGV</td>
-                                            <td align="right"><div align="right"><input class="cajaTotales" name="igvtotal" type="text" id="igvtotal" size="12" align="right" readonly="readonly" value="<?php echo round($igvtotal, 2); ?>" /></div></td>
-                                        </tr>
-                                    <?php //} ?>
-                                    <tr>
-                                        <td>probando</td>
-                                        <td align="right"><div align="right"><input class="cajaTotales" name="importetotal" type="text" id="importetotal" size="12" align="right" readonly="readonly" value="<?php echo round($importetotal, 2); ?>" /></div></td>
-                                    </tr> 
-					</table>	
-						<br />
-						
-						
-						<div style="margin-top:100px; text-align: right;" class="fuente8">
-							<a href="#" id="imgGuardarPedido"><img src="<?php echo base_url();?>images/botonaceptar.jpg" width="85" height="22" class="imgBoton" onMouseOver="style.cursor=cursor"></a>
-							<a href="#" id="imgLimpiarPedido"><img src="<?php echo base_url();?>images/botonlimpiar.jpg" width="69" height="22" class="imgBoton" onMouseOver="style.cursor=cursor"></a>
-							<a href="#" id="imgCancelarPedido"><img src="<?php echo base_url();?>images/botoncancelar.jpg" width="85" height="22" class="imgBoton" onMouseOver="style.cursor=cursor"></a>
-							<input id="accion" name="accion" value="alta" type="hidden">
-							<input type="hidden" name="modo" id="modo" value="<?php echo $modo; ?>">
-							<input type="hidden" name="opcion" id="opcion" value="1">
-							<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url();?>">
-							<input type="hidden" id="id" name="id" value="<?php echo $id;?>">
-						</div>
-					</div>					
-			  </form>
-		  </div>
-		  </div>
-		</div>
-	</body>
-	 <style>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div align="left">
+                                        <input type="text" class="cajaGeneral" style="width:395px;" maxlength="250"
+                                               name="proddescri[<?php echo $indice; ?>]"
+                                               id="proddescri[<?php echo $indice; ?>]"
+                                               value="<?php echo $nombre_producto; ?>"/>
+                                    </div>
+                                </td>
+                                <td width="10%">
+                                    <div align="left">
+                                        <input type="text" class="cajaGeneral" size="1" maxlength="5"
+                                               name="prodcantidad[<?php echo $indice; ?>]"
+                                               id="prodcantidad[<?php echo $indice; ?>]"
+                                               value="<?php echo $prodcantidad; ?>"
+                                               onblur="calcula_importe('<?php echo $indice; ?>');calcula_totales();"
+                                               onKeyPress="return numbersonly(this,event,'.');"/> <?php echo $nombre_unidad; ?>
+                                    </div>
+                                </td>
+                                <td width="6%">
+                                    <div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral"
+                                                               name="prodpu_conigv[<?php echo $indice; ?>]"
+                                                               id="prodpu_conigv[<?php echo $indice; ?>]"
+                                                               value="<?php echo $prodpu_conigv; ?>"
+                                                               onblur="modifica_pu_conigv(<?php echo $indice; ?>);"
+                                                               onkeypress="return numbersonly(this,event,'.');"/></div>
+                                </td>
+                                <td width="6%">
+                                    <div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral"
+                                                               name="prodpu[<?php echo $indice; ?>]"
+                                                               id="prodpu[<?php echo $indice; ?>]"
+                                                               value="<?php echo $prodpu; ?>"
+                                                               onblur="modifica_pu(<?php echo $indice; ?>);"
+                                                               onkeypress="return numbersonly(this,event,'.');"/>
+                                        <td width="6%">
+                                            <div align="center"><input type="text" size="5" maxlength="10"
+                                                                       class="cajaGeneral cajaSoloLectura"
+                                                                       name="prodprecio[<?php echo $indice; ?>]"
+                                                                       id="prodprecio[<?php echo $indice; ?>]"
+                                                                       value="<?php echo $prodsubtotal; ?>"
+                                                                       readonly="readonly"/></div>
+                                        </td>
+                                        <td width="6%">
+                                            <div align="center"><input type="text" size="5" maxlength="10"
+                                                                       class="cajaGeneral cajaSoloLectura"
+                                                                       name="prodigv[<?php echo $indice; ?>]"
+                                                                       id="prodigv[<?php echo $indice; ?>]"
+                                                                       readonly="readonly"
+                                                                       value="<?php echo $prodigv; ?>"/></div>
+                                        </td>
+                                        <td width="6%">
+                                            <div align="center">
+                                            	<input type="hidden" class="cajaMinima" 
+                                            	name="flagGenIndDet[<?php echo $indice; ?>]" id="flagGenIndDet[<?php echo $indice; ?>]" 
+                                            	value="<?php echo $flagGenInd;?>">
+                                                <input type="hidden" name="detaccion[<?php echo $indice; ?>]"
+                                                       id="detaccion[<?php echo $indice; ?>]" value="m"/>
+                                                <input type="hidden" name="prodigv100[<?php echo $indice; ?>]"
+                                                       id="prodigv100[<?php echo $indice; ?>]"
+                                                       value="<?php echo $igv; ?>"/>
+                                                <input type="hidden" name="detacodi[<?php echo $indice; ?>]"
+                                                       id="detacodi[<?php echo $indice; ?>]"
+                                                       value="<?php echo $detacodi; ?>"/>
+                                                <input type="hidden" name="prodstock[<?php echo $indice; ?>]"
+                                                       id="prodstock[<?php echo $indice; ?>]" value=""/>
+                                                <input type="hidden" name="prodcosto[<?php echo $indice; ?>]"
+                                                       id="prodcosto[<?php echo $indice; ?>]"
+                                                       value="<?php echo $costo; ?>"/>
+                                                <input type="hidden" name="proddescuento100[<?php echo $indice; ?>]"
+                                                       id="proddescuento100[<?php echo $indice; ?>]"
+                                                       value="<?php echo $descuento; ?>"/>
+                                                <input type="hidden" name="proddescuento[<?php echo $indice; ?>]"
+                                                       id="proddescuento[<?php echo $indice; ?>]"
+                                                       value="<?php echo $proddescuento; ?>"
+                                                       onblur="calcula_importe2(<?php echo $indice; ?>);"/>
+                                                <input type="text" size="5" maxlength="10"
+                                                       class="cajaGeneral cajaSoloLectura"
+                                                       name="prodimporte[<?php echo $indice; ?>]"
+                                                       id="prodimporte[<?php echo $indice; ?>]" readonly="readonly"
+                                                       value="<?php echo $prodtotal; ?>"/>
+                                            </div>
+                                        </td>
+                            </tr>
+                        <?php
+                        }
+                    }
+                    ?>
+                </table>
+            </div>
+        </div>
+        <div id="frmBusqueda3">
+            <table border="0" align="center" cellpadding='3' cellspacing='0' class="fuente8" style="position: relative">
+                <tr>
+                    <td width="90%">
+                        
+                    </td>
+                    <td>
+                        <table width="100%" border="0" align="top" cellpadding='3' cellspacing='0' class=""
+                               style="margin-top:-100px;">
+                            <tr>
+                                <td>Sub-total</td>
+                                <td width="10%" align="top">
+                                    <div align="right"><input class="cajaTotales" name="preciototal" type="text"
+                                                              id="preciototal" size="12" align="right"
+                                                              readonly="readonly"
+                                                              value="<?php echo round($preciototal, 2); ?>"/></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="busqueda">Descuento</td>
+                                <td align="right">
+                                    <div align="right"><input class="cajaTotales" name="descuentotal" type="text"
+                                                              id="descuentotal" size="12" align="right"
+                                                              readonly="readonly"
+                                                              value="<?php echo round($descuentotal, 2); ?>"/></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="busqueda">IGV</td>
+                                <td align="right">
+                                    <div align="right"><input class="cajaTotales" name="igvtotal" type="text"
+                                                              id="igvtotal" size="12" align="right" readonly="readonly"
+                                                              value="<?php echo round($igvtotal, 2); ?>"/></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="busqueda">Precio Total</td>
+                                <td align="right">
+                                    <div align="right"><input class="cajaTotales" name="importetotal" type="text"
+                                                              id="importetotal" size="12" align="right"
+                                                              readonly="readonly"
+                                                              value="<?php echo round($importetotal, 2); ?>"/></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+        <br/>
+
+<style type="text/css">
+#popup {
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 1001;
+}
+
+.content-popup {
+    margin:0px auto;
+    margin-top:150px;
+    position:relative;
+    padding:10px;
+    width:300px;
+    min-height:150px;
+    border-radius:4px;
+    background-color:#FFFFFF;
+    box-shadow: 0 2px 5px #666666;
+}
+
+.content-popup h2 {
+    color:#48484B;
+    border-bottom: 1px solid #48484B;
+    margin-top: 0;
+    padding-bottom: 4px;
+}
+
+.popup-overlay {
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+    display:none;
+    background-color: #777777;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.close {
+    position: absolute;
+    right: 15px;
+}
+#btnInventario{
+    size: 20px;
+width: 200px;
+height: 50px;
+    border-radius: 33px 33px 33px 33px;
+-moz-border-radius: 33px 33px 33px 33px;
+-webkit-border-radius: 33px 33px 33px 33px;
+border: 0px solid #000000;
+background-color:rgba(199, 255, 206, 1);
+
+}
+
 					   #customised{
 						   
 						   text-align:left;
@@ -438,5 +627,17 @@
 					   .f1{
 						  width:70px; 
 					   }
-					   </style>
+</style>
+        <div style="margin:10px 0 10px 0; clear:both">
+            <img id="loading" src="<?php echo base_url(); ?>images/loading.gif" style="visibility: hidden"/>
+            <a href="javascript:;" id="grabarOcompra"><img src="<?php echo base_url(); ?>images/botonaceptar.jpg"
+                                                           width="85" height="22" class="imgBoton"></a>
+            <a href="javascript:;" id="limpiarOcompra"><img src="<?php echo base_url(); ?>images/botonlimpiar.jpg"
+                                                            width="69" height="22" class="imgBoton"></a>
+            <a href="javascript:;" id="cancelarOcompra"><img src="<?php echo base_url(); ?>images/botoncancelar.jpg"
+                                                             width="85" height="22" class="imgBoton"></a>
+          
+        </div>
+    </div>
+</form>
 </html>

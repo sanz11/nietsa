@@ -107,46 +107,58 @@ function eliminar_producto_presupuesto(n){
 	}
 }
 
-function agregar_producto_presupuesto(){
-    codproducto  = $("#codproducto").val();
-	producto = $("#producto").val();
-	nombre_producto = $("#nombre_producto").val();
-	descuento = $("#descuento").val();
-	igv = parseInt($("#igv").val());
-	
-	cantidad = $("#cantidad").val();
-        if( $("#precio").val()!='')
-            precio_conigv = $("#precio").val();
-        else
-            precio_conigv=0;
-        if(contiene_igv=='1')
-            precio=money_format(precio_conigv*100/(igv+100));
-        else{
-            precio=precio_conigv;
-            precio_conigv = money_format(precio_conigv*(100+igv)/100);
-        }
-        unidad_medida = $("#unidad_medida").val();//select
+function agregar_producto_pedido(){
+    flagBS  = $("#flagBS").val();
+    
+    if($("#producto").val()==''){
+        alert('Ingrese el producto.');
+        $("#codproducto").focus();
+        return false;
+    }
+    if($("#cantidad").val()==''){
+        alert('Ingrese una cantidad.');
+        $("#cantidad").focus();
+        return false;
+    }
+    if($("#unidad_medida").val()==0){
+        $("#unidad_medida").focus();
+        alert('Seleccione una unidad de medida.');
+        return false;
+    }
+    
+    codproducto     = $("#codproducto").val();
+    producto        = $("#producto").val();
+    nombre_producto = $("#nombre_producto").val();
+    cantidad        = $("#cantidad").val();
+    igv = parseInt($("#igv").val());
+    precio_conigv = $("#precio").val();
+    if(contiene_igv=='1')
+        precio=money_format(precio_conigv*100/(igv+100))
+    else{
+        precio=precio_conigv;
+        precio_conigv = money_format(precio_conigv*(100+igv)/100);
+    }
+    stock           = parseFloat($("#stock").val());
+    costo           = parseFloat($("#costo").val());
+    unidad_medida   = '';
+    nombre_unidad   = '';
+    if(flagBS=='B'){
+        unidad_medida = $("#unidad_medida").val();
         nombre_unidad = $('#unidad_medida option:selected').html()
-	n = document.getElementById('tblDetalleCotizacion').rows.length;
-	j = n+1;
-	if(j%2==0){clase="itemParTabla";}else{clase="itemImparTabla";}
-	
-        if(codproducto==''){
-            alert('Ingrese el producto.');
-            $("#codproducto").focus();
-            return false;
-        }
-        if(cantidad==''){
-            alert('Ingrese una cantidad.');
-            $("#cantidad").focus();
-            return false;
-        }
-        if(unidad_medida==''){
-            $("#unidad_medida").focus();
-            alert('Seleccine una unidad de medida.');
-            return false;
-        }
-         fila = '<tr class="'+clase+'">';
+    }
+    
+    flagGenInd      = $("#flagGenInd").val();
+    almacenProducto	=$("#almacenProducto").val();
+    n = document.getElementById('tblDetalleOcompra').rows.length;
+    j = n+1;
+    if(j%2==0){
+        clase="itemParTabla";
+    }else{
+        clase="itemImparTabla";
+    }
+    
+    
+    fila = '<tr class="'+clase+'">';
     fila+= '<td width="3%"><div align="center"><font color="red"><strong><a href="javascript:;" onclick="eliminar_producto_ocompra('+n+');">';
     fila+= '<span style="border:1px solid red;background: #ffffff;">&nbsp;X&nbsp;</span>';
     fila+= '</a></strong></font></div></td>';
@@ -163,10 +175,10 @@ function agregar_producto_presupuesto(){
     fila+= '<input type="text" class="cajaGeneral" size="1" maxlength="5" name="prodcantidad['+n+']" id="prodcantidad['+n+']" value="'+cantidad+'" onblur="calcula_importe('+n+');" onkeypress="return numbersonly(this,event,\'.\');"> ' + nombre_unidad;
 
     fila+= '</div></td>';
-    fila += '<td width="6%"><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral" value="'+precio+'" name="prodpu_conigv['+n+']" id="prodpu_conigv['+n+']" onblur="modifica_pu_conigv('+n+');" onkeypress="return numbersonly(this,event,\'.\');" /></div></td>'
+    fila += '<td width="6%"><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral" value="'+precio_conigv+'" name="prodpu_conigv['+n+']" id="prodpu_conigv['+n+']" onblur="modifica_pu_conigv('+n+');" onkeypress="return numbersonly(this,event,\'.\');" /></div></td>'
     fila += '<td width="6%"><div align="center"><input type text" size="5" maxlength="10" class="cajaGeneral" value="'+precio+'" name="prodpu['+n+']" id="prodpu['+n+']" onblur="modifica_pu('+n+');" onkeypress="return numbersonly(this,event,\'.\');">'
-    fila += '<td width="6%"><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral cajaSoloLectura" name="prodprecio['+n+']" id="prodprecio['+n+']" value="'+(precio_conigv*cantidad)+'" readonly="readonly"></div></td>';
-    fila+= '<td width="6%"><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral cajaSoloLectura" name="prodigv['+n+']" id="prodigv['+n+']" value="'+(((precio*cantidad)*18)/100)+'"readonly></div></td>';
+    fila += '<td width="6%"><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral cajaSoloLectura" name="prodprecio['+n+']" id="prodprecio['+n+']" value="0" readonly="readonly"></div></td>';
+    fila+= '<td width="6%"><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral cajaSoloLectura" name="prodigv['+n+']" id="prodigv['+n+']" readonly></div></td>';
     fila+= '<td width="6%"><div align="center">';
     fila+= '<input type="hidden" name="detacodi['+n+']" id="detacodi['+n+']">';
     fila+= '<input type="hidden" name="detaccion['+n+']" id="detaccion['+n+']" value="n">';
@@ -179,23 +191,106 @@ function agregar_producto_presupuesto(){
     fila+= '<input type="text" size="5" maxlength="10" class="cajaGeneral cajaSoloLectura" name="prodimporte['+n+']" id="prodimporte['+n+']" value="0" readonly="readonly">';
     fila+= '</div></td>';
     fila+= '</tr>';
-        $("#tblDetalleCotizacion").append(fila);
-		
-        inicializar_cabecera_item(); 
-        return true;
+    $("#tblDetalleOcompra").append(fila);
+    
+    inicializar_cabecera_item();  
+    calcula_importe(n);
+    return true;  
 }
 
 function inicializar_cabecera_item(){
     $("#producto").val('');
+    $("#buscar_producto").val('');
+    $("#buscar_producto").val('');
     $("#codproducto").val('');
     $("#nombre_producto").val('');
     $("#cantidad").val('');
-    $("#nombre_unidad").val('');
+    $("#costo").val('');
     $("#unidad_medida").val('0');
+    $("#precioProducto").val('');
     $("#precio").val('');
     limpiar_combobox('unidad_medida');
 }
 
+function calcula_importe(n){
+    a  = "prodpu["+n+"]";
+    b  = "prodcantidad["+n+"]";
+    c  = "proddescuento["+n+"]";
+    d  = "prodigv["+n+"]";
+    e  = "prodprecio["+n+"]";
+    f  = "prodimporte["+n+"]";
+    g = "prodigv100["+n+"]";
+    h = "proddescuento100["+n+"]";
+    i = "prodpu_conigv["+n+"]";
+    pu = document.getElementById(a).value;
+    pu_conigv = document.getElementById(i).value;
+    cantidad = document.getElementById(b).value;
+    igv100 = document.getElementById(g).value;
+    descuento100 =0;  //document.getElementById(h).value;
+    precio = money_format(pu*cantidad);
+    total_dscto = money_format(precio*descuento100/100);
+    precio2 = money_format(precio-parseFloat(total_dscto));
+    
+    if(pu_conigv=='')
+        total_igv = money_format(precio2*igv100/100);
+    else{
+        total_igv = money_format((pu_conigv-pu)*cantidad);
+    }
+    importe = money_format(precio-parseFloat(total_dscto)+parseFloat(total_igv));
+
+    document.getElementById(c).value = total_dscto;
+    document.getElementById(d).value = total_igv;
+    document.getElementById(e).value = precio;
+    document.getElementById(f).value = importe;
+    
+    calcula_totales();
+} 
+function calcula_totales(){
+    n = document.getElementById('tblDetalleOcompra').rows.length;
+    importe_total = 0;
+    igv_total = 0;
+    descuento_total = 0;
+    precio_total = 0;
+
+
+     ////aumentado
+    igvtotal=0;
+    importetotal=0;
+    preciototal=0;
+    ///
+
+    for(i=0;i<n;i++){//Estanb al reves los campos
+        a = "prodimporte["+i+"]"
+        b = "prodigv["+i+"]";
+        c = "proddescuento["+i+"]";
+        d = "prodprecio["+i+"]";
+        e  = "detaccion["+i+"]";
+        if(document.getElementById(e).value!='e'){
+            importe = parseFloat(document.getElementById(a).value);
+            igv = parseFloat(document.getElementById(b).value);
+            descuento = parseFloat(document.getElementById(c).value);
+            precio = parseFloat(document.getElementById(d).value);
+            importe_total = money_format(importe + importe_total);
+            igv_total = money_format(igv + igv_total);
+            descuento_total = money_format(descuento + descuento_total);
+            precio_total = money_format(precio + precio_total);
+        }
+    }
+
+
+    ///aumentado
+       igvtotal=money_format((importe_total*18)/118);
+       preciototal=money_format(importe_total-igvtotal);
+       importetotal=money_format(importe_total);
+
+    ///
+
+
+    $("#importetotal").val(importetotal.toFixed(2));  //val(importe_total.toFixed(2))
+    $("#igvtotal").val(igvtotal.toFixed(2));  //val(igv_total.toFixed(2))
+    $("#descuentotal").val(0);
+    $("#preciototal").val(preciototal.toFixed(2));  //val(precio_total.toFixed(2))
+}
 function obtener_precio_producto(){
     var producto = $("#producto").val();
     $('#precio').val("");

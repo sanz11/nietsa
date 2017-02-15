@@ -80,7 +80,7 @@ class Pedido extends Controller{
           $this->layout->view("compras/pedido_index",$data);
     }
 
-   public function nuevo_pedido()
+   public function nuevo_pedido($tipo_oper='C')
     {
 		  $compania = $this->somevar['compania'];
 		 $comp_confi = $this->companiaconfiguracion_model->obtener($compania);
@@ -105,6 +105,7 @@ class Pedido extends Controller{
 		$docum = $this->pedido_model->traerSerieDoc();
         $data['numero'] = $document[0]->PEDIC_Numero + 1 ;
 		 $data['serie'] = $docum[0]->PEDIC_Serie ;
+		 $data['tipo_oper'] = $tipo_oper;
         $data['cliente'] = "";
         $data['ruc_cliente'] = "";
 		$data['modo'] = "";
@@ -115,6 +116,11 @@ class Pedido extends Controller{
 		 $data['descuentotal'] = "0";
 		 $data['igvtotal'] = "0";
 		 $data['importetotal'] = "0";
+		 $data['detalle_pedido'] = array();
+		 //$oculto = form_hidden(array('accion' => $accion, 'codigo' => $codigo, 'empresa' => '', 'persona' => '', 'modo' => $modo, 'base_url' => base_url(), 'tipo_oper' => $tipo_oper, 'contiene_igv' => ($data['contiene_igv'] == true ? '1' : '0')));
+        
+        //$data['oculto'] = $oculto;
+		 
       $data['igv'] = $comp_confi[0]->COMPCONFIC_Igv;
         $data['contacto'] = "";
         $data['modo'] = 'insertar';
