@@ -157,24 +157,9 @@ public function updateSolicitudCotizacion($pedido){
         {
             $compania = $this->somevar['compania'];
 		
-		/*inner JOIN cji_moneda m ON m.MONED_Codigo=p.MONED_Codigo */
-		
-		 $sql = " SELECT p.*,CONCAT(pe.PERSC_Nombre , ' ', pe.PERSC_ApellidoPaterno, ' ', pe.PERSC_ApellidoMaterno) as nombre,PROYC_Nombre,MONED_Simbolo
-		 from cji_pedido p
-        inner join cji_cliente cl on cl.CLIP_Codigo = p.CLIP_Codigo
-        inner join cji_persona pe on pe.PERSP_Codigo = cl.PERSP_Codigo
-		inner join cji_proyecto pr on pr.PROYP_Codigo = p.PROYP_Codigo
-		inner JOIN cji_moneda m ON m.MONED_Codigo = p.MONED_Codigo 
-		WHERE p.COMPP_Codigo='".$compania."'
-		
-        UNION 
-		SELECT p.* ,EMPRC_RazonSocial as nombre,PROYC_Nombre,MONED_Simbolo
-		from cji_pedido p
-        inner join cji_cliente cl on cl.CLIP_Codigo = p.CLIP_Codigo
-        inner join cji_empresa es on es.EMPRP_Codigo = cl.EMPRP_Codigo
-		inner join cji_proyecto pr on pr.PROYP_Codigo = p.PROYP_Codigo
-		inner JOIN cji_moneda m ON m.MONED_Codigo = p.MONED_Codigo 
-		WHERE p.COMPP_Codigo='".$compania."'";
+		$sql = "select DISTINCT pedido.PEDIP_Codigo,PEDIC_Serie,PEDIC_Numero,CLIP_Codigo,PROYP_Codigo from cji_pedido pedido 
+				inner join cji_pedidodetalle pedidetalle on pedido.PEDIP_Codigo = pedidetalle.PEDIP_Codigo
+				WHERE PEDIC_FlagEstado = 1";
 
       $query = $this->db->query($sql);
         if ($query->num_rows > 0) {
@@ -323,30 +308,34 @@ WHERE CPC_TipoOperacion="C" AND PEDIP_Codigo ='.$pedido.' ORDER BY PRESUP_Codigo
       return $data;
     }
    } 
-  function insertar_pedido($centro_costo,$numero_documento,$nombre_pedido,$tipo_pedido,$tipo_documento,$num_refe,$observacion, $cliente, $fecha, $hora, $contacto){
+  function insertar_pedido($serie,$numero,$fechasistema,$moneda,$obra,$cliente,$contacto,$igvpp,$importebruto,$descuentotal,$vventa,$igvtotal,$preciototal){
       $compania = $this->somevar['compania'];
       $usuario =  $this->somevar['usuario'];
   
-  // $fecha = date('Y-m-d h:i:s');
+   $fecha = date('Y-m-d h:i:s');
       $data = array(
-        'PEDIC_Numero' => $numero_documento,
-        'CENCOST_Codigo' => $centro_costo,
-        'USUA_Codigo' => $usuario,
-        'USUA_Responsable' => $usuario,
-        'CLIP_Codigo'=> $cliente,
-        'ECONP_Contacto' => $contacto,
-        'PEDIC_Observacion' => $nombre_pedido,
-        'PEDIC_FechaRegistro' => $fecha." ".$hora,
-        'COMPP_Codigo' => $compania,
-        'DOCUP_Codigo' => $tipo_documento,
-        'PEDIC_NumRefe' => $num_refe,
-        'PEDIC_Tipo' => $tipo_pedido,
-        'PEDIC_Observacion_otro' => $observacion,
-        'PEDIC_FlagEstado' => 2
+      		'PEDIC_Numero' =>$numero,
+      		'PEDIC_Serie' =>$serie,
+      		'PEDIC_FechaSistema' =>$fechasistema,
+      		'MONED_Codigo' =>$moneda,
+      		'PROYP_Codigo' =>$obra,
+      		'CLIP_Codigo' =>$cliente,
+      		'ECONP_Contacto' =>$contacto,
+      		'PEDIC_IGV' =>$igvpp,
+      		'COMPP_Codigo' =>$compania,
+      		'PEDIC_ImporteBruto' =>$importebruto,
+      		'PEDIC_DescuentoTotal' =>$descuentotal,
+      		'PEDIC_ValorVenta' =>$vventa,
+      		'PEDIC_IGVTotal' =>$igvtotal,
+      		'PEDIC_PrecioTotal' =>$preciototal,
+      		'PEDIC_FechaRegistro' =>$fecha,
+      		'PEDIC_FlagEstado' =>"1"
       );
       $this->db->insert("cji_pedido",$data);
     return $this->db->insert_id();
     }
+    
+    
     function modificar_pedido($pedido,$centro_costo,$numero_documento,$observacion,$tipo_pedido,$tipo_documento,$num_refe){
       $compania = $this->somevar['compania'];
       $usuario =  $this->somevar['usuario'];

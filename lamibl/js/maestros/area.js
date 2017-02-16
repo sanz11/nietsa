@@ -68,3 +68,5 @@ function ver_area(area){
 function atras_area(){
 	location.href = base_url+"index.php/maestros/area/areas";
 }
+
+//Probando SVN

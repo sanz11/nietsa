@@ -72,5 +72,6 @@ class Moneda_model extends Model
     {
 
     }
+   
 }
 ?>

@@ -317,7 +317,7 @@ class Cliente_model extends Model{
 
 
     public function obtener_datosCliente2($empresa){
-        $query = $this->db->where('EMPRP_Codigo',$empresa)->get('cji_cliente');
+        $query = $this->db->where('EMPRP_Codigo',$empresa)->get('cji_empresa');
         if($query->num_rows>0){
             foreach($query->result() as $fila){
                 $data[] = $fila;
@@ -326,7 +326,7 @@ class Cliente_model extends Model{
         }
     }
     public function obtener_datosCliente3($persona){
-        $query = $this->db->where('PERSP_Codigo',$persona)->get('cji_cliente');
+        $query = $this->db->where('PERSP_Codigo',$persona)->get('cji_persona');
         if($query->num_rows>0){
             foreach($query->result() as $fila){
                 $data[] = $fila;

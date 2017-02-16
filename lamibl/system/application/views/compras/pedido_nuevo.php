@@ -41,41 +41,62 @@
 					
 				$(function () {
 							
-					  $("#buscar_producto").autocomplete({
-                source: function (request, response) {
-                    $.ajax({
-                        url: "<?php echo base_url(); ?>index.php/almacen/producto/autocomplete/" + $("#flagBS").val() + "/" + $("#compania").val()+"/"+$("#almacen").val(),
-                    type: "POST",
-                        data: {
-                            term: $("#buscar_producto").val()
-                        },
-                        dataType: "json",
-                        success: function (data) {
-                            response(data);
-                        }
-                    });
-                },
-                select: function (event, ui) {
-	                    $("#buscar_producto").val(ui.item.codinterno);
-	                    $("#producto").val(ui.item.codigo);
-	                    $("#codproducto").val(ui.item.codinterno);
-	                    $("#costo").val(ui.item.pcosto);
-	                    $("#stock").val(ui.item.stock);
-	                    $("#flagGenInd").val(ui.item.flagGenInd);
-	                    $("#almacenProducto").val(ui.item.almacenProducto);
-	                    $("#cantidad").focus();
-	                    listar_unidad_medida_producto(ui.item.codigo);
-                  
-                },
-                minLength: 1
-            });
-            	  $("#buscar_cliente").autocomplete({
+					   $("#buscar_producto").autocomplete({
+			                source: function (request, response) {
+			                    $.ajax({
+			                        url: "<?php echo base_url(); ?>index.php/almacen/producto/autocomplete/" + $("#flagBS").val() + "/" + $("#compania").val()+"/"+$("#almacen").val(),
+			                        type: "POST",
+			                        data: {
+			                            term: $("#buscar_producto").val()
+			                        },
+			                        dataType: "json",
+			                        success: function (data) {
+			                            response(data);
+			                        }
+			                    });
+			                },
+			                select: function (event, ui) {
+			                	/**si el producto tiene almacen : es que no esta inventariado en ese almacen , se le asigna el almacen general de cabecera**/
+			                    if(ui.item.almacenProducto==0){
+			                    	ui.item.almacenProducto=$("#almacen").val();
+			                    }
+			                    /**fin de asignacion**/
+			                	isEncuentra=verificarProductoDetalle(ui.item.codigo,ui.item.almacenProducto);
+			                    if(!isEncuentra){
+				                    $("#buscar_producto").val(ui.item.codinterno);
+				                    $("#producto").val(ui.item.codigo);
+				                    $("#codproducto").val(ui.item.codinterno);
+				                    $("#costo").val(ui.item.pcosto);
+				                    $("#stock").val(ui.item.stock);
+				                    $("#flagGenInd").val(ui.item.flagGenInd);
+				                    $("#almacenProducto").val(ui.item.almacenProducto);
+				                    $("#cantidad").focus();
+				                    listar_unidad_medida_producto(ui.item.codigo);
+			                        //verificar_Inventariado_producto();
+			                    }else{
+			                    	$("#buscar_producto").val("");
+			     	                $("#producto").val("");
+			     	                $("#codproducto").val("");
+			     	                $("#costo").val("");
+			     	                $("#stock").val("");
+			     	                $("#flagGenInd").val("");
+			     	               	$("#nombre_producto").val("");
+			     	                $("#almacenProducto").val("");
+			                    	$("#buscar_producto").val("");
+			                    	alert("El producto ya se encuentra ingresado en la lista de detalles.");
+			                    	return !isEncuentra;
+			                    }
+			                },
+			                minLength: 3
+			            });
+			            
+            	  $("#ruc_cliente").autocomplete({
                 source: function (request, response) {
                     $.ajax({
                         url: "<?php echo base_url(); ?>index.php/ventas/cliente/autocomplete_ruc/",
                         type: "POST",
                         data: {
-                            term: $("#buscar_cliente").val()
+                            term: $("#ruc_cliente").val()
                         },
                         dataType: "json",
                         success: function (data) {
@@ -88,13 +109,19 @@
                     $("#cliente").val(ui.item.codigo);
                     $("#ruc_cliente").val(ui.item.ruc);
                     $("#buscar_producto").focus();
+
+                    codigoem=ui.item.codigoEmpresa;
+                    get_contacto(codigoem);
+                    
+                    codigo=ui.item.codigo;
+                    get_obra(codigo);
                 },
                 minLength: 2
             });
 
             /* Descativado hasta corregir vico 22082013 - quien es vico? (fixed) - pregunto lo mismo que es vicio(ABAc). */
 
-            //AUTOCOMENTADO EN CLIENTE BUSCAR
+          //  AUTOCOMENTADO EN CLIENTE BUSCAR
             $("#nombre_cliente").autocomplete({
                 //flag = $("#flagBS").val();
                 source: function (request, response) {
@@ -116,8 +143,13 @@
                     $("#buscar_cliente").val(ui.item.ruc);
                     $("#cliente").val(ui.item.codigo);
                     $("#ruc_cliente").val(ui.item.ruc);
-                     listar_contactos(ui.item.codigoEmpresa);
                     $("#buscar_producto").focus();
+
+                    codigoem=ui.item.codigoEmpresa;
+                    get_contacto(codigoem);
+                    
+                    codigo=ui.item.codigo;
+                    get_obra(codigo);
                 },
                 minLength: 2
     				
@@ -164,6 +196,8 @@
 				}, function(data) {
 					//alert("hola"+data);
 					var c = JSON.parse(data);
+					$('#contacto').html('');
+					$('#contacto').append("<option value='0'>::Seleccione::</option>");
 					$.each(c,function(i,item){
 						$('#contacto').append("<option value='"+item.PERSP_Codigo+"'>"+item.PERSC_Nombre+"</option>");
 					});
@@ -176,6 +210,8 @@
 				}, function(data) {
 					//alert("hola"+data);
 					var c = JSON.parse(data);
+					$('#obra').html('');
+					$('#obra').append("<option value='0'>::Seleccione::</option>");
 					$.each(c,function(i,item){
 						$('#obra').append("<option value='"+item.PROYP_Codigo+"'>"+item.proyecto+"</option>");
 					});
@@ -228,12 +264,10 @@
 								Serie:
 							</td>
 							<td>
-								<input class ="f1"name="serie"type="text" id="numero_documento" size="15" maxlength="4" value="<?php echo $serie;?>" onkeypress="return numbersonly('numero_documento',event);">
+							<input class ="f1" name="serie" type="text" id="serie" size="15" maxlength="4" value="<?php echo $serie;?>" onkeypress="return numbersonly('numero_documento',event);" placeholder="SERIE">
+								<input class="f1" name="numero"  type="text" id="numero" size="15" maxlength="8" value="<?php echo $numero;?>" onkeypress="return numbersonly('numero_documento',event);" placeholder="NUMERO">
 							</td>
 							<td >
-								Número: <input class="f1" name="numero"  type="text" id="numero_documento" size="15" maxlength="8" value="<?php echo $numero;?>" onkeypress="return numbersonly('numero_documento',event);">
-							</td>
-							<td>
 								Fecha: <?php echo $fechai?>
                                         <img src="<?php echo base_url();?>images/calendario.png" name="Calendario1" id="Calendario1" width="16" height="16" border="0" onMouseOver="this.style.cursor='pointer'" title="Calendario"/>
                                         <script type="text/javascript">
@@ -245,7 +279,14 @@
                                         </script>
 							</td>
 							<td>
-								OBRA:	<?php echo $cboObra;?>	
+								Moneda:	
+								<select id="moneda" name="moneda">
+									<?php echo $combomoneda;?>	
+								</select>
+							</td>
+							<td>
+								OBRA:	
+								<?php echo $cboObra;?>	
 							</td>
 					   </tr>
 					    <tr>
@@ -256,9 +297,9 @@
 								
 								 <input type="text" name="cliente" id="cliente" size="5" hidden value=""/>
                         <input type="text" name="ruc_cliente" class="cajaGeneral" id="ruc_cliente" size="10"
-                               maxlength="11" placeholder="Ruc"  onkeypress="return numbersonly(this,event,'.');" value="" />
+                               maxlength="11" placeholder="Ruc"  onkeypress="return numbersonly(this,event,'.');" value="<?php echo $ruc_cliente; ?>" />
                         <input type="text" name="nombre_cliente" class="cajaGeneral cajaSoloLectura" id="nombre_cliente"
-                               size="40" maxlength="50" placeholder="Nombre cliente" value="" />
+                               size="40" maxlength="50" placeholder="Nombre cliente" value="<?php echo $nombre_cliente; ?>"  />
                         
 
                          <a href="<?php echo base_url(); ?>index.php/ventas/cliente_ventana_busqueda/" id="linkSelecCliente"></a>
@@ -267,8 +308,8 @@
 								Contacto:	<?php echo $cboContacto;?>
 							</td>
 							<td>
-								I.G.V:	<input style="width:30px" type="text" name="igv" id="igv" size="5" value="<?php echo $igv; ?>" readonly disabled />%
-								Descuento:<input type="text" name="descuento" id="descuento" size="5" value="<?php echo $descuento; ?>" />%
+								I.G.V:	<input style="width:30px" type="text" name="igv" id="igv" size="5" value="<?php echo $igv; ?>" readonly  />%
+								Descuento:<input type="text" name="descuento" id="descuento" size="5" value="<?php echo $descuento; ?>" onblur="calcula_totales();"/>%
 							</td>
 					   </tr>
 					   
@@ -299,8 +340,8 @@
 								Cantidad
 								 <input NAME="cantidad" type="text" class="cajaGeneral" id="cantidad" value="" size="3"
                                maxlength="5" onKeyPress="return numbersonly(this,event,'.');"/>
-								<select name="unidad_medida" id="unidad_medida"
-                                class="comboMedio"  <?php if ($tipo_oper == 'V') echo 'onchange="obtener_precio_producto();"'; ?>>
+								<select name="unidad_medida" id="unidad_medida" onchange="listar_precios_x_producto_unidad();"
+                                class="comboMedio"  >
 								<option value="0">::Seleccione::</option>
 								</select>
 						</td>
@@ -514,10 +555,10 @@
                             	<tr>
                                 	<td style="text-align:right;">Importe Bruto</td>
                                 	<td width="10%" >
-                                    		<div align="right"><input class="cajaTotales" name="preciototal" type="text"
-                                                              id="preciototal" size="12" 
+                                    		<div align="right"><input class="cajaTotales" name="importebruto" type="text"
+                                                              id="importebruto" size="12" 
                                                               readonly="readonly"
-                                                              value="<?php echo round($preciototal, 2); ?>"/></div>
+                                                              value="<?php echo round($importebruto, 2); ?>"/></div>
                                 	</td>
                             	
                                 	<td class="busqueda" style="text-align:right">Descuento</td>
@@ -531,7 +572,7 @@
                                 <td >
                                     <div><input class="cajaTotales" name="vventa" type="text"
                                                               id="vventa" size="12"  readonly="readonly"
-                                                              value="<?php echo round($igvtotal, 2); ?>"/></div>
+                                                              value="<?php echo round($vventa, 2); ?>"/></div>
                                 </td>
                             	
                                 <td class="busqueda" style="text-align:right;">IGV</td>
@@ -543,10 +584,10 @@
                            
                                 <td class="busqueda" style="text-align:right;">Precio Total</td>
                                 <td >
-                                    <div><input class="cajaTotales" name="importetotal" type="text"
-                                                              id="importetotal" size="12" 
+                                    <div><input class="cajaTotales" name="preciototal" type="text"
+                                                              id="preciototal" size="12" 
                                                               readonly="readonly"
-                                                              value="<?php echo round($importetotal, 2); ?>"/></div>
+                                                              value="<?php echo round($preciototal, 2); ?>"/></div>
                                 </td>
                             </tr>
             </table>
@@ -558,7 +599,7 @@
             		<img id="loading" src="<?php echo base_url(); ?>images/loading.gif" style="visibility: hidden"/>
             			<a href="javascript:;" id="imgGuardarPedido"><img src="<?php echo base_url(); ?>images/botonaceptar.jpg"
                                                            width="85" height="22" class="imgBoton"></a>
-           			 <a href="javascript:;" id="limpiarPedido"><img src="<?php echo base_url(); ?>images/botonlimpiar.jpg"
+           			 <a href="javascript:;" id="limpiarnewPedido"><img src="<?php echo base_url(); ?>images/botonlimpiar.jpg"
                                                             width="69" height="22" class="imgBoton"></a>
             		<a href="javascript:;" id="imgCancelarPedido"><img src="<?php echo base_url(); ?>images/botoncancelar.jpg"
                                                              width="85" height="22" class="imgBoton"></a>

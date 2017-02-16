@@ -26,10 +26,11 @@ class Pedidodetalle_model extends Model{
     public function insertar($filter=null)
     {
         $this->db->insert($this->_name,(array)$filter);
+        return $this->db->insert_id();
     }
-	public function insertar_varios($filter=null,$cod_pedido){
-		$filter->PEDIP_Codigo = $cod_pedido;
+	public function insertar_varios($filter=null){
         $this->db->insert($this->_name,(array)$filter);
+        return $this->db->insert_id();
     }
      public function modificar($presupuesto_detalle,$filter=null)
     {

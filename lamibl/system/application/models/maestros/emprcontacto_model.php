@@ -81,6 +81,23 @@ class Emprcontacto_model extends Model
             return $data;
         }
     }
+    public function getcustom_contactosCliente($contacto){
+    	$where = array('ECONC_FlagEstado'=>'1','cji_emprcontacto.ECONP_Contacto'=>$contacto);
+    
+    	$query = $this->db->order_by('cji_emprcontacto.ECONP_Contacto')
+    	->from('cji_emprcontacto')
+    	->select('cji_emprcontacto.*, cji_persona.PERSC_Nombre , cji_persona.PERSC_ApellidoPaterno ,
+                                   cji_persona.PERSC_ApellidoMaterno, cji_area.AREAP_Codigo  AREAP_Codigo,
+                                   cji_area.AREAC_Descripcion AREAC_Descripcion,cji_cargo.CARGC_Descripcion  CARGC_Descripcion')
+                                       ->get();
+    
+                                       if($query->num_rows>0){
+                                       	foreach($query->result() as $fila){
+                                       		$data[] = $fila;
+                                       	}
+                                       	return $data;
+                                       }
+    }
 
 
 }
