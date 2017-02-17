@@ -324,6 +324,11 @@ public function obra(){
         $data['serie'] = $datos_pedido[0]->PEDIC_Serie;
         $data['igv'] = $datos_pedido[0]->PEDIC_IGV;
         $contacto = $datos_pedido[0]->ECONP_Contacto;
+        $codigo = $datos_pedido[0]->CLIP_Codigo;
+        
+        $respuesta = $this->pedido_model->contactos($codigo);
+        echo json_encode($respuesta);
+        
        
         $fecha_hora = explode(" ", $datos_pedido[0]->PEDIC_FechaRegistro);
         
