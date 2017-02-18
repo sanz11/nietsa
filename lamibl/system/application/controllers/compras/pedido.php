@@ -100,9 +100,16 @@ class Pedido extends Controller{
 						}
 					}
 					
+					
+					$ConversorDeNumero=1;
+					$imp = 1;
+					$tipo_oper2='"V"';
+					
                     $editar         = "<a href='javascript:;' onclick='editar_pedido(".$codigo.")'><img src='".base_url()."images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
 					$eliminar       = "<a href='javascript:;' onclick='eliminar_pedido(".$codigo.")'><img src='".base_url()."images/eliminar.png' width='16' height='16' border='0' title='Modificar'></a>";
-                    $lista[]        = array($item,$serie,$numero,$nombrededos,$nombreproyecto,$editar,$eliminar);
+					$ver = "<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(" . $codigo .",".$ConversorDeNumero.",".$imp.",".$tipo_oper2.")'  target='_parent'><img src='" . base_url() . "images/pdf.png' width='16' height='16' border='0' title='Ver PDF'></a>";
+					
+                    $lista[]        = array($item,$serie,$numero,$nombrededos,$nombreproyecto,$editar,$ver,$eliminar);
                     $item++;
                 }
             }
@@ -327,7 +334,7 @@ public function obra(){
         $codigo = $datos_pedido[0]->CLIP_Codigo;
         
         $respuesta = $this->pedido_model->contactos($codigo);
-        echo json_encode($respuesta);
+       
         
        
         $fecha_hora = explode(" ", $datos_pedido[0]->PEDIC_FechaRegistro);
@@ -352,16 +359,6 @@ public function obra(){
             //$array_detalle[] = array($producto[0]->PROD_Codigo, $producto[0]->PROD_Nombre, $value->PEDIDETC_Cantidad, $unidad[0]->UNDMED_Codigo, $unidad[0]->UNDMED_Simbolo, $detalle);
             $array_detalle[] = array($producto[0]->PROD_Codigo, $producto[0]->PROD_Nombre, $value->PEDIDETC_Cantidad, $unidad[0]->UNDMED_Codigo, $unidad[0]->UNDMED_Simbolo);
             
-        }
-         $contactos = $this->emprcontacto_model->listar_contactosCliente($contacto);
-        $arrContacto = array("" => "::Seleccione::");
-        if (count($contactos) > 0) {
-            foreach ($contactos as $value) {
-                $codigo = $value->ECONP_Contacto;
-                $persona = $value->ECONC_Persona . '-' . $value->AREAP_Codigo;
-                $nombres_persona = $value->PERSC_Nombre . " " . $value->PERSC_ApellidoPaterno . " " . $value->PERSC_ApellidoMaterno . ($value->AREAP_Codigo != '0' && $value->AREAP_Codigo != '' ? " - " . $value->AREAC_Descripcion : '');
-                $arrContacto[$codigo] = $nombres_persona;
-            }
         }
 
         $data['contacto'] = $contacto;

@@ -437,12 +437,14 @@ class Configuracionimpresion extends Controller{
                     /**buscamos la variable asociada a la principal y capturamos el codigo**/
                         foreach ($ListaDatosSentencia as $objeto){
                            // print_r($objeto);
+                           IF(COUNT($objeto)>0){
                             foreach ($objeto as $valorVariable){
                                 if(isset($valorVariable->$codigoRelacion)){
                                     $CodigoSecundario=$valorVariable->$codigoRelacion;
                                     break;
                                 }
                             }
+                           }
                         }
                     /**buscamos en principal y en los demas Datos si existe**/
                     $sentencia=str_replace($variableRelacion, $CodigoSecundario, $sentencia);

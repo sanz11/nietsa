@@ -53,7 +53,8 @@
 												 <td width="8%">NUMERO</td>
 												<td width="13%">RAZON SOCIAL</td>
                                                 <td width="38%">OBRA</td>
-                                                <td width="5%">ACCIONES</td>
+                                                <td width="5%">&nbsp;</td>
+                                                 <td width="5%">ACCIONES</td>
                                                 <td width="5%">&nbsp;</td>
                                         </tr>
                                         <?php
@@ -70,6 +71,7 @@
                                                         <td><div align="center"><?php echo $valor[4];?></div></td>
                                                         <td><div align="center"><?php echo $valor[5];?></div></td>
                                                         <td><div align="center"><?php echo $valor[6];?></div></td>
+                                                        <td><div align="center"><?php echo $valor[7];?></div></td>
                                                         
                                                 </tr>
                                                 <?php
