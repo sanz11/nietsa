@@ -280,7 +280,7 @@
 							</td>
 							<td>
 								Moneda:	
-								<select id="moneda" name="moneda">
+								<select id="moneda" name="moneda" >
 									<?php echo $combomoneda;?>	
 								</select>
 							</td>
@@ -409,15 +409,7 @@
                             $nombre_producto = $valor->PROD_Nombre;
                             $nombre_unidad = $valor->UNDMED_Simbolo;
                             $flagGenInd = $valor->OCOMDEC_GenInd;
-                            $costo = $valor->OCOMDEC_Costo;
-                            $prodcantidad = $valor->OCOMDEC_Cantidad;
-                            $prodpu = $valor->OCOMDEC_Pu;
-                            $prodsubtotal = $valor->OCOMDEC_Subtotal;
-                            $prodpu_conigv = $valor->OCOMDEC_Pu_ConIgv;
-                            $proddescuento = $valor->OCOMDEC_Descuento;
-                            $proddescuento2 = $valor->OCOMDEC_Descuento2;
-                            $prodigv = $valor->OCOMDEC_Igv;
-                            $prodtotal = $valor->OCOMDEC_Total;
+
                             if (($indice + 1) % 2 == 0) {
                                 $clase = "itemParTabla";
                             } else {
@@ -603,7 +595,6 @@
                                                             width="69" height="22" class="imgBoton"></a>
             		<a href="javascript:;" id="imgCancelarPedido"><img src="<?php echo base_url(); ?>images/botoncancelar.jpg"
                                                              width="85" height="22" class="imgBoton"></a>
-          			 <?php echo $oculto ?>
        		 	</div>
 		  	</div>
 		  	</div>

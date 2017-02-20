@@ -122,15 +122,7 @@ class Pedido extends Controller{
 		  $compania = $this->somevar['compania'];
 		 $comp_confi = $this->companiaconfiguracion_model->obtener($compania);
         $combo = '';
-//         $listado_tipo_doc = $this->documento_model->listar();
-//         if(count($listado_tipo_doc) > 0){
-//             foreach($listado_tipo_doc as $indice=>$valor){
-//                 $codigo   = $valor->DOCUP_Codigo;
-//                 $descripcion   = $valor->DOCUC_Descripcion;
-//                 //$lista[]        = array($codigo,$descripcion);
-//                 $combo .= '<option value="'.$codigo.'">'.$descripcion.'</option>';
-//             }
-//         }
+
         $combomoneda="";
         $listadomoneda = $this->moneda_model->listartipomoneda();
         if(count($listadomoneda) > 0){
@@ -324,30 +316,42 @@ public function obra(){
     }
     
    public function editar_pedido($pedido){
-
+   	$data['modo'] = 'modificar';
+   	$data['titulo'] = "EDITAR PEDIDO";
+   	
         $datos_pedido = $this->pedido_model->obtener_pedido($pedido);
        
         $data['numero'] = $datos_pedido[0]->PEDIC_Numero;
         $data['serie'] = $datos_pedido[0]->PEDIC_Serie;
         $data['igv'] = $datos_pedido[0]->PEDIC_IGV;
+        
+        $codigomoneda = $datos_pedido[0]->MONED_Codigo;
+        $data['combomoneda'] =  $this->OPTION_generador($this->moneda_model->listartipomoneda(), 'moned_codigo','moned_descripcion',$codigomoneda);
+        
+        $data['cboObra'] = "obra";
+        $data['descuento'] = " ";
+        
         $contacto = $datos_pedido[0]->ECONP_Contacto;
-        $codigo = $datos_pedido[0]->CLIP_Codigo;
-        
-        $respuesta = $this->pedido_model->contactos($codigo);
-       
-        
+
        
         $fecha_hora = explode(" ", $datos_pedido[0]->PEDIC_FechaRegistro);
+        $data['hora'] = $fecha_hora[1];
+        $data['fechai'] = form_input(array("name" => "fechai", "id" => "fechai", "class" => "cajaPequena", "readonly" => "readonly", "maxlength" => "10", "value" => "$fecha_hora[0]"));
         
         $datos_cliente = $this->cliente_model->obtener($datos_pedido[0]->CLIP_Codigo);
-
-            if ($datos_cliente) {
                 $nombre_cliente = $datos_cliente->nombre;
                 $ruc_cliente = $datos_cliente->ruc;
-            }
-         
+            $data['ruc_cliente'] = $ruc_cliente;
+            $data['nombre_cliente'] = $nombre_cliente;
         
-        //$data['nombre_pedido'] = $combo;
+            $data['cboContacto'] = "";
+            $data['importebruto'] = $datos_pedido[0]->PEDIC_ImporteBruto;
+            $data['descuentotal'] = $datos_pedido[0]->PEDIC_DescuentoTotal;
+            $data['vventa'] = $datos_pedido[0]->PEDIC_ValorVenta;
+            $data['igvtotal'] = $datos_pedido[0]->PEDIC_IGVTotal;
+            $data['preciototal'] = $datos_pedido[0]->PEDIC_PrecioTotal;
+            
+            
         $listado_detalle = $this->pedidodetalle_model->listar($datos_pedido[0]->PEDIP_Codigo);
         $array_detalle = array();
         foreach($listado_detalle as $key=>$value){
@@ -361,18 +365,8 @@ public function obra(){
             
         }
 
-        $data['contacto'] = $contacto;
-        $data['cboContacto'] = form_dropdown("contacto", $arrContacto, $contacto, " class='comboGrande' id='contacto'");
-        //$data['cliente'] = $datos_pedido[0]->CLIP_Codigo;
-        $data['ruc_cliente'] = $ruc_cliente;
-        $data['nombre_cliente'] = $nombre_cliente;
-        $data['fechai'] = form_input(array("name" => "fechai", "id" => "fechai", "class" => "cajaPequena", "readonly" => "readonly", "maxlength" => "10", "value" => "$fecha_hora[0]"));
-        $data['hora'] = $fecha_hora[1];
-        //$data['num_refe'] = $datos_pedido[0]->PEDIC_NumRefe;
-        $data['datos'] = '';
-        $data['id'] = $pedido;
-        $data['modo'] = 'modificar';
-        $data['titulo'] = "EDITAR PEDIDO";
+       
+     	
         $data['array_detalle'] = $array_detalle;
         $this->load->view("compras/pedido_nuevo",$data);
     }
@@ -608,6 +602,7 @@ public function obra(){
         $presupuesto = $this->presupuesto_model->buscar_presu_x_pedido($pedido);
         if(count($presupuesto) == 0){
             $this->pedido_model->eliminar_pedido($pedido);
+            $this->pedido_model->eliminar_producto_pedido2($pedido);
         }else{
             echo "Tiene este pedido amarrados a un presupuesto";
         }

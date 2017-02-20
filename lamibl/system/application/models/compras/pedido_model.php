@@ -314,6 +314,7 @@ WHERE CPC_TipoOperacion="C" AND PEDIP_Codigo ='.$pedido.' ORDER BY PRESUP_Codigo
   
    $fecha = date('Y-m-d h:i:s');
       $data = array(
+      		'PEDIC_TipoDocume' =>"V",
       		'PEDIC_Numero' =>$numero,
       		'PEDIC_Serie' =>$serie,
       		'PEDIC_FechaSistema' =>$fechasistema,
@@ -366,8 +367,18 @@ WHERE CPC_TipoOperacion="C" AND PEDIP_Codigo ='.$pedido.' ORDER BY PRESUP_Codigo
     $this->db->update('cji_pedidodetalle',$data);
     }*/
   function eliminar_pedido($pedido){
-    $this->db->where('cji_pedido.PEDIP_Codigo', $pedido);
-        $this->db->delete('cji_pedido');
+  	$data     = array("PEDIC_FlagEstado"=>'0');
+  	$where = array("PEDIP_Codigo"=>$pedido);
+  	$this->db->where($where);
+  	$this->db->update('cji_pedido',$data);
+  	
+  
+    }
+    function eliminar_producto_pedido2($pedido){
+    	$data      = array("PEDIDETC_FlagEstado"=>'0');
+    	$where = array("PEDIP_Codigo"=>$pedido);
+    	$this->db->where($where);
+    	$this->db->update('cji_pedidodetalle',$data);
     }
     function eliminar_producto_pedido($detalle_pedido){
     $data      = array("PEDIDETC_FlagEstado"=>'0');
