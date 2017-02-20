@@ -18,11 +18,11 @@
 		
         });
         
-	   function ver_detalle_documentoPresupuesto(documento){
+	   function ver_detalle_documentoPedido(documento){
            if('<?php echo $tipo_oper; ?>'!='C'){
-            url = base_url+"index.php/ventas/presupuesto/obtener_detalle_presupuesto/v/<?php echo $tipo_oper; ?>/"+documento;
+            url = base_url+"index.php/ventas/pedido/obtener_detalle_pedido/v/<?php echo $tipo_oper; ?>/"+documento;
 		}else{
-		    url = base_url+"index.php/ventas/presupuesto/obtener_detalle_presupuesto/c/<?php echo $tipo_oper; ?>/"+documento;
+		    url = base_url+"index.php/ventas/pedido/obtener_detalle_pedido/c/<?php echo $tipo_oper; ?>/"+documento;
 		}
 		
             $("#tblDocumentoDetalle tr[class!='cabeceraTabla']").html('');    
@@ -63,8 +63,8 @@
    <?php echo $form_open;?>
     <div id="tituloForm" class="header" style="width:95%; padding-top: 0px;">
         <ul class="lista_tipodoc">
-			<li style="background-color: #FF3333;"><a href="<?php echo base_url();?>index.php/ventas/presupuesto/ventana_muestra_presupuestoRecu/<?php echo $tipo_oper; ?>/<?php if($tipo_oper=='V') echo $cliente; else echo $proveedor; ?>/SELECT_HEADER/<?php echo $almacen; ?>/P">PRESUPUESTO(RECURRENTE) </a></li>
-			<li ><a href="<?php echo base_url();?>index.php/ventas/presupuesto/ventana_muestra_Opedido/<?php echo $tipo_oper; ?>/<?php if($tipo_oper=='V') echo $cliente; else echo $proveedor; ?>/SELECT_HEADER/<?php echo $almacen; ?>/OP">ORDEN DE PEDIDO</a></li>
+			<li > <a href="<?php echo base_url();?>index.php/ventas/presupuesto/ventana_muestra_presupuestoRecu/<?php echo $tipo_oper; ?>/<?php if($tipo_oper=='V') echo $cliente; else echo $proveedor; ?>/SELECT_HEADER/<?php echo $almacen; ?>/P">PRESUPUESTO(RECURRENTE)</a></li>
+			<li style="background-color: #FF3333;"><a href="<?php echo base_url();?>index.php/ventas/presupuesto/ventana_muestra_Opedido/<?php echo $tipo_oper; ?>/<?php if($tipo_oper=='V') echo $cliente; else echo $proveedor; ?>/SELECT_HEADER/<?php echo $almacen; ?>/OP">ORDEN DE PEDIDO</a></li>
 		
 		</ul>
     </div>
@@ -123,7 +123,7 @@
             else{
             ?>
                     <tr>
-                            <td width="100%" class="" colspan="7">Aún No hay ning&uacute;n registro con dicha persona</td>
+                              <td width="100%" class="" colspan="7">Aún No hay ning&uacute;n registro con dicha persona</td>
                     </tr>
             <?php
             }

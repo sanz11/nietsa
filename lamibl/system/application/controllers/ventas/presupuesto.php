@@ -343,6 +343,49 @@ class Presupuesto extends Controller {
 
         $this->load->view('ventas/ventana_muestra_presupuesto', $data);
     }
+    
+    public function ventana_muestra_Opedido($tipo_oper, $codigo = '', $formato = 'SELECT_ITEM', $docu_orig = 'G', $almacen = "", $comprobante = '') {
+    	$cliente = '';
+    	$nombre_cliente = '';
+    	$ruc_cliente = '';
+    
+    
+    	$cliente = $codigo;
+    	$datos_cliente = $this->cliente_model->obtener($cliente);
+    	if ($datos_cliente) {
+    		$nombre_cliente = $datos_cliente->nombre;
+    		$ruc_cliente = $datos_cliente->ruc;
+    	}
+    	$filter = new stdClass();
+    	$filter->cliente = $cliente;
+    
+    
+    	$lista_pedido = $this->pedido_model->buscar_pedido_asoc($tipo_oper, $docu_orig = 'G', $filter);
+    
+    	$lista = array();
+    	foreach ($lista_pedido as $indice => $value) {
+    		$ver = "<a href='javascript:;' onclick='ver_detalle_documentoPedido(" . $value->PEDIP_Codigo . ")'><img src='" . base_url() . "images/ver.png' width='16' height='16' border='0' title='Ver Detalles'></a>";
+    		$select = '';
+    		if ($formato == 'SELECT_HEADER')
+    			$select = "<a href='javascript:;' onclick='seleccionar_presupuesto(" . $value->PEDIP_Codigo . " ," . $value->PEDIC_Serie . "," . $value->PEDIC_Numero . ")'><img src='" . base_url() . "images/ir.png' width='16' height='16' border='0' title='Seleccionar Comprobante'></a>";
+    			$lista[] = array(mysql_to_human($value->PEDIC_FechaRegistro), $value->PEDIC_Serie, $value->PEDIC_Numero, '', $value->nombre, $value->MONED_Simbolo . ' ' . number_format($value->PEDIC_PrecioTotal), $ver, $select);
+    	}
+    
+    	$data['lista'] = $lista;
+    	$data['cliente'] = $cliente;
+    	$data['nombre_cliente'] = $nombre_cliente;
+    	$data['ruc_cliente'] = $ruc_cliente;
+    	$data['almacen'] = $almacen;
+    	$data['comprobante'] = $comprobante;
+    	$data['tipo_oper'] = $tipo_oper;
+    	$data['docu_orig'] = $docu_orig;
+    	$data['formato'] = $formato;
+    	$data['form_open'] = form_open(base_url() . "index.php/ventas/comprobante/ventana_muestra_presupuesto", array("name" => "frmComprobante", "id" => "frmComprobante"));
+    	$data['form_close'] = form_close();
+    	$data['form_hidden'] = form_hidden(array("base_url" => base_url(), "docu_orig" => $docu_orig, "formato" => $formato));
+    
+    	$this->load->view('ventas/ventana_muestra_opedido', $data);
+    }
 
     public function presupuesto_nueva($tipo_docu = 'V') {
         $compania = $this->somevar['compania'];

@@ -406,5 +406,80 @@ WHERE CPC_TipoOperacion="C" AND PEDIP_Codigo ='.$pedido.' ORDER BY PRESUP_Codigo
       }
       return $data;
     }
+    
+    public function buscar_pedido_asoc($tipo_oper , $docu_orig, $filter = NULL, $number_items = '', $offset = '', $fecha_registro = '') {
+    	$compania = $this->somevar['compania'];
+    
+    	$where = '';
+    	
+    				if (isset($filter->cliente) && $filter->cliente != '')
+    					$where.=' and p.CLIP_Codigo=' . $filter->cliente;
+    				
+    						$limit = "";
+    
+    						if ((string) $offset != '' && $number_items != '')
+    							$limit = 'LIMIT ' . $offset . ',' . $number_items;
+    						
+//     						
+    
+    							$sql = "
+		SELECT p.PEDIC_FechaRegistro,
+                         p.PEDIP_Codigo,
+                         p.PEDIC_Serie,
+                         p.PEDIC_Numero,
+                         p.CLIP_Codigo,
+                       (CASE c.CLIC_TipoPersona  WHEN '1'
+                       THEN e.EMPRC_RazonSocial
+                       ELSE CONCAT(pe.PERSC_Nombre , ' ', pe.PERSC_ApellidoPaterno, ' ', pe.PERSC_ApellidoMaterno) end) nombre,
+                       m.MONED_Simbolo,
+                       p.PEDIC_PrecioTotal,
+                       p.PEDIC_FlagEstado
+                FROM cji_pedido p
+                LEFT JOIN cji_moneda m ON m.MONED_Codigo=p.MONED_Codigo
+                LEFT JOIN cji_pedidodetalle pd ON pd.PEDIP_Codigo=p.PEDIP_Codigo
+                INNER JOIN cji_cliente c ON c.CLIP_Codigo=p.CLIP_Codigo
+                LEFT JOIN cji_persona pe ON pe.PERSP_Codigo=c.PERSP_Codigo AND c.CLIC_TipoPersona ='0'
+                LEFT JOIN cji_empresa e ON e.EMPRP_Codigo=c.EMPRP_Codigo AND c.CLIC_TipoPersona='1'
+                WHERE p.PEDIC_TipoDocume ='V' and p.PEDIC_FlagEstado='1'" . $where . " 
+                GROUP BY p.PEDIP_Codigo
+                ORDER BY p.PEDIC_FechaRegistro DESC" . $limit . "
+    
+                ";
+    							//echo $sql."<br/>";
+    							$query = $this->db->query($sql);
+    							if ($query->num_rows > 0) {
+    								foreach ($query->result() as $fila) {
+    									$data[] = $fila;
+    								}
+    								return $data;
+    							}
+    							return array();
+    }
+    public function listar($pedido)
+    {
+    	$where = array("PEDIP_Codigo"=>$pedido,"PEDIDETC_FlagEstado"=>"1");
+    	$query = $this->db->order_by('PEDIDETP_Codigo')->where($where)->get('cji_pedidodetalle');
+    	if($query->num_rows>0){
+    		foreach($query->result() as $fila){
+    			$data[] = $fila;
+    		}
+    		return $data;
+    	}
+    }
+    
+    public function obtener_pedido_filtrado($pedido) {
+    	$tipo_oper = $this->uri->segment(4);
+    	$tipo_docu = $this->uri->segment(5);
+    	
+    	$where = array('PEDIP_Codigo' => $pedido);
+    	$query = $this->db->where($where)->get('cji_pedido');
+    	if ($query->num_rows > 0) {
+    		foreach ($query->result() as $fila) {
+    			$data[] = $fila;
+    		}
+    		return $data;
+    	}
+    	
+    }
 }
 ?>

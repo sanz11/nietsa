@@ -88,6 +88,31 @@ if (empty($persona))
 					} 
 				}					
         });
+				 
+				 $(".verOrpedido").fancybox({
+			            'width'          : 670,
+			            'height'         : 420,
+			            'autoScale'      : false,
+			            'transitionIn'   : 'none',
+			            'transitionOut'  : 'none',
+			            'showCloseButton': true,
+			            'modal'          : false,
+			            'type'	     : 'iframe',
+			            'onStart'        : function(){
+
+			                
+			                    if($('#cliente').val()==''){
+			                        alert('Debe seleccionar el cliente .');
+			                        $('#nombre_cliente').focus();
+			                        return false;
+			                    }else{
+									if($('.verOrpedido::checked').val()=='OP' )					
+									baseurl=base_url+'index.php/ventas/presupuesto/ventana_muestra_Opedido/V/'+$('#cliente').val()+'/SELECT_HEADER/<?php echo $tipo_docu; ?>/'+almacen+'/OP';
+								  $('.verOrpedido::checked').attr('href', baseurl );
+								
+								} 
+							}					
+			        });
 								
             });
             $(function() {
@@ -283,17 +308,8 @@ if (empty($persona))
 
 <?php
 
-?>
-
-							<td></td>
-							<td width="5%" valign="middle">
-								<label for="P"><img src="<?php echo base_url() ?>images/docrecurrente.png" class="imgBoton" /></label>
-								<input type="radio" name="referenciar" id="P" value="P" href="javascript:;" class="verDocuRefe" style="display:none;">
-								<div id="serieguiaverPre" name="serieguiaverPre" style="background-color: #cc7700; color:fff; padding:5px;display:none" ></div>
-											
-							</td>
-                            <td width="9%" valign="middle">Fecha</td>
-                            <td width="20%" valign="middle"><input NAME="fecha" type="text" class="cajaGeneral cajaSoloLectura" id="fecha" value="<?php echo $hoy; ?>" size="10" maxlength="10" readonly="readonly" />
+?>								<td>Fecha *</td>
+							 <td width="2%" valign="middle" ><input NAME="fecha" type="text" class="cajaGeneral cajaSoloLectura" id="fecha" value="<?php echo $hoy; ?>" size="10" maxlength="10" readonly="readonly" />
                                 <img height="16" border="0" width="16" id="Calendario1" name="Calendario1" src="<?php echo base_url(); ?>images/calendario.png" />
                                 <script type="text/javascript">
                                     Calendar.setup({
@@ -303,9 +319,18 @@ if (empty($persona))
                                     });
                                 </script>
                             </td>
-                            <td width="9%" valign="middle"><!--Solicitud de Cotizaci&oacute;n--></td>
-                            <td width="23%" valign="middle"><!--<select name="cotizacion" id="cotizacion" class="comboMedio"><option value='0'>::Seleccione::</option></select>--></td>
-
+							<td width="5%" valign="middle" >
+								<label for="P"><img src="<?php echo base_url() ?>images/docrecurrente.png" class="imgBoton" /></label>
+								<input type="radio" name="referenciar" id="P" value="P" href="javascript:;" class="verDocuRefe" style="display:none;">
+								<div id="serieguiaverPre" name="serieguiaverPre" style="background-color: #cc7700; color:fff; padding:5px;display:none" ></div>
+											
+							</td>
+							 <td width="9%" valign="middle">
+							 <label for="OP"><img src="<?php echo base_url() ?>images/opedido.png" class="imgBoton" /></label>
+								<input type="radio" name="referenciar" id="OP" value="OP" href="javascript:;" class="verOrpedido" style="display:none;">
+								<div id="serieguiaverPre" name="serieguiaverPre" style="background-color: #cc7700; color:fff; padding:5px;display:none" ></div>
+							 </td>
+                           
                         </tr>
                         <tr>
                             <td>Cliente *</td>

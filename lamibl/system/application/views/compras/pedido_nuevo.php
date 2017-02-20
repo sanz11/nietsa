@@ -203,6 +203,7 @@
 					});
 			});
 		}
+		
 		function get_obra(codigo) {
 			//alert(codigo);
 			$.post("<?php echo base_url(); ?>index.php/compras/pedido/obra", {
@@ -286,6 +287,7 @@
 							</td>
 							<td>
 								OBRA:	
+								
 								<?php echo $cboObra;?>	
 							</td>
 					   </tr>
@@ -400,15 +402,20 @@
                     	<table id="tblDetallePedido" class="fuente8" width="100%" border="0">
                     <?php
                     if (count($detalle_pedido) > 0) {
-                        foreach ($detalle_pedido as $indice => $valor) {
-                            $detacodi = $valor->OCOMDEP_Codigo;
-                            $flagBS = $valor->flagBS;
-                            $prodproducto = $valor->PROD_Codigo;
-                            $unidad_medida = $valor->UNDMED_Codigo;
-                            $codigo_interno = $valor->PROD_CodigoInterno;
-                            $nombre_producto = $valor->PROD_Nombre;
-                            $nombre_unidad = $valor->UNDMED_Simbolo;
-                            $flagGenInd = $valor->OCOMDEC_GenInd;
+                        foreach ($detalle_pedido as $indice => $value) {
+                        	$codigousuario = $value->PROD_CodigoUsuario;
+                        	$nombre_producto = $value->PROD_Nombre;
+                        	$cantidad = $value->PEDIDETC_Cantidad;
+                        	$pu_CIGV =  $value->PEDIDETC_PCIGV;
+                        	$pu_SIGV =$value->PEDIDETC_PSIGV;
+                        	$PRECIO = $value->PEDIDETC_Precio;
+                        	$IGV =$value->PEDIDETC_IGV;
+                        	$IMPORTE = $value->PEDIDETC_Importe;
+                        	
+//                             $detacodi = $value->OCOMDEP_Codigo;
+                            
+                            $prodproducto = $value->PROD_Codigo;
+                            $nombre_unidad = $value->UNDMED_Descripcion;
 
                             if (($indice + 1) % 2 == 0) {
                                 $clase = "itemParTabla";
@@ -433,15 +440,11 @@
                                 </td>
                                 <td width="10%">
                                     <div align="center">
-                                        <?php echo $codigo_interno; ?>
+                                        <?php echo $codigousuario; ?>
                                         <input type="hidden" class="cajaMinima"
                                                name="prodcodigo[<?php echo $indice; ?>]"
                                                id="prodcodigo[<?php echo $indice; ?>]"
                                                value="<?php echo $prodproducto; ?>"/>
-                                        <input type="hidden" class="cajaMinima"
-                                               name="produnidad[<?php echo $indice; ?>]"
-                                               id="produnidad[<?php echo $indice; ?>]"
-                                               value="<?php echo $unidad_medida; ?>"/>
                                        
                                     </div>
                                 </td>
@@ -458,7 +461,7 @@
                                         <input type="text" class="cajaGeneral" size="1" maxlength="5"
                                                name="prodcantidad[<?php echo $indice; ?>]"
                                                id="prodcantidad[<?php echo $indice; ?>]"
-                                               value="<?php echo $prodcantidad; ?>"
+                                               value="<?php echo $cantidad; ?>"
                                                onblur="calcula_importe('<?php echo $indice; ?>');calcula_totales();"
                                                onKeyPress="return numbersonly(this,event,'.');"/> <?php echo $nombre_unidad; ?>
                                     </div>
@@ -467,7 +470,7 @@
                                     <div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral"
                                                                name="prodpu_conigv[<?php echo $indice; ?>]"
                                                                id="prodpu_conigv[<?php echo $indice; ?>]"
-                                                               value="<?php echo $prodpu_conigv; ?>"
+                                                               value="<?php echo $pu_CIGV; ?>"
                                                                onblur="modifica_pu_conigv(<?php echo $indice; ?>);"
                                                                onkeypress="return numbersonly(this,event,'.');"/></div>
                                 </td>
@@ -475,15 +478,16 @@
                                     <div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral"
                                                                name="prodpu[<?php echo $indice; ?>]"
                                                                id="prodpu[<?php echo $indice; ?>]"
-                                                               value="<?php echo $prodpu; ?>"
+                                                               value="<?php echo $pu_SIGV; ?>"
                                                                onblur="modifica_pu(<?php echo $indice; ?>);"
                                                                onkeypress="return numbersonly(this,event,'.');"/>
+                                                               
                                         <td width="6%">
                                             <div align="center"><input type="text" size="5" maxlength="10"
                                                                        class="cajaGeneral cajaSoloLectura"
                                                                        name="prodprecio[<?php echo $indice; ?>]"
                                                                        id="prodprecio[<?php echo $indice; ?>]"
-                                                                       value="<?php echo $prodsubtotal; ?>"
+                                                                       value="<?php echo $PRECIO; ?>"
                                                                        readonly="readonly"/></div>
                                         </td>
                                         <td width="6%">
@@ -492,38 +496,30 @@
                                                                        name="prodigv[<?php echo $indice; ?>]"
                                                                        id="prodigv[<?php echo $indice; ?>]"
                                                                        readonly="readonly"
-                                                                       value="<?php echo $prodigv; ?>"/></div>
+                                                                       value="<?php echo $IGV; ?>"/></div>
                                         </td>
+                                        
                                         <td width="6%">
                                             <div align="center">
-                                            	<input type="hidden" class="cajaMinima" 
-                                            	name="flagGenIndDet[<?php echo $indice; ?>]" id="flagGenIndDet[<?php echo $indice; ?>]" 
-                                            	value="<?php echo $flagGenInd;?>">
+
                                                 <input type="hidden" name="detaccion[<?php echo $indice; ?>]"
                                                        id="detaccion[<?php echo $indice; ?>]" value="m"/>
                                                 <input type="hidden" name="prodigv100[<?php echo $indice; ?>]"
                                                        id="prodigv100[<?php echo $indice; ?>]"
                                                        value="<?php echo $igv; ?>"/>
-                                                <input type="hidden" name="detacodi[<?php echo $indice; ?>]"
-                                                       id="detacodi[<?php echo $indice; ?>]"
-                                                       value="<?php echo $detacodi; ?>"/>
+                                                
                                                 <input type="hidden" name="prodstock[<?php echo $indice; ?>]"
                                                        id="prodstock[<?php echo $indice; ?>]" value=""/>
-                                                <input type="hidden" name="prodcosto[<?php echo $indice; ?>]"
-                                                       id="prodcosto[<?php echo $indice; ?>]"
-                                                       value="<?php echo $costo; ?>"/>
+                                               
                                                 <input type="hidden" name="proddescuento100[<?php echo $indice; ?>]"
                                                        id="proddescuento100[<?php echo $indice; ?>]"
                                                        value="<?php echo $descuento; ?>"/>
-                                                <input type="hidden" name="proddescuento[<?php echo $indice; ?>]"
-                                                       id="proddescuento[<?php echo $indice; ?>]"
-                                                       value="<?php echo $proddescuento; ?>"
-                                                       onblur="calcula_importe2(<?php echo $indice; ?>);"/>
+                                             
                                                 <input type="text" size="5" maxlength="10"
                                                        class="cajaGeneral cajaSoloLectura"
                                                        name="prodimporte[<?php echo $indice; ?>]"
                                                        id="prodimporte[<?php echo $indice; ?>]" readonly="readonly"
-                                                       value="<?php echo $prodtotal; ?>"/>
+                                                       value="<?php echo $IMPORTE; ?>"/>
                                             </div>
                                         </td>
                             </tr>
