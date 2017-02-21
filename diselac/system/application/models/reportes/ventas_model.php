@@ -191,6 +191,17 @@ class Ventas_Model extends Model
   	WHERE c.CPC_Fecha BETWEEN DATE('$inicio') AND DATE('$fin') GROUP BY Code ORDER BY 1 ASC
   
   	";
+  	/*SELECT com.CPC_total,CONCAT(pe.PERSC_Nombre , ' ', pe.PERSC_ApellidoPaterno, ' ', pe.PERSC_ApellidoMaterno) as nombre , MONED_Simbolo from cji_comprobante com
+  	inner join cji_cliente cl on cl.CLIP_Codigo = com.CLIP_Codigo
+  	inner join cji_persona pe on pe.PERSP_Codigo = cl.PERSP_Codigo
+  	inner JOIN cji_moneda m ON m.MONED_Codigo=com.MONED_Codigo
+  	WHERE CPC_TipoOperacion='V' and com.CLIP_Codigo = 357
+  	UNION
+  	SELECT com.CPC_total ,EMPRC_RazonSocial as nombre ,MONED_Simbolo from cji_comprobante com
+  	inner join cji_cliente cl on cl.CLIP_Codigo = com.CLIP_Codigo
+  	inner join cji_empresa es on es.EMPRP_Codigo = cl.EMPRP_Codigo
+  	inner JOIN cji_moneda m ON m.MONED_Codigo = com.MONED_Codigo
+  	WHERE CPC_TipoOperacion='V' and com.CLIP_Codigo = 357*/
   	$query = $this->db->query($sql);
   
   
