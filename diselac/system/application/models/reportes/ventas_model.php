@@ -179,6 +179,175 @@ class Ventas_Model extends Model
   }
   
   
+
+
+  public function ventas_por_cliente_resumen($inicio,$fin)
+  {
+  	//SELECT SUM( IF(c.MONED_Codigo=2,c.CPC_TDC*c.CPC_Total,c.CPC_Total)) as VENTAS, p.PERSC_Nombre as NOMBRE, p.PERSC_ApellidoPaterno as PATERNO
+  	$sql = "
+  	SELECT SUM( IF(c.MONED_Codigo=2,c.CPC_TDC*c.CPC_Total,c.CPC_Total)) as VENTAS, p.PERSC_Nombre as NOMBRE, p.PERSC_ApellidoPaterno as PATERNO ,p.PERSP_Codigo as Code
+  	FROM cji_persona p
+  	LEFT JOIN cji_comprobante c ON c.CPC_Vendedor = p.PERSP_Codigo
+  	WHERE c.CPC_Fecha BETWEEN DATE('$inicio') AND DATE('$fin') GROUP BY Code ORDER BY 1 ASC
+  
+  	";
+  	$query = $this->db->query($sql);
+  
+  
+  	$data = array();
+  	if($query->num_rows > 0)
+  	{
+  		foreach($query->result_array() as $result)
+  		{
+  			$data[] = $result;
+  		}
+  	}
+  	return $data;
+  }
+  
+  public function ventas_por_cliente_mensual($inicio,$fin)
+  {
+  	$inicio = explode('-',$inicio);
+  	$mesInicio = $inicio[1];
+  	$anioInicio = $inicio[0];
+  	$fin = explode('-',$fin);
+  	$mesFin = $fin[1];
+  	$anioFin = $fin[0];
+  
+  	if($anioFin > $anioInicio)
+  	{
+  		$sql = " SELECT
+      p.PERSC_Nombre as NOMBRE,
+      p.PERSC_ApellidoPaterno as PATERNO,
+      ";
+  		for($j = $anioInicio; $j <= $anioFin; $j++)
+  		{
+  			if($j == $anioFin)
+  			{
+  				for($i = 1; $i <= intval($mesFin); $i++)
+  				{
+  					$sql .= "SUM(IF(MONTH(CPC_Fecha)=$i AND YEAR(CPC_Fecha)=$j,IF(c.MONED_Codigo=2,c.CPC_TDC*c.CPC_Total,c.CPC_Total),0)) as m$j$i,";
+  				}
+  			}else if($j==$anioInicio){
+  				for($i = intval($mesInicio); $i <= 12; $i++)
+  				{
+  					$sql .= "SUM(IF(MONTH(CPC_Fecha)=$i AND YEAR(CPC_Fecha)=$j,IF(c.MONED_Codigo=2,c.CPC_TDC*c.CPC_Total,c.CPC_Total),0)) as m$j$i,";
+  				}
+  			}else{
+  				for($i = 1; $i <= 12; $i++)
+  				{
+  					$sql .= "SUM(IF(MONTH(CPC_Fecha)=$i AND YEAR(CPC_Fecha)=$j,IF(c.MONED_Codigo=2,c.CPC_TDC*c.CPC_Total,c.CPC_Total),0)) as m$j$i,";
+  				}
+  			}
+  		}
+  		$sql = substr($sql,0,strlen($sql)-1);
+  
+  		$sql.= "
+  		FROM cji_persona p
+  		LEFT JOIN cji_comprobante c ON c.CPC_Vendedor = p.PERSP_Codigo
+  		WHERE YEAR(c.CPC_Fecha) BETWEEN '$anioInicio' AND '$anioFin'
+  		GROUP BY p.PERSP_Codigo ORDER BY 1 ASC";
+  
+  	}elseif($anioFin == $anioInicio){
+  		$sql = " SELECT
+      p.PERSC_Nombre as NOMBRE,
+      p.PERSC_ApellidoPaterno as PATERNO,
+      ";
+  		if($mesInicio == $mesFin)
+  		{
+  			$sql .= "SUM(IF(MONTH(CPC_Fecha)=".intval($mesInicio).",IF(c.MONED_Codigo=2,c.CPC_TDC*c.CPC_Total,c.CPC_Total),0)) as m$anioFin".intval($mesInicio)."";
+  		}else{
+  			for($i = intval($mesInicio); $i <= intval($mesFin); $i++)
+  			{
+  				$sql .= "SUM(IF(MONTH(CPC_Fecha)=$i,IF(c.MONED_Codigo=2,c.CPC_TDC*c.CPC_Total,c.CPC_Total),0)) as m$anioFin$i,";
+  			}
+  			$sql = substr($sql,0,strlen($sql)-1);
+  		}
+  
+  		$sql.= "
+  		FROM cji_persona p
+  		LEFT JOIN cji_comprobante c ON c.CPC_Vendedor = p.PERSP_Codigo
+  		WHERE YEAR(c.CPC_Fecha) = '$anioInicio'
+  		GROUP BY p.PERSP_Codigo ORDER BY 1 ASC";
+  	}
+  
+  	$query = $this->db->query($sql);
+  
+  	$data = array();
+  	if($query->num_rows > 0)
+  	{
+  		foreach($query->result_array() as $result)
+  		{
+  			$data[] = $result;
+  		}
+  	}
+  
+  	return $data;
+  }
+  
+  public function ventas_por_cliente_anual($inicio,$fin)
+  {
+  	$inicio = explode('-',$inicio);
+  	$mesInicio = $inicio[1];
+  	$anioInicio = $inicio[0];
+  	$fin = explode('-',$fin);
+  	$mesFin = $fin[1];
+  	$anioFin = $fin[0];
+  
+  	if($anioFin > $anioInicio)
+  	{
+  
+  		$sql = " SELECT
+      p.PERSC_Nombre as NOMBRE,
+      p.PERSC_ApellidoPaterno as PATERNO,
+      ";
+  		for($j = $anioInicio; $j <= $anioFin; $j++)
+  		{
+  			if($j == $anioFin)
+  			{
+  				$sql .= "SUM(IF(YEAR(CPC_Fecha)=$j,IF(c.MONED_Codigo=2,c.CPC_TDC*c.CPC_Total,c.CPC_Total),0)) as y$j,";
+  			}else{
+  				$sql .= "SUM(IF(YEAR(CPC_Fecha)=$j,IF(c.MONED_Codigo=2,c.CPC_TDC*c.CPC_Total,c.CPC_Total),0)) as y$j,";
+  			}
+  		}
+  		$sql = substr($sql,0,strlen($sql)-1);
+  
+  		$sql.= "
+  		FROM cji_persona p
+  		LEFT JOIN cji_comprobante c ON c.CPC_Vendedor = p.PERSP_Codigo
+  		WHERE YEAR(c.CPC_Fecha) BETWEEN '$anioInicio' AND '$anioFin'
+  		GROUP BY p.PERSP_Codigo ORDER BY 1 ASC";
+  
+  
+  	}elseif($anioFin == $anioInicio){
+  
+  		$sql = " SELECT
+      p.PERSC_Nombre as NOMBRE,
+      p.PERSC_ApellidoPaterno as PATERNO,
+      ";
+  		$sql .= "SUM(IF(c.MONED_Codigo=2,c.CPC_TDC*c.CPC_Total,c.CPC_Total)) as y$anioFin ";
+  		$sql.= "
+  		FROM cji_persona p
+  		LEFT JOIN cji_comprobante c ON c.CPC_Vendedor = p.PERSP_Codigo
+  		WHERE YEAR(c.CPC_Fecha) = '$anioInicio'
+  		GROUP BY p.PERSP_Codigo ORDER BY 1 ASC";
+  	}
+  
+  	$query = $this->db->query($sql);
+  
+  	$data = array();
+  	if($query->num_rows > 0)
+  	{
+  		foreach($query->result_array() as $result)
+  		{
+  			$data[] = $result;
+  		}
+  	}
+  
+  	return $data;
+  }
+  
+  
   
   public function ventas_por_marca_resumen($inicio,$fin)
   {

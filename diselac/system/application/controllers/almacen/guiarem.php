@@ -227,7 +227,7 @@ class Guiarem extends controller
 	                if ($oc != "" || count($list_com) > 0 || $numeroref != "") {
 	                    $eliminar = "<img src='" . base_url() . "images/icono-factura.gif' height='16px' alt='Activo' title='Relacionado' />";
 	                } else {
-	                    $eliminar = ($estado == '1' || $estado == '2' ? "<a href='" . base_url() . "index.php/seguridad/usuario/ventana_confirmacion_usuario2/guiarem/" . $codigo . "' id='linkVerProveedor'><img src='" . base_url() . "images/eliminar.png' alt='Activo' title='Eliminar' /></a> " : "<img src='" . base_url() . "images/inactive.png' alt='Anulado' title='Eliminar' />");
+	                    $eliminar = ($estado == '1' || $estado == '2' ? "<a href='" . base_url() . "index.php/seguridad/usuario/ventana_confirmacion_usuario2/guiarem/" . $codigo . "' id='linkVerProveedor'><img src='" . base_url() . "images/eliminar.png' alt='Activo' title='Anular' /></a> " : "<img src='" . base_url() . "images/inactive.png' alt='Anulado' title='Eliminar' />");
 	                		
 	                }
 	

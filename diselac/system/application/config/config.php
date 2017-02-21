@@ -9,23 +9,9 @@
 |
 |	http://example.com/
 |
-*//*
-'SELECT CASE cl.EMPRP_Codigo WHEN 0 THEN
- (SELECT CONCAT (pe.PERSC_Nombre,' ',pe.PERSC_ApellidoPaterno,' ',pe.PERSC_ApellidoMaterno) FROM cji_persona pe WHERE pe.PERSP_Codigo = cl.PERSP_Codigo )
-
- ELSE (SELECT emp.EMPRC_RazonSocial FROM cji_empresa emp WHERE emp.EMPRP_Codigo=cl.EMPRP_Codigo) END as NOMBRE,
-
-  CASE cl.EMPRP_Codigo WHEN 0 THEN 
-  (SELECT pe.PERSC_Direccion FROM cji_persona pe WHERE pe.PERSP_Codigo = cl.PERSP_Codigo ) 
-  ELSE (SELECT emp.EMPRC_Direccion FROM cji_empresa emp WHERE emp.EMPRP_Codigo=cl.EMPRP_Codigo) 
-END as DIRECCION, 
-
-CASE cl.EMPRP_Codigo WHEN 0 THEN (SELECT pe.PERSC_Ruc FROM cji_persona pe WHERE pe.PERSP_Codigo = cl.PERSP_Codigo )ELSE (SELECT emp.EMPRC_Ruc FROM cji_empresa emp WHERE emp.EMPRP_Codigo=cl.EMPRP_Codigo)END as RUC FROM cji_cliente cl WHERE cl.CLIP_Codigo='
-
-'SELECT  CASE cl.EMPRP_Codigo WHEN 0 THEN (SELECT CONCAT (pe.PERSC_Nombre,' ',pe.PERSC_ApellidoPaterno,' ',pe.PERSC_ApellidoMaterno) FROM cji_persona pe WHERE pe.PERSP_Codigo = cl.PERSP_Codigo )ELSE (SELECT emp.EMPRC_RazonSocial FROM cji_empresa emp WHERE emp.EMPRP_Codigo=cl.EMPRP_Codigo) END as NOMBRE, CASE cl.EMPRP_Codigo WHEN 0 THEN (SELECT pe.PERSC_Direccion FROM cji_persona pe WHERE pe.PERSP_Codigo = cl.PERSP_Codigo ) ELSE (SELECT emp.EMPRC_Direccion FROM cji_empresa emp WHERE emp.EMPRP_Codigo=cl.EMPRP_Codigo) END as DIRECCION, CASE cl.EMPRP_Codigo WHEN 0 THEN (SELECT pe.PERSC_Ruc FROM cji_persona pe WHERE pe.PERSP_Codigo = cl.PERSP_Codigo )ELSE (SELECT emp.EMPRC_Ruc FROM cji_empresa emp WHERE emp.EMPRP_Codigo=cl.EMPRP_Codigo)END as RUC FROM cji_cliente cl WHERE cl.CLIP_Codigo=' 
 */
-//$config['base_url']	= "http://www.vsimportaciones.com/";
-$config['base_url']	= "http://localhost:85/nietsa/diselac";
+
+$config['base_url']	= "http://localhost:85/nietsa/diselac/";
 
 /*
 |--------------------------------------------------------------------------

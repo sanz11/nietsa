@@ -891,7 +891,7 @@ class Comprobante extends Controller{
 
             }
         }
-        $data['titulo_tabla'] = "RELACIÓN DE " . strtoupper($this->obtener_tipo_documento($tipo_docu)) . "S";
+        $data['titulo_tabla'] = "RELACIÃ“N DE " . strtoupper($this->obtener_tipo_documento($tipo_docu)) . "S";
         $data['titulo_busqueda'] = "BUSCAR " . strtoupper($this->obtener_tipo_documento($tipo_docu));
         $data['tipo_oper'] = $tipo_oper;
         $data['tipo_docu'] = $tipo_docu;
@@ -3100,7 +3100,7 @@ public function select_cmbVendedor($index){
     //////
 
     /**
-     * TODO - LA IMPRESION EXISTE UNA RESTRICCION SI ES COMPAÑIA 3 REALIZA OTRA ACCIONES DIFERENTE (Pregunta a Israel)
+     * TODO - LA IMPRESION EXISTE UNA RESTRICCION SI ES COMPAÃ‘IA 3 REALIZA OTRA ACCIONES DIFERENTE (Pregunta a Israel)
      * Tener en cuenta que este formato es utilizado por varios, como en compra o venta de facturas o boletas o comprobantes o Pedidos
      * @param $tipo_oper
      * @param $codigo
@@ -3256,11 +3256,11 @@ public function select_cmbVendedor($index){
 
                     $fecha_dia = substr($fecha, 0, 2);
                     $fecha_mes = mes_textual(substr($fecha, 3, 2));
-                    $fecha_año = substr($fecha, 8, 8);
+                    $fecha_aÃ±o = substr($fecha, 8, 8);
 
                     $this->cezpdf->addText($posiciongeneralx + 365, $posiciongeneraly + 669, 10, utf8_decode_seguro($fecha_dia));
                     $this->cezpdf->addText($posiciongeneralx + 430, $posiciongeneraly + 669, 10, utf8_decode_seguro($fecha_mes));
-                    $this->cezpdf->addText($posiciongeneralx + 530, $posiciongeneraly + 669, 10, utf8_decode_seguro($fecha_año));
+                    $this->cezpdf->addText($posiciongeneralx + 530, $posiciongeneraly + 669, 10, utf8_decode_seguro($fecha_aÃ±o));
                     //****************1era fecha
 
                     //****************2da fecha 
@@ -3369,11 +3369,11 @@ public function select_cmbVendedor($index){
 
                     $fecha_dia = substr($fecha, 0, 2);
                     $fecha_mes = mes_textual(substr($fecha, 3, 2));
-                    $fecha_año = substr($fecha, 8, 8);
+                    $fecha_aÃ±o = substr($fecha, 8, 8);
 
                     $this->cezpdf->addText($posiciongeneralx + 353, $posiciongeneraly + 682, 10, utf8_decode_seguro($fecha_dia));
                     $this->cezpdf->addText($posiciongeneralx + 410, $posiciongeneraly + 682, 10, utf8_decode_seguro($fecha_mes));
-                    $this->cezpdf->addText($posiciongeneralx + 523, $posiciongeneraly + 682, 10, utf8_decode_seguro($fecha_año));
+                    $this->cezpdf->addText($posiciongeneralx + 523, $posiciongeneraly + 682, 10, utf8_decode_seguro($fecha_aÃ±o));
                     //****************1era fecha
 
                     //****************2da fecha 
@@ -3567,7 +3567,7 @@ public function select_cmbVendedor($index){
                     $posicionY -= 40;
                 }
                 /* Totales */
-                $this->cezpdf->addText(20, 260, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" vï¿½lido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
+                $this->cezpdf->addText(20, 260, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" vÃ¯Â¿Â½lido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
                 $this->cezpdf->addText(20, 245, 9, strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . ' ' . $moneda_simbolo . ' ' . number_format($total, 2));
 
                 $this->cezpdf->addText(40, 215, 9, $moneda_simbolo . ' ' . number_format($subtotal, 2));
@@ -3720,17 +3720,17 @@ if($_SESSION['compania']=='1'){
                 ///***************fecha en letras
                 $fecha_dia = substr($fecha, 0, 2);
                 $fecha_mes = fechaALetras($fecha);
-                $fecha_año = substr($fecha, 8, 8);
+                $fecha_aÃ±o = substr($fecha, 8, 8);
 
                 //$this->cezpdf->addText(190 + $posiciongeneralx, 760 + $posiciongeneraly, 9, utf8_decode_seguro($fecha_dia));
                 //$this->cezpdf->addText(207 + $posiciongeneralx, 760 + $posiciongeneraly, 9, utf8_decode_seguro($fecha_mes));
-                //$this->cezpdf->addText(232 + $posiciongeneralx, 760 + $posiciongeneraly, 9, utf8_decode_seguro($fecha_año));
+                //$this->cezpdf->addText(232 + $posiciongeneralx, 760 + $posiciongeneraly, 9, utf8_decode_seguro($fecha_aÃ±o));
 
                 $this->cezpdf->addText($posiciongeneralx + 60, $posiciongeneraly + 609, 8, utf8_decode_seguro($fecha_dia));
 
                 $this->cezpdf->addText($posiciongeneralx + 80, $posiciongeneraly + 609, 8, utf8_decode_seguro($fecha_mes));
 
-                $this->cezpdf->addText($posiciongeneralx + 130, $posiciongeneraly + 609, 8, utf8_decode_seguro("20" . $fecha_año));
+                $this->cezpdf->addText($posiciongeneralx + 130, $posiciongeneraly + 609, 8, utf8_decode_seguro("20" . $fecha_aÃ±o));
                 //**************************************
                 // $this->cezpdf->addText(180+$posiciongeneralx, 436+$posiciongeneraly, 9, utf8_decode_seguro($fecha_text2));
 //nombre de vendedor imprimir factura
@@ -3970,7 +3970,7 @@ if($_SESSION['compania']=='1'){
                 }
                 /* Totales */
 
-                //$this->cezpdf->addText(20, 260, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" vï¿½lido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
+                //$this->cezpdf->addText(20, 260, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" vÃ¯Â¿Â½lido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
 
                 $this->cezpdf->addText(60, 126, 9, strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . ' ' . $moneda_simbolo . ' ' . number_format($total, 2));
 
@@ -4107,11 +4107,11 @@ if($_SESSION['compania']=='1'){
 
                     $fecha_dia = substr($fecha, 0, 2);
                     $fecha_mes = mes_textual(substr($fecha, 3, 2));
-                    $fecha_año = substr($fecha, 8, 8);
+                    $fecha_aÃ±o = substr($fecha, 8, 8);
 
                     $this->cezpdf->addText($posiciongeneralx + 365, $posiciongeneraly + 669, 10, utf8_decode_seguro($fecha_dia));
                     $this->cezpdf->addText($posiciongeneralx + 430, $posiciongeneraly + 669, 10, utf8_decode_seguro($fecha_mes));
-                    $this->cezpdf->addText($posiciongeneralx + 530, $posiciongeneraly + 669, 10, utf8_decode_seguro($fecha_año));
+                    $this->cezpdf->addText($posiciongeneralx + 530, $posiciongeneraly + 669, 10, utf8_decode_seguro($fecha_aÃ±o));
                     //****************1era fecha
 
                     //****************2da fecha 
@@ -4218,11 +4218,11 @@ if($_SESSION['compania']=='1'){
 
                     $fecha_dia = substr($fecha, 0, 2);
                     $fecha_mes = mes_textual(substr($fecha, 3, 2));
-                    $fecha_año = substr($fecha, 8, 8);
+                    $fecha_aÃ±o = substr($fecha, 8, 8);
 
                     $this->cezpdf->addText($posiciongeneralx + 350, $posiciongeneraly + 680, 8, utf8_decode_seguro($fecha_dia));
                     $this->cezpdf->addText($posiciongeneralx + 410, $posiciongeneraly + 680, 8, utf8_decode_seguro($fecha_mes));
-                    $this->cezpdf->addText($posiciongeneralx + 515, $posiciongeneraly + 680, 8, utf8_decode_seguro($fecha_año));
+                    $this->cezpdf->addText($posiciongeneralx + 515, $posiciongeneraly + 680, 8, utf8_decode_seguro($fecha_aÃ±o));
                     //****************1era fecha
 
                     //****************2da fecha 
@@ -4421,7 +4421,7 @@ if($_SESSION['compania']=='1'){
                     $posicionY -= 40;
                 }
                 /* Totales */
-                $this->cezpdf->addText(20, 260, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" vï¿½lido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
+                $this->cezpdf->addText(20, 260, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" vÃ¯Â¿Â½lido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
                 $this->cezpdf->addText(20, 245, 9, strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . ' ' . $moneda_simbolo . ' ' . number_format($total, 2));
 
                 $this->cezpdf->addText(40, 215, 9, $moneda_simbolo . ' ' . number_format($subtotal, 2));
@@ -4554,13 +4554,13 @@ if($_SESSION['compania']=='1'){
                 ///***************fecha en letras
                 $fecha_dia = substr($fecha, 0, 2);
                 $fecha_mes = fechaALetras($fecha);
-                $fecha_año = substr($fecha, 6, 8);
+                $fecha_aÃ±o = substr($fecha, 6, 8);
 //cambiear las posiciones de las letras de la fechas
                 $this->cezpdf->addText($posiciongeneralx + 60, $posiciongeneraly + 609, 8, utf8_decode_seguro($fecha_dia));
 
                 $this->cezpdf->addText($posiciongeneralx + 80, $posiciongeneraly + 609, 8, utf8_decode_seguro($fecha_mes));
 
-                $this->cezpdf->addText($posiciongeneralx + 130, $posiciongeneraly + 609, 8, utf8_decode_seguro($fecha_año));
+                $this->cezpdf->addText($posiciongeneralx + 130, $posiciongeneraly + 609, 8, utf8_decode_seguro($fecha_aÃ±o));
                 //**************************************
                // $this->cezpdf->addText($posiciongeneralx + 300, $posiciongeneraly + 100, 9, utf8_decode_seguro($fecha_text2));
    $this->cezpdf->addText($posiciongeneralx + 70, $posiciongeneraly + 580, 7, substr($direccion,0,62));
@@ -5125,7 +5125,7 @@ if($_SESSION['compania']=='1'){
             $delta = 130;
             $positionx = 420;
             $positiony = 350 + $delta;
-            // $this->cezpdf->addText(20, 230, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" vï¿½lido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
+            // $this->cezpdf->addText(20, 230, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" vÃ¯Â¿Â½lido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
 
 
             $this->cezpdf->addText(52, $positiony - 54, 6, "SON: " . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . ' ' . $moneda_simbolo . ' ' . number_format($total, 2));
@@ -5170,7 +5170,7 @@ if($_SESSION['compania']=='1'){
 			$delta = 130;
             $positionx = 420;
             $positiony = 350 + $delta;
-            // $this->cezpdf->addText(20, 230, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" vï¿½lido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
+            // $this->cezpdf->addText(20, 230, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" vÃ¯Â¿Â½lido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
             $this->cezpdf->addText(110, $positiony - 21, 7, "SON " . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . ' ' . $moneda_simbolo . ' ' . number_format($total, 2));
             $this->cezpdf->addText($positionx + 90, $positiony - 42, 10, $moneda_simbolo . ' ' . number_format($total, 2));
 			*/
@@ -5272,7 +5272,7 @@ if($_SESSION['compania']=='1'){
             $positionx = 400;
             $positiony = 120 + $delta;
 
-            $this->cezpdf->addText(20, 230, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" vï¿½lido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
+            $this->cezpdf->addText(20, 230, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" vÃ¯Â¿Â½lido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
             $this->cezpdf->addText(20, $positiony - 35, 9, strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . ' ' . $moneda_simbolo . ' ' . number_format($total, 2));
             $this->cezpdf->addText($positionx + 100, $positiony - 38, 10, $moneda_simbolo . ' ' . number_format($total, 2));
         }
@@ -5375,14 +5375,14 @@ if($_SESSION['compania']=='1'){
 
 
                     $fechas = date($fecha_emision);
-                    $fecha_año = substr(date("Y", strtotime($fechas)), 2, 2);
+                    $fecha_aÃ±o = substr(date("Y", strtotime($fechas)), 2, 2);
                     $fecha_mes = mes_textual(date("m", strtotime($fechas)));
                     $fecha_dia = date("d", strtotime($fechas));
 
                     // CODIGO ACTUAL
                     $this->cezpdf->addText(73 + $posiciongeneralx, 725 + $posiciongeneraly, 10, utf8_decode_seguro($fecha_dia));
                     $this->cezpdf->addText(145 + $posiciongeneralx, 725 + $posiciongeneraly, 10, utf8_decode_seguro($fecha_mes));
-                    $this->cezpdf->addText(240 + $posiciongeneralx, 725 + $posiciongeneraly, 10, utf8_decode_seguro($fecha_año));
+                    $this->cezpdf->addText(240 + $posiciongeneralx, 725 + $posiciongeneraly, 10, utf8_decode_seguro($fecha_aÃ±o));
                     //****************1era fecha
 
                     if ($nombre_formapago != 'CONTADO') {
@@ -5449,7 +5449,7 @@ if($_SESSION['compania']=='1'){
                     $delta = 130;
                     $positionx = 420;
                     $positiony = 350 + $delta;
-                    // $this->cezpdf->addText(20, 230, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" vï¿½lido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
+                    // $this->cezpdf->addText(20, 230, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" vÃ¯Â¿Â½lido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
                     /*  MUEVE NRO TOTAL EN LETRAS */
                     $this->cezpdf->addText(85 + $posiciongeneralx, $positiony - 3 + $posiciongeneraly, 9, "SON: " . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre);
                     /*  MUEVE EL TOTAL */
@@ -5487,7 +5487,7 @@ if($_SESSION['compania']=='1'){
 
                     if ($img != 1) {
                         $this->cezpdf->ezText(utf8_decode_seguro($num_ser), 15, array("leading" => 67, "left" => 118));
-                        $this->cezpdf->ezText(utf8_decode_seguro("N°"), 15, array("leading" => 0, "left" => 158));
+                        $this->cezpdf->ezText(utf8_decode_seguro("NÂ°"), 15, array("leading" => 0, "left" => 158));
                         $this->cezpdf->ezText(utf8_decode_seguro($num_doc), 15, array("leading" => 0, "left" => 176));
                     } else {
                         $this->cezpdf->ezText(utf8_decode_seguro(""), 15, array("leading" => 67, "left" => 118));
@@ -5688,7 +5688,7 @@ if($_SESSION['compania']=='1'){
                 $positionx = 400;
                 $positiony = 120 + $delta;
 
-                $this->cezpdf->addText(20, 230, 9, "Tipo de cambio LOS SOLOES" . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" vï¿½lido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
+                $this->cezpdf->addText(20, 230, 9, "Tipo de cambio LOS SOLOES" . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" vÃ¯Â¿Â½lido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
                 $this->cezpdf->addText(20, $positiony - 35, 9, strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . ' ' . $moneda_simbolo . ' ' . number_format($total, 2));
                 $this->cezpdf->addText($positionx + 100, $positiony - 38, 10, $moneda_simbolo . ' ' . number_format($total, 2));
             }
@@ -6140,7 +6140,7 @@ if($_SESSION['compania']=='1'){
 
         if (count($listado) == 0) { // Esto significa que no hay ordenes de compra por tando no muestros ningun reporte
             echo '<h3>Ha ocurrido un problema</h3>
-                      <span style="color:#ff0000">No se ha encontrado Ã“rdenes de Venta</span>';
+                      <span style="color:#ff0000">No se ha encontrado Ãƒâ€œrdenes de Venta</span>';
             exit;
         }
         $temp1 = array(0, 0, 0, 0, 0);
@@ -6171,8 +6171,8 @@ if($_SESSION['compania']=='1'){
         $Test->drawPieLegend(310, 15, $DataSet->GetData(), $DataSet->GetDataDescription(), 250, 250, 250);
 
         $Test->Render("images/img_dinamic/imagen1.png");
-        echo '<h3>1. Los 5 clientes mÃ¡s importantes</h3>
-               SegÃºn el monto (S/.) histÃ³rico Ã³rdenes de venta<br />
+        echo '<h3>1. Los 5 clientes mÃƒÂ¡s importantes</h3>
+               SegÃƒÂºn el monto (S/.) histÃƒÂ³rico ÃƒÂ³rdenes de venta<br />
                <img style="margin-bottom:20px;" src="' . base_url() . 'images/img_dinamic/imagen1.png" alt="Imagen 1" />';
 
         /* Imagen 2 */
@@ -6210,8 +6210,8 @@ if($_SESSION['compania']=='1'){
         $Test->setFontProperties("Fonts/tahoma.ttf", 8);
         $Test->setFontProperties("Fonts/tahoma.ttf", 10);
         $Test->Render("images/img_dinamic/imagen2.png");
-        echo '<h3>2. Montos (S/.) de Ã³rdenes de venta segÃºn mes</h3>
-               Considerando el presente aÃ±o<br />
+        echo '<h3>2. Montos (S/.) de ÃƒÂ³rdenes de venta segÃƒÂºn mes</h3>
+               Considerando el presente aÃƒÂ±o<br />
                <img style="margin-bottom:20px;" src="' . base_url() . 'images/img_dinamic/imagen2.png" alt="Imagen 2" />';
 
 
@@ -6248,8 +6248,8 @@ if($_SESSION['compania']=='1'){
 
 // Render the picture  
         $Test->Render("images/img_dinamic/imagen3.png");
-        echo '<h3>3. Cantidades de Ã³rdenes de venta segÃºn mes</h3>
-               Considerando el presente aÃ±o<br />
+        echo '<h3>3. Cantidades de ÃƒÂ³rdenes de venta segÃƒÂºn mes</h3>
+               Considerando el presente aÃƒÂ±o<br />
                <img style="margin-top:5px; margin-bottom:20px;" src="' . base_url() . 'images/img_dinamic/imagen3.png" alt="Imagen 3" />';
 
         /* Imagen 4 => COMPRAS */
@@ -6289,7 +6289,7 @@ if($_SESSION['compania']=='1'){
         $Test->setFontProperties("Fonts/tahoma.ttf", 10);
         $Test->Render("images/img_dinamic/imagen4.png");
         echo '<h3>4. Ventas</h3>
-               Considerando las ventas en el presente aÃ±o<br />
+               Considerando las ventas en el presente aÃƒÂ±o<br />
 			   <img style="margin-top:5px; margin-bottom:20px;" src="' . base_url() . 'images/img_dinamic/imagen4.png" alt="Imagen 4" />
 			   <br />';
         /* Imagen 5 => VENTAS */
@@ -6327,7 +6327,7 @@ if($_SESSION['compania']=='1'){
           $Test->setFontProperties("Fonts/tahoma.ttf",8);
           $Test->setFontProperties("Fonts/tahoma.ttf",10);
           $Test->Render("images/img_dinamic/imagen5.png");
-          echo 'Considerando las ventas en el presente aÃ±o<br />
+          echo 'Considerando las ventas en el presente aÃƒÂ±o<br />
           <img style="margin-top:5px; margin-bottom:20px;" src="'.base_url().'images/img_dinamic/imagen5.png" alt="Imagen 5" />'; */
     }
      public function seleccionar_departamento($indDefault = '') {
@@ -6518,7 +6518,7 @@ if($_SESSION['compania']=='1'){
     public function ver_reporte_pdf_ventas($anio ,$mes ,$fech1 ,$fech2, $tipodocumento)
     {
 
-    $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
+    $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","SÃ¡bado");
     $meses = array("enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre");
  
 
@@ -6629,7 +6629,7 @@ if($_SESSION['compania']=='1'){
     public function ver_reporte_pdf_commpras($anio)
     {
 
-          $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
+          $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","SÃ¡bado");
           $meses = array("enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre");
 
         $usuario = $this->usuario_model->obtener($this->somevar['user']);
@@ -7515,9 +7515,9 @@ if($_SESSION['compania']=='1'){
             foreach ($prodcodigo as $indice => $valor) {
                 if ($flagGenInd[$indice] == 'I' && isset($_SESSION['serie']) && is_array($_SESSION['serie'][$valor])) {
                     if (count($_SESSION['serie'][$valor]) != $prodcantidad[$indice])
-                        exit('{"result":"error2", "msj":"No ha ingresado todos los nÃºmero de series de :\n' . $proddescri[$indice] . '"}');
+                        exit('{"result":"error2", "msj":"No ha ingresado todos los nÃƒÂºmero de series de :\n' . $proddescri[$indice] . '"}');
                 } else
-                    exit('{"result":"error2", "msj":"No ha ingresado los nÃºmero de series de :\n' . $proddescri[$indice] . '"}');
+                    exit('{"result":"error2", "msj":"No ha ingresado los nÃƒÂºmero de series de :\n' . $proddescri[$indice] . '"}');
             }
         }
 
@@ -7811,7 +7811,7 @@ if($_SESSION['compania']=='1'){
 
 
 public function verPdf($tipo_oper = '', $tipo_docu = '',$dataEviar=""){
-   $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
+   $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","SÃ¡bado");
     $meses = array("enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre");
  
 
@@ -7979,7 +7979,228 @@ $resultado="0";
 }
 echo $resultado;
     }   
-}
+    
+    
+    public function alterno($tipo_oper = '', $tipo_docu = '', $j = '0'){
+    	$this->load->library('layout', 'layout');
+    	$data['compania'] = $this->somevar['compania'];
+    	$tipo_oper = $this->uri->segment(4);
+    	$tipo_docu = $this->uri->segment(5);
+    	$ver2 = "";
+    	
+    	$this->load->library('layout', 'layout');
+    	
+    	$data['action'] = 'index.php/ventas/comprobante/comprobantes/' . $tipo_oper . '/' . $tipo_docu;
+    	
+    	
+    	$conf['base_url'] = site_url('ventas/comprobante/comprobantes/' . $tipo_oper . '/' . $tipo_docu);
+    	$registros = $this->comprobante_model->contar_comprobantes($tipo_oper, $tipo_docu, NULL, '', '');
+    	$conf['per_page'] = 15;
+    	$conf['num_links'] = 3;
+    	$conf['first_link'] = "&lt;&lt;";
+    	$conf['last_link'] = "&gt;&gt;";
+    	$conf['total_rows'] = $registros;
+    	$conf['uri_segment'] = 6;
+    	$offset = (int)$this->uri->segment(6);
+    	
+    	$listaGuiaremAsociados=$this->comprobante_model->listar_comprobantealterna();
+    	 $data['registros']=count($listaGuiaremAsociados);
+    	$item = $j + 1;
+    	$contadoVacios = 1;
+    	$lista = array();
+    	if (count($listaGuiaremAsociados) > 0) {
+    		foreach ($listaGuiaremAsociados as $indice => $valor) {
+    					$codigo = $valor->CCA_Codigo;
+    					$fecha = $valor->CCA_FechaRegistro;
+    					$serie = $valor->CCA_Serie;
+    					$numero = $valor->CCA_Numero;
+    					$codigocliente = $valor->CLIP_Codigo;
+    					$buscarcliente = $this->comprobante_model->obtener_clienteempresa($codigocliente);
+    					$nombrecliente = "";
+    					foreach ($buscarcliente as $indice1 => $valor1){
+    						$nombrecliente = $valor1->EMPRC_RazonSocial;
+    					}
+    					
+//     					$editar = "<a href='javascript:;' onclick='editar_comprobante(" . $codigo . ")' target='_parent'><img src='" . base_url() . "images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
+    					$ver2 = "<a href='javascript:;' onclick='ver_pdf_conmenbretealterno_antiguo(" . $codigo .",8,1)'  target='_parent'><img src='" . base_url() . "images/pdf.png' width='16' height='16' border='0' title='Ver PDF'></a>";    					 
+    					$eliminar = "<a href='javascript:;' onclick='eliminar_comprobantealterno(" . $codigo . ")' target='_parent'><img src='" . base_url() . "images/eliminar.png' width='16' height='16' border='0' title='Eliminar'></a>";
+    					
+    				$lista[] = array($item++, $fecha, $serie,$this->getOrderNumeroSerie($numero), $nombrecliente , $ver2,$eliminar );
+
+    		}
+    	}
+    	
+    	$data['lista'] = $lista;
+    	$this->pagination->initialize($conf);
+    	$data['paginacion'] = $this->pagination->create_links();
+    	$detalle_comprobante = $this->obtener_lista_detalles($codigo);
+    	
+    	
+    	
+    	$this->layout->view('ventas/comprobanteindex_alterno',$data);
+    }
+    
+    public function comprobante_eliminaralterno(){
+    	$codigo = $this->input->post('codigo');
+    	$this->comprobante_model->comprobante_eliminaralterno($codigo);
+    }
+    
+    public function ver_pdf_conmenbrete_alternoantiguo($codigo)
+    {
+    
+    	$hoy = date("Y-m-d");
+    	$datos_comprobante = $this->comprobante_model->obtener_comprobantealterna($codigo);
+
+    	$numero = $datos_comprobante[0]->CCA_Numero;
+    	$serie = $datos_comprobante[0]->CCA_Serie;
+    	$codigocliente = $datos_comprobante[0]->CLIP_Codigo;
+    	$fecha =$datos_comprobante[0]->CCA_FechaRegistro;
+    	$valordeventa = $datos_comprobante[0]->CCA_SubTotal;
+    	$igvtotal = $datos_comprobante[0]->CCA_IGVTotal;
+    	$preciodeventa = $datos_comprobante[0]->CCA_PrecioTotal;
+    	
+		$buscarcliente = $this->comprobante_model->obtener_clienteempresa($codigocliente);
+    	$Senior = $buscarcliente[0]->EMPRC_RazonSocial;
+    	$ruc = $buscarcliente[0]->EMPRC_Ruc;
+    	$direccion = $buscarcliente[0]->EMPRC_Direccion;
+    	
+    	
+    
+    	
+    	$this->cezpdf = new Cezpdf('a4', 'portrait');
+    	$this->cezpdf->selectFont('system/application/libraries/fonts/Helvetica-Bold.afm');
+    	$notimg = "facturaalternacompro.jpg"; 
+    	$this->cezpdf = new backgroundPDF('a4', 'portrait', 'image', array('img' => 'images/documentos/' . $notimg));
+    	
+    	/* Cabecera */
+    	    	$this->cezpdf->addText(400, 690, 23, $serie . ' - ' . $numero);    	
+    	    	$this->cezpdf->addText(85, 653, 9, $Senior);
+    	    	$this->cezpdf->addText(85, 630, 9, $direccion);
+    	    	$this->cezpdf->addText(85, 605, 9, $ruc);
+    	    	
+    	    	$anio = substr($fecha, 0, 4);
+    	    	$mes = mes_textual(substr($fecha, 3, 2));
+    	    	$dia = substr($fecha, 8, 3);
+    	    	
+    	    	$fecha_text = utf8_decode_seguro( $dia. '									' .$mes. '
+	    	    					'.$anio );
+    	    	$this->cezpdf->addText(400, 603, 11,$fecha_text);
+    	    	
+    	    	$buscarccd = $this->comprobante_model->obtener_comprobantealternadetalle($codigo);
+    	    	$moneda_simbolo = "S/";
+    	    	$y = 560;
+    	    	foreach ($buscarccd as $indice => $valor){
+    	    		$cantidad = $valor->CDA_Cantidad;
+					$nombreprod = $valor->PROD_Nombre;
+					$preciouni = $valor->CDA_PrecioPorProducto;
+					$importe = $valor->CDA_PUC_IGV ;
+					
+    	    		    	$this->cezpdf->addText(70, $y, 9,  $cantidad);
+    	    		    	
+    	    		    	$this->cezpdf->addText(120, $y, 9,  $nombreprod);
+    	    		    	$this->cezpdf->addText(440, $y, 9, $moneda_simbolo . ' ' . number_format($preciouni, 2));
+    	    		    	$this->cezpdf->addText(500, $y, 9, $moneda_simbolo . ' ' . number_format($importe, 2));
+    	    		    	$y-=20;
+    	    	}
+    	    	
+    	$this->cezpdf->addText(100, 160, 9, strtoupper(num2letras(round($preciodeventa, 2))) . ' ' . 'Soles' . ' ' . $moneda_simbolo . ' ' . number_format($preciodeventa, 2));
+    	$this->cezpdf->addText(500, 130, 9, $moneda_simbolo . ' ' . (number_format($valordeventa, 2)));
+    	$this->cezpdf->addText(500, 110, 9, $moneda_simbolo . ' ' . number_format($igvtotal, 2));
+    	$this->cezpdf->addText(500, 85, 9, $moneda_simbolo . ' ' . number_format(($preciodeventa), 2));
+    	 
+    	$cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'nama_file.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
+    	$this->cezpdf->ezStream($cabecera);
+    
+    }
+    
+    
+    public function comprobantenuevo_alterno(){
+    		$this->load->library('layout', 'layout');
+    		
+    		$compania = $this->somevar['compania'];
+    		$data['compania'] = $compania;
+    		$data['cboVendedor'] = $this->OPTION_generador($this->directivo_model->listar_directivo($this->session->userdata('empresa'), '4'), 'DIREP_Codigo', array('PERSC_ApellidoPaterno', 'PERSC_ApellidoMaterno', 'PERSC_Nombre'), '', array('', '::Seleccione::'), ' ');
+    		$data['cboMoneda'] = $this->OPTION_generador($this->moneda_model->listar(), 'MONED_Codigo', 'MONED_Descripcion', '1');
+    		$lista_almacen = $this->almacen_model->seleccionar();
+    		$data['cboAlmacen'] = form_dropdown("almacen", $lista_almacen, obtener_val_x_defecto($lista_almacen), " class='comboMedio' style='width:50%;' id='almacen'");
+    		$data['cmbVendedor']=$this->select_cmbVendedor($this->session->set_userdata('codUsuario'));
+    		$comp_confi = $this->companiaconfiguracion_model->obtener($compania);
+    		$data['igv'] = $comp_confi[0]->COMPCONFIC_Igv;
+    		$cambio_dia = $this->tipocambio_model->obtener_tdc_dolar(date('Y-m-d'));
+    		$data['tdc'] = $cambio_dia[0]->TIPCAMC_FactorConversion;
+
+    		
+    		$this->layout->view('ventas/comprobantenuevo_alterno', $data);
+    	}
+    
+    	public function comprobantegrabar_alterno(){
+
+    		$filter = new stdClass();
+    		
+    		
+    		$serie = $this->input->post('serie');
+    		$numero = $this->input->post('numero');
+    		$igv = $this->input->post('igv');
+    		$codigoCliente = $this->input->post('cliente');
+    		$codigoMoneda = $this->input->post('moneda');
+    		$tdc = $this->input->post('tdc');
+    		$codigoVendedor = $this->input->post('cmbVendedor');
+    		$codigoAlmacen = $this->input->post('almacen');
+			$subTotal = $this->input->post('preciototal');
+			$descuento = $this->input->post('descuentotal');
+			$igvTotal = $this->input->post('igvtotal');
+			$precioTotal = $this->input->post('importetotal');
+			$observacion = $this->input->post('observacion');
+			
+			$filter->CCA_Numero =$numero;
+			$filter->CCA_Serie =$serie;
+			$filter->CCA_IGV =$igv;
+			$filter->CLIP_Codigo =$codigoCliente;
+			$filter->MONED_Codigo =$codigoMoneda;
+			$filter->CCA_TDC =$tdc;
+			$filter->PERSP_Codigo =$codigoVendedor;
+			$filter->COMPP_Codigo =$codigoAlmacen;
+			$filter->CCA_Obervacion =$observacion;
+			$filter->CCA_SubTotal =$subTotal;
+			$filter->CCA_Descuento =$descuento;
+			$filter->CCA_IGVTotal =$igvTotal;
+			$filter->CCA_PrecioTotal =$precioTotal;
+			$filter->CCA_Flag = "1";
+			$filter->CCA_FechaRegistro =date("Y-m-d H:i:s");
+			
+			$codigoComprobanteAlterno = $this->comprobante_model->guardarcomproalterno($filter);
+			
+			
+			$filter1 = new stdClass();
+			
+			$prodcodigo = $this->input->post('prodcodigo');
+			$unidmedi = $this->input->post('produnidad');
+			$prodcantidad = $this->input->post('prodcantidad');
+			$prodpu_conigv = $this->input->post('prodpu_conigv');
+			$prodpu = $this->input->post('prodpu');
+			$prodprecio = $this->input->post('prodprecio');
+
+// 						echo "<script>alert('count(prodcodigo)  : ".count($prodcodigo) ."')</script>";
+					
+			
+				for ($i=0;$i<count($prodcodigo);$i++){
+					$filter1->CCA_Codigo = $codigoComprobanteAlterno;
+					$filter1->PROD_Codigo = $prodcodigo[$i];
+					$filter1->UNDMED_Codigo = $unidmedi[$i]; 
+					$filter1->CDA_Cantidad = $prodcantidad[$i];
+					$filter1->CDA_PUC_IGV = $prodpu_conigv[$i];
+					$filter1->CDA_PUS_IGV = $prodpu[$i];
+					$filter1->CDA_PrecioPorProducto = $prodprecio[$i]; 
+					$filter1->CDA_Flag = "1";
+					$filter1->CDA_FechaRegistro = date("Y-m-d H:i:s");
+					
+					$this->comprobante_model->guardarcomalternodetalle($filter1);
+				}
+			
+    	}
+    }
+    
+
 	
 	
 

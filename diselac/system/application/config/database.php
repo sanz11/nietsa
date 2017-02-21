@@ -25,7 +25,7 @@ $active_group = "default";$active_record = TRUE;
 $db['default']['hostname'] = "localhost";
 $db['default']['username'] = "root"; //vsimport_vipex
 $db['default']['password'] = ""; //Vipex2015
-$db['default']['database'] = "osaerp_nipon"; //vsimport_root
+$db['default']['database'] = "osaerp_diselac"; //vsimport_root
 $db['default']['dbdriver'] = "mysqli";
 $db['default']['dbprefix'] = "";
 $db['default']['pconnect'] = TRUE;

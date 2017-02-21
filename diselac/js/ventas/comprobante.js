@@ -294,6 +294,27 @@ jQuery(document).ready(function () {
         
 
     });
+    
+    $("#cancelarComprobanteAlterna").click(function () {
+        url = base_url + "index.php/ventas/comprobante/alterno";
+        location.href = url;
+    });
+    
+    $("#grabarComprobanteAlterna").click(function () {
+    	
+        url = base_url + "index.php/ventas/comprobante/comprobantegrabar_alterno";
+        dataEnviar = $('#grabarcomprobantealterno').serialize();
+        
+        $.post(url,dataEnviar,function(data){
+			url = base_url+"index.php/ventas/comprobante/alterno";
+			location.href = url;
+		});
+        
+           
+    });
+    
+    
+    
     $("#limpiarComprobante").click(function () {
         url = base_url + "index.php/ventas/comprobante/comprobantes" + "/" + tipo_oper + "/" + tipo_docu + "/0/1";
         location.href = url;
@@ -302,6 +323,10 @@ jQuery(document).ready(function () {
         $.fancybox.close();
         url = base_url + "index.php/ventas/comprobante/comprobantes" + "/" + tipo_oper + "/" + tipo_docu;
         location.href = url;
+    });
+    
+    $("#nuevasimulaCompro").click(function(){
+    	location.href = base_url+"index.php/ventas/comprobante/comprobantenuevo_alterno";
     });
 
     $("#repo1").click(function () {
@@ -575,6 +600,16 @@ function getLimite() {
 
 function setLimite(limite) {
     limite_detalle = limite;
+}
+
+function eliminar_comprobantealterno($codigo){
+	  if (confirm('Esta seguro que desea eliminar este comprobante alterno?')) {
+	        dataString = "codigo=" + $codigo;
+	        url = base_url + "index.php/ventas/comprobante/comprobante_eliminaralterno";
+	        $.post(url, dataString, function (data) {
+	            location.href = base_url + "index.php/ventas/comprobante/alterno";
+	        });
+	    }
 }
 
 function ver_reporte_pdf() {
@@ -2626,7 +2661,10 @@ function agregar_todo_recu(guia) {
 		}
 	}
 	
-	
+	function ver_pdf_conmenbretealterno_antiguo(comprobante) {
+	    var url = base_url + "index.php/ventas/comprobante/ver_pdf_conmenbrete_alternoantiguo/"+comprobante;
+	    window.open(url, '', "width=800,height=600,menubars=no,resizable=no;");
+	}
 
     function verPdf(){
     var dataEviar="_____";

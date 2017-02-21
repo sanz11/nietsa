@@ -15,8 +15,8 @@
 <body onload="<?php echo $onload; ?>">
 <div align="center">
     <form name="form_busqueda" id="form_busqueda" method="post" action="<?php echo $action; ?>">
-    <input type="text" value="<?php echo $comprobante; ?>" id="comprobante" name="comprobante" >
-    <input type="text" value="<?php echo $rolinicio; ?>" id="rolinicio" name="rolinicio" >
+    <input type="hidden" value="<?php echo $comprobante; ?>" id="comprobante" name="comprobante" >
+    <input type="hidden" value="<?php echo $rolinicio; ?>" id="rolinicio" name="rolinicio" >
         <div id="frmBusqueda" style="width:95%">
             <table class="fuente8" width="100%" cellspacing=0 cellpadding=3 border=0>
                 <tr class="cabeceraTabla" height="25px">

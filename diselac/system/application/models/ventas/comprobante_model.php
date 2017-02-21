@@ -161,13 +161,13 @@ $query = $this->db->get('cji_directivo u');
 
         $where="";
         //----------
-        if($anio!="--" && $mes =="--"){// SOLO AÑO
+        if($anio!="--" && $mes =="--"){// SOLO AÃ‘O
         $where="AND YEAR(CPC_FechaRegistro)='" . $anio . "'";
         }
-        if($anio!="--" && $mes !="--" ){// MES Y  AÑO
+        if($anio!="--" && $mes !="--" ){// MES Y  AÃ‘O
             $where="AND YEAR(CPC_FechaRegistro)='" . $anio . "' AND MONTH(CPC_FechaRegistro)='" . $mes ."'";
         }
-         if($anio=="--" && $mes !="--"){//MES CON AÑO ACTUAL
+         if($anio=="--" && $mes !="--"){//MES CON AÃ‘O ACTUAL
             $where="AND YEAR(CPC_FechaRegistro)=' ".date("Y")."' AND MONTH(CPC_FechaRegistro)='" . $mes ."'";
         }
 
@@ -982,7 +982,7 @@ $query = $this->db->get('cji_directivo u');
                     SUM((CASE MONTH(o.OCOMC_FechaRegistro) WHEN '12' THEN o.OCOMC_total ELSE 0 END)) diciembre
                 FROM cji_ordencompra o
                 WHERE o.OCOMC_FlagEstado='1' AND o.OCOMP_Codigo<>0 AND o.OCOMC_TipoOperacion='V' AND o.OCOMC_FlagAprobado like '%' AND YEAR(o.OCOMC_FechaRegistro)=YEAR(CURDATE())";
-        //NOTA: en donde dice: o.OCOMC_FlagAprobado like '%' hay que reemplzar el comodin % por 1, pero como el usuario no est� aprobando las O compra lo estoy reemplazando por % para q salga el reporte
+        //NOTA: en donde dice: o.OCOMC_FlagAprobado like '%' hay que reemplzar el comodin % por 1, pero como el usuario no estï¿½ aprobando las O compra lo estoy reemplazando por % para q salga el reporte
         $query = $this->db->query($sql);
 
         if ($query->num_rows > 0) {
@@ -1010,7 +1010,7 @@ $query = $this->db->get('cji_directivo u');
                     SUM((CASE WHEN MONTH(o.OCOMC_FechaRegistro)='12' AND o.OCOMC_total<>0 THEN 1 ELSE 0 END)) diciembre
             FROM cji_ordencompra o
             WHERE o.OCOMC_FlagEstado='1' AND  o.OCOMP_Codigo<>0 AND o.OCOMC_TipoOperacion='V' AND o.OCOMC_FlagAprobado like '%' AND YEAR(o.OCOMC_FechaRegistro)=YEAR(CURDATE())";
-        //NOTA: en donde dice: o.OCOMC_FlagAprobado like '%' hay que reemplzar el comodin % por 1, pero como el usuario no est� aprobando las O compra lo estoy reemplazando por % para q salga el reporte
+        //NOTA: en donde dice: o.OCOMC_FlagAprobado like '%' hay que reemplzar el comodin % por 1, pero como el usuario no estï¿½ aprobando las O compra lo estoy reemplazando por % para q salga el reporte
         $query = $this->db->query($sql);
 
         if ($query->num_rows > 0) {
@@ -1251,9 +1251,85 @@ public function verificar_inventariado($cod){
             }
             return $data;
         }
- }   
+ } 
+ 
+ public function guardarcomproalterno($filter){
+ 		$this->db->insert("cji_comprobante_alterno", (array) $filter);
+ 	 	return $this->db->insert_id();
+ }
     
+ public function guardarcomalternodetalle($filter){
+ 	$this->db->insert("cji_comprobante_alternodetalle",(array)$filter);
+ 	return $this->db->insert_id();
+ }
     
+ public function listar_comprobantealterna( $number_items = '', $offset = '', $fecha_registro = '') {
+ 	$sql = "select * from cji_comprobante_alterno where CCA_Flag = 1;";
+ 	$query = $this->db->query($sql);
+ 	if ($query->num_rows > 0) {
+ 		foreach ($query->result() as $fila) {
+ 			$data[] = $fila;
+ 		}
+ 		return $data;
+ 	}
+ 	return array();
+ 	
+ }
+ 
+ public function obtener_clienteempresa($filter){
+ 	$sql="SELECT * FROM cji_cliente cliente inner join cji_empresa empresa on cliente.EMPRP_Codigo = empresa.EMPRP_Codigo
+ 	where cliente.CLIP_Codigo = $filter ;";
+ 	
+ 	$query = $this->db->query($sql);
+ 	if ($query->num_rows > 0) {
+ 		foreach ($query->result() as $fila) {
+ 			$data[] = $fila;
+ 		}
+ 		return $data;
+ 	}
+ 	return array();
+ }
+ 
+ public function obtener_comprobantealterna($codigo){
+ 	$sql = "select * from cji_comprobante_alterno where CCA_Flag = 1 and CCA_Codigo = $codigo;";
+ 	$query = $this->db->query($sql);
+ 	if ($query->num_rows > 0) {
+ 		foreach ($query->result() as $fila) {
+ 			$data[] = $fila;
+ 		}
+ 		return $data;
+ 	}
+ 	return array();
+ }
+ 
+ 
+ public function obtener_comprobantealternadetalle($codigo){
+ 	$sql = "select * from cji_producto producto inner join cji_comprobante_alternodetalle comproaldeta 
+ 			on producto.PROD_Codigo = comproaldeta.PROD_Codigo where CDA_Flag = 1 and CCA_Codigo = $codigo;";
+ 	$query = $this->db->query($sql);
+ 	if ($query->num_rows > 0) {
+ 		foreach ($query->result() as $fila) {
+ 			$data[] = $fila;
+ 		}
+ 		return $data;
+ 	}
+ 	return array();
+ }
+ 
+ public function  comprobante_eliminaralterno($codigo) {
+ 	$sql = "update cji_comprobante_alterno comproalter
+			inner join cji_comprobante_alternodetalle comproalterdeta on comproalterdeta.CCA_Codigo = comproalter.CCA_Codigo
+			 set CDA_Flag = 0 , CCA_Flag = 0 where comproalter.CCA_Codigo = $codigo";
+ 	$query = $this->db->query($sql);
+ 	if($query->num_rows >0){
+ 		foreach ($query->resul() as $fila){
+ 			$data[] = $fila;
+ 		}
+ 		return $data;
+ 	}
+ }
+ 
+ 
 }
 
 ?>
