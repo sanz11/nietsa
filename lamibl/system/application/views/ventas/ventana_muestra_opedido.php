@@ -20,9 +20,9 @@
         
 	   function ver_detalle_documentoPedido(documento){
            if('<?php echo $tipo_oper; ?>'!='C'){
-            url = base_url+"index.php/ventas/pedido/obtener_detalle_pedido/v/<?php echo $tipo_oper; ?>/"+documento;
+            url = base_url+"index.php/ventas/presupuesto/obtener_detalle_pedido/v/<?php echo $tipo_oper; ?>/"+documento;
 		}else{
-		    url = base_url+"index.php/ventas/pedido/obtener_detalle_pedido/c/<?php echo $tipo_oper; ?>/"+documento;
+		    url = base_url+"index.php/ventas/presupuesto/obtener_detalle_pedido/c/<?php echo $tipo_oper; ?>/"+documento;
 		}
 		
             $("#tblDocumentoDetalle tr[class!='cabeceraTabla']").html('');    
@@ -48,8 +48,8 @@
             });
         }
 	   
-	   function seleccionar_presupuesto(guia,serie,numero){
-           parent.seleccionar_presupuesto(guia,serie,numero);
+	   function seleccionar_pedido(guia,serie,numero){
+           parent.seleccionar_pedido(guia,serie,numero);
            parent.$.fancybox.close();
        }
 	   

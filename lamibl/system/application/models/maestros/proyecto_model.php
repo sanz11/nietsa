@@ -24,7 +24,7 @@ class Proyecto_model extends model {
  }
 
 	public function obtener_datosProyecto($proyecto){
-        $query = $this->db->where('PROYP_Codigo',$proyecto)->get('cji_proyecto');
+        $query = $this->db->where('EMPRP_Codigo',$proyecto)->get('cji_proyecto');
         if($query->num_rows()>0){
             foreach($query->result() as $fila){
                 $data[] = $fila;
@@ -41,6 +41,19 @@ class Proyecto_model extends model {
     		}
     		return $data;
     	}
+    }
+    
+    public function buscarproyecto_cliente($proyecto){
+    	$query = $this->db->where('EMPRP_Codigo',$proyecto)->get('cji_proyecto');
+    	if($query->num_rows>0){
+    		foreach($query->result() as $fila){
+    			$data[] = $fila;
+    		}
+    		return $data;
+    	}
+    	
+    	
+    	
     }
     
     
@@ -179,6 +192,54 @@ class Proyecto_model extends model {
     	  $this->db->where($where);
     	  $this->db->update('cji_direccion',(array)$filter);
     	}
+    	
+    	
+    	
+    	public function seleccionar($codigoproyecto)
+    	{
+    		 
+    		$listado    = $this->obtener_datosProyecto($codigoproyecto);
+    		if(count($listado) > 0){
+    			foreach($listado as $indice=>$valor){
+    				$indice1   = $valor->PROYP_Codigo;
+    				$valor1    = $valor->PROYC_Nombre;
+    				$arreglo[$indice1] = $valor1;
+    			}
+    		}
+    		return $arreglo;
+    	
+    	}
+    	
+    	public function listar_personas($contacto){
+
+    		$sql = "select contacto.ECONC_Persona,PERSC_Nombre from cji_emprcontacto contacto inner JOIN cji_persona persona
+					on contacto.ECONC_Persona = persona.PERSP_Codigo where contacto.ECONC_Persona = $contacto";
+    		$query = $this->db->query($sql);
+    		if($query->num_rows()>0){
+    			foreach($query->result() as $fila){
+    				$data[] = $fila;
+    			}
+    			return $data;
+    		}
+    	}
+    	
+    	public function seleccionarcontacto($contacto)
+    	{
+    		 
+    		$listado    = $this->listar_personas($contacto);
+    		
+    		
+    		if(count($listado) > 0){
+    			foreach($listado as $indice=>$valor){
+    				$indice1   = $valor->ECONC_Persona;
+    				$valor1    = $valor->PERSC_Nombre;
+    				$arreglo[$indice1] = $valor1;
+    			}
+    		}
+    		return $arreglo;
+    		 
+    	}
+    	
   	 }
 
   	 

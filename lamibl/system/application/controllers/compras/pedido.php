@@ -330,16 +330,24 @@ public function obra(){
         $codigomoneda = $datos_pedido[0]->MONED_Codigo;
         $data['combomoneda'] =  $this->OPTION_generador($this->moneda_model->listartipomoneda(), 'moned_codigo','moned_descripcion',$codigomoneda);
         
+        $codigocliente = $datos_pedido[0]->CLIP_Codigo;
         $codigoproyecto = $datos_pedido[0]->PROYP_Codigo;
-        if(count($codigoproyecto)>0)	
-        $data['cboObra'] = $this->OPTION_generador($this->proyecto_model->listar_proyectos(), 'PROYP_Codigo','PROYC_Nombre',$codigoproyecto);
-        else $data['cboObra'] = "ver esto";
         
-        
+        if($codigoproyecto != 0){
+        	$listaproyecto = $this->proyecto_model->seleccionar($codigocliente);
+        	$data['cboObra'] = form_dropdown("obra",$listaproyecto,$codigoproyecto, " class='comboGrande'  id='obra' ");
+        }else{
+        	$data['cboObra'] = form_dropdown("obra", array('' => ':: Seleccione ::'), "", " class='comboGrande'  id='obra'");
+        }
         
         
         $contacto = $datos_pedido[0]->ECONP_Contacto;
-
+        if($contacto != 0){
+        	$listacontacto = $this->proyecto_model->seleccionarcontacto($contacto);
+        	$data['cboContacto'] = form_dropdown("contacto", $listacontacto, $contacto, " class='comboGrande'  id='contacto'");
+        }else{
+        	$data['cboContacto'] = form_dropdown("contacto", array('' => ':: Seleccione ::'), "", " class='comboGrande'  id='contacto'");
+        }
        
         $fecha_hora = explode(" ", $datos_pedido[0]->PEDIC_FechaRegistro);
         $data['hora'] = $fecha_hora[1];
@@ -351,7 +359,6 @@ public function obra(){
             $data['ruc_cliente'] = $ruc_cliente;
             $data['nombre_cliente'] = $nombre_cliente;
         
-            $data['cboContacto'] = "";
             $data['importebruto'] = $datos_pedido[0]->PEDIC_ImporteBruto;
             $data['descuentotal'] = $datos_pedido[0]->PEDIC_DescuentoTotal;
             $data['vventa'] = $datos_pedido[0]->PEDIC_ValorVenta;
@@ -627,7 +634,7 @@ public function obra(){
     
 	public function obtener_detalle_lista($codigopedido){
 		    $listado_detalle = $this->pedidodetalle_model->listar($codigopedido);
-		    $lista = array();
+		    $lista_detalles = array();
 		    if(count($listado_detalle)>0){
 			    foreach($listado_detalle as $key=>$value){
 			    	$productocodigo   = $value->PROD_Codigo;
@@ -660,94 +667,6 @@ public function obra(){
 		    }
 		    return $lista_detalles;
 		
-	}
-	
-	public function obtener_detalle_pedido($tipo_oper, $tipo_docu, $pedido) {
-	
-		$datos_pedido = $this->pedido_model->obtener_pedido_filtrado($pedido);
-	
-		if (count($datos_pedido) > 0) {
-			$formapago = "";
-			$moneda = $datos_pedido[0]->PEDIP_Codigo;
-			$serie = $datos_pedido[0]->PEDIC_Serie;
-			$numero = $datos_pedido[0]->PEDIC_Numero;
-			$codigo_usuario = "";
-			$tipo_doc ="";
-	
-			$detalle = $this->pedido_model->listar($pedido);
-			$lista_detalles = array();
-			if (count($detalle) > 0) {
-				foreach ($detalle as $indice => $valor) {
-					$detpresup = $valor->PEDIDETP_Codigo;
-					$producto = $valor->PROD_Codigo;
-					$unidad_medida = $valor->UNDMED_Codigo;
-					$cantidad = $valor->PEDIDETC_Cantidad;
-					$igv100 = $valor->PEDIDETC_PCIGV;
-					$pu = $valor->PEDIDETC_PSIGV;
-					$subtotal = $valor->PEDIDETC_Precio;
-					$igv = $valor->PEDIDETC_IGV;
-					$descuento = "";
-					$total = $valor->PEDIDETC_Importe;
-	
-	
-	
-					$pu_conigv = $valor->PRESDEC_Pu_ConIgv;
-					$subtotal_conigv = $valor->PRESDEC_Subtotal_ConIgv;
-					$descuento_conigv = $valor->PRESDEC_Descuento_ConIgv;
-					$observacion = $valor->PRESDEC_Observacion;
-					$datos_producto = $this->producto_model->obtener_producto($producto);
-					$codigo_interno = $datos_producto[0]->PROD_CodigoInterno;
-					$nombre_producto = ($valor->PRESDEC_Descripcion != '' ? $valor->PRESDEC_Descripcion : $datos_producto[0]->PROD_Nombre);
-					$nombre_producto = str_replace('"', "''", $nombre_producto);
-					$flagGenInd = $datos_producto[0]->PROD_GenericoIndividual;
-					$flagBS = $datos_producto[0]->PROD_FlagBienServicio;
-					$costo = $datos_producto[0]->PROD_CostoPromedio;
-					$datos_umedida = $this->unidadmedida_model->obtener($unidad_medida);
-					$nombre_unidad = $datos_umedida[0]->UNDMED_Simbolo;
-	
-	
-					$objeto = new stdClass();
-					$objeto->flagBS = $flagBS;
-					$objeto->PRESDEP_Codigo = $detpresup;
-					$objeto->PROD_Codigo = $producto;
-					$objeto->PROD_CodigoInterno = $codigo_interno;
-					$objeto->UNDMED_Codigo = $unidad_medida;
-					$objeto->UNDMED_Simbolo = $nombre_unidad;
-					$objeto->PROD_Nombre = $nombre_producto;
-					$objeto->PROD_GenericoIndividual = $flagGenInd;
-					$objeto->PROD_CostoPromedio = $costo;
-					$objeto->PRESDEC_Cantidad = $cantidad;
-					$objeto->PRESDEC_Pu = $pu;
-					$objeto->PRESDEC_Subtotal = $subtotal;
-					$objeto->PRESDEC_Descuento = $descuento;
-					$objeto->PRESDEC_Igv = $igv;
-					$objeto->PRESDEC_Total = $total;
-					$objeto->PRESDEC_Pu_ConIgv = $pu_conigv;
-					$objeto->PRESDEC_Subtotal_ConIgv = $subtotal_conigv;
-					$objeto->PRESDEC_Descuento_ConIgv = $descuento_conigv;
-					$objeto->MONED_Codigo = $moneda;
-					$objeto->FORPAP_Codigo = $formapago;
-					$objeto->PRESUC_Serie = $serie;
-					$objeto->PRESUC_Numero = $numero;
-					$objeto->PRESUC_CodigoUsuario = $codigo_usuario;
-	
-					$lista_detalles[] = $objeto;
-				}
-			} else {
-				$objeto = new stdClass();
-				$objeto->PRESDEP_Codigo = '';
-				$objeto->MONED_Codigo = $moneda;
-				$objeto->FORPAP_Codigo = $formapago;
-				$objeto->PRESUC_Numero = $numero;
-				$objeto->PRESUC_CodigoUsuario = $codigo_usuario;
-				$lista_detalles[] = $objeto;
-			}
-			$resultado = json_encode($lista_detalles);
-	
-			echo $resultado;
-		} else {
-			echo 0;
-		}
 	}
 
 

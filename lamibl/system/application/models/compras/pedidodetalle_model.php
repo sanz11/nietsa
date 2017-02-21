@@ -22,6 +22,17 @@ class Pedidodetalle_model extends Model{
             return $data;
         }
     }
+    public function listar1($pedido)
+    {
+    	$where = array("PEDIP_Codigo"=>$pedido,"PEDIDETC_FlagEstado"=>"1");
+    	$query = $this->db->order_by('PEDIDETP_Codigo')->where($where)->get('cji_pedidodetalle');
+    	if($query->num_rows>0){
+    		foreach($query->result() as $fila){
+    			$data[] = $fila;
+    		}
+    		return $data;
+    	}
+    }
 	
     public function insertar($filter=null)
     {

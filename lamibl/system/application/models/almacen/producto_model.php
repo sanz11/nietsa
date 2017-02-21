@@ -42,6 +42,8 @@ class Producto_model extends model
             return NULL;
         }
     }
+    
+   
 
     public function listar_producto_stockmin()
     {

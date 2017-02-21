@@ -455,21 +455,9 @@ WHERE CPC_TipoOperacion="C" AND PEDIP_Codigo ='.$pedido.' ORDER BY PRESUP_Codigo
     							}
     							return array();
     }
-    public function listar($pedido)
-    {
-    	$where = array("PEDIP_Codigo"=>$pedido,"PEDIDETC_FlagEstado"=>"1");
-    	$query = $this->db->order_by('PEDIDETP_Codigo')->where($where)->get('cji_pedidodetalle');
-    	if($query->num_rows>0){
-    		foreach($query->result() as $fila){
-    			$data[] = $fila;
-    		}
-    		return $data;
-    	}
-    }
+   
     
     public function obtener_pedido_filtrado($pedido) {
-    	$tipo_oper = $this->uri->segment(4);
-    	$tipo_docu = $this->uri->segment(5);
     	
     	$where = array('PEDIP_Codigo' => $pedido);
     	$query = $this->db->where($where)->get('cji_pedido');

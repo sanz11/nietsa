@@ -244,6 +244,14 @@ if (empty($persona))
                 serienumero="Numero de PRESUPUESTO :"+serieguia+ " - " + numeroguia;
                 $("#serieguiaverPre").html(serienumero);
                 $("#serieguiaverPre").show(2000);
+            }
+
+     function seleccionar_pedido(pedido,seriepedido,numeropedido){
+				tipo_oper = 'V';
+                agregar_todopedido(pedido,tipo_oper);
+                serienumero="Numero de PEDIDO :"+seriepedido+ " - " + numeropedido;
+                $("#serieverPedi").html(serienumero);
+                $("#serieverPedi").show(2000);
             }	
 
         </script>
@@ -328,7 +336,7 @@ if (empty($persona))
 							 <td width="9%" valign="middle">
 							 <label for="OP"><img src="<?php echo base_url() ?>images/opedido.png" class="imgBoton" /></label>
 								<input type="radio" name="referenciar" id="OP" value="OP" href="javascript:;" class="verOrpedido" style="display:none;">
-								<div id="serieguiaverPre" name="serieguiaverPre" style="background-color: #cc7700; color:fff; padding:5px;display:none" ></div>
+								<div id="serieverPedi" name="serieverPedi" style="background-color: #cc7700; color:fff; padding:5px;display:none" ></div>
 							 </td>
                            
                         </tr>

@@ -307,7 +307,8 @@
                          <a href="<?php echo base_url(); ?>index.php/ventas/cliente_ventana_busqueda/" id="linkSelecCliente"></a>
                     </td>
 							<td>
-								Contacto:	<?php echo $cboContacto;?>
+								Contacto:	
+								<?php echo $cboContacto;?>
 							</td>
 							<td>
 								I.G.V:	<input style="width:30px" type="text" name="igv" id="igv" size="5" value="<?php echo $igv; ?>" readonly  />%

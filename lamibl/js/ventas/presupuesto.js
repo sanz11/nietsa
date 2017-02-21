@@ -859,6 +859,120 @@ function agregar_todopresupuesto(guia,tipo_oper){
 		
     });
 }
+function agregar_todopedido(pedido,tipo_oper){
+	descuento100  =  $("#descuento").val();
+    igv100        = $("#igv").val();
+
+    url = base_url+"index.php/ventas/presupuesto/obtener_detalle_pedido";
+//location.href = url;
+    n = document.getElementById('tblDetallePresupuesto').rows.length;
+   
+		
+	 $.ajax({url: url,type: "POST",
+		 data:{
+			 pedido:pedido
+			 },  
+		 dataType: "json", 
+		 success: function(data){
+			
+			//  limpiar_datos();
+		        $.each(data,function(i,item){
+		            /*cliente         = item.CLIP_Codigo ;
+		            ruc             = item.Ruc;
+		            razon_social    = item.RazonSocial;*/
+		            moneda          = item.MONED_Codigo;
+		            formapago       = item.FORPAP_Codigo;
+		            serie           = item.PRESUC_Serie;
+		            numero          = item.PRESUC_Numero;
+		               
+		            if(item.PRESDEP_Codigo!=''){
+		                j=n+1
+		                producto        = item.PROD_Codigo;
+		                codproducto     = item.PROD_CodigoInterno;
+		                unidad_medida   = item.UNDMED_Codigo;
+		                nombre_unidad   = item.UNDMED_Descripcion;
+		                nombre_producto = item.PROD_Nombre;
+		                cantidad        = item.PRESDEC_Cantidad;
+		                pu              = item.PRESDEC_Pu;
+		                subtotal        = item.PRESDEC_Subtotal;
+		                descuento       = item.PRESDEC_Descuento;
+		                igv             = item.PRESDEC_Igv;
+		                total           = item.PRESDEC_Total
+		                pu_conigv              = item.PRESDEC_Pu_ConIgv;
+		                subtotal_conigv        = item.PRESDEC_Subtotal_ConIgv;
+		                   
+		                descuento_conigv       = item.PRESDEC_Descuento_ConIgv;	
+
+		                if(j%2==0){
+		                    clase="itemParTabla";
+		                }else{
+		                    clase="itemImparTabla";
+		                }
+		                fila = '<tr id="'+n+'" class="'+clase+'" t-doc="'+tipo_docu+'" >';
+		                fila +='<td width="3%"><div align="center"><font color="red"><strong><a href="#" onclick="eliminar_producto_comprobante('+n+');">';
+		                fila +='<span style="border:1px solid red;background: #ffffff;">&nbsp;X&nbsp;</span>';
+		                fila +='</a></strong></font></div></td>';
+		                fila += '<td width="4%"><div align="center">'+j+'</div></td>';
+		                fila += '<td width="10%"><div align="center">';
+		                fila += '<input type="hidden" class="cajaGeneral" name="prodcodigo['+n+']" id="prodcodigo['+n+']" value="'+producto+'">'+codproducto;
+		                fila += '<input type="hidden" class="cajaGeneral" name="produnidad['+n+']" id="produnidad['+n+']" value="'+unidad_medida+'">';
+		                fila += '</div></td>';
+		                fila+= '<input type="hidden" name="flagBS['+n+']" id="flagBS['+n+']" value="B"/>';
+		                fila+= '<input type="hidden" name="flagGenInd['+n+']" id="flagGenind['+n+']" value="I"/>'
+		                fila += '<td><div align="left"><input type="text" class="cajaGeneral" size="73" maxlength="250" name="proddescri['+n+']" id="proddescri['+n+']" value="'+nombre_producto+'" /></div></td>';
+		                if(tipo_docu!='B' && tipo_docu!='N')
+		                    fila += '<td width="10%"><div align="left"><input type="text" size="1" maxlength="10" class="cajaGeneral" name="prodcantidad['+n+']" id="prodcantidad['+n+']" value="'+cantidad+'" onblur="calcula_importe('+n+');calcula_totales();" onkeypress="return numbersonly(this,event,\'.\');">'+nombre_unidad+'</div></td>';
+		                else
+		                     fila += '<td width="10%"><div align="left"><input type="text" size="1" maxlength="10" class="cajaGeneral" name="prodcantidad['+n+']" id="prodcantidad['+n+']" value="'+cantidad+'" onblur="calcula_importe('+n+');calcula_totales();" onkeypress="return numbersonly(this,event,\'.\');">'+nombre_unidad+'</div></td>';
+		               if(tipo_docu!='B' && tipo_docu!='N'){
+		                    fila += '<td width="6%"><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral" name="prodpu_conigv['+n+']" id="prodpu_conigv['+n+']" value="'+pu_conigv+'"  onblur="modifica_pu_conigv('+n+');" onkeypress="return numbersonly(this,event,\'.\');" /></div></td>'
+		                    fila += '<td width="6%"><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral"  name="prodpu['+n+']" id="prodpu['+n+']" value="'+pu+'" onblur="modifica_pu('+n+');" onkeypress="return numbersonly(this,event,\'.\');" ></div></td>';                  
+		                    fila += '<td width="6%"><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral cajaSoloLectura" name="prodprecio['+n+']" id="prodprecio['+n+']" value="'+subtotal+'" readonly="readonly">';
+		                }else{
+		                    fila += '<td width="6%"><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral" name="prodpu_conigv['+n+']" id="prodpu_conigv['+n+']" value="'+pu_conigv+'"  onblur="modifica_pu_conigv('+n+');" onkeypress="return numbersonly(this,event,\'.\');" /></div></td>'
+		                    fila += '<td width="6%"><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral"  name="prodpu['+n+']" id="prodpu['+n+']" value="'+pu+'" onblur="modifica_pu('+n+');" onkeypress="return numbersonly(this,event,\'.\');" ></div></td>';                  
+		                    fila += '<td width="6%"><div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral cajaSoloLectura" name="prodprecio['+n+']" id="prodprecio['+n+']" value="'+subtotal+'" readonly="readonly">';
+		                }
+		                //fila += '<td width="6%"><div align="center">';
+		                fila += '<input type="hidden" size="1" readonly name="proddescuento100['+n+']" id="proddescuento100['+n+']" value="'+descuento100+'">';
+		                if(tipo_docu!='B' && tipo_docu!='N')
+		                    fila += '<input type="hidden" size="1" maxlength="10" readonly class="cajaGeneral" name="proddescuento['+n+']" class="proddescuento" id="proddescuento['+n+']" value="'+descuento+'" onblur="calcula_importe2('+n+');calcula_totales();">';
+		                else
+		                    fila += '<input type="hidden" size="1" maxlength="10" readonly class="cajaGeneral" name="proddescuento['+n+']" class="proddescuento" id="proddescuento['+n+']" value="'+descuento+'" onblur="calcula_importe2('+n+');calcula_totales();">';
+		               //fila += '</div></td>';
+		                
+		                fila += '<td width="6%" style="display:none;"><div align="center"><input type="text" size="5" class="cajaGeneral cajaSoloLectura" name="prodigv['+n+']" value="'+igv+'" id="prodigv['+n+']" readonly></div></td>';
+		                fila += '<td width="6%" style="display:none;" ><div align="center">';
+		                fila +='<input type="hidden" name="detacodi['+n+']" id="detacodi['+n+']">';
+		                fila += '<input type="hidden" name="proddescuento_conigv['+n+']" id="proddescuento_conigv['+n+']" onblur="calcula_importe2_conigv('+n+');" value="0">';
+		                fila += '<input type="hidden" name="prodigv100['+n+']" id="prodigv100['+n+']" value="'+igv100+'">';
+		                fila +='<input type="hidden" name="detaccion['+n+']" id="detaccion['+n+']" value="n">';
+		                fila+= '<input type="text" value="0" size="1" name="proddescuento['+n+']" class="proddescuento" id="proddescuento['+n+']" onblur="calcula_importe2('+n+');" />';
+
+		                fila += '<input type="text" size="5" class="cajaGeneral cajaSoloLectura" name="prodimporte['+n+']" id="prodimporte['+n+']" value="'+total+'" readonly="readonly" value="0">';
+		                fila += '</div></td>';
+		                fila += '</tr>';
+		                $("#tblDetallePresupuesto").append(fila);
+						
+		            }
+		              
+		            /*$('#ruc_cliente').val(ruc);
+		            $('#cliente').val(cliente);
+		            $('#nombre_cliente').val(razon_social);*/
+		            $('#forma_pago').val(formapago);
+		            $('#moneda').val(moneda);
+					
+		            n++;      
+		        })
+				
+				calcula_totales();
+ 	    
+		  
+	 }	
+	        
+	    });  
+
+}
 function limpiar_datos(){
     $('#formapago').val('');
     $('#moneda').val('1');
