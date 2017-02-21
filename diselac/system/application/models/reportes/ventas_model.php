@@ -185,19 +185,19 @@ class Ventas_Model extends Model
   {
   	//SELECT SUM( IF(c.MONED_Codigo=2,c.CPC_TDC*c.CPC_Total,c.CPC_Total)) as VENTAS, p.PERSC_Nombre as NOMBRE, p.PERSC_ApellidoPaterno as PATERNO
   	$sql = "
-  	SELECT SUM( IF(c.MONED_Codigo=2,c.CPC_TDC*c.CPC_Total,c.CPC_Total)) as VENTAS, p.PERSC_Nombre as NOMBRE, p.PERSC_ApellidoPaterno as PATERNO ,p.PERSP_Codigo as Code
+  	SELECT SUM( IF(com.MONED_Codigo=2,com.CPC_TDC*com.CPC_Total,com.CPC_Total)) as VENTAS, p.PERSC_Nombre as NOMBRE, p.PERSC_ApellidoPaterno as PATERNO ,p.PERSP_Codigo as Code
   	FROM cji_persona p
   	LEFT JOIN cji_comprobante c ON c.CPC_Vendedor = p.PERSP_Codigo
   	WHERE c.CPC_Fecha BETWEEN DATE('$inicio') AND DATE('$fin') GROUP BY Code ORDER BY 1 ASC
   
   	";
-  	/*SELECT com.CPC_total,CONCAT(pe.PERSC_Nombre , ' ', pe.PERSC_ApellidoPaterno, ' ', pe.PERSC_ApellidoMaterno) as nombre , MONED_Simbolo from cji_comprobante com
+  	/*SELECT SUM( IF(com.MONED_Codigo=2,com.CPC_TDC*com.CPC_Total,com.CPC_Total)) as VENTAS,CONCAT(pe.PERSC_Nombre , ' ', pe.PERSC_ApellidoPaterno, ' ', pe.PERSC_ApellidoMaterno) as NOMBRE from cji_comprobante com
   	inner join cji_cliente cl on cl.CLIP_Codigo = com.CLIP_Codigo
   	inner join cji_persona pe on pe.PERSP_Codigo = cl.PERSP_Codigo
   	inner JOIN cji_moneda m ON m.MONED_Codigo=com.MONED_Codigo
   	WHERE CPC_TipoOperacion='V' and com.CLIP_Codigo = 357
   	UNION
-  	SELECT com.CPC_total ,EMPRC_RazonSocial as nombre ,MONED_Simbolo from cji_comprobante com
+  	SELECT SUM( IF(com.MONED_Codigo=2,com.CPC_TDC*com.CPC_Total,com.CPC_Total)) as VENTAS ,EMPRC_RazonSocial as NOMBRE from cji_comprobante com
   	inner join cji_cliente cl on cl.CLIP_Codigo = com.CLIP_Codigo
   	inner join cji_empresa es on es.EMPRP_Codigo = cl.EMPRP_Codigo
   	inner JOIN cji_moneda m ON m.MONED_Codigo = com.MONED_Codigo
