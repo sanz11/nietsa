@@ -181,27 +181,26 @@ class Ventas_Model extends Model
   
 
 
-  public function ventas_por_cliente_resumen($inicio,$fin)
+  public function ventas_por_cliente_resumen($inicio,$fin,$cliente)
   {
-  	//SELECT SUM( IF(c.MONED_Codigo=2,c.CPC_TDC*c.CPC_Total,c.CPC_Total)) as VENTAS, p.PERSC_Nombre as NOMBRE, p.PERSC_ApellidoPaterno as PATERNO
+  	$where="and com.CPC_Fecha BETWEEN DATE('$inicio') AND DATE('$fin')";
   	$sql = "
-  	SELECT SUM( IF(com.MONED_Codigo=2,com.CPC_TDC*com.CPC_Total,com.CPC_Total)) as VENTAS, p.PERSC_Nombre as NOMBRE, p.PERSC_ApellidoPaterno as PATERNO ,p.PERSP_Codigo as Code
-  	FROM cji_persona p
-  	LEFT JOIN cji_comprobante c ON c.CPC_Vendedor = p.PERSP_Codigo
-  	WHERE c.CPC_Fecha BETWEEN DATE('$inicio') AND DATE('$fin') GROUP BY Code ORDER BY 1 ASC
-  
-  	";
-  	/*SELECT SUM( IF(com.MONED_Codigo=2,com.CPC_TDC*com.CPC_Total,com.CPC_Total)) as VENTAS,CONCAT(pe.PERSC_Nombre , ' ', pe.PERSC_ApellidoPaterno, ' ', pe.PERSC_ApellidoMaterno) as NOMBRE from cji_comprobante com
+  	SELECT SUM( IF(com.MONED_Codigo=2,com.CPC_TDC*com.CPC_Total,com.CPC_Total)) as VENTAS,
+  		CONCAT(pe.PERSC_Nombre , ' ', pe.PERSC_ApellidoPaterno, ' ', pe.PERSC_ApellidoMaterno) as NOMBRE, PERSC_NumeroDocIdentidad AS RUC
+  	from cji_comprobante com
   	inner join cji_cliente cl on cl.CLIP_Codigo = com.CLIP_Codigo
   	inner join cji_persona pe on pe.PERSP_Codigo = cl.PERSP_Codigo
   	inner JOIN cji_moneda m ON m.MONED_Codigo=com.MONED_Codigo
-  	WHERE CPC_TipoOperacion='V' and com.CLIP_Codigo = 357
-  	UNION
-  	SELECT SUM( IF(com.MONED_Codigo=2,com.CPC_TDC*com.CPC_Total,com.CPC_Total)) as VENTAS ,EMPRC_RazonSocial as NOMBRE from cji_comprobante com
+  	WHERE CPC_TipoOperacion='V' ".$where." and com.CLIP_Codigo =".$cliente." 
+  	 UNION
+  	SELECT SUM( IF(com.MONED_Codigo=2,com.CPC_TDC*com.CPC_Total,com.CPC_Total)) as VENTAS ,
+  		EMPRC_RazonSocial as NOMBRE , EMPRC_Ruc AS RUC
+  	from cji_comprobante com
   	inner join cji_cliente cl on cl.CLIP_Codigo = com.CLIP_Codigo
   	inner join cji_empresa es on es.EMPRP_Codigo = cl.EMPRP_Codigo
   	inner JOIN cji_moneda m ON m.MONED_Codigo = com.MONED_Codigo
-  	WHERE CPC_TipoOperacion='V' and com.CLIP_Codigo = 357*/
+  	WHERE CPC_TipoOperacion='V' ".$where." and com.CLIP_Codigo =".$cliente." 
+  	";
   	$query = $this->db->query($sql);
   
   
@@ -216,7 +215,7 @@ class Ventas_Model extends Model
   	return $data;
   }
   
-  public function ventas_por_cliente_mensual($inicio,$fin)
+  public function ventas_por_cliente_mensual($inicio,$fin,$cliente)
   {
   	$inicio = explode('-',$inicio);
   	$mesInicio = $inicio[1];
@@ -227,9 +226,8 @@ class Ventas_Model extends Model
   
   	if($anioFin > $anioInicio)
   	{
-  		$sql = " SELECT
-      p.PERSC_Nombre as NOMBRE,
-      p.PERSC_ApellidoPaterno as PATERNO,
+  	$sql = " SELECT
+  		CONCAT(pe.PERSC_Nombre , ' ', pe.PERSC_ApellidoPaterno, ' ', pe.PERSC_ApellidoMaterno) as NOMBRE, PERSC_NumeroDocIdentidad AS RUC,
       ";
   		for($j = $anioInicio; $j <= $anioFin; $j++)
   		{
@@ -237,49 +235,98 @@ class Ventas_Model extends Model
   			{
   				for($i = 1; $i <= intval($mesFin); $i++)
   				{
-  					$sql .= "SUM(IF(MONTH(CPC_Fecha)=$i AND YEAR(CPC_Fecha)=$j,IF(c.MONED_Codigo=2,c.CPC_TDC*c.CPC_Total,c.CPC_Total),0)) as m$j$i,";
+  					$sql .= "SUM(IF(MONTH(com.CPC_Fecha)=$i AND YEAR(com.CPC_Fecha)=$j,IF(com.MONED_Codigo=2,com.CPC_TDC*com.CPC_Total,com.CPC_Total),0)) as m$j$i,";
   				}
   			}else if($j==$anioInicio){
   				for($i = intval($mesInicio); $i <= 12; $i++)
   				{
-  					$sql .= "SUM(IF(MONTH(CPC_Fecha)=$i AND YEAR(CPC_Fecha)=$j,IF(c.MONED_Codigo=2,c.CPC_TDC*c.CPC_Total,c.CPC_Total),0)) as m$j$i,";
+  					$sql .= "SUM(IF(MONTH(com.CPC_Fecha)=$i AND YEAR(com.CPC_Fecha)=$j,IF(com.MONED_Codigo=2,com.CPC_TDC*com.CPC_Total,com.CPC_Total),0)) as m$j$i,";
   				}
   			}else{
   				for($i = 1; $i <= 12; $i++)
   				{
-  					$sql .= "SUM(IF(MONTH(CPC_Fecha)=$i AND YEAR(CPC_Fecha)=$j,IF(c.MONED_Codigo=2,c.CPC_TDC*c.CPC_Total,c.CPC_Total),0)) as m$j$i,";
+  					$sql .= "SUM(IF(MONTH(com.CPC_Fecha)=$i AND YEAR(com.CPC_Fecha)=$j,IF(com.MONED_Codigo=2,com.CPC_TDC*com.CPC_Total,com.CPC_Total),0)) as m$j$i,";
   				}
   			}
   		}
   		$sql = substr($sql,0,strlen($sql)-1);
   
   		$sql.= "
-  		FROM cji_persona p
-  		LEFT JOIN cji_comprobante c ON c.CPC_Vendedor = p.PERSP_Codigo
-  		WHERE YEAR(c.CPC_Fecha) BETWEEN '$anioInicio' AND '$anioFin'
-  		GROUP BY p.PERSP_Codigo ORDER BY 1 ASC";
+  		 from cji_comprobante com
+  			inner join cji_cliente cl on cl.CLIP_Codigo = com.CLIP_Codigo
+  			inner join cji_persona pe on pe.PERSP_Codigo = cl.PERSP_Codigo
+  			inner JOIN cji_moneda m ON m.MONED_Codigo=com.MONED_Codigo
+  		WHERE CPC_TipoOperacion='V'and YEAR(com.CPC_Fecha) BETWEEN '$anioInicio' AND '$anioFin' and com.CLIP_Codigo = ".$cliente."  
+  		UNION
+  		SELECT 
+  		EMPRC_RazonSocial as NOMBRE , EMPRC_Ruc AS RUC, ";
+  		for($j = $anioInicio; $j <= $anioFin; $j++)
+  		{
+  			if($j == $anioFin)
+  			{
+  				for($i = 1; $i <= intval($mesFin); $i++)
+  				{
+  					$sql .= "SUM(IF(MONTH(com.CPC_Fecha)=$i AND YEAR(com.CPC_Fecha)=$j,IF(com.MONED_Codigo=2,com.CPC_TDC*com.CPC_Total,com.CPC_Total),0)) as m$j$i,";
+  				}
+  			}else if($j==$anioInicio){
+  				for($i = intval($mesInicio); $i <= 12; $i++)
+  				{
+  					$sql .= "SUM(IF(MONTH(com.CPC_Fecha)=$i AND YEAR(com.CPC_Fecha)=$j,IF(com.MONED_Codigo=2,com.CPC_TDC*com.CPC_Total,com.CPC_Total),0)) as m$j$i,";
+  				}
+  			}else{
+  				for($i = 1; $i <= 12; $i++)
+  				{
+  					$sql .= "SUM(IF(MONTH(com.CPC_Fecha)=$i AND YEAR(com.CPC_Fecha)=$j,IF(com.MONED_Codigo=2,com.CPC_TDC*com.CPC_Total,com.CPC_Total),0)) as m$j$i,";
+  				}
+  			}
+  		}
+  		$sql = substr($sql,0,strlen($sql)-1);
+  		$sql.= " from cji_comprobante com
+  					inner join cji_cliente cl on cl.CLIP_Codigo = com.CLIP_Codigo
+  					inner join cji_empresa es on es.EMPRP_Codigo = cl.EMPRP_Codigo
+  					inner JOIN cji_moneda m ON m.MONED_Codigo = com.MONED_Codigo
+  			WHERE CPC_TipoOperacion='V' and YEAR(com.CPC_Fecha) BETWEEN '$anioInicio' AND '$anioFin' and com.CLIP_Codigo = ".$cliente." ";
   
   	}elseif($anioFin == $anioInicio){
-  		$sql = " SELECT
-      p.PERSC_Nombre as NOMBRE,
-      p.PERSC_ApellidoPaterno as PATERNO,
+  		$sql = "SELECT
+  		CONCAT(pe.PERSC_Nombre , ' ', pe.PERSC_ApellidoPaterno, ' ', pe.PERSC_ApellidoMaterno) as NOMBRE, PERSC_NumeroDocIdentidad AS RUC,
       ";
   		if($mesInicio == $mesFin)
   		{
-  			$sql .= "SUM(IF(MONTH(CPC_Fecha)=".intval($mesInicio).",IF(c.MONED_Codigo=2,c.CPC_TDC*c.CPC_Total,c.CPC_Total),0)) as m$anioFin".intval($mesInicio)."";
+  			$sql .= "SUM(IF(MONTH(com.CPC_Fecha)=".intval($mesInicio).",IF(com.MONED_Codigo=2,com.CPC_TDC*com.CPC_Total,com.CPC_Total),0)) as m$anioFin".intval($mesInicio)."";
   		}else{
   			for($i = intval($mesInicio); $i <= intval($mesFin); $i++)
   			{
-  				$sql .= "SUM(IF(MONTH(CPC_Fecha)=$i,IF(c.MONED_Codigo=2,c.CPC_TDC*c.CPC_Total,c.CPC_Total),0)) as m$anioFin$i,";
+  				$sql .= "SUM(IF(MONTH(com.CPC_Fecha)=$i,IF(com.MONED_Codigo=2,com.CPC_TDC*com.CPC_Total,com.CPC_Total),0)) as m$anioFin$i,";
   			}
   			$sql = substr($sql,0,strlen($sql)-1);
   		}
   
   		$sql.= "
-  		FROM cji_persona p
-  		LEFT JOIN cji_comprobante c ON c.CPC_Vendedor = p.PERSP_Codigo
-  		WHERE YEAR(c.CPC_Fecha) = '$anioInicio'
-  		GROUP BY p.PERSP_Codigo ORDER BY 1 ASC";
+  		 from cji_comprobante com
+  			inner join cji_cliente cl on cl.CLIP_Codigo = com.CLIP_Codigo
+  			inner join cji_persona pe on pe.PERSP_Codigo = cl.PERSP_Codigo
+  			inner JOIN cji_moneda m ON m.MONED_Codigo=com.MONED_Codigo
+  		WHERE CPC_TipoOperacion='V' and YEAR(com.CPC_Fecha) = '$anioInicio' and com.CLIP_Codigo = ".$cliente." 
+  		UNION
+  		SELECT 
+  		EMPRC_RazonSocial as NOMBRE , EMPRC_Ruc AS RUC, ";
+  		if($mesInicio == $mesFin)
+  		{
+  			$sql .= "SUM(IF(MONTH(com.CPC_Fecha)=".intval($mesInicio).",IF(com.MONED_Codigo=2,com.CPC_TDC*com.CPC_Total,com.CPC_Total),0)) as m$anioFin".intval($mesInicio)."";
+  		}else{
+  			for($i = intval($mesInicio); $i <= intval($mesFin); $i++)
+  			{
+  				$sql .= "SUM(IF(MONTH(com.CPC_Fecha)=$i,IF(com.MONED_Codigo=2,com.CPC_TDC*com.CPC_Total,com.CPC_Total),0)) as m$anioFin$i,";
+  			}
+  			$sql = substr($sql,0,strlen($sql)-1);
+  		}
+  		$sql.= " from cji_comprobante com
+  		inner join cji_cliente cl on cl.CLIP_Codigo = com.CLIP_Codigo
+  		inner join cji_empresa es on es.EMPRP_Codigo = cl.EMPRP_Codigo
+  		inner JOIN cji_moneda m ON m.MONED_Codigo = com.MONED_Codigo
+  		WHERE CPC_TipoOperacion='V' and YEAR(com.CPC_Fecha) = '$anioInicio' and com.CLIP_Codigo = ".$cliente." ";
+  		
   	}
   
   	$query = $this->db->query($sql);
@@ -296,7 +343,7 @@ class Ventas_Model extends Model
   	return $data;
   }
   
-  public function ventas_por_cliente_anual($inicio,$fin)
+  public function ventas_por_cliente_anual($inicio,$fin,$cliente)
   {
   	$inicio = explode('-',$inicio);
   	$mesInicio = $inicio[1];
@@ -307,41 +354,74 @@ class Ventas_Model extends Model
   
   	if($anioFin > $anioInicio)
   	{
+
   
   		$sql = " SELECT
-      p.PERSC_Nombre as NOMBRE,
-      p.PERSC_ApellidoPaterno as PATERNO,
+     CONCAT(pe.PERSC_Nombre , ' ', pe.PERSC_ApellidoPaterno, ' ', pe.PERSC_ApellidoMaterno) as NOMBRE, PERSC_NumeroDocIdentidad AS RUC ,
       ";
   		for($j = $anioInicio; $j <= $anioFin; $j++)
   		{
   			if($j == $anioFin)
-  			{
-  				$sql .= "SUM(IF(YEAR(CPC_Fecha)=$j,IF(c.MONED_Codigo=2,c.CPC_TDC*c.CPC_Total,c.CPC_Total),0)) as y$j,";
+  			{									
+  				$sql .= "SUM(IF(YEAR(CPC_Fecha)=$j,IF(com.MONED_Codigo=2,com.CPC_TDC*com.CPC_Total,com.CPC_Total),0)) as y$j,";
   			}else{
-  				$sql .= "SUM(IF(YEAR(CPC_Fecha)=$j,IF(c.MONED_Codigo=2,c.CPC_TDC*c.CPC_Total,c.CPC_Total),0)) as y$j,";
+  				$sql .= "SUM(IF(YEAR(CPC_Fecha)=$j,IF(com.MONED_Codigo=2,com.CPC_TDC*com.CPC_Total,com.CPC_Total),0)) as y$j,";
   			}
   		}
   		$sql = substr($sql,0,strlen($sql)-1);
   
   		$sql.= "
-  		FROM cji_persona p
-  		LEFT JOIN cji_comprobante c ON c.CPC_Vendedor = p.PERSP_Codigo
-  		WHERE YEAR(c.CPC_Fecha) BETWEEN '$anioInicio' AND '$anioFin'
-  		GROUP BY p.PERSP_Codigo ORDER BY 1 ASC";
+  		from cji_comprobante com
+   		inner join cji_cliente cl on cl.CLIP_Codigo = com.CLIP_Codigo
+   		inner join cji_persona pe on pe.PERSP_Codigo = cl.PERSP_Codigo
+   		inner JOIN cji_moneda m ON m.MONED_Codigo=com.MONED_Codigo
+  		WHERE YEAR(com.CPC_Fecha) BETWEEN '$anioInicio' AND '$anioFin' and CPC_TipoOperacion='V' and com.CLIP_Codigo = ".$cliente." 
+  		UNION
+   		SELECT
+   		EMPRC_RazonSocial as NOMBRE , EMPRC_Ruc AS RUC , ";
+  		for($j = $anioInicio; $j <= $anioFin; $j++)
+  		{
+  			if($j == $anioFin)
+  			{
+  				$sql .= "SUM(IF(YEAR(com.CPC_Fecha)=$j,IF(com.MONED_Codigo=2,com.CPC_TDC*com.CPC_Total,com.CPC_Total),0)) as y$j,";
+  			}else{
+  				$sql .= "SUM(IF(YEAR(com.CPC_Fecha)=$j,IF(com.MONED_Codigo=2,com.CPC_TDC*com.CPC_Total,com.CPC_Total),0)) as y$j,";
+  			}
+  		}
+  		$sql = substr($sql,0,strlen($sql)-1);
+  		
+  		$sql.= " from cji_comprobante com
+   		inner join cji_cliente cl on cl.CLIP_Codigo = com.CLIP_Codigo
+   		inner join cji_empresa es on es.EMPRP_Codigo = cl.EMPRP_Codigo
+   		inner JOIN cji_moneda m ON m.MONED_Codigo = com.MONED_Codigo
+   		WHERE YEAR(com.CPC_Fecha) BETWEEN '$anioInicio' AND '$anioFin' and CPC_TipoOperacion='V' and com.CLIP_Codigo = ".$cliente." 
+  		";
   
   
   	}elseif($anioFin == $anioInicio){
   
   		$sql = " SELECT
-      p.PERSC_Nombre as NOMBRE,
-      p.PERSC_ApellidoPaterno as PATERNO,
-      ";
-  		$sql .= "SUM(IF(c.MONED_Codigo=2,c.CPC_TDC*c.CPC_Total,c.CPC_Total)) as y$anioFin ";
+     CONCAT(pe.PERSC_Nombre , ' ', pe.PERSC_ApellidoPaterno, ' ', pe.PERSC_ApellidoMaterno) as NOMBRE, PERSC_NumeroDocIdentidad AS RUC ,
+      ";		
+  		$sql .= "SUM(IF(com.MONED_Codigo=2,com.CPC_TDC * com.CPC_Total,com.CPC_Total)) as y$anioFin ";
+  		
   		$sql.= "
-  		FROM cji_persona p
-  		LEFT JOIN cji_comprobante c ON c.CPC_Vendedor = p.PERSP_Codigo
-  		WHERE YEAR(c.CPC_Fecha) = '$anioInicio'
-  		GROUP BY p.PERSP_Codigo ORDER BY 1 ASC";
+  		from cji_comprobante com
+   		inner join cji_cliente cl on cl.CLIP_Codigo = com.CLIP_Codigo
+   		inner join cji_persona pe on pe.PERSP_Codigo = cl.PERSP_Codigo
+   		inner JOIN cji_moneda m ON m.MONED_Codigo=com.MONED_Codigo
+  		WHERE YEAR(com.CPC_Fecha) = '$anioInicio' and CPC_TipoOperacion='V' and com.CLIP_Codigo = ".$cliente." 
+  		UNION
+   		SELECT
+   		EMPRC_RazonSocial as NOMBRE , EMPRC_Ruc AS RUC ,";		
+  		$sql .= "SUM(IF(com.MONED_Codigo=2,com.CPC_TDC * com.CPC_Total,com.CPC_Total)) as y$anioFin ";
+  		
+  		$sql.= " from cji_comprobante com
+  		inner join cji_cliente cl on cl.CLIP_Codigo = com.CLIP_Codigo
+  		inner join cji_empresa es on es.EMPRP_Codigo = cl.EMPRP_Codigo
+  		inner JOIN cji_moneda m ON m.MONED_Codigo = com.MONED_Codigo
+  		WHERE YEAR(com.CPC_Fecha) = '$anioInicio' and CPC_TipoOperacion='V' and com.CLIP_Codigo = ".$cliente." 
+  		";
   	}
   
   	$query = $this->db->query($sql);

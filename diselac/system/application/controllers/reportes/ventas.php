@@ -44,11 +44,14 @@ class Ventas extends Controller {
     	$data['fecha_fin'] = '';
     
     	if (isset($_POST['reporte'])) {
+    		$data['cliente'] = $_POST['cliente'];
+    		$data['nombre_cliente'] = $_POST['nombre_cliente'];
+    		$data['buscar_cliente'] = $_POST['buscar_cliente'];
     		$data['fecha_inicio'] = $_POST['fecha_inicio'];
     		$data['fecha_fin'] = $_POST['fecha_fin'];
-    		$data['resumen'] = $this->ventas_model->ventas_por_cliente_resumen($data['fecha_inicio'], $data['fecha_fin']);
-    		$data['mensual'] = $this->ventas_model->ventas_por_cliente_mensual($data['fecha_inicio'], $data['fecha_fin']);
-    		$data['anual'] = $this->ventas_model->ventas_por_cliente_anual($data['fecha_inicio'], $data['fecha_fin']);
+    		$data['resumen'] = $this->ventas_model->ventas_por_cliente_resumen($data['fecha_inicio'], $data['fecha_fin'],$data['cliente']);
+    		$data['mensual'] = $this->ventas_model->ventas_por_cliente_mensual($data['fecha_inicio'], $data['fecha_fin'],$data['cliente']);
+    		$data['anual'] = $this->ventas_model->ventas_por_cliente_anual($data['fecha_inicio'], $data['fecha_fin'],$data['cliente']);
     	}
     	$this->layout->view('reportes/ventas_por_cliente', $data);
     }

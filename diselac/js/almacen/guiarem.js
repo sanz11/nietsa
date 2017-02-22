@@ -495,12 +495,14 @@ jQuery(document).ready(function () {
     });
 })
 
-var limite_detalle = 15;
+
 function getLimite() {
+	var limite_detalle = 20;
     return limite_detalle;
 }
 
 function setLimite(limite) {
+	var limite_detalle = 20;
     limite_detalle = limite;
 }
 
