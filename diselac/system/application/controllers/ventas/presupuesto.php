@@ -2664,30 +2664,30 @@ public function select_cmbVendedor($index){
 
     public function presupuesto_ver_pdf_conmenbrete($codigo, $img) {
         switch (FORMATO_IMPRESION) {
-            case 1:  //Formato para jimmyplat
+            case 10:  //Formato para jimmyplat
                 $this->presupuesto_ver_pdf_conmenbrete_formato1($codigo, $img);
                 break;
-            case 2:  //Formato para jimmyplat
+            case 20:  //Formato para jimmyplat
                 $this->presupuesto_ver_pdf_conmenbrete_formato2($codigo);
                 break;
-            case 3:  //Formato para instrumentos y systemas
+            case 30:  //Formato para instrumentos y systemas
                 $this->presupuesto_ver_pdf_conmenbrete_formato3($codigo, $img);
                 break;
-            case 4:  //Formato para ferremax
+            case 40:  //Formato para ferremax
                 $this->presupuesto_ver_pdf_conmenbrete_formato4($codigo);
                 break;
-            case 5:
+            case 50:
                 if ($_SESSION['compania'] == "1") {
                     $this->presupuesto_ver_pdf_conmenbrete_formato5($codigo); //Formato para CYG
                 } else {
                     $this->presupuesto_ver_pdf_conmenbrete_formato6($codigo); //Formato para CYG ELECTRO DATA
                 }
                 break;
-            case 6:
+            case 60:
                 $this->presupuesto_ver_pdf_conmenbrete_formato3($codigo, $img); //Formato para CYL
                 break;
             default:
-                presupuesto_ver_pdf_conmenbrete_formato1($codigo, $img);
+            	$this->presupuesto_ver_pdf_conmenbrete_formato1($codigo, $img);
                 break;
         }
     }
@@ -2781,8 +2781,9 @@ public function select_cmbVendedor($index){
 
 
         $detalle_presupuesto = $this->obtener_lista_detalles($codigo);
-
+	
         $this->cezpdf = new Cezpdf('a4');
+        $this->cezpdf = new backgroundPDF('a4', 'portrait', 'image', array('img' => 'images/documentos/presupuestformato.jpg'));
         $datacreator = array(
             'Title' => 'Estadillo de ',
             'Name' => 'Estadillo de ',
@@ -2792,20 +2793,6 @@ public function select_cmbVendedor($index){
             'Producer' => 'ccapaempresas.com'
         );
 
-
-        /*$this->cezpdf->addInfo($datacreator);
-        if ($_SESSION['empresa'] == '3') {
-            $this->cezpdf->ezImage("images/cabeceras/presupuestoyuan.jpg", -10, 0, 'none', 'left');
-        } else {
-            $this->cezpdf->ezImage("images/cabeceras/presupuestotek.jpg", -10, 100, 'none', 'left');
-        }*/
-        //$this->cezpdf = new backgroundPDF('a4', 'portrait', 'image', array('img' => 'images/img_db/ferremax_cabe.jpg'));
-        /* $this->cezpdf->ezText(utf8_decode_seguro('TRANSLOGINT'), 11, array("left" => 15));
-          $this->cezpdf->ezText(utf8_decode_seguro('Principal: Av. El Polo Mz.H Lt.12 C'), 9, array("left" => 15));
-          $this->cezpdf->ezText(utf8_decode_seguro('Urb.El Club, 1era Etapa'), 9, array("left" => 15));
-          $this->cezpdf->ezText(utf8_decode_seguro('Huachipa, Lurigancho, Lima - Peru'), 9, array("left" => 15));
-          $this->cezpdf->ezText('E-mail: madypla@hotmail.com,  web: www.madyplac.com', 9, array("left" => 15));
-          $delta = 20; */
 
         //$this->cezpdf->ezText('', '', array("leading" => 100));
         $this->cezpdf->ezText(utf8_decode_seguro('<b>PRESUPUESTO: ') . $codificacion . '</b>', 20, array("leading" => 40, 'left' => 185));

@@ -455,10 +455,9 @@ $CI = get_instance();
                                         <?php if ($tipo_oper == 'V') { // 10 y 11 - Imprimir y PDF  ?>
                                             
                                             
-                                            <!--<td>
+                                            <td>
                                             	<div align="center"><?php echo $valor[10]; ?></div>
-                                            </td>-->
-                                            
+                                            </td>
                                             <td colspan="<?php echo $valor[16]; ?>" >
                                                 <div align="center"><?php echo $valor[11]; ?></div>
                                             </td>

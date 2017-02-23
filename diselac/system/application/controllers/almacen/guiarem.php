@@ -204,7 +204,7 @@ class Guiarem extends controller
 	                }
 	 $tipo_oper2='"'.$tipo_oper.'"';
 	                if ($estado == '2' && $tipo_oper == 'V' && $numeroref == '')
-	                    $ver = "<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(" . $codigo.", ".$ConversorDeNumero .",1,".$tipo_oper2. ")'><img src='" . base_url() . "images/icono_imprimir.png' width='16' height='16' border='0' title='Imprimir'></a>";
+	                    $ver = "<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(" . $codigo.", ".$ConversorDeNumero .",0,".$tipo_oper2. ")'><img src='" . base_url() . "images/icono_imprimir.png' width='16' height='16' border='0' title='Imprimir'></a>";
 	                else
 	                    $ver = '';
 	
