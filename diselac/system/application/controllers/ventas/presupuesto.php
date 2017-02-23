@@ -1820,25 +1820,32 @@ public function select_cmbVendedor($index){
 
         $detalle_presupuesto = $this->obtener_lista_detalles($codigo);
 
-        $xls = "<table><tr><td colspan=7 align=center>" . utf8_decode_seguro('<b>Cotización: ') . $codificacion . '</b></td></tr></table>';
+        $xls = "<table>
+        		<tr><td><img src='".base_url()."/images/documentos/facexel.jpg'></td></tr>
+        		<tr></tr>
+        		<tr></tr>
+        		<tr></tr>
+        		<tr></tr>
+        		<tr></tr>
+        		<tr><td colspan=7 align=center>" . utf8_decode_seguro('<b>Cotización: ') . $codificacion . '</b></td></tr></table>';
 
 
-        $xls .= "<table>
-		<tr><td>" . utf8_decode_seguro('Señor(es) :') . "
-        </td><td>" . utf8_decode("$nombre_cliente") . " 
+        $xls .= "<table >
+     
+		<tr> <td>        </td><td>" . utf8_decode_seguro('Señor(es) :') . "</td>
+		 <td>" . utf8_decode("$nombre_cliente") . "</td>
+         <td>R.U.C. : $ruc </td>
+         <td>Fecha : </td><td>$fecha</td></tr>
 
-        </td><td></td><td>R.U.C. : </td><td>$ruc
-        </td><td>Fecha : </td><td>$fecha</td></tr>
-
-		<tr><td>" . utf8_decode_seguro('Dirección :') . " 
+		<tr> <td>         </td><td>" . utf8_decode_seguro('Dirección :') . " 
         </td><td>" . utf8_decode_seguro("$direccion") . "
 
-        </td><td></td><td>Vend:
+        </td><td>Vend:
         </td><td>" . utf8_decode_seguro("$vendedor_nombre") . "</td><td></td></tr>
 
-		<tr><td>" . utf8_decode_seguro('Atención Sr(a) :') . " 
+		<tr> <td>         </td><td>" . utf8_decode_seguro('Atención Sr(a) :') . " 
         </td><td>" . utf8_decode_seguro("$nombre_contacto ") . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '') . "</td><td></td>&nbsp;&nbsp;&nbsp;<td></td><td></td><td></td><td></td><td></td></tr>
-		<tr><td>" . utf8_decode_seguro('Teléfono : ') . "</td><td>$telefono</td><td></td><td></td><td></td><td>E-mail :</td><td>$email</td></tr>
+		<tr> <td>          </td><td>" . utf8_decode_seguro('Teléfono : ') . "</td><td>$telefono</td><td></td><td></td><td></td><td>E-mail :</td><td>$email</td></tr>
 		</table><br><br>
 		";
 
@@ -1921,33 +1928,33 @@ public function select_cmbVendedor($index){
         }
 
 
-        $xls .= "
-			<table>
-			<tr><td colspan=2><b>CONDICIONES DE VENTA:</b></td></tr>";
-        if (FORMATO_IMPRESION != 3) {
-            $xls .= "<tr><td>" . utf8_decode_seguro('Tipo de Cambio del Día :') . "</td><td>" . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '') . "</td></tr>
-        <tr><td>Moneda</td><td>$moneda_nombre</td></tr>";
-        }
-        $xls .= "<tr><td>Forma de Pago</td><td>" . utf8_decode_seguro($forma_pago) . "</td></tr>";
-        if (FORMATO_IMPRESION != 3)
-            $xls .= "<tr><td>Los Precios de los Productos</td><td>" . ($modo_impresion == '1' ? 'CONTIENEN IGV' : 'NO CONTIENEN IGV') . "</td></tr>";
+//         $xls .= "
+// 			<table>
+// 			<tr><td colspan=2><b>CONDICIONES DE VENTA:</b></td></tr>";
+//         if (FORMATO_IMPRESION != 3) {
+//             $xls .= "<tr><td>" . utf8_decode_seguro('Tipo de Cambio del Día :') . "</td><td>" . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '') . "</td></tr>
+//         <tr><td>Moneda</td><td>$moneda_nombre</td></tr>";
+//         }
+//         $xls .= "<tr><td>Forma de Pago</td><td>" . utf8_decode_seguro($forma_pago) . "</td></tr>";
+//         if (FORMATO_IMPRESION != 3)
+//             $xls .= "<tr><td>Los Precios de los Productos</td><td>" . ($modo_impresion == '1' ? 'CONTIENEN IGV' : 'NO CONTIENEN IGV') . "</td></tr>";
 
-        if (FORMATO_IMPRESION == 3) {
-            $xls .= "<tr><td>" . utf8_decode_seguro('Banco de Crédito Soles') . "</td><td>" . utf8_decode_seguro('N°  191-1435467-0-65') . "</td></tr>
-        <tr><td>" . utf8_decode_seguro('Banco de Crédito Dólares') . "</td><td>" . utf8_decode_seguro('N° 191-1466829-1-62') . "</td></tr>";
-        } else {
-            $xls .= "<tr><td>" . utf8_decode_seguro('Cta. Cte. en Soles') . "</td><td>" . utf8_decode_seguro('N°  191-1435467-0-65') . "</td></tr>
-        <tr><td>" . utf8_decode_seguro('Cta. Cte. en Dólares') . "</td><td>" . utf8_decode_seguro('N° 191-1466829-1-62') . "</td></tr>";
-        }
+//         if (FORMATO_IMPRESION == 3) {
+//             $xls .= "<tr><td>" . utf8_decode_seguro('Banco de Crédito Soles') . "</td><td>" . utf8_decode_seguro('N°  191-1435467-0-65') . "</td></tr>
+//         <tr><td>" . utf8_decode_seguro('Banco de Crédito Dólares') . "</td><td>" . utf8_decode_seguro('N° 191-1466829-1-62') . "</td></tr>";
+//         } else {
+//             $xls .= "<tr><td>" . utf8_decode_seguro('Cta. Cte. en Soles') . "</td><td>" . utf8_decode_seguro('N°  191-1435467-0-65') . "</td></tr>
+//         <tr><td>" . utf8_decode_seguro('Cta. Cte. en Dólares') . "</td><td>" . utf8_decode_seguro('N° 191-1466829-1-62') . "</td></tr>";
+//         }
 
-        $xls .= "<tr><td>Tiempo de Entrega</td><td>$tiempo_entrega</td></tr>";
-        if (FORMATO_IMPRESION != 3)
-            $xls .= "<tr><td>Lugar de Entrega</td><td>" . utf8_decode_seguro($lugar_entrega) . "</td></tr>";
-        $xls .= "<tr><td>Validez de la Oferta</td><td>" . utf8_decode_seguro($validez) . "</td></tr>";
-        if (FORMATO_IMPRESION != 3)
-            $xls .= "<tr><td>Contacto</td><td>" . utf8_decode_seguro($vendedor_nombre . ($vendedor_nombre_area != '' ? ' - AREA: ' . $vendedor_nombre_area : '')) . "</td></tr>";
+//         $xls .= "<tr><td>Tiempo de Entrega</td><td>$tiempo_entrega</td></tr>";
+//         if (FORMATO_IMPRESION != 3)
+//             $xls .= "<tr><td>Lugar de Entrega</td><td>" . utf8_decode_seguro($lugar_entrega) . "</td></tr>";
+//         $xls .= "<tr><td>Validez de la Oferta</td><td>" . utf8_decode_seguro($validez) . "</td></tr>";
+//         if (FORMATO_IMPRESION != 3)
+//             $xls .= "<tr><td>Contacto</td><td>" . utf8_decode_seguro($vendedor_nombre . ($vendedor_nombre_area != '' ? ' - AREA: ' . $vendedor_nombre_area : '')) . "</td></tr>";
 
-        $xls .= "</table>";
+//         $xls .= "</table>";
 
         $data['xls'] = $xls;
         $this->load->view('ventas/presupuesto_ver_xls', $data);
@@ -2664,26 +2671,26 @@ public function select_cmbVendedor($index){
 
     public function presupuesto_ver_pdf_conmenbrete($codigo, $img) {
         switch (FORMATO_IMPRESION) {
-            case 10:  //Formato para jimmyplat
+            case 1:  //Formato para jimmyplat
                 $this->presupuesto_ver_pdf_conmenbrete_formato1($codigo, $img);
                 break;
-            case 20:  //Formato para jimmyplat
+            case 2:  //Formato para jimmyplat
                 $this->presupuesto_ver_pdf_conmenbrete_formato2($codigo);
                 break;
-            case 30:  //Formato para instrumentos y systemas
+            case 3:  //Formato para instrumentos y systemas
                 $this->presupuesto_ver_pdf_conmenbrete_formato3($codigo, $img);
                 break;
-            case 40:  //Formato para ferremax
+            case 4:  //Formato para ferremax
                 $this->presupuesto_ver_pdf_conmenbrete_formato4($codigo);
                 break;
-            case 50:
+            case 5:
                 if ($_SESSION['compania'] == "1") {
                     $this->presupuesto_ver_pdf_conmenbrete_formato5($codigo); //Formato para CYG
                 } else {
                     $this->presupuesto_ver_pdf_conmenbrete_formato6($codigo); //Formato para CYG ELECTRO DATA
                 }
                 break;
-            case 60:
+            case 6:
                 $this->presupuesto_ver_pdf_conmenbrete_formato3($codigo, $img); //Formato para CYL
                 break;
             default:
@@ -2795,14 +2802,15 @@ public function select_cmbVendedor($index){
 
 
         //$this->cezpdf->ezText('', '', array("leading" => 100));
-        $this->cezpdf->ezText(utf8_decode_seguro('<b>PRESUPUESTO: ') . $codificacion . '</b>', 20, array("leading" => 40, 'left' => 185));
-        $this->cezpdf->ezText('', '', array("leading" => 10));
+        $this->cezpdf->ezText(utf8_decode_seguro('PRESUPUESTO'), 12, array("leading" => 40, 'left' => 420));
+        $this->cezpdf->ezText($codificacion . '</b>', 15, array("leading" => 25, 'left' => 420));
+        $this->cezpdf->ezText('', '', array("leading" => 35));
 
         /* Datos del cliente */
-        $db_data = array(array('cols1' => utf8_decode_seguro('Señor(es)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols3' => 'R.U.C.', 'cols4' => ': ' . $ruc . '       Fecha: ' . $fecha),
-            array('cols1' => utf8_decode_seguro('Dirección'), 'cols2' => ': ' . utf8_decode_seguro($direccion), 'cols3' => 'Vend.', 'cols4' => ': ' . $vendedor_nombre), //NOMBRE DEL VENDEDOR
-            array('cols1' => utf8_decode_seguro('Atención Sr(a)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols3' => '', 'cols4' => ''),
-            array('cols1' => utf8_decode_seguro('Teléfono'), 'cols2' => ': ' . $telefono, 'cols3' => 'E-mail', 'cols4' => ': ' . $email)
+        $db_data = array(array('cols1' => '','cols2' => utf8_decode_seguro('Señor(es)'), 'cols3' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols4' => 'R.U.C.', 'cols5' => ': ' . $ruc . '   Fecha: ' . $fecha),
+            array('cols1' => '','cols2' => utf8_decode_seguro('Dirección'), 'cols3' => ': ' . utf8_decode_seguro($direccion), 'cols4' => 'Vend.', 'cols5' => ': ' . $vendedor_nombre), //NOMBRE DEL VENDEDOR
+            array('cols1' => '','cols2' => utf8_decode_seguro('Atención Sr(a)'), 'cols3' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols4' => '', 'cols5' => ''),
+            array('cols1' => '','cols2' => utf8_decode_seguro('Teléfono'), 'cols3' => ': ' . $telefono, 'cols4' => 'E-mail', 'cols5' => ': ' . $email)
         );
 
         $this->cezpdf->ezTable($db_data, "", "", array(
@@ -2813,10 +2821,11 @@ public function select_cmbVendedor($index){
             'xPos' => 'center',
             'fontSize' => 8,
             'cols' => array(
-                'cols1' => array('width' => 65, 'justification' => 'left'),
-                'cols2' => array('width' => 275, 'justification' => 'left'),
-                'cols3' => array('width' => 35, 'justification' => 'left'),
-                'cols4' => array('width' => 150, 'justification' => 'left')
+                'cols1' => array('width' => 45, 'justification' => 'left'),
+                'cols2' => array('width' => 60, 'justification' => 'left'),
+            	'cols3' => array('width' => 240, 'justification' => 'left'),
+                'cols4' => array('width' => 35, 'justification' => 'right'),
+                'cols5' => array('width' => 140, 'justification' => 'left')
             )
         ));
 
@@ -2848,18 +2857,18 @@ public function select_cmbVendedor($index){
         );
 
         $this->cezpdf->ezTable($db_data, $col_names, '', array(
-            'width' => 525,
+            'width' => 500,
             'showLines' => 1,
             'shaded' => 0,
             'showHeadings' => 1,
-            'xPos' => 'center',
+            'xPos' => '320',
             'fontSize' => 8,
             'cols' => array(
                 'cols1' => array('width' => 30, 'justification' => 'center'),
-                'cols2' => array('width' => 70, 'justification' => 'left'),
-                'cols3' => array('width' => 235, 'justification' => 'left'),
-                'cols4' => array('width' => 40, 'justification' => 'left'),
-                'cols5' => array('width' => 40, 'justification' => 'left'),
+                'cols2' => array('width' => 60, 'justification' => 'left'),
+                'cols3' => array('width' => 200, 'justification' => 'left'),
+                'cols4' => array('width' => 30, 'justification' => 'left'),
+                'cols5' => array('width' => 30, 'justification' => 'left'),
                 'cols6' => array('width' => 50, 'justification' => 'right'),
                 'cols7' => array('width' => 60, 'justification' => 'right')
             )
@@ -2884,10 +2893,10 @@ public function select_cmbVendedor($index){
             'showLines' => 0,
             'shaded' => 0,
             'showHeadings' => 0,
-            'xPos' => 'center',
+            'xPos' => '320',
             'fontSize' => 8,
             'cols' => array(
-                'cols0' => array('width' => 395, 'justification' => 'left'),
+                'cols0' => array('width' => 330, 'justification' => 'left'),
                 'cols1' => array('width' => 70, 'justification' => 'left'),
                 'cols2' => array('width' => 60, 'justification' => 'right')
             )
@@ -2917,18 +2926,18 @@ public function select_cmbVendedor($index){
             array('cols0' => 'Validez de la Oferta', 'cols1' => ': ' . utf8_decode_seguro($validez)),
             array('cols0' => 'Contacto', 'cols1' => ': ' . utf8_decode_seguro($vendedor_nombre . ($vendedor_nombre_area != '' ? ' - AREA: ' . $vendedor_nombre_area : '')))
         );
-        $this->cezpdf->ezTable($db_data, "", "", array(
-            'width' => 525,
-            'showLines' => 0,
-            'shaded' => 0,
-            'showHeadings' => 0,
-            'xPos' => 'center',
-            'fontSize' => 8,
-            'cols' => array(
-                'cols0' => array('width' => 120, 'justification' => 'left'),
-                'cols1' => array('width' => 415, 'justification' => 'left'),
-            )
-        ));
+//         $this->cezpdf->ezTable($db_data, "", "", array(
+//             'width' => 525,
+//             'showLines' => 0,
+//             'shaded' => 0,
+//             'showHeadings' => 0,
+//             'xPos' => 'center',
+//             'fontSize' => 8,
+//             'cols' => array(
+//                 'cols0' => array('width' => 120, 'justification' => 'left'),
+//                 'cols1' => array('width' => 415, 'justification' => 'left'),
+//             )
+//         ));
 
         $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => $codificacion . '.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
         $this->cezpdf->ezStream($cabecera);
