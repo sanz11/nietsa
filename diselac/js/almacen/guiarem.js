@@ -497,12 +497,12 @@ jQuery(document).ready(function () {
 
 
 function getLimite() {
-	var limite_detalle = 20;
+	var limite_detalle = 25;
     return limite_detalle;
 }
 
 function setLimite(limite) {
-	var limite_detalle = 20;
+	var limite_detalle = 25;
     limite_detalle = limite;
 }
 

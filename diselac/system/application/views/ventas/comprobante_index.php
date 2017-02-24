@@ -458,6 +458,7 @@ $CI = get_instance();
                                             <td>
                                             	<div align="center"><?php echo $valor[10]; ?></div>
                                             </td>
+                                            
                                             <td colspan="<?php echo $valor[16]; ?>" >
                                                 <div align="center"><?php echo $valor[11]; ?></div>
                                             </td>

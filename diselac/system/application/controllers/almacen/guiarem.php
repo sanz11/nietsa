@@ -203,10 +203,11 @@ class Guiarem extends controller
 	                    $editar = '<a href="#" onClick="relacionado_comprobante('."'.$numeroref.'".')" ><img src="'.base_url().'images/relacion_comprobante.png" width="16" height="16" border="0" title="Relacionado" /></a>';
 	                }
 	 $tipo_oper2='"'.$tipo_oper.'"';
-// 	                if ($estado == '2' && $tipo_oper == 'V' && $numeroref == '')
-	                    $ver = "<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(" . $codigo.", ".$ConversorDeNumero .",0,".$tipo_oper2. ")'><img src='" . base_url() . "images/icono_imprimir.png' width='16' height='16' border='0' title='Imprimir'></a>";
-// 	                else
-// 	                    $ver = '';
+	             //   if ($estado == '2' && $tipo_oper == 'V' && $numeroref == '')
+	                    $ver = "<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(" . $codigo.", ".$ConversorDeNumero .",0,".$tipo_oper2. ")'>
+<img src='" . base_url() . "images/icono_imprimir.png' width='16' height='16' border='0' title='Imprimir'></a>";
+	               // else
+	                 //   $ver = '';
 	
 	                $ver2 = "<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(" . $codigo .",".$ConversorDeNumero.",1,".$tipo_oper2.")'><img src='" . base_url() . "images/pdf.png' width='16' height='16' border='0' title='Ver PDF'></a>";
 	                if ($estado == '2' && $numeroref == '')
@@ -245,10 +246,10 @@ class Guiarem extends controller
                 		$editar ='';
                 	
                 	$img=0;
-//                 	if($estado==1)
+                	//if($estado==1)
                 		$ver = "<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(" . $codigo.", ".$ConversorDeNumero .",".$img.")'><img src='" . base_url() . "images/icono_imprimir.png' width='16' height='16' border='0' title='Imprimir'></a>";
-//                 	else
-//                 		$ver ="";
+                	//else
+                		//$ver ="";
                 	$img=1;
                 	$ver2 = "<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(" . $codigo.", ".$ConversorDeNumero.",".$img.")'><img src='" . base_url() . "images/pdf.png' width='16' height='16' border='0' title='Ver PDF'></a>";
                 	$disparador = "";

@@ -55,18 +55,22 @@ class Empresa extends Controller{
         $lista           = array();
                     if(count($listado_emepresas)>0){
                             foreach($listado_emepresas as $indice=>$valor){
-                                    $codigo         = $valor->EMPRP_Codigo;
-                                    $ruc            = $valor->EMPRC_Ruc;
-                                    $razon_social   = $valor->EMPRC_RazonSocial;
-                                    $direccion      = $valor->EMPRC_Direccion;
-                                    $telefono       = $valor->EMPRC_Telefono;
-                                    $movil          = $valor->EMPRC_Movil;
+     $codigo         = $valor->EMPRP_Codigo;
+       $ruc            = $valor->EMPRC_Ruc;
+           $razon_social   = $valor->EMPRC_RazonSocial;
+             $direccion      = $valor->EMPRC_Direccion;
+             $direccionCompleto      = $valor->EMPRC_Direccion;
+             if (strlen($direccion)>=6){
+                  $direccion =substr($valor->EMPRC_Direccion,0,35)."...";  
+                }
+         $telefono       = $valor->EMPRC_Telefono;
+    $movil          = $valor->EMPRC_Movil;
                                     $editar         = "<a href='javascript:;' onclick='editar_empresa(".$codigo.")'><img src='".base_url()."images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
                                     $ver            = "<a href='javascript:;' onclick='ver_empresa(".$codigo.")'><img src='".base_url()."images/ver.png' width='16' height='16' border='0' title='Modificar'></a>";
                                     $eliminar       = "<a href='javascript:;' onclick='eliminar_empresa(".$codigo.")'><img src='".base_url()."images/eliminar.png' width='16' height='16' border='0' title='Modificar'></a>";
                                     $lista[]        = array($item,$ruc,$razon_social,$direccion, $telefono,
                                        // $movil,
-                                        $editar,$ver,$eliminar);
+                                        $editar,$ver,$eliminar,$direccionCompleto);
                                     $item++;
                             }
                     }
@@ -148,7 +152,7 @@ class Empresa extends Controller{
                 $ubigeo_sucursal  = $this->html->array_ubigeo($arrayDpto,$arrayProv,$arrayDist);
         }
         
-        $empresa = $this->empresa_model->insertar_datosEmpresa($tipocodigo, $ruc,$razon_social,$telefono,$fax,$web,$movil,$email, $sector_comercial, $ctactesoles, $ctactedolares);
+$empresa = $this->empresa_model->insertar_datosEmpresa($tipocodigo, $ruc,$razon_social,$telefono,$fax,$web,$movil,$email, $sector_comercial, $ctactesoles, $ctactedolares,$direccion);
 
         $this->empresa_model->insertar_sucursalEmpresaPrincipal('1',$empresa,$ubigeo_domicilio,'PRINCIPAL',$direccion);//Direccion Principal
         //Insertar Establecimientos
@@ -223,7 +227,7 @@ public function editar_empresa($empresa)
         $objeto->fax           = $datos[0]->EMPRC_Fax;
         $objeto->movil         = $datos[0]->EMPRC_Movil;
         $objeto->web           = $datos[0]->EMPRC_Web;
-        $objeto->direccion     = $direccion;
+        $objeto->direccion     = $datos[0]->EMPRC_Direccion;
         $objeto->email         = $datos[0]->EMPRC_Email;
         $objeto->ctactesoles   = $datos[0]->EMPRC_CtaCteSoles;
         $objeto->ctactedolares = $datos[0]->EMPRC_CtaCteDolares;
@@ -292,7 +296,7 @@ public function editar_empresa($empresa)
         $ctactesoles       = $this->input->post('ctactesoles');
         $ctactedolares     = $this->input->post('ctactedolares');
        
-        $this->empresa_model->modificar_datosEmpresa($empresa,$tipocodigo, $ruc,$razon_social,$telefono,$movil,$fax,$web,$email, $sector_comercial, $ctactesoles, $ctactedolares);
+        $this->empresa_model->modificar_datosEmpresa($empresa,$tipocodigo, $ruc,$razon_social,$telefono,$movil,$fax,$web,$email, $sector_comercial, $ctactesoles, $ctactedolares,$direccion);
         $this->empresa_model->modificar_sucursalEmpresaPrincipal($empresa,'1',$ubigeo_domicilio,'PRINCIPAL',$direccion);
     }
     public function eliminar_empresa(){
@@ -353,6 +357,11 @@ public function editar_empresa($empresa)
                                     $ruc            = $valor->EMPRC_Ruc;
                                     $razon_social   = $valor->EMPRC_RazonSocial;
                                     $direccion =$valor->EMPRC_Direccion;
+                                   
+$direccionCompleto      = $valor->EMPRC_Direccion;
+             if (strlen($direccion)>=6){
+                  $direccion =substr($valor->EMPRC_Direccion,0,35)."...";  
+                }
                                     $telefono       = $valor->EMPRC_Telefono;
                                    // $movil          = $valor->EMPRC_Movil;
                                     $editar         = "<a href='#' onclick='editar_empresa(".$codigo.")'><img src='".base_url()."images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
@@ -360,7 +369,7 @@ public function editar_empresa($empresa)
                                     $eliminar       = "<a href='#' onclick='eliminar_empresa(".$codigo.")'><img src='".base_url()."images/eliminar.png' width='16' height='16' border='0' title='Modificar'></a>";
                                     $lista[]        = array($item,$ruc,$razon_social,$direccion,$telefono,
                                         //$movil,
-                                        $editar,$ver,$eliminar);
+                                        $editar,$ver,$eliminar,$direccionCompleto );
                                     $item++;
                             }
                     }
@@ -958,10 +967,10 @@ public function editar_empresa($empresa)
                     $datos_ubigeo_dep  = $this->ubigeo_model->obtener_ubigeo_dpto($reg->UBIGP_Codigo);
                     if(count($datos_ubigeo_dist)>0)
                         $reg->distrito     = $datos_ubigeo_dist[0]->UBIGC_Descripcion;
-                    if(count($datos_ubigeo_prov)>0)
-                        $reg->provincia    = $datos_ubigeo_prov[0]->UBIGC_Descripcion;
-                    if(count($datos_ubigeo_dep)>0)
-                        $reg->departamento = $datos_ubigeo_dep[0]->UBIGC_Descripcion;
+                    //if(count($datos_ubigeo_prov)>0)
+                        //$reg->provincia    = $datos_ubigeo_prov[0]->UBIGC_Descripcion;
+                    //if(count($datos_ubigeo_dep)>0)
+                        //$reg->departamento = $datos_ubigeo_dep[0]->UBIGC_Descripcion;
                 }
                 $lista_mis_sucursales[$key]=$reg;
             }

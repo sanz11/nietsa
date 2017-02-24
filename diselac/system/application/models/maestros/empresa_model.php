@@ -120,6 +120,7 @@ class Empresa_model extends Model
     }
     public function listar_empresas($filter=null, $number_items='',$offset=''){
         $this->db->order_by('EMPRC_RazonSocial')->where_not_in('EMPRP_Codigo','0')->where('EMPRC_FlagEstado','1');
+        $this->db->order_by('EMPRP_Codigo','DESC');
         if(isset($filter->SECCOMP_Codigo) && $filter->SECCOMP_Codigo!='')
             $this->db->where('SECCOMP_Codigo',$filter->SECCOMP_Codigo);
         $query = $this->db->get('cji_empresa', $number_items,$offset);

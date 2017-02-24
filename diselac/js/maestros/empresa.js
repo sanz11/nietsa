@@ -2,13 +2,13 @@ var base_url
 jQuery(document).ready(function(){
     base_url   = $("#base_url").val();
     
-   $("#imgGuardarEmpresa").click(function(){
+   /*$("#imgGuardarEmpresa").click(function(){
 
 		dataString = $('#frmEmpresa').serialize();
 		$("#container").show();
 
 		$("#frmEmpresa").submit();
-    });
+    });*/
     $("#buscarEmpresa").click(function(){
 		$("#form_busqueda").submit();
     });	
@@ -24,9 +24,10 @@ jQuery(document).ready(function(){
         base_url = $("#base_url").val();
         location.href = base_url+"index.php/maestros/empresa/empresas";
     });
-    
+    $("#imgGuardarEmpresa").click(function(){
+
 	container = $('div.container');
- 	$("#frmEmpresa").validate({
+ 	/*$("#frmEmpresa").validate({
 		event    : "blur",
 		rules    : {
 					'ruc'             : {required:true},
@@ -37,7 +38,7 @@ jQuery(document).ready(function(){
 		errorLabelContainer : $(".container"),
 		wrapper             : 'li',
 		submitHandler       : function(form){
-				dataString  = $('#frmEmpresa').serialize();
+				*/dataString  = $('#frmEmpresa').serialize();
 				modo        = $("#modo").val();
 				$('#VentanaTransparente').css("display","block");
 				if(modo=='insertar'){
@@ -46,7 +47,7 @@ jQuery(document).ready(function(){
 					$.post(url,dataString,function(data){
 					$("#VentanaTransparente").css("display","none");
 						alert('Se ha ingresado una empresa.');
-	//location.href = base_url+"index.php/maestros/empresa/empresas";
+	location.href = base_url+"index.php/maestros/empresa/empresas";
 					});
 				}
 				else if(modo=='modificar'){
@@ -57,8 +58,9 @@ jQuery(document).ready(function(){
 		location.href = base_url+"index.php/maestros/empresa/empresas";
 					});
 				}
-		}
-	});
+		//}
+	//}); 
+ });
     //Ocultar capas
     $('#idGeneral').click(function(){
         $('#datosGenerales').show();

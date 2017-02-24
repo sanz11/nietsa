@@ -1,4 +1,3 @@
-
 function verificar_Inventariado_producto(){
     base_url = $("#base_url").val();
     tipo_oper = $("#tipo_oper").val();
@@ -594,12 +593,12 @@ jQuery(document).ready(function () {
 })
 
 function getLimite() {
-	var limite_detalle = 20;
+	var limite_detalle = 25;
     return limite_detalle;
 }
 
 function setLimite(limite) {
-	var limite_detalle = 20;
+	var limite_detalle = 25;
     limite_detalle = limite;
 }
 
@@ -787,7 +786,6 @@ function agregar_producto_comprobante() {
     n = document.getElementById('tblDetalleComprobante').rows.length;
     var limit = getLimite();
     if (n >= limit) {
-
         alert('Limite del detalle de Documento');
         return false
     }

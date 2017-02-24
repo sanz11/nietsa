@@ -1,5 +1,6 @@
 <?php
 
+ ini_set('error_reporting', 1); 
 
 
 
@@ -512,7 +513,7 @@ class Configuracionimpresion extends Controller{
                                     $pdf->SetY($docuitem_posiy);
                                     $pdf->SetX($docuitem_posix);
                                     $pdf->MultiCell($docuitem_wid,$docuitem_hei, mb_strtoupper($valorVariableMostrar),0,$alineamiento);
-                                    $docuitem_posiy=$docuitem_posiy+5;
+                                    $docuitem_posiy=$docuitem_posiy+4;
                                 }
                             }
                             
