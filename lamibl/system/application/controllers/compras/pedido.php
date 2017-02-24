@@ -45,7 +45,7 @@ class Pedido extends Controller{
             $data['numdoc'] = "";
             $data['nombre'] = "";
             $data['telefono']  = "";
-            $data['titulo_tabla']    = "RELACIÓN DE PEDIDOS / REQUERIMIENTOS";
+            $data['titulo_tabla']    = "RELACIÃ“N DE PEDIDOS / REQUERIMIENTOS";
             $data['registros']  = count($this->pedido_model->listar_pedidos_todos());
             $data['action'] = base_url()."index.php/compras/pedido/pedidos";
             $conf['base_url']   = site_url('maestros/compras/pedidos/');
@@ -132,10 +132,6 @@ class Pedido extends Controller{
         		$combomoneda .= '<option value="'.$codigom.'">'.$descripcionm.'</option>';
         	}
         }
-        
-        //$data['cboMoneda'] = form_dropdown("obra", array('abel' => ':: Seleccione ::','2' => ':: Seleccione '), "", " class='comboGrande'  id='obra'");
-        
-        
 		 $accion = "";
         $modo = "insertar";
 		 $codigo = "";
@@ -179,153 +175,27 @@ class Pedido extends Controller{
         $this->layout->view("compras/pedido_nuevo",$data);
     }
 
-  public function contacto(){
-			$codigo = $this->input->post('codigoempre');
-			$respuesta = $this->pedido_model->contactos($codigo);
-			
-			echo json_encode($respuesta);
-		
-	}
-public function obra(){
-	
-			$codigo = $this->input->post('codigoempre');
-			$respuesta = $this->pedido_model->obras($codigo);
-			
-			echo json_encode($respuesta);
-		
-	}
-    
-    public function seleccionar_centrocosto($indDefault=''){
-            $array_dist = $this->centrocosto_model->listar_centros_costo();
-            $arreglo = array();
-            if(count($array_dist)>0){
-                    foreach($array_dist as $indice=>$valor){
-                            $indice1   = $valor->CENCOSP_Codigo;
-                            $valor1    = $valor->CENCOSC_Descripcion;
-                            $arreglo[$indice1] = $valor1;
-                    }
-            }
-            $resultado = $this->html->optionHTML($arreglo,$indDefault,array('0','::Seleccione::'));
-            return $resultado;
-    }
-    
-   public function insertar_pedido(){
-        $serie = $this->input->post('serie');
-        $numero = $this->input->post('numero');
-        $fechasistema = $this->input->post('fechai');        
-        $moneda = $this->input->post('moneda');
-        $obra = $this->input->post('obra');        
-        $cliente = $this->input->post('cliente');
-        $contacto = $this->input->post('contacto');
-        $igvpp = $this->input->post('igv');
-        $importebruto = $this->input->post('importebruto');
-        $descuentotal = $this->input->post('descuentotal');
-        $vventa = $this->input->post('vventa');
-        $igvtotal = $this->input->post('igvtotal');
-        $preciototal= $this->input->post('preciototal');
-        
-        echo "<script>alert('ifv : ".$igv."')</script>";
-        
-        $cod_pedido = $this->pedido_model->insertar_pedido($serie,$numero,$fechasistema,$moneda,$obra,$cliente,$contacto,$igvpp,$importebruto,$descuentotal,$vventa,$igvtotal,$preciototal);
-        
-        $prodcodigo = $this->input->post('prodcodigo');
-        $prodcantidad = $this->input->post('prodcantidad');
-        $produnidad = $this->input->post('produnidad');
-        $ppcigv = $this->input->post('prodpu_conigv');
-        $ppsigv = $this->input->post('prodpu');
-        $precio = $this->input->post('prodprecio');
-        $igv =  $this->input->post('prodigv');
-        $importe = $this->input->post('prodimporte');
-        
-//         $eliminado        = $this->input->post('eliminado');
-        $fecha = date('Y-m-d h:i:s');
-        if(count($prodcodigo) > 0){
-            foreach($prodcodigo as $indice => $value){
-//                 $eseliminado = $eliminado[$indice];
-//                 if($eseliminado != 'si'){
-                    $filterDP = new stdClass();
-                    
-                    $filterDP->PEDIP_Codigo = $cod_pedido;
-                    $filterDP->PROD_Codigo = $prodcodigo[$indice];
-                    $filterDP->UNDMED_Codigo = $produnidad[$indice];
-                    $filterDP->PEDIDETC_Cantidad = $prodcantidad[$indice];
-                    $filterDP->PEDIDETC_PCIGV = $ppcigv[$indice];
-                    $filterDP->PEDIDETC_PSIGV = $ppsigv[$indice];
-                    $filterDP->PEDIDETC_Precio  = $precio[$indice];
-                    $filterDP->PEDIDETC_IGV = $igv[$indice];
-                    $filterDP->PEDIDETC_Importe = $importe[$indice];
-                    $filterDP->PEDIDETC_FechaRegistro =   $fecha;
-                    $filterDP->PEDIDETC_FlagEstado = "1";
-                    $this->pedidodetalle_model->insertar_varios($filterDP);
-//                 }
-            }
-        }
-    
-    }
  
-   public function obtener_persona($persona)
-   {
-        $datos_persona = $this->persona_model->obtener_datosPersona($persona);
-        echo json_encode($datos_persona);
-   }        
-    
-   public function buscar_personas($j='0'){
-        $filter = new stdClass();
-        $filter->PERSC_NumeroDocIdentidad = $this->input->post('txtNumDoc');;
-        $filter->nombre = $this->input->post('txtNombre');
-        $filter->PERSC_Telefono = $this->input->post('txtTelefono');
-
-        $data['numdoc']    = $filter->PERSC_NumeroDocIdentidad;
-        $data['nombre']    = $filter->nombre;
-        $data['telefono']  = $filter->PERSC_Telefono;
-        $data['titulo_tabla']    = "RESULTADO DE BÚSQUEDA DE PERSONAS";
-
-        $data['registros']  = count($this->persona_model->buscar_personas($filter));
-        $data['action'] = base_url()."index.php/maestros/persona/buscar_personas";
-        $conf['base_url'] = site_url('maestros/persona/buscar_personas/');
-        $conf['total_rows'] = $data['registros'];
-        $conf['per_page']   = 10;
-        $conf['num_links']  = 3;
-        $conf['next_link'] = "&gt;";
-        $conf['prev_link'] = "&lt;";
-        $conf['first_link'] = "&lt;&lt;";
-        $conf['last_link']  = "&gt;&gt;";
-        $conf['uri_segment'] = 4;
-        $this->pagination->initialize($conf);
-        $data['paginacion'] = $this->pagination->create_links();
-        $listado_personas = $this->persona_model->buscar_personas($filter, $conf['per_page'],$j);
-        $item            = $j+1;
-        $lista           = array();
-                    if(count($listado_personas)>0){
-                            foreach($listado_personas as $indice=>$valor){
-                                    $persona   = $valor->PERSP_Codigo;
-                                    $ruc            = $valor->PERSC_NumeroDocIdentidad;
-                                    $nombres   = $valor->PERSC_Nombre;
-                                    $telefono       = $valor->PERSC_Telefono;
-                                    $movil          = $valor->PERSC_Movil;
-                                    $editar         = "<a href='#' onclick='editar_persona(".$persona.")'><img src='".base_url()."images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
-                                    $ver            = "<a href='#' onclick='ver_persona(".$persona.")'><img src='".base_url()."images/ver.png' width='16' height='16' border='0' title='Modificar'></a>";
-                                    $eliminar       = "<a href='#' onclick='eliminar_persona(".$persona.")'><img src='".base_url()."images/eliminar.png' width='16' height='16' border='0' title='Modificar'></a>";
-                                    $lista[]        = array($item,$ruc,$nombres,$telefono,$movil,$editar,$ver,$eliminar);
-                                    $item++;
-                            }
-                    }
-        $data['lista'] = $lista;
-        $this->layout->view("maestros/persona_index",$data);
-
-    }
     
    public function editar_pedido($pedido,$j='0'){
    	$data['modo'] = 'modificar';
    	$data['titulo'] = "EDITAR PEDIDO";
    	
         $datos_pedido = $this->pedido_model->obtener_pedido($pedido);
+        $data['id'] = "";
        
         $codigopedido = $datos_pedido[0]->PEDIP_Codigo;
         $data['numero'] = $datos_pedido[0]->PEDIC_Numero;
         $data['serie'] = $datos_pedido[0]->PEDIC_Serie;
         $data['igv'] = $datos_pedido[0]->PEDIC_IGV;
-        $data['descuento'] = "";
+        $tipo_oper='C';
+        $data['tipo_oper'] = $tipo_oper;
+        $data['descuento'] = "0";
+        $data['importetotal'] = "0";
+        $compania = $this->somevar['compania'];
+        $comp_confi = $this->companiaconfiguracion_model->obtener($compania);
+        $data['contiene_igv'] = (($comp_confi[0]->COMPCONFIC_PrecioContieneIgv == '1') ? true : false);
+        $data['compania'] = $this->somevar['compania'];
         
         $codigomoneda = $datos_pedido[0]->MONED_Codigo;
         $data['combomoneda'] =  $this->OPTION_generador($this->moneda_model->listartipomoneda(), 'moned_codigo','moned_descripcion',$codigomoneda);
@@ -358,6 +228,15 @@ public function obra(){
                 $ruc_cliente = $datos_cliente->ruc;
             $data['ruc_cliente'] = $ruc_cliente;
             $data['nombre_cliente'] = $nombre_cliente;
+            $data['cliente'] =$codigocliente;
+            
+            
+            $accion = "";
+            $modo = "modificar";
+            $codigo = "";
+            $oculto = form_hidden(array('accion' => $accion, 'codigo' => $codigo, 'empresa' => '', 'persona' => '', 'modo' => $modo, 'base_url' => base_url(), 'tipo_oper' => $tipo_oper, 'contiene_igv' => ($data['contiene_igv'] == true ? '1' : '0'))); 
+            $data['oculto'] = $oculto;
+           
         
             $data['importebruto'] = $datos_pedido[0]->PEDIC_ImporteBruto;
             $data['descuentotal'] = $datos_pedido[0]->PEDIC_DescuentoTotal;
@@ -667,6 +546,140 @@ public function obra(){
 		    }
 		    return $lista_detalles;
 		
+	}
+	public function contacto(){
+		$codigo = $this->input->post('codigoempre');
+		$respuesta = $this->pedido_model->contactos($codigo);
+			
+		echo json_encode($respuesta);
+	
+	}
+	public function obra(){
+	
+		$codigo = $this->input->post('codigoempre');
+		$respuesta = $this->pedido_model->obras($codigo);
+			
+		echo json_encode($respuesta);
+	
+	}
+	
+	public function seleccionar_centrocosto($indDefault=''){
+		$array_dist = $this->centrocosto_model->listar_centros_costo();
+		$arreglo = array();
+		if(count($array_dist)>0){
+			foreach($array_dist as $indice=>$valor){
+				$indice1   = $valor->CENCOSP_Codigo;
+				$valor1    = $valor->CENCOSC_Descripcion;
+				$arreglo[$indice1] = $valor1;
+			}
+		}
+		$resultado = $this->html->optionHTML($arreglo,$indDefault,array('0','::Seleccione::'));
+		return $resultado;
+	}
+	
+	public function insertar_pedido(){
+		$serie = $this->input->post('serie');
+		$numero = $this->input->post('numero');
+		$fechasistema = $this->input->post('fechai');
+		$moneda = $this->input->post('moneda');
+		$obra = $this->input->post('obra');
+		$cliente = $this->input->post('cliente');
+		$contacto = $this->input->post('contacto');
+		$igvpp = $this->input->post('igv');
+		$importebruto = $this->input->post('importebruto');
+		$descuentotal = $this->input->post('descuentotal');
+		$vventa = $this->input->post('vventa');
+		$igvtotal = $this->input->post('igvtotal');
+		$preciototal= $this->input->post('preciototal');
+	
+	
+		$cod_pedido = $this->pedido_model->insertar_pedido($serie,$numero,$fechasistema,$moneda,$obra,$cliente,$contacto,$igvpp,$importebruto,$descuentotal,$vventa,$igvtotal,$preciototal);
+	
+		$prodcodigo = $this->input->post('prodcodigo');
+		$prodcantidad = $this->input->post('prodcantidad');
+		$produnidad = $this->input->post('produnidad');
+		$ppcigv = $this->input->post('prodpu_conigv');
+		$ppsigv = $this->input->post('prodpu');
+		$precio = $this->input->post('prodprecio');
+		$igv =  $this->input->post('prodigv');
+		$importe = $this->input->post('prodimporte');
+	
+		//         $eliminado        = $this->input->post('eliminado');
+		$fecha = date('Y-m-d h:i:s');
+		if(count($prodcodigo) > 0){
+			foreach($prodcodigo as $indice => $value){
+				//                 $eseliminado = $eliminado[$indice];
+				//                 if($eseliminado != 'si'){
+				$filterDP = new stdClass();
+	
+				$filterDP->PEDIP_Codigo = $cod_pedido;
+				$filterDP->PROD_Codigo = $prodcodigo[$indice];
+				$filterDP->UNDMED_Codigo = $produnidad[$indice];
+				$filterDP->PEDIDETC_Cantidad = $prodcantidad[$indice];
+				$filterDP->PEDIDETC_PCIGV = $ppcigv[$indice];
+				$filterDP->PEDIDETC_PSIGV = $ppsigv[$indice];
+				$filterDP->PEDIDETC_Precio  = $precio[$indice];
+				$filterDP->PEDIDETC_IGV = $igv[$indice];
+				$filterDP->PEDIDETC_Importe = $importe[$indice];
+				$filterDP->PEDIDETC_FechaRegistro =   $fecha;
+				$filterDP->PEDIDETC_FlagEstado = "1";
+				$this->pedidodetalle_model->insertar_varios($filterDP);
+				//                 }
+			}
+		}
+	
+	}
+	
+	public function obtener_persona($persona)
+	{
+		$datos_persona = $this->persona_model->obtener_datosPersona($persona);
+		echo json_encode($datos_persona);
+	}
+	
+	public function buscar_personas($j='0'){
+		$filter = new stdClass();
+		$filter->PERSC_NumeroDocIdentidad = $this->input->post('txtNumDoc');;
+		$filter->nombre = $this->input->post('txtNombre');
+		$filter->PERSC_Telefono = $this->input->post('txtTelefono');
+	
+		$data['numdoc']    = $filter->PERSC_NumeroDocIdentidad;
+		$data['nombre']    = $filter->nombre;
+		$data['telefono']  = $filter->PERSC_Telefono;
+		$data['titulo_tabla']    = "RESULTADO DE BÃšSQUEDA DE PERSONAS";
+	
+		$data['registros']  = count($this->persona_model->buscar_personas($filter));
+		$data['action'] = base_url()."index.php/maestros/persona/buscar_personas";
+		$conf['base_url'] = site_url('maestros/persona/buscar_personas/');
+		$conf['total_rows'] = $data['registros'];
+		$conf['per_page']   = 10;
+		$conf['num_links']  = 3;
+		$conf['next_link'] = "&gt;";
+		$conf['prev_link'] = "&lt;";
+		$conf['first_link'] = "&lt;&lt;";
+		$conf['last_link']  = "&gt;&gt;";
+		$conf['uri_segment'] = 4;
+		$this->pagination->initialize($conf);
+		$data['paginacion'] = $this->pagination->create_links();
+		$listado_personas = $this->persona_model->buscar_personas($filter, $conf['per_page'],$j);
+		$item            = $j+1;
+		$lista           = array();
+		if(count($listado_personas)>0){
+			foreach($listado_personas as $indice=>$valor){
+				$persona   = $valor->PERSP_Codigo;
+				$ruc            = $valor->PERSC_NumeroDocIdentidad;
+				$nombres   = $valor->PERSC_Nombre;
+				$telefono       = $valor->PERSC_Telefono;
+				$movil          = $valor->PERSC_Movil;
+				$editar         = "<a href='#' onclick='editar_persona(".$persona.")'><img src='".base_url()."images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
+				$ver            = "<a href='#' onclick='ver_persona(".$persona.")'><img src='".base_url()."images/ver.png' width='16' height='16' border='0' title='Modificar'></a>";
+				$eliminar       = "<a href='#' onclick='eliminar_persona(".$persona.")'><img src='".base_url()."images/eliminar.png' width='16' height='16' border='0' title='Modificar'></a>";
+				$lista[]        = array($item,$ruc,$nombres,$telefono,$movil,$editar,$ver,$eliminar);
+				$item++;
+			}
+		}
+		$data['lista'] = $lista;
+		$this->layout->view("maestros/persona_index",$data);
+	
 	}
 
 

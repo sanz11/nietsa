@@ -1821,31 +1821,25 @@ public function select_cmbVendedor($index){
         $detalle_presupuesto = $this->obtener_lista_detalles($codigo);
 
         $xls = "<table>
-        		<tr><td><img src='".base_url()."/images/documentos/facexel.jpg'></td></tr>
-        		<tr></tr>
-        		<tr></tr>
-        		<tr></tr>
-        		<tr></tr>
-        		<tr></tr>
         		<tr><td colspan=7 align=center>" . utf8_decode_seguro('<b>Cotización: ') . $codificacion . '</b></td></tr></table>';
 
 
         $xls .= "<table >
      
-		<tr> <td>        </td><td>" . utf8_decode_seguro('Señor(es) :') . "</td>
+		<tr><td>" . utf8_decode_seguro('Señor(es) :') . "</td>
 		 <td>" . utf8_decode("$nombre_cliente") . "</td>
          <td>R.U.C. : $ruc </td>
          <td>Fecha : </td><td>$fecha</td></tr>
 
-		<tr> <td>         </td><td>" . utf8_decode_seguro('Dirección :') . " 
+		<tr> <td>" . utf8_decode_seguro('Dirección :') . " 
         </td><td>" . utf8_decode_seguro("$direccion") . "
 
         </td><td>Vend:
         </td><td>" . utf8_decode_seguro("$vendedor_nombre") . "</td><td></td></tr>
 
-		<tr> <td>         </td><td>" . utf8_decode_seguro('Atención Sr(a) :') . " 
+		<tr><td>" . utf8_decode_seguro('Atención Sr(a) :') . " 
         </td><td>" . utf8_decode_seguro("$nombre_contacto ") . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '') . "</td><td></td>&nbsp;&nbsp;&nbsp;<td></td><td></td><td></td><td></td><td></td></tr>
-		<tr> <td>          </td><td>" . utf8_decode_seguro('Teléfono : ') . "</td><td>$telefono</td><td></td><td></td><td></td><td>E-mail :</td><td>$email</td></tr>
+		<tr><td>" . utf8_decode_seguro('Teléfono : ') . "</td><td>$telefono</td><td></td><td></td><td></td><td>E-mail :</td><td>$email</td></tr>
 		</table><br><br>
 		";
 

@@ -1,5 +1,5 @@
 <html>
-	<head>	
+	<head><meta http-equiv="Content-Type" content="text/html; charset=gb18030">	
         <script type="text/javascript" src="<?php echo base_url();?>js/jquery.js"></script>
 		<script type="text/javascript" src="<?php echo base_url();?>js/jquery.validate.js"></script>
 		<script type="text/javascript" src="<?php echo base_url();?>js/compras/pedido.js"></script>
@@ -275,7 +275,7 @@
                                             Calendar.setup({
                                                 inputField     :    "fechai",      // id del campo de texto
                                                 ifFormat       :    "%Y-%m-%d",       // formato de la fecha, cuando se escriba en el campo de texto
-                                                button         :    "Calendario1"   // el id del bot贸n que lanzar谩 el calendario
+                                                button         :    "Calendario1"   // el id del botÃ³n que lanzarÃ¡ el calendario
                                             });
                                         </script>
 							</td>
@@ -297,7 +297,7 @@
 							</td>
 							<td colspan="2">
 								
-								 <input type="text" name="cliente" id="cliente" size="5" hidden value=""/>
+								 <input type="text" name="cliente" id="cliente" size="5" hidden value="<?php echo $cliente; ?>"/>
                         <input type="text" name="ruc_cliente" class="cajaGeneral" id="ruc_cliente" size="10"
                                maxlength="11" placeholder="Ruc"  onkeypress="return numbersonly(this,event,'.');" value="<?php echo $ruc_cliente; ?>" />
                         <input type="text" name="nombre_cliente" class="cajaGeneral cajaSoloLectura" id="nombre_cliente"
