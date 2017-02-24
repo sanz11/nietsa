@@ -330,10 +330,19 @@ WHERE CPC_TipoOperacion="C" AND PEDIP_Codigo ='.$pedido.' ORDER BY PRESUP_Codigo
       		'PEDIC_IGVTotal' =>$igvtotal,
       		'PEDIC_PrecioTotal' =>$preciototal,
       		'PEDIC_FechaRegistro' =>$fecha,
-      		'PEDIC_FlagEstado' =>"1"
+      		'PEDIC_FlagEstado' =>"1",
+      		'PEDIC_EstadoPresupuesto' =>"1"
       );
       $this->db->insert("cji_pedido",$data);
     return $this->db->insert_id();
+    }
+    function update_pedido_presupuesto($pedido,$presupuesto){
+    	$data = array(
+    			'PEDIC_EstadoPresupuesto' =>"0"
+    	);
+    	
+    	$this->db->where("PEDIP_Codigo",$pedido);
+    	$this->db->update("cji_pedido",$data);
     }
     
     
@@ -440,7 +449,7 @@ WHERE CPC_TipoOperacion="C" AND PEDIP_Codigo ='.$pedido.' ORDER BY PRESUP_Codigo
                 INNER JOIN cji_cliente c ON c.CLIP_Codigo=p.CLIP_Codigo
                 LEFT JOIN cji_persona pe ON pe.PERSP_Codigo=c.PERSP_Codigo AND c.CLIC_TipoPersona ='0'
                 LEFT JOIN cji_empresa e ON e.EMPRP_Codigo=c.EMPRP_Codigo AND c.CLIC_TipoPersona='1'
-                WHERE p.PEDIC_TipoDocume ='V' and p.PEDIC_FlagEstado='1'" . $where . " 
+                WHERE p.PEDIC_TipoDocume ='V' and p.PEDIC_FlagEstado='1' AND p.PEDIC_EstadoPresupuesto='1' "  . $where . " 
                 GROUP BY p.PEDIP_Codigo
                 ORDER BY p.PEDIC_FechaRegistro DESC" . $limit . "
     

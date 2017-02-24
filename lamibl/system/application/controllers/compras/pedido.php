@@ -45,7 +45,7 @@ class Pedido extends Controller{
             $data['numdoc'] = "";
             $data['nombre'] = "";
             $data['telefono']  = "";
-            $data['titulo_tabla']    = "RELACIÃ“N DE PEDIDOS / REQUERIMIENTOS";
+            $data['titulo_tabla']    = "RELACI�N DE PEDIDOS / REQUERIMIENTOS";
             $data['registros']  = count($this->pedido_model->listar_pedidos_todos());
             $data['action'] = base_url()."index.php/compras/pedido/pedidos";
             $conf['base_url']   = site_url('maestros/compras/pedidos/');
@@ -92,7 +92,7 @@ class Pedido extends Controller{
 					}
 						
                     $codigoproyecto   = $valor->PROYP_Codigo;
-					$buscarproyecto = $this->proyecto_model->obtener_datosProyecto($codigoproyecto);
+					$buscarproyecto = $this->proyecto_model->obtener_NAMEProyecto($codigoproyecto);
 					$nombreproyecto = "";
 					if(count($buscarproyecto) >0){
 						foreach ($buscarproyecto as $indice1=>$valor1){
@@ -100,7 +100,7 @@ class Pedido extends Controller{
 						}
 					}
 					
-					
+// 					$nombreproyecto=   ;
 					$ConversorDeNumero=1;
 					$imp = 1;
 					$tipo_oper2='"V"';
@@ -645,7 +645,7 @@ class Pedido extends Controller{
 		$data['numdoc']    = $filter->PERSC_NumeroDocIdentidad;
 		$data['nombre']    = $filter->nombre;
 		$data['telefono']  = $filter->PERSC_Telefono;
-		$data['titulo_tabla']    = "RESULTADO DE BÃšSQUEDA DE PERSONAS";
+		$data['titulo_tabla']    = "RESULTADO DE B�SQUEDA DE PERSONAS";
 	
 		$data['registros']  = count($this->persona_model->buscar_personas($filter));
 		$data['action'] = base_url()."index.php/maestros/persona/buscar_personas";

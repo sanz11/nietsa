@@ -634,7 +634,7 @@ public function select_cmbVendedor($index){
         $filter->PRESUC_subtotal = $this->input->post('preciototal');
         $filter->PRESUC_descuento = $this->input->post('descuentotal');
         $filter->PRESUC_igv = $this->input->post('igvtotal');
-
+       
         //} else {
         //$filter->PRESUC_subtotal_conigv = $this->input->post('preciototal_conigv');
         //  $filter->PRESUC_descuento_conigv = $this->input->post('descuentotal_conigv');
@@ -648,7 +648,12 @@ public function select_cmbVendedor($index){
             $filter->PRESUC_NombreAuxiliar = strtoupper($this->input->post('nombre_cliente'));
         $presupuesto = $this->presupuesto_model->insertar_presupuesto($filter);
         $this->configuracion_model->update_numero_presupuesto($this->input->post('numero'), $this->somevar['compania']);
-
+        //relacion con PEDIDO
+        $pedido=$this->input->post('pedidocodigo');
+        IF($pedido != ""){
+        	$this->pedido_model->update_pedido_presupuesto($pedido,$presupuesto);
+        	
+        }
 
         $flagBS = $this->input->post('flagBS');
         $prodcodigo = $this->input->post('prodcodigo');

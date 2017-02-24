@@ -2911,7 +2911,7 @@ public function select_cmbVendedor($index){
         }
         /* Condiciones de venta */
         $db_data = array(array('cols0' => '<b>CONDICIONES DE VENTA:</b>', 'cols1' => ''),
-            array('cols0' => utf8_decode_seguro('Tipo de Cambio del DÃ­a'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
+            array('cols0' => utf8_decode_seguro('Tipo de Cambio del D�a'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
             array('cols0' => 'Moneda', 'cols1' => ': ' . $moneda_nombre),
             array('cols0' => 'Forma de Pago', 'cols1' => ': ' . utf8_decode_seguro($forma_pago)),
             array('cols0' => 'Los Precios de los Productos ', 'cols1' => ': ' . ($modo_impresion == '1' ? 'CONTIENEN IGV' : 'NO CONTIENEN IGV')),
@@ -2921,18 +2921,20 @@ public function select_cmbVendedor($index){
             array('cols0' => 'Validez de la Oferta', 'cols1' => ': ' . utf8_decode_seguro($validez)),
             array('cols0' => 'Contacto', 'cols1' => ': ' . utf8_decode_seguro($vendedor_nombre . ($vendedor_nombre_area != '' ? ' - AREA: ' . $vendedor_nombre_area : '')))
         );
-//         $this->cezpdf->ezTable($db_data, "", "", array(
-//             'width' => 525,
-//             'showLines' => 0,
-//             'shaded' => 0,
-//             'showHeadings' => 0,
-//             'xPos' => 'center',
-//             'fontSize' => 8,
-//             'cols' => array(
-//                 'cols0' => array('width' => 120, 'justification' => 'left'),
-//                 'cols1' => array('width' => 415, 'justification' => 'left'),
-//             )
-//         ));
+        
+        $this->cezpdf->ezText('', 15);
+        $this->cezpdf->ezTable($db_data, "", "", array(
+            'width' => 525,
+            'showLines' => 0,
+            'shaded' => 0,
+            'showHeadings' => 0,
+            'xPos' => '360',
+            'fontSize' => 8,
+            'cols' => array(
+                'cols0' => array('width' => 120, 'justification' => 'left'),
+                'cols1' => array('width' => 415, 'justification' => 'left'),
+            )
+        ));
 
         $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => $codificacion . '.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
         $this->cezpdf->ezStream($cabecera);

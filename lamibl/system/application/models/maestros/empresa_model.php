@@ -15,7 +15,7 @@ class Empresa_model extends Model
     {
         $arreglo = array(''=>':: Seleccione ::');
         $filter  = new stdClass();
-        $filter->SECCOMP_Codigo='9';
+        $filter->SECCOMP_Codigo='1';
         $lista = $this->listar_empresas($filter);
         if(count($lista)>0){
             foreach($lista as $indice=>$valor)  //1: Empresa de transporte

@@ -244,14 +244,19 @@ if (empty($persona))
                 serienumero="Numero de PRESUPUESTO :"+serieguia+ " - " + numeroguia;
                 $("#serieguiaverPre").html(serienumero);
                 $("#serieguiaverPre").show(2000);
+                $("#serieverPedi").html('');//boramos en caso de secciono pedido
+                $("#serieverPedi").hide(2000);
             }
 
      function seleccionar_pedido(pedido,seriepedido,numeropedido){
 				tipo_oper = 'V';
                 agregar_todopedido(pedido,tipo_oper);
                 serienumero="Numero de PEDIDO :"+seriepedido+ " - " + numeropedido;
-                $("#serieverPedi").html(serienumero);
+                inpedido="<input type='hidden' name='pedidocodigo' id='pedidocodigo' value='"+pedido +"'>";
+                $("#serieverPedi").html(inpedido+serienumero);
                 $("#serieverPedi").show(2000);
+                $("#serieguiaverPre").html('');//borramos presupuesto
+                $("#serieguiaverPre").hide(2000);
             }	
 
         </script>
