@@ -51,8 +51,9 @@
                                                 <td width="8%">ITEM</td>
 												<td width="8%">SERIE</td>
 												 <td width="8%">NUMERO</td>
-												<td width="13%">RAZON SOCIAL</td>
-                                                <td width="38%">OBRA</td>
+												<td width="30%">RAZON SOCIAL</td>
+                                                <td width="20%">OBRA</td>
+                                                <td width="8%">PRESUPUESTO</td>
                                                 <td width="5%">&nbsp;</td>
                                                  <td width="5%">ACCIONES</td>
                                                 <td width="5%">&nbsp;</td>
@@ -69,7 +70,16 @@
 														 <td><div align="left"><?php echo $valor[2];?></div></td>
                                                         <td><div align="center"><?php echo $valor[3];?></div></td>
                                                         <td><div align="center"><?php echo $valor[4];?></div></td>
-                                                        <td><div align="center"><?php echo $valor[5];?></div></td>
+                                                        <?php if($valor[9]!="-"){?>
+                                                        <td><div align="center" style="color:white; background:blue; padding:1px 0; cursor:no-drop;"><?php echo $valor[9];?></div></td>
+                                                         <?php }else{?>
+                                                        	<td><div align="center"></div></td>
+                                                           <?php }?>   
+                                                        <?php if($valor[8]==1){?>
+                                                        	<td><div align="center"><?php echo $valor[5];?></div></td>
+                                                        <?php }else{?>
+                                                        	<td><div align="center"></div></td>
+                                                           <?php }?>
                                                         <td><div align="center"><?php echo $valor[6];?></div></td>
                                                         <td><div align="center"><?php echo $valor[7];?></div></td>
                                                         

@@ -65,9 +65,11 @@ class Pedido extends Controller{
         if(count($listado_pedidos)>0){
                 foreach($listado_pedidos as $indice=>$valor){
                     $codigo   = $valor->PEDIP_Codigo;
-                    $numero   = $valor->PEDIC_Numero;
-					$serie   = $valor->PEDIC_Serie;
-					$codigocliente   = $valor->CLIP_Codigo;
+                   $numero  =  $this->getOrderNumero($valor->PEDIC_Numero);
+                   $serie  =  $this->getOrderSerie($valor->PEDIC_Serie);
+					$relacion  = $valor->PEDIC_EstadoPresupuesto;
+					$codigocliente   = $valor->CLIP_Codigo;//
+					$numeropresupuesto = $valor->PRESUC_Serie."-".$valor->PRESUC_Numero;//
 					$buscarcliente = $this->cliente_model->obtener_datosCliente($codigocliente);
 					$nombrededos = " ";
 					foreach ($buscarcliente as $indice2=>$valor2){
@@ -106,10 +108,10 @@ class Pedido extends Controller{
 					$tipo_oper2='"V"';
 					
                     $editar         = "<a href='javascript:;' onclick='editar_pedido(".$codigo.")'><img src='".base_url()."images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
-					$eliminar       = "<a href='javascript:;' onclick='eliminar_pedido(".$codigo.")'><img src='".base_url()."images/eliminar.png' width='16' height='16' border='0' title='Modificar'></a>";
+					$eliminar       = "<a href='javascript:;' onclick='eliminar_pedido(".$codigo.")'><img src='".base_url()."images/eliminar.png' width='16' height='16' border='0' title='Eliminar'></a>";
 					$ver = "<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(" . $codigo .",".$ConversorDeNumero.",".$imp.",".$tipo_oper2.")'  target='_parent'><img src='" . base_url() . "images/pdf.png' width='16' height='16' border='0' title='Ver PDF'></a>";
 					
-                    $lista[]        = array($item,$serie,$numero,$nombrededos,$nombreproyecto,$editar,$ver,$eliminar);
+                    $lista[]        = array($item,$serie,$numero,$nombrededos,$nombreproyecto,$editar,$ver,$eliminar,$relacion,$numeropresupuesto);
                     $item++;
                 }
             }
@@ -681,7 +683,45 @@ class Pedido extends Controller{
 		$this->layout->view("maestros/persona_index",$data);
 	
 	}
-
+	public function getOrderNumero($numero){
+	
+		$cantidad=strlen($numero);
+	
+		if($cantidad==1){
+			$dato ="00000$numero";
+		}
+		if($cantidad==2){
+			$dato ="0000$numero";
+		}
+		if($cantidad==3){
+			$dato ="000$numero";
+		}
+		if($cantidad==4){
+			$dato= "00$numero";
+		}
+		if($cantidad==5){
+			$dato ="0$numero";
+		}
+		if($cantidad==6){
+			$dato ="$numero";
+		}
+		return $dato;
+	}
+	public function getOrderSerie($numero){
+	
+		$cantidad=strlen($numero);
+	
+		if($cantidad==1){
+			$dato ="00$numero";
+		}
+		if($cantidad==2){
+			$dato ="0$numero";
+		}
+		if($cantidad==3){
+			$dato ="$numero";
+		}
+		return $dato;
+	}
 
 
 }

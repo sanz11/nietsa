@@ -157,9 +157,15 @@ public function updateSolicitudCotizacion($pedido){
         {
             $compania = $this->somevar['compania'];
 		
-		$sql = "select DISTINCT pedido.PEDIP_Codigo,PEDIC_Serie,PEDIC_Numero,CLIP_Codigo,PROYP_Codigo from cji_pedido pedido 
-				inner join cji_pedidodetalle pedidetalle on pedido.PEDIP_Codigo = pedidetalle.PEDIP_Codigo
-				WHERE PEDIC_FlagEstado = 1";
+		$sql = "select DISTINCT pe.PEDIP_Codigo,pe.PEDIC_Serie,pe.PEDIC_Numero,pe.CLIP_Codigo,pe.PROYP_Codigo,pe.PEDIC_EstadoPresupuesto, pr.PRESUC_Serie ,pr.PRESUC_Numero from cji_pedido pe
+inner join cji_pedidodetalle pedidetalle on pe.PEDIP_Codigo = pedidetalle.PEDIP_Codigo
+left join cji_presupuesto pr on pr.PRESUP_Codigo = pe.PRESUP_Codigo
+WHERE pe.PEDIC_FlagEstado = 1";
+		
+// 		$sql = "select DISTINCT pe.PEDIP_Codigo,pe.PEDIC_Serie,pe.PEDIC_Numero,pe.CLIP_Codigo,pe.PROYP_Codigo,pe.PEDIC_EstadoPresupuesto,CONCAT(p.PRESUC_Serie,"-",p.PRESUC_Numero) AS PRESUPUESTO from cji_pedido pe
+// inner join cji_pedidodetalle pedidetalle on pe.PEDIP_Codigo = pedidetalle.PEDIP_Codigo
+// inner join cji_presupuesto p on p.PRESUP_Codigo = pe.PRESUP_Codigo
+// WHERE pe.PEDIC_FlagEstado = 1";
 
       $query = $this->db->query($sql);
         if ($query->num_rows > 0) {
@@ -338,7 +344,8 @@ WHERE CPC_TipoOperacion="C" AND PEDIP_Codigo ='.$pedido.' ORDER BY PRESUP_Codigo
     }
     function update_pedido_presupuesto($pedido,$presupuesto){
     	$data = array(
-    			'PEDIC_EstadoPresupuesto' =>"0"
+    			'PEDIC_EstadoPresupuesto' =>"0",
+    			'PRESUP_Codigo' =>$presupuesto
     	);
     	
     	$this->db->where("PEDIP_Codigo",$pedido);

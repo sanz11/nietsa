@@ -265,8 +265,8 @@
 								Serie:
 							</td>
 							<td>
-							<input class ="f1" name="serie" type="text" id="serie" size="15" maxlength="4" value="<?php echo $serie;?>" onkeypress="return numbersonly('numero_documento',event);" placeholder="SERIE">
-								<input class="f1" name="numero"  type="text" id="numero" size="15" maxlength="8" value="<?php echo $numero;?>" onkeypress="return numbersonly('numero_documento',event);" placeholder="NUMERO">
+							<input class ="f1" name="serie" type="text" id="serie" size="15" maxlength="3" value="<?php echo $serie;?>" onkeypress="return numbersonly('numero_documento',event);" placeholder="SERIE">
+								<input class="f1" name="numero"  type="text" id="numero" size="15" maxlength="6" value="<?php echo $numero;?>" onkeypress="return numbersonly('numero_documento',event);" placeholder="NUMERO">
 							</td>
 							<td >
 								Fecha: <?php echo $fechai?>
@@ -275,7 +275,7 @@
                                             Calendar.setup({
                                                 inputField     :    "fechai",      // id del campo de texto
                                                 ifFormat       :    "%Y-%m-%d",       // formato de la fecha, cuando se escriba en el campo de texto
-                                                button         :    "Calendario1"   // el id del bot0‡10…6n que lanzar0‡10„3 el calendario
+                                                button         :    "Calendario1"   // el id del botï¿½0â€¡1ï¿½0â€¦6n que lanzarï¿½0â€¡1ï¿½0â€ž3 el calendario
                                             });
                                         </script>
 							</td>
