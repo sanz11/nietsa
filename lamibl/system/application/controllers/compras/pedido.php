@@ -142,7 +142,7 @@ class Pedido extends Controller{
 		$data['contiene_igv'] = (($comp_confi[0]->COMPCONFIC_PrecioContieneIgv == '1') ? true : false);
         
          $data['cboContacto'] = form_dropdown("contacto", array('' => ':: Seleccione ::'), "", " class='comboGrande'  id='contacto'");
-		 $data['cboObra'] = form_dropdown("obra", array('' => ':: Seleccione ::'), "", " class='comboGrande'  id='obra'");
+		 $data['cboObra'] = form_dropdown("obra", array('' => ':: Seleccione ::'), "", " class='comboGrande'  id='obra' onchange='buscar_contacto()' ");
 		$data['fechai'] = form_input(array("name" => "fechai", "id" => "fechai", "class" => "cajaPequena", "readonly" => "readonly", "maxlength" => "10", "value" => "$hoy"));
         $document = $this->pedido_model->traerNumeroDoc();
 		$docum = $this->pedido_model->traerSerieDoc();
@@ -723,6 +723,30 @@ class Pedido extends Controller{
 			$dato ="$numero";
 		}
 		return $dato;
+	}
+	
+	
+	public function obtenercontacto_obra(){
+		
+		$codigoobra = $this->input->post('codigo');
+		$result = array();
+		
+		if($codigoobra!=null && count(trim($codigoobra))>0){
+			$obten_cont = $this->proyecto_model->obtenerContacto($codigoobra);
+			if($obten_cont !=null && count($obten_cont)){
+				foreach ($obten_cont as $indice => $valor){
+		
+					$codigo = $valor->EMPRP_Codigo;
+					$nombre = $valor->EMPRC_RazonSocial;
+
+					$result[] = array("codigo" => $codigo , "nombre" => $nombre  );
+		
+				}
+			}
+		}
+		echo json_encode($result);
+		
+		
 	}
 
 

@@ -896,6 +896,7 @@ function agregar_todopedido(pedido,tipo_oper){
 		                pu              = item.PRESDEC_Pu;
 		                subtotal        = item.PRESDEC_Subtotal;
 		                descuento       = item.PRESDEC_Descuento;
+		                
 		                igv             = item.PRESDEC_Igv;
 		                total           = item.PRESDEC_Total
 		                pu_conigv              = item.PRESDEC_Pu_ConIgv;
@@ -941,7 +942,8 @@ function agregar_todopedido(pedido,tipo_oper){
 		                    fila += '<input type="hidden" size="1" maxlength="10" readonly class="cajaGeneral" name="proddescuento['+n+']" class="proddescuento" id="proddescuento['+n+']" value="'+descuento+'" onblur="calcula_importe2('+n+');calcula_totales();">';
 		               //fila += '</div></td>';
 		                
-		                fila += '<td width="6%" style="display:none;"><div align="center"><input type="text" size="5" class="cajaGeneral cajaSoloLectura" name="prodigv['+n+']" value="'+igv+'" id="prodigv['+n+']" readonly></div></td>';
+		                fila += '<td width="6%" ><div align="center"><input type="text" size="5" class="cajaGeneral cajaSoloLectura" name="prodigv['+n+']" value="'+igv+'" id="prodigv['+n+']" readonly></div></td>';
+		                fila += '<td width="6%" ><div align="center"><input type="text" size="5" class="cajaGeneral cajaSoloLectura" name="prodimporte['+n+']" value="'+total+'" id="prodimporte['+n+']" readonly></div></td>';
 		                fila += '<td width="6%" style="display:none;" ><div align="center">';
 		                fila +='<input type="hidden" name="detacodi['+n+']" id="detacodi['+n+']">';
 		                fila += '<input type="hidden" name="proddescuento_conigv['+n+']" id="proddescuento_conigv['+n+']" onblur="calcula_importe2_conigv('+n+');" value="0">';
@@ -949,7 +951,6 @@ function agregar_todopedido(pedido,tipo_oper){
 		                fila +='<input type="hidden" name="detaccion['+n+']" id="detaccion['+n+']" value="n">';
 		                fila+= '<input type="text" value="0" size="1" name="proddescuento['+n+']" class="proddescuento" id="proddescuento['+n+']" onblur="calcula_importe2('+n+');" />';
 
-		                fila += '<input type="text" size="5" class="cajaGeneral cajaSoloLectura" name="prodimporte['+n+']" id="prodimporte['+n+']" value="'+total+'" readonly="readonly" value="0">';
 		                fila += '</div></td>';
 		                fila += '</tr>';
 		                $("#tblDetallePresupuesto").append(fila);

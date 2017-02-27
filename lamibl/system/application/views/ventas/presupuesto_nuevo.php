@@ -618,7 +618,7 @@ if (empty($persona))
                                         </tr>
                                     <?php //} ?>
                                     <tr>
-                                        <td>probando</td>
+                                        <td>Precio Total</td>
                                         <td align="right"><div align="right"><input class="cajaTotales" name="importetotal" type="text" id="importetotal" size="12" align="right" readonly="readonly" value="<?php echo round($importetotal, 2); ?>" /></div></td>
                                     </tr> 
       </table></td>

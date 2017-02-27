@@ -175,14 +175,14 @@
 					</div>
 					<div id="tabs">
   						<ul>
-    						<li><a href="#tabs-1">Proyecto</a></li>
+    						<li><a href="#tabs-1">Obra</a></li>
     						<li><a href="#tabs-2">Direcciones</a></li>
   						</ul>
   						<div id="tabs-1">
    	 					<div id="datosProyecto" >
                            <table class="fuente8" style="width:100% !important">
                              <tr>
-                                 <td>Nombre de Proyecto</td>
+                                 <td>Nombre de la Obra</td>
                                  <td><input name="nombreProyecto" type="text" class="cajaGrande" id="nombres" maxlength="150" value="<?php echo $nombreProyecto;?>">
                                  </td>
                              </tr>

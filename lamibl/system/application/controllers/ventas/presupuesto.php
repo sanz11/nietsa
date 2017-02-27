@@ -4079,10 +4079,10 @@ public function select_cmbVendedor($index){
     				$subtotal = $valor->PEDIDETC_Precio;
     				$igv = $valor->PEDIDETC_IGV;
     				$descuento = "";
+    				if($descuento == "")
+    					$descuento = 0;
+    				
     				$total = $valor->PEDIDETC_Importe;
-    
-    
-    
     				$pu_conigv = $valor->PEDIDETC_PCIGV;
     				$subtotal_conigv = $valor->PEDIDETC_Importe;
     				$descuento_conigv = "";
@@ -4098,7 +4098,7 @@ public function select_cmbVendedor($index){
     				$flagBS = $datos_producto[0]->PROD_FlagBienServicio;
     				$costo = $datos_producto[0]->PROD_CostoPromedio;
     				$datos_umedida = $this->unidadmedida_model->obtener($unidad_medida);
-    				$nombre_unidad = $datos_umedida[0]->UNDMED_Simbolo;
+    				$nombre_unidad = $datos_umedida[0]->UNDMED_Descripcion;
     
     
     				$objeto = new stdClass();
@@ -4107,7 +4107,7 @@ public function select_cmbVendedor($index){
     				$objeto->PROD_Codigo = $producto;
     				$objeto->PROD_CodigoInterno = $codigo_interno;
     				$objeto->UNDMED_Codigo = $unidad_medida;
-    				$objeto->UNDMED_Simbolo = $nombre_unidad;
+    				$objeto->UNDMED_Descripcion = $nombre_unidad;
     				$objeto->PROD_Nombre = $nombre_producto;
     				$objeto->PROD_GenericoIndividual = $flagGenInd;
     				$objeto->PROD_CostoPromedio = $costo;

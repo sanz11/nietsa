@@ -537,8 +537,9 @@ function listar_precios_x_producto_unidad() {
 }
 
 function editar_pedido(pedido){
-        var url = base_url+"index.php/compras/pedido/editar_pedido/"+pedido;
-	$("#zonaContenido").load(url);
+	alert("Opción en mantenimiento");
+       /* var url = base_url+"index.php/compras/pedido/editar_pedido/"+pedido;
+	$("#zonaContenido").load(url);*/
 }
 function eliminar_pedido(pedido){
 	if(confirm('Esta seguro desea eliminar este pedido?')){

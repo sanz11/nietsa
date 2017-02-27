@@ -4,12 +4,12 @@
 <div id="pagina">
     <div id="zonaContenido">
                 <div align="center">
-                        <div id="tituloForm" class="header">Buscar PROYECTO </div>
+                        <div id="tituloForm" class="header">Buscar OBRA </div>
                        
                         <form id="form_busqueda" name="form_busqueda" method="post" action="<?php echo $action;?>">
                             <table class="fuente8" width="98%" cellspacing=0 cellpadding=3 border=0>
                                     <tr>
-                                       <td width="16%">Nombre Proyecto </td>
+                                       <td width="16%">Nombre Obra </td>
                                        <td width="68%"><input id="nombres" type="text" class="cajaPequena" NAME="nombres" maxlength="15" value="<?php echo $nombres; ?>">
                                         <td width="5%">&nbsp;</td>
                                         <td width="5%">&nbsp;</td>
@@ -23,7 +23,7 @@
                 <div class="acciones">
                     <div id="botonBusqueda">
                             <ul id="imprimirProyecto" class="lista_botones"><li id="imprimir">Imprimir</li></ul>
-                            <ul id="nuevoProyecto" class="lista_botones"><li id="nuevo">Nueva Proyecto</li></ul>
+                            <ul id="nuevoProyecto" class="lista_botones"><li id="nuevo">Nueva Obra</li></ul>
                             <ul id="limpiarProyecto" class="lista_botones"><li id="limpiar">Limpiar</li></ul>
                             <ul id="buscarProyecto" class="lista_botones"><li id="buscar">Buscar</li></ul>
                     </div>

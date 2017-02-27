@@ -1619,7 +1619,7 @@ Vendedor&nbsp;&nbsp;&nbsp;
 
                 <?php if ($tipo_oper == 'V') { ?>
 
-                    <tr>
+                 <!--  <tr>
 
                         <td class="busqueda">VISA</td>
 
@@ -1630,7 +1630,7 @@ Vendedor&nbsp;&nbsp;&nbsp;
  onKeyPress="return numbersonly(this,event,'.');"/></div>
                         </td>
 
-                    </tr>
+                    </tr>-->
 
                 <?php } ?>
 

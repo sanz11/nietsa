@@ -218,7 +218,33 @@
 					});
 			});
 		}		
-						
+
+
+		function buscar_contacto(){
+			obra = $("#obra").val();
+			 var url= "<?php echo base_url(); ?>index.php/compras/pedido/obtenercontacto_obra";
+			
+			 $.ajax({url: url,type: "POST",
+				 data:{
+					 codigo:obra
+					 },  
+				 dataType: "json", 
+				 success: function(data){
+						$("#contacto").html("");
+					 fila = "";
+				 $.each(data, function (i, item) {
+					
+			         fila+= "<option value='"+item.codigo+"' >" + item.nombre + "</option>";
+			         			            
+				 });
+				 $("#contacto").html(fila);
+				  
+			 }	
+			        
+			    });
+
+			
+			}		
 		</script>
 		
 	</head>
@@ -275,7 +301,7 @@
                                             Calendar.setup({
                                                 inputField     :    "fechai",      // id del campo de texto
                                                 ifFormat       :    "%Y-%m-%d",       // formato de la fecha, cuando se escriba en el campo de texto
-                                                button         :    "Calendario1"   // el id del bot0‡10…6n que lanzar0‡10„3 el calendario
+                                                button         :    "Calendario1"   // el id del botï¿½0â€¡1ï¿½0â€¦6n que lanzarï¿½0â€¡1ï¿½0â€ž3 el calendario
                                             });
                                         </script>
 							</td>
@@ -310,6 +336,7 @@
 								Contacto:	
 								<?php echo $cboContacto;?>
 							</td>
+<!-- 							<td><select id="contacto2">Seleccionar</select></td> -->
 							<td>
 								I.G.V:	<input style="width:30px" type="text" name="igv" id="igv" size="5" value="<?php echo $igv; ?>" readonly  />%
 								Descuento:<input type="text" name="descuento" id="descuento" size="5" value="<?php echo $descuento; ?>" onblur="calcula_totales();"/>%

@@ -250,6 +250,19 @@ class Proyecto_model extends model {
     		 
     	}
     	
+    	public function obtenerContacto($filter){
+    		$sql = "select cliente.EMPRP_Codigo,PROYC_Nombre,PROYP_Codigo,EMPRC_RazonSocial,EMPRC_Ruc from cji_proyecto obra 
+					inner join cji_cliente cliente on cliente.CLIP_Codigo = obra.EMPRP_Codigo 
+					inner join cji_empresa empresa on cliente.EMPRP_Codigo = empresa.EMPRP_Codigo where PROYP_Codigo = $filter ";
+    		$query = $this->db->query($sql);
+    		if($query->num_rows()>0){
+    			foreach($query->result() as $fila){
+    				$data[] = $fila;
+    			}
+    			return $data;
+    		}
+    	}
+    	
   	 }
 
   	 

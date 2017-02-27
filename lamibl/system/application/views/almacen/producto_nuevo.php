@@ -170,8 +170,8 @@
                                         ?>">                                                                          
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td height="30">Tiene Producto Superior</td>
+                               <tr>
+                                  <!--  <td height="30">Tiene Producto Superior</td>
                                     <td>
                                         <input type="checkbox" name="tiene_padre" id="tiene_padre" value="1" <?php if ($padre != '' && $padre != '0') echo 'checked="checked"'; ?> />
                                         <label id="lblTienePadre" <?php if ($padre == '') echo 'style="display:none"'; ?>>
@@ -180,26 +180,21 @@
                                             <input type="text" name="nompadre" id="nompadre" class="cajaMedia cajaSoloLectura" readonly="readonly" style="width:215px;"  value="<?php echo $nompadre; ?>" />
                                             <a href="<?php echo base_url(); ?>index.php/almacen/producto/ventana_busqueda_producto/" id="linkVerProducto"><img height='16' width='16' src='<?php echo base_url(); ?>/images/ver.png' title='Buscar' border='0' /></a>
                                         </label>
-                                    </td>
+                                    </td>-->
                                     <td>C&oacute;digo de Usuario</td>
                                     <td>
                                         <input type="text" class="cajaMedia cajaSoloLectura" name="codigo_usuario" style="width:125px;" id="codigo_usuario" readonly="readonly"  onblur="valida_codigo();" value="<?php echo $codigo_usuario; ?>" />   
+                                    </td>
+                                        <td>C&oacute;digo Original</td>
+                                    <td>
+                                        <input type="text" class="cajaMedia" onkeypress="validaCaractaer(event);" name="codigo_original" style="width:125px;" id="codigo_original" onblur="valida_codigo_original(); " value="<?php echo $codigo_original; ?>" />   
                                     </td>
                                 </tr>
 
 
                                 <!--////aumentado stv-->
-                                <tr>
-                                    <td height="30">&nbsp;</td>
-                                    <td>
-                                        &nbsp;
-                                    </td>
-                                    <td>C&oacute;digo Original</td>
-                                    <td>
-                                        <input type="text" class="cajaMedia" onkeypress="validaCaractaer(event);" name="codigo_original" style="width:125px;" id="codigo_original" onblur="valida_codigo_original(); " value="<?php echo $codigo_original; ?>" />   
-                                    </td>
-                                </tr>
-                                <!--////-->
+                                   
+                                
                                 <tr>
                                     <td colspan="4" style="color: red"><label id="persona_msg" name="persona_msg"></label></td>
                                 </tr>
@@ -252,20 +247,20 @@
 
 
                                     <tr>
-                                        <td>Genérico / Individual</td>
+                                        <!-- <td>Genérico / Individual</td>
                                         <td><select name="geneindi" id="geneindi" class="comboMedio">
                                                 <option value="0">::Seleccionar::</option>
                                                 <option value="G" <?php if ($geneindi == 'G') echo "selected='selected'"; ?>>Genérico (Sin N/S)</option>
                                                 <option value="I" <?php if ($geneindi == 'I') echo "selected='selected'"; ?>>Individual (Con N/S)</option>
-                                            </select></td>
+                                            </select></td>-->
                                         <td>Presentación</td>
                                         <td ><input type="text" class="cajaMedia" name="presentacion" id="presentacion" value="<?php echo $presentacion; ?>"></td>
                                     </tr>    
 
 
                                     <tr>
-                                        <td>L&iacute;nea</td>
-                                        <td><?php echo $cbo_linea; ?></td>
+                                          <!-- <td>L&iacute;nea</td>
+                                        <td><?php echo $cbo_linea; ?></td>-->
                                         <td valign="top">Especificación Técnica</td>
                                         <td>
                                             <input name="pdf" id="pdf" style="font-size:0.9em;" type="file" />
