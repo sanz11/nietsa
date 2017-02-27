@@ -36,3 +36,53 @@ Stack trace:
 #5 /home/osaerp/public_html/desarrollo/diselac/index.php(229): require_once('/home/osaerp/pu...')
 #6 {main}
   thrown in /home/osaerp/public_html/desarrollo/diselac/system/application/libraries/fpdf/fpdf.php on line 271
+[23-Feb-2017 22:17:44 UTC] PHP Fatal error:  Uncaught exception 'Exception' with message 'FPDF error: Some data has already been output, can't send PDF file' in /home/osaerp/public_html/desarrollo/diselac/system/application/libraries/fpdf/fpdf.php:271
+Stack trace:
+#0 /home/osaerp/public_html/desarrollo/diselac/system/application/libraries/fpdf/fpdf.php(1066): FPDF->Error('Some data has a...')
+#1 /home/osaerp/public_html/desarrollo/diselac/system/application/libraries/fpdf/fpdf.php(1002): FPDF->_checkoutput()
+#2 /home/osaerp/public_html/desarrollo/diselac/system/application/controllers/maestros/configuracionimpresion.php(551): FPDF->Output('I', 'temporal/Impres...')
+#3 [internal function]: Configuracionimpresion->impresionDocumento('34', '8', '1', 'V')
+#4 /home/osaerp/public_html/desarrollo/diselac/system/codeigniter/CodeIgniter.php(471): call_user_func_array(Array, Array)
+#5 /home/osaerp/public_html/desarrollo/diselac/index.php(229): require_once('/home/osaerp/pu...')
+#6 {main}
+  thrown in /home/osaerp/public_html/desarrollo/diselac/system/application/libraries/fpdf/fpdf.php on line 271
+[23-Feb-2017 22:17:51 UTC] PHP Fatal error:  Uncaught exception 'Exception' with message 'FPDF error: Some data has already been output, can't send PDF file' in /home/osaerp/public_html/desarrollo/diselac/system/application/libraries/fpdf/fpdf.php:271
+Stack trace:
+#0 /home/osaerp/public_html/desarrollo/diselac/system/application/libraries/fpdf/fpdf.php(1066): FPDF->Error('Some data has a...')
+#1 /home/osaerp/public_html/desarrollo/diselac/system/application/libraries/fpdf/fpdf.php(1002): FPDF->_checkoutput()
+#2 /home/osaerp/public_html/desarrollo/diselac/system/application/controllers/maestros/configuracionimpresion.php(551): FPDF->Output('I', 'temporal/Impres...')
+#3 [internal function]: Configuracionimpresion->impresionDocumento('34', '8', '1', 'V')
+#4 /home/osaerp/public_html/desarrollo/diselac/system/codeigniter/CodeIgniter.php(471): call_user_func_array(Array, Array)
+#5 /home/osaerp/public_html/desarrollo/diselac/index.php(229): require_once('/home/osaerp/pu...')
+#6 {main}
+  thrown in /home/osaerp/public_html/desarrollo/diselac/system/application/libraries/fpdf/fpdf.php on line 271
+[23-Feb-2017 22:18:35 UTC] PHP Fatal error:  Uncaught exception 'Exception' with message 'FPDF error: Some data has already been output, can't send PDF file' in /home/osaerp/public_html/desarrollo/diselac/system/application/libraries/fpdf/fpdf.php:271
+Stack trace:
+#0 /home/osaerp/public_html/desarrollo/diselac/system/application/libraries/fpdf/fpdf.php(1066): FPDF->Error('Some data has a...')
+#1 /home/osaerp/public_html/desarrollo/diselac/system/application/libraries/fpdf/fpdf.php(1002): FPDF->_checkoutput()
+#2 /home/osaerp/public_html/desarrollo/diselac/system/application/controllers/maestros/configuracionimpresion.php(551): FPDF->Output('I', 'temporal/Impres...')
+#3 [internal function]: Configuracionimpresion->impresionDocumento('34', '8', '1', 'V')
+#4 /home/osaerp/public_html/desarrollo/diselac/system/codeigniter/CodeIgniter.php(471): call_user_func_array(Array, Array)
+#5 /home/osaerp/public_html/desarrollo/diselac/index.php(229): require_once('/home/osaerp/pu...')
+#6 {main}
+  thrown in /home/osaerp/public_html/desarrollo/diselac/system/application/libraries/fpdf/fpdf.php on line 271
+[23-Feb-2017 22:18:51 UTC] PHP Fatal error:  Uncaught exception 'Exception' with message 'FPDF error: Some data has already been output, can't send PDF file' in /home/osaerp/public_html/desarrollo/diselac/system/application/libraries/fpdf/fpdf.php:271
+Stack trace:
+#0 /home/osaerp/public_html/desarrollo/diselac/system/application/libraries/fpdf/fpdf.php(1066): FPDF->Error('Some data has a...')
+#1 /home/osaerp/public_html/desarrollo/diselac/system/application/libraries/fpdf/fpdf.php(1002): FPDF->_checkoutput()
+#2 /home/osaerp/public_html/desarrollo/diselac/system/application/controllers/maestros/configuracionimpresion.php(551): FPDF->Output('I', 'temporal/Impres...')
+#3 [internal function]: Configuracionimpresion->impresionDocumento('34', '8', '1', 'V')
+#4 /home/osaerp/public_html/desarrollo/diselac/system/codeigniter/CodeIgniter.php(471): call_user_func_array(Array, Array)
+#5 /home/osaerp/public_html/desarrollo/diselac/index.php(229): require_once('/home/osaerp/pu...')
+#6 {main}
+  thrown in /home/osaerp/public_html/desarrollo/diselac/system/application/libraries/fpdf/fpdf.php on line 271
+[23-Feb-2017 22:19:19 UTC] PHP Fatal error:  Uncaught exception 'Exception' with message 'FPDF error: Some data has already been output, can't send PDF file' in /home/osaerp/public_html/desarrollo/diselac/system/application/libraries/fpdf/fpdf.php:271
+Stack trace:
+#0 /home/osaerp/public_html/desarrollo/diselac/system/application/libraries/fpdf/fpdf.php(1066): FPDF->Error('Some data has a...')
+#1 /home/osaerp/public_html/desarrollo/diselac/system/application/libraries/fpdf/fpdf.php(1002): FPDF->_checkoutput()
+#2 /home/osaerp/public_html/desarrollo/diselac/system/application/controllers/maestros/configuracionimpresion.php(551): FPDF->Output('I', 'temporal/Impres...')
+#3 [internal function]: Configuracionimpresion->impresionDocumento('34', '8', '1', 'V')
+#4 /home/osaerp/public_html/desarrollo/diselac/system/codeigniter/CodeIgniter.php(471): call_user_func_array(Array, Array)
+#5 /home/osaerp/public_html/desarrollo/diselac/index.php(229): require_once('/home/osaerp/pu...')
+#6 {main}
+  thrown in /home/osaerp/public_html/desarrollo/diselac/system/application/libraries/fpdf/fpdf.php on line 271

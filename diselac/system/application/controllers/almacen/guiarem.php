@@ -205,7 +205,7 @@ class Guiarem extends controller
 	 $tipo_oper2='"'.$tipo_oper.'"';
 	             //   if ($estado == '2' && $tipo_oper == 'V' && $numeroref == '')
 	                    $ver = "<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(" . $codigo.", ".$ConversorDeNumero .",0,".$tipo_oper2. ")'>
-<img src='" . base_url() . "images/icono_imprimir.png' width='16' height='16' border='0' title='Imprimir'></a>";
+//<img src='" . base_url() . "images/icono_imprimir.png' width='16' height='16' border='0' title='Imprimir'></a>";
 	               // else
 	                 //   $ver = '';
 	
@@ -1266,7 +1266,8 @@ class Guiarem extends controller
 	                $filter2->GUIAREMDETC_GenInd = $detflag;
 	                $filter2->GUIAREMDETC_Descripcion = strtoupper($descri);
 	                $filter2->ALMAP_Codigo=$codigoAlmacenProducto;
-	                
+	                $filter2->GUIAREMDETC_ITEM = $indice+1;
+
 	                if ($guiarem_id == "") {
 	                } else {
 	                	if($accion!="e"){
@@ -1461,11 +1462,14 @@ class Guiarem extends controller
 	                		if($codigoDetalle!=0 && trim($codigoDetalle)!=""){
 	                			if($estado!=null && $estado==2){
 	                				$this->guiaremdetalle_model->eliminar($codigoDetalle);
+
 	                			}else{
 	                				$objetoM=new stdClass();
 	                				$objetoM->GUIAREMDETC_FlagEstado=0;
 	                				$this->guiaremdetalle_model->modificar($codigoDetalle,$objetoM);
+                                   
 	                			}
+                                 
 	                		}
 	                		
 	                	}
@@ -1474,7 +1478,7 @@ class Guiarem extends controller
 	
 	            }
 	        }
-	
+	$this->item($guiarem_id);
 			/**verificamos si el estado de la guiarem se encuentra en estado 1 ya ejecuto el disparador**/
 	        if($estado!=null && $estado==1){
 	        	if($guiarem_id!=null && $guiarem_id!=0){
@@ -1489,7 +1493,16 @@ class Guiarem extends controller
    		}
    		exit('{"result":"ok", "codigo":"' . $guiarem_id . '"}');
     }
+function item($codigo){
+            $detalle= $this->guiaremdetalle_model->listar2($codigo);
+            
+            foreach ($detalle as $key => $value) {
+                
+                $filter3->GUIAREMDETC_ITEM = $key +1 ;   
+                $this->guiaremdetalle_model->modificar($value->GUIAREMDETP_Codigo, $filter3);
+            }
 
+}
     public function disparador($codigo, $tipo_oper = 'V')
     {
     	if($codigo!=null && $codigo!=0){

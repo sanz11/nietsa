@@ -2910,14 +2910,14 @@ public function select_cmbVendedor($index){
                 $vendedor_nombre_area = $datos_area[0]->AREAC_Descripcion;
         }
         /* Condiciones de venta */
-        $db_data = array(array('cols0' => '<b>CONDICIONES DE VENTA:</b>', 'cols1' => ''),
-            array('cols0' => utf8_decode_seguro('Tipo de Cambio del D�a'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
+         $db_data = array(array('cols0' => '<b>CONDICIONES DE VENTA:</b>', 'cols1' => ''),
+            array('cols0' => utf8_decode_seguro('Tipo de Cambio del Día'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
             array('cols0' => 'Moneda', 'cols1' => ': ' . $moneda_nombre),
             array('cols0' => 'Forma de Pago', 'cols1' => ': ' . utf8_decode_seguro($forma_pago)),
             array('cols0' => 'Los Precios de los Productos ', 'cols1' => ': ' . ($modo_impresion == '1' ? 'CONTIENEN IGV' : 'NO CONTIENEN IGV')),
             array('cols0' => 'Tiempo de Entrega', 'cols1' => ': ' . $tiempo_entrega),
             array('cols0' => 'Lugar de Entrega', 'cols1' => ': ' . utf8_decode_seguro($lugar_entrega)),
-            //array('cols0' => utf8_decode_seguro('GarantÃ­a'), 'cols1' => ': ' . utf8_decode_seguro($garantia)),
+            //array('cols0' => utf8_decode_seguro('GarantÃƒÂ­a'), 'cols1' => ': ' . utf8_decode_seguro($garantia)),
             array('cols0' => 'Validez de la Oferta', 'cols1' => ': ' . utf8_decode_seguro($validez)),
             array('cols0' => 'Contacto', 'cols1' => ': ' . utf8_decode_seguro($vendedor_nombre . ($vendedor_nombre_area != '' ? ' - AREA: ' . $vendedor_nombre_area : '')))
         );

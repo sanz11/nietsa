@@ -11,7 +11,7 @@
 |
 */
 
-$config['base_url']	= "http://localhost:85/nietsa/diselac/";
+$config['base_url']	= "http://www.osa-erp.com/desarrollo/diselac";
 
 /*
 |--------------------------------------------------------------------------

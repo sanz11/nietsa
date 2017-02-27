@@ -72,7 +72,7 @@ class Comprobante extends Controller{
         $html = '<option value="">::SELECCIONE::</option>';
         for ($i = 0; $i < count($comprobantes); $i++):
             if ($comprobantes[$i]->CPP_Codigo_canje == '' || $comprobantes[$i]->CPP_Codigo_canje == NULL || $comprobantes[$i]->CPP_Codigo_canje == 0) {
-				$html .= '<option value="' . $comprobantes[$i]->CPP_Codigo . '">';
+                $html .= '<option value="' . $comprobantes[$i]->CPP_Codigo . '">';
                 $html .= $comprobantes[$i]->CPC_Serie . '-' . $comprobantes[$i]->CPC_Numero;
                 $html .= '</option>';
             }
@@ -116,7 +116,7 @@ class Comprobante extends Controller{
 
     public function canje_documento($codigo_documento)
     {
-    	$compania = $this->somevar['compania'];
+        $compania = $this->somevar['compania'];
         $data['titulo_tabla'] = 'CANJE DE COMPROBANTES';
         $datos_comprobante = $this->comprobante_model->obtener_comprobante($codigo_documento);
         if (!$datos_comprobante)
@@ -158,8 +158,8 @@ class Comprobante extends Controller{
         $tipo_docu = $this->input->post('cmbDocumento');
         $user = $this->session->userdata('user');
         $serie = $this->input->post('serie');
-       	$numero =$this->input->post('numero');
-       	$numeroAutomatico =$this->input->post('numeroAutomatico');
+        $numero =$this->input->post('numero');
+        $numeroAutomatico =$this->input->post('numeroAutomatico');
            
           
      
@@ -194,9 +194,9 @@ class Comprobante extends Controller{
             }
 
             if($numeroAutomatico==1){
-            	$cofiguracion_datos = $this->configuracion_model->obtener_numero_documento($compania, $tipo);
-            	$serie = $cofiguracion_datos[0]->CONFIC_Serie;
-            	$numero = $cofiguracion_datos[0]->CONFIC_Numero + 1;
+                $cofiguracion_datos = $this->configuracion_model->obtener_numero_documento($compania, $tipo);
+                $serie = $cofiguracion_datos[0]->CONFIC_Serie;
+                $numero = $cofiguracion_datos[0]->CONFIC_Numero + 1;
             }
 
             $filter = new stdClass();
@@ -242,7 +242,7 @@ class Comprobante extends Controller{
             $filter->CPC_NumeroAutomatico=$numeroAutomatico;
             $comprobante = $this->comprobante_model->insertar_comprobante2($filter);
             if($numeroAutomatico==1){
-            	$this->configuracion_model->modificar_configuracion($compania, $tipo, $numero);
+                $this->configuracion_model->modificar_configuracion($compania, $tipo, $numero);
             }
             
             for ($i = 0; $i < count($comprobantes); $i++):
@@ -291,38 +291,38 @@ class Comprobante extends Controller{
             $filterSerie->SERDOC_NumeroRef=$comprobantes[0];
             $listaSeriesDocumento=$this->seriedocumento_model->buscar($filterSerie,null,null);
             if(count($listaSeriesDocumento)>0){
-            	foreach ($listaSeriesDocumento as $valorSerie){
-            		 
-            		/**insertamso serie documento**/
-            		$serieCodigo=$valorSerie->SERIP_Codigo;
-            		$almacen=$valorSerie->ALMAP_Codigo;
-            		$filterSerieD= new stdClass();
-            		$filterSerieD->SERDOC_Codigo=null;
-            		$filterSerieD->SERIP_Codigo=$serieCodigo;
-            		/**8:facturac || boleta:9**/
-            		$filterSerieD->DOCUP_Codigo=$tipo;
-            		$filterSerieD->SERDOC_NumeroRef=$comprobante;
-            		//$tipoIngreso=1;
-            		//if($tipo_oper == 'V'){
-            		$tipoIngreso=2;
-            		//}
-            		$filterSerieD->TIPOMOV_Tipo=$tipoIngreso;
-            		$filterSerieD->SERDOC_FechaRegistro=date("Y-m-d H:i:s");
-            		$filterSerieD->SERDOC_FlagEstado=1;
-            		$this->seriedocumento_model->insertar($filterSerieD);
-            		/**FIN DE INSERTAR EN SERIE**/
-            	}
+                foreach ($listaSeriesDocumento as $valorSerie){
+                     
+                    /**insertamso serie documento**/
+                    $serieCodigo=$valorSerie->SERIP_Codigo;
+                    $almacen=$valorSerie->ALMAP_Codigo;
+                    $filterSerieD= new stdClass();
+                    $filterSerieD->SERDOC_Codigo=null;
+                    $filterSerieD->SERIP_Codigo=$serieCodigo;
+                    /**8:facturac || boleta:9**/
+                    $filterSerieD->DOCUP_Codigo=$tipo;
+                    $filterSerieD->SERDOC_NumeroRef=$comprobante;
+                    //$tipoIngreso=1;
+                    //if($tipo_oper == 'V'){
+                    $tipoIngreso=2;
+                    //}
+                    $filterSerieD->TIPOMOV_Tipo=$tipoIngreso;
+                    $filterSerieD->SERDOC_FechaRegistro=date("Y-m-d H:i:s");
+                    $filterSerieD->SERDOC_FlagEstado=1;
+                    $this->seriedocumento_model->insertar($filterSerieD);
+                    /**FIN DE INSERTAR EN SERIE**/
+                }
             }
             /**fin de verificacion**/           
 
             /**creamos guia de remision interna apartir cuando se genera un documento **/
             if($comprobante!=null &&  $comprobante!=0){
-            	if($query = $this->db->query("CALL CREACION_GUIA_INTERNA(".$comprobante.",".$tipo.",'".$tipoOperacion."')"))
-            	{
-            		exit('{"result":"success", "serie":"' . $serie . '", "numero":"00' . $numero.'"}');
-            	}else{
-            		show_error('Error!');
-            	}
+                if($query = $this->db->query("CALL CREACION_GUIA_INTERNA(".$comprobante.",".$tipo.",'".$tipoOperacion."')"))
+                {
+                    exit('{"result":"success", "serie":"' . $serie . '", "numero":"00' . $numero.'"}');
+                }else{
+                    show_error('Error!');
+                }
             }
             /**fin de generar **/
         
@@ -773,23 +773,23 @@ class Comprobante extends Controller{
                 $guiarem_codigo = '';
                 $docurefe_codigo = '';
                 if(count($listaGuiaremAsociados)>0){
-                	foreach ($listaGuiaremAsociados as $j=>$valorGuiarem){
-                		$codigoGuiarem=$valorGuiarem->GUIAREMP_Codigo;
-                		$serieG=$valorGuiarem->GUIAREMC_Serie;
-                		$numeroG=$valorGuiarem->GUIAREMC_Numero;
-                		$estadoRelacion=$valorGuiarem->COMPGUI_FlagEstado;
-                		//guia de remision incluido en factura
-                		if($estadoRelacion==1){
-                			$docurefe_codigo .= '<a href="' . base_url() . 'index.php/almacen/guiarem/guiarem_ver/'.$codigoGuiarem.'/'.$tipo_oper.'" id="comprobante" name="comprobante">'.$serieG.'-'.$numeroG.'</a>';
-                			$docurefe_codigo .= '<br>';
-                		}
-                		
-                		//factura incluido en guia de remision
-                		if($estadoRelacion==3){
-                			$guiarem_codigo .= '<a href="' . base_url() . 'index.php/almacen/guiarem/guiarem_ver/'.$codigoGuiarem.'/'.$tipo_oper.'" id="comprobante" name="comprobante">'.$serieG .'-'.$numeroG.'</a>';
-                			$guiarem_codigo .= '<br>';
-                		}
-                	}
+                    foreach ($listaGuiaremAsociados as $j=>$valorGuiarem){
+                        $codigoGuiarem=$valorGuiarem->GUIAREMP_Codigo;
+                        $serieG=$valorGuiarem->GUIAREMC_Serie;
+                        $numeroG=$valorGuiarem->GUIAREMC_Numero;
+                        $estadoRelacion=$valorGuiarem->COMPGUI_FlagEstado;
+                        //guia de remision incluido en factura
+                        if($estadoRelacion==1){
+                            $docurefe_codigo .= '<a href="' . base_url() . 'index.php/almacen/guiarem/guiarem_ver/'.$codigoGuiarem.'/'.$tipo_oper.'" id="comprobante" name="comprobante">'.$serieG.'-'.$numeroG.'</a>';
+                            $docurefe_codigo .= '<br>';
+                        }
+                        
+                        //factura incluido en guia de remision
+                        if($estadoRelacion==3){
+                            $guiarem_codigo .= '<a href="' . base_url() . 'index.php/almacen/guiarem/guiarem_ver/'.$codigoGuiarem.'/'.$tipo_oper.'" id="comprobante" name="comprobante">'.$serieG .'-'.$numeroG.'</a>';
+                            $guiarem_codigo .= '<br>';
+                        }
+                    }
                 }
                 
                 
@@ -849,34 +849,34 @@ class Comprobante extends Controller{
                 $numeroSerieCanjeado="";
                 $comprobantesRelacion="";
                 if($tipo_docu=='N' && $tipo_oper=='V'){
-                	/**si tiene codigo de canjear**/
-                	if($codigo_canje!=null && $codigo_canje!='0'){
-                		/**OBTENER DATOS DE COMPROBANTE**/
-                		$datosComprobanteCanje=$this->comprobante_model->obtener_comprobante($codigo_canje);
-                		$tipoDocumentoCanje=$datosComprobanteCanje[0]->CPC_TipoDocumento;
-                		$serieCanje=$datosComprobanteCanje[0]->CPC_Serie;
-                		$numeroCanje=$datosComprobanteCanje[0]->CPC_Numero;
-                		$numeroSerieCanjeado=$tipoDocumentoCanje." : ".$serieCanje.'-'.$numeroCanje;
-                	}
+                    /**si tiene codigo de canjear**/
+                    if($codigo_canje!=null && $codigo_canje!='0'){
+                        /**OBTENER DATOS DE COMPROBANTE**/
+                        $datosComprobanteCanje=$this->comprobante_model->obtener_comprobante($codigo_canje);
+                        $tipoDocumentoCanje=$datosComprobanteCanje[0]->CPC_TipoDocumento;
+                        $serieCanje=$datosComprobanteCanje[0]->CPC_Serie;
+                        $numeroCanje=$datosComprobanteCanje[0]->CPC_Numero;
+                        $numeroSerieCanjeado=$tipoDocumentoCanje." : ".$serieCanje.'-'.$numeroCanje;
+                    }
                 }else{
-                	/***verificamos si factua o boleta  propviene de comprobvante**/
+                    /***verificamos si factua o boleta  propviene de comprobvante**/
                     if ($tipo_oper=='C') {
                         $ver = "<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(". $codigo .",".$ConversorDeNumero.",0,".$tipo_oper2.")' target='_parent'><img src='" . base_url() . "images/icono_imprimir.png' width='16' height='16' border='0' title='Imprimir'></a>";
                     }
-                	if($tipo_oper=='V'){
+                    if($tipo_oper=='V'){
                         $ver = "<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(". $codigo .",".$ConversorDeNumero.",0,".$tipo_oper2.")' target='_parent'><img src='" . base_url() . "images/icono_imprimir.png' width='16' height='16' border='0' title='Imprimir'></a>";
-                		$listaRelacionadosCanje=$this->comprobante_model->buscarComprobanteRelacionadoCanje($codigo);
-                		if(count($listaRelacionadosCanje)>0){
-                			/**muestrsa la impresionh**/
-                			
-                			foreach ($listaRelacionadosCanje as $ind=>$valorCanje){
-                				$serieCanjeR=$valorCanje->CPC_Serie;
-                				$numeroCanjeR=$valorCanje->CPC_Numero;
-                				$comprobantesRelacion.=$serieCanjeR."-".$numeroCanjeR;
-                				$comprobantesRelacion.=" <br>";
-                			}
-                		} 
-                	}
+                        $listaRelacionadosCanje=$this->comprobante_model->buscarComprobanteRelacionadoCanje($codigo);
+                        if(count($listaRelacionadosCanje)>0){
+                            /**muestrsa la impresionh**/
+                            
+                            foreach ($listaRelacionadosCanje as $ind=>$valorCanje){
+                                $serieCanjeR=$valorCanje->CPC_Serie;
+                                $numeroCanjeR=$valorCanje->CPC_Numero;
+                                $comprobantesRelacion.=$serieCanjeR."-".$numeroCanjeR;
+                                $comprobantesRelacion.=" <br>";
+                            }
+                        } 
+                    }
                 }
                 /****/
                 
@@ -1017,17 +1017,17 @@ class Comprobante extends Controller{
             if ($tipo_docu == 'N') {
                 $tipo = 14;
             }
-			
+            
             
             /**gcbq limpiamos la session de series guardadas**/
             unset($_SESSION['serie']);
-			unset($_SESSION['serieReal']);
-			unset($_SESSION['serieRealBD']);
+            unset($_SESSION['serieReal']);
+            unset($_SESSION['serieRealBD']);
             /**fin de limpiar session***/
-			
-			$listaGuiarem=array();
-			$listaGuiarem=null;
-			$data['listaGuiaremAsociados']=$listaGuiarem;
+            
+            $listaGuiarem=array();
+            $listaGuiarem=null;
+            $data['listaGuiaremAsociados']=$listaGuiarem;
 
             $cofiguracion_datos = $this->configuracion_model->obtener_numero_documento($compania, $tipo);
             //$ultimo_serie_numero = $this->comprobante_model->ultimo_serie_numero($tipo_oper, 'B');
@@ -1071,7 +1071,7 @@ public function select_cmbVendedor($index){
         if ($this->input->post('almacen') == '')
             exit('{"result":"error", "campo":"almacen"}');
 
-		//VERIFICO SI TODAS LAS SERIES HAN SIDO INGRESADAS
+        //VERIFICO SI TODAS LAS SERIES HAN SIDO INGRESADAS
         $prodcodigo = $this->input->post('prodcodigo');
         $flagGenInd = $this->input->post('flagGenIndDet');
         $prodcantidad = $this->input->post('prodcantidad');
@@ -1095,13 +1095,13 @@ public function select_cmbVendedor($index){
         $this->load->model('maestros/documento_model');
 
 //         if ($tipo_docu == 'F') {
-//         	$tipo = 8;
+//          $tipo = 8;
 //         }
 //         if ($tipo_docu == 'B') {
-//         	$tipo = 9;
+//          $tipo = 9;
 //         }
 //         if ($tipo_docu == 'N') {
-//         	$tipo = 14;
+//          $tipo = 14;
 //         }
         $documento=$this->documento_model->obtenerAbreviatura(trim($tipo_docu));
         $tipo=$documento[0]->DOCUP_Codigo;
@@ -1218,18 +1218,19 @@ public function select_cmbVendedor($index){
         $cant_total = 0;
         $ordencompra=$this->input->post('ordencompra');
         if($ordencompra!=''){
-	        $detalle = $this->ocompra_model->obtener_detalle_ocompra($ordencompra);
-	        if (is_array($detalle) > 0) {
-	            foreach ($detalle as $valor2) {
-	                $cant_total += $valor2->OCOMDEC_Cantidad;
-	            }
-	        }
+            $detalle = $this->ocompra_model->obtener_detalle_ocompra($ordencompra);
+            if (is_array($detalle) > 0) {
+                foreach ($detalle as $valor2) {
+                    $cant_total += $valor2->OCOMDEC_Cantidad;
+                }
+            }
         }
         ///////////////
 
         if (is_array($prodcodigo)) {
             foreach ($prodcodigo as $indice => $valor) {
                 $filter = new stdClass();
+                $filter->CPDEC_ITEMS = $indice+1;
                 $filter->CPP_Codigo = $comprobante;
                 $filter->PROD_Codigo = $prodcodigo[$indice];
 
@@ -1259,15 +1260,15 @@ public function select_cmbVendedor($index){
                 
                 //gcbq agrgar flagestado de terminado ocompra 
                 if ($ordencompra != '' && $detaccion[$indice]!="e") {
-	                $cantidad_entregada = calcular_cantidad_entregada_x_producto($tipo_oper, $tipo_oper,$ordencompra, $filter->PROD_Codigo);
-					$cantidad_entregada_total += $cantidad_entregada;
-	                $cantidad_total_ingresada += $prodcantidad[$indice];
-	                if ($cant_total <= $cantidad_entregada_total + $cantidad_total_ingresada) {
-	                    $this->ocompra_model->modificar_flagTerminado($this->input->post('ordencompra'), "1");
-	                }
-	                if ($cant_total > $cantidad_entregada_total + $cantidad_total_ingresada) {
-	                    $this->ocompra_model->modificar_flagTerminado($this->input->post('ordencompra'), "0");
-	                }
+                    $cantidad_entregada = calcular_cantidad_entregada_x_producto($tipo_oper, $tipo_oper,$ordencompra, $filter->PROD_Codigo);
+                    $cantidad_entregada_total += $cantidad_entregada;
+                    $cantidad_total_ingresada += $prodcantidad[$indice];
+                    if ($cant_total <= $cantidad_entregada_total + $cantidad_total_ingresada) {
+                        $this->ocompra_model->modificar_flagTerminado($this->input->post('ordencompra'), "1");
+                    }
+                    if ($cant_total > $cantidad_entregada_total + $cantidad_total_ingresada) {
+                        $this->ocompra_model->modificar_flagTerminado($this->input->post('ordencompra'), "0");
+                    }
                 }
                 ///////////////////
 
@@ -1281,88 +1282,88 @@ public function select_cmbVendedor($index){
 
                 if ($tipo_oper == 'V')
                     $filter->CPDEC_Costo = $prodcosto[$indice];
-                	$filter->CPDEC_Descripcion = strtoupper($proddescri[$indice]);
-                	$filter->CPDEC_GenInd = $flagGenInd[$indice];
-                	$filter->CPDEC_Observacion = "";
+                    $filter->CPDEC_Descripcion = strtoupper($proddescri[$indice]);
+                    $filter->CPDEC_GenInd = $flagGenInd[$indice];
+                    $filter->CPDEC_Observacion = "";
 
                     $filter->CPDEC_Pu = $prodpu[$indice];
                     $filter->CPDEC_Subtotal = $prodprecio[$indice];
 
                 if ($detaccion[$indice] != 'e') {
-					$this->comprobantedetalle_model->insertar($filter);
-				
-				/**gcbq insertar serie de cada producto**/
-				if($flagGenInd[$indice]='I'){
-					if($valor!=null){
-						/**obtenemos las series de session por producto***/
-						$seriesProducto=$this->session->userdata('serieReal');
-						if ($seriesProducto!=null && count($seriesProducto) > 0 && $seriesProducto!= "") {
-							foreach ($seriesProducto as $alm2 => $arrAlmacen2) {
-								if($alm2==$codigoAlmacenProducto){
-									foreach ($arrAlmacen2 as $ind2 => $arrserie2){
-										if ($ind2 == $valor) {
-											$serial = $arrserie2;
-											if($serial!=null && count($serial)>0){
-												foreach ($serial as $i => $serie) {
-													$serieNumero=$serie->serieNumero;
-													/**verificamos si esa serie ya ha sido ingresada en COMPRAS**/
-													IF($tipo_oper == 'C')
-														$resultado=$this->serie_model->validarserie($serieNumero,0);
-													else
-														$resultado=null;
-													/**fin de verificacion**/
-													
-													if(count($resultado)==0){
-														/**INSERTAMOS EN SERIE SI ES COMPRA PERO SI ES VENTA SE ACTUALIZA**/
-														$filterSerie= new stdClass();
-														IF($tipo_oper == 'C'){
-															$filterSerie->SERIP_Codigo=null;
-															$filterSerie->PROD_Codigo=$valor;
-															$filterSerie->SERIC_Numero=$serieNumero;
-															$filterSerie->SERIC_FechaRegistro=date("Y-m-d H:i:s");
-															$filterSerie->SERIC_FechaModificacion=null;
-															$filterSerie->SERIC_FlagEstado='1';
-															$filterSerie->ALMAP_Codigo=$codigoAlmacenProducto;
-															$serieCodigo=$this->serie_model->insertar($filterSerie);
-															$tipoIngreso=1;
-															
-														}
-														/**SI ES VENTA SE crea un registro serieDocumento con la serie de compra**/
-														if($tipo_oper == 'V'){
-															$serieCodigo=$serie->serieCodigo;
-															$tipoIngreso=2;
-														}
-														
-														/**insertamso serie documento**/
-														$filterSerieD= new stdClass();
-														$filterSerieD->SERDOC_Codigo=null;
-														$filterSerieD->SERIP_Codigo=$serieCodigo;
-														$filterSerieD->DOCUP_Codigo=$tipo;
-														$filterSerieD->SERDOC_NumeroRef=$comprobante;
-														/**1:ingreso**/
-														$filterSerieD->TIPOMOV_Tipo=$tipoIngreso;
-														$filterSerieD->SERDOC_FechaRegistro=date("Y-m-d H:i:s");
-														$filterSerieD->SERDOC_FlagEstado=1;
-														$this->seriedocumento_model->insertar($filterSerieD);
-														/**FIN DE INSERTAR EN SERIE**/
-														/**FIN DE INSERTAR EN SERIE**/
-													}else{
-														exit('{"result":"error3", "msj":"ya ha sido ingresado por otro usuario esta serie ' .$serieNumero. ' en el producto'.$proddescri[$indice].' "}');
-													}
-												}
-											}
-											break;
-										}
-									}
-									break;
-								}
-							}
-						}
-					}
-				}
-				/**fin de insertar serie**/
-				
-				//redirect('ventas/comprobante/comprobantes/' . $tipo_oper . '/' . $tipo_docu);
+                    $this->comprobantedetalle_model->insertar($filter);
+                
+                /**gcbq insertar serie de cada producto**/
+                if($flagGenInd[$indice]='I'){
+                    if($valor!=null){
+                        /**obtenemos las series de session por producto***/
+                        $seriesProducto=$this->session->userdata('serieReal');
+                        if ($seriesProducto!=null && count($seriesProducto) > 0 && $seriesProducto!= "") {
+                            foreach ($seriesProducto as $alm2 => $arrAlmacen2) {
+                                if($alm2==$codigoAlmacenProducto){
+                                    foreach ($arrAlmacen2 as $ind2 => $arrserie2){
+                                        if ($ind2 == $valor) {
+                                            $serial = $arrserie2;
+                                            if($serial!=null && count($serial)>0){
+                                                foreach ($serial as $i => $serie) {
+                                                    $serieNumero=$serie->serieNumero;
+                                                    /**verificamos si esa serie ya ha sido ingresada en COMPRAS**/
+                                                    IF($tipo_oper == 'C')
+                                                        $resultado=$this->serie_model->validarserie($serieNumero,0);
+                                                    else
+                                                        $resultado=null;
+                                                    /**fin de verificacion**/
+                                                    
+                                                    if(count($resultado)==0){
+                                                        /**INSERTAMOS EN SERIE SI ES COMPRA PERO SI ES VENTA SE ACTUALIZA**/
+                                                        $filterSerie= new stdClass();
+                                                        IF($tipo_oper == 'C'){
+                                                            $filterSerie->SERIP_Codigo=null;
+                                                            $filterSerie->PROD_Codigo=$valor;
+                                                            $filterSerie->SERIC_Numero=$serieNumero;
+                                                            $filterSerie->SERIC_FechaRegistro=date("Y-m-d H:i:s");
+                                                            $filterSerie->SERIC_FechaModificacion=null;
+                                                            $filterSerie->SERIC_FlagEstado='1';
+                                                            $filterSerie->ALMAP_Codigo=$codigoAlmacenProducto;
+                                                            $serieCodigo=$this->serie_model->insertar($filterSerie);
+                                                            $tipoIngreso=1;
+                                                            
+                                                        }
+                                                        /**SI ES VENTA SE crea un registro serieDocumento con la serie de compra**/
+                                                        if($tipo_oper == 'V'){
+                                                            $serieCodigo=$serie->serieCodigo;
+                                                            $tipoIngreso=2;
+                                                        }
+                                                        
+                                                        /**insertamso serie documento**/
+                                                        $filterSerieD= new stdClass();
+                                                        $filterSerieD->SERDOC_Codigo=null;
+                                                        $filterSerieD->SERIP_Codigo=$serieCodigo;
+                                                        $filterSerieD->DOCUP_Codigo=$tipo;
+                                                        $filterSerieD->SERDOC_NumeroRef=$comprobante;
+                                                        /**1:ingreso**/
+                                                        $filterSerieD->TIPOMOV_Tipo=$tipoIngreso;
+                                                        $filterSerieD->SERDOC_FechaRegistro=date("Y-m-d H:i:s");
+                                                        $filterSerieD->SERDOC_FlagEstado=1;
+                                                        $this->seriedocumento_model->insertar($filterSerieD);
+                                                        /**FIN DE INSERTAR EN SERIE**/
+                                                        /**FIN DE INSERTAR EN SERIE**/
+                                                    }else{
+                                                        exit('{"result":"error3", "msj":"ya ha sido ingresado por otro usuario esta serie ' .$serieNumero. ' en el producto'.$proddescri[$indice].' "}');
+                                                    }
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                /**fin de insertar serie**/
+                
+                //redirect('ventas/comprobante/comprobantes/' . $tipo_oper . '/' . $tipo_docu);
                 }
             }
         }
@@ -1373,15 +1374,15 @@ public function select_cmbVendedor($index){
 
     public function disparador($tipo_oper = 'V', $codigo, $tipo_docu = 'F')
     {
-		if($codigo!=null &&  $codigo!=0){
-			if($query = $this->db->query("CALL COMPROBANTE_DISPARADOR($codigo)"))
-			{
-				print_r($query->row());
-			}else{
-				show_error('Error!');
-			}
-		}
-		redirect('ventas/comprobante/comprobantes/' . $tipo_oper . '/' . $tipo_docu);
+        if($codigo!=null &&  $codigo!=0){
+            if($query = $this->db->query("CALL COMPROBANTE_DISPARADOR($codigo)"))
+            {
+                print_r($query->row());
+            }else{
+                show_error('Error!');
+            }
+        }
+        redirect('ventas/comprobante/comprobantes/' . $tipo_oper . '/' . $tipo_docu);
     }
 
     public function comprobante_insertar_ref()
@@ -1459,12 +1460,12 @@ public function select_cmbVendedor($index){
         $filter->OCOMP_Codigo=null;
         
 //Datos cabecera de la guiasa.
-		if($codigo!=0){
-			$comprobante=$codigo;
-			$this->comprobante_model->modificar_comprobante($comprobante,$filter);
-		}else{
-			$comprobante = $this->comprobante_model->insertar_comprobante($filter);
-		}	
+        if($codigo!=0){
+            $comprobante=$codigo;
+            $this->comprobante_model->modificar_comprobante($comprobante,$filter);
+        }else{
+            $comprobante = $this->comprobante_model->insertar_comprobante($filter);
+        }   
         
         
         /**modificamos a estado 0 LOS REGUISTROS ASOCIADOS AL DOCUMENTO y seriesDocumento asociado***/
@@ -1476,46 +1477,46 @@ public function select_cmbVendedor($index){
         $accionAsociacionGuiarem = $this->input->post('accionAsociacionGuiarem');
         $codigoGuiaremAsociada=$this->input->post('codigoGuiaremAsociada');
         if($codigoGuiaremAsociada!=null && count($codigoGuiaremAsociada)>0){
-        	foreach ($codigoGuiaremAsociada as $ind=>$valorGuia){
-        		$estadoDocumentoAso=$accionAsociacionGuiarem[$ind];
-        		if($estadoDocumentoAso!=0){
-	        		/**insertamos comprobante y guiarem**/
-	        		$filterCG=new stdClass();
-	        		$filterCG->CPP_Codigo=$comprobante;
-	        		$filterCG->GUIAREMP_Codigo=$valorGuia;
-	        		$filterCG->COMPGUI_FlagEstado=1;
-	        		$filterCG->COMPGU_FechaRegistro=date("Y-m-d H:i:s");
-	        		$this->comprobante_model->insertar_comprobante_guiarem($filterCG);
-	        		/**insertamos todas las series de la guia a los comprobantes***/
-	        		$filterSG=new stdClass();
-	        		$filterSG->DOCUP_Codigo=10;
-	        		$filterSG->SERDOC_NumeroRef=$valorGuia;
-	        		$listaSerieAsociado=$this->seriedocumento_model->buscar($filterSG);
-	        		if(count($listaSerieAsociado)>0){
-	        			foreach ($listaSerieAsociado as $k=>$valorSerie){
-	        				/**insertamso serie documento**/
-	        				$serieCodigo=$valorSerie->SERIP_Codigo;
-	        				$almacen=$valorSerie->ALMAP_Codigo;
-	        				$filterSerieD= new stdClass();
-	        				$filterSerieD->SERDOC_Codigo=null;
-	        				$filterSerieD->SERIP_Codigo=$serieCodigo;
-	        				/**10:guiaremision**/
-	        				$filterSerieD->DOCUP_Codigo=$tipo;
-	        				$filterSerieD->SERDOC_NumeroRef=$comprobante;
-	        				$tipoIngreso=1;
-		                   	if($tipo_oper == 'V'){
-		                   		$tipoIngreso=2;
-		                   	}
-	        				$filterSerieD->TIPOMOV_Tipo=$tipoIngreso;
-	        				$filterSerieD->SERDOC_FechaRegistro=date("Y-m-d H:i:s");
-	        				$filterSerieD->SERDOC_FlagEstado=1;
-	        				$this->seriedocumento_model->insertar($filterSerieD);
-	        				/**FIN DE INSERTAR EN SERIE**/
-	        			}
-	        		}
-	        		/**fin de insertar las series al comprobante**/
-        		}
-        	}
+            foreach ($codigoGuiaremAsociada as $ind=>$valorGuia){
+                $estadoDocumentoAso=$accionAsociacionGuiarem[$ind];
+                if($estadoDocumentoAso!=0){
+                    /**insertamos comprobante y guiarem**/
+                    $filterCG=new stdClass();
+                    $filterCG->CPP_Codigo=$comprobante;
+                    $filterCG->GUIAREMP_Codigo=$valorGuia;
+                    $filterCG->COMPGUI_FlagEstado=1;
+                    $filterCG->COMPGU_FechaRegistro=date("Y-m-d H:i:s");
+                    $this->comprobante_model->insertar_comprobante_guiarem($filterCG);
+                    /**insertamos todas las series de la guia a los comprobantes***/
+                    $filterSG=new stdClass();
+                    $filterSG->DOCUP_Codigo=10;
+                    $filterSG->SERDOC_NumeroRef=$valorGuia;
+                    $listaSerieAsociado=$this->seriedocumento_model->buscar($filterSG);
+                    if(count($listaSerieAsociado)>0){
+                        foreach ($listaSerieAsociado as $k=>$valorSerie){
+                            /**insertamso serie documento**/
+                            $serieCodigo=$valorSerie->SERIP_Codigo;
+                            $almacen=$valorSerie->ALMAP_Codigo;
+                            $filterSerieD= new stdClass();
+                            $filterSerieD->SERDOC_Codigo=null;
+                            $filterSerieD->SERIP_Codigo=$serieCodigo;
+                            /**10:guiaremision**/
+                            $filterSerieD->DOCUP_Codigo=$tipo;
+                            $filterSerieD->SERDOC_NumeroRef=$comprobante;
+                            $tipoIngreso=1;
+                            if($tipo_oper == 'V'){
+                                $tipoIngreso=2;
+                            }
+                            $filterSerieD->TIPOMOV_Tipo=$tipoIngreso;
+                            $filterSerieD->SERDOC_FechaRegistro=date("Y-m-d H:i:s");
+                            $filterSerieD->SERDOC_FlagEstado=1;
+                            $this->seriedocumento_model->insertar($filterSerieD);
+                            /**FIN DE INSERTAR EN SERIE**/
+                        }
+                    }
+                    /**fin de insertar las series al comprobante**/
+                }
+            }
         }
         /**fin de insertar relacion guia de remision **/
         
@@ -1547,66 +1548,68 @@ public function select_cmbVendedor($index){
         $codigoGuiarem=$this->input->post('codigoGuiarem');
         
         
-       	if($codigo!=0){
-	        /**eliminamos detalle comprobante***/
-	        $listaDetalleComprobante=$this->comprobantedetalle_model->listar($comprobante);
-	        if(count($listaDetalleComprobante)>0){
-	        	foreach ($listaDetalleComprobante as $valorDetalle){
-	        		$codigoDetalle=$valorDetalle->CPDEP_Codigo;
-	        		$this->comprobantedetalle_model->eliminar($codigoDetalle);
-	        	}
-	        }
-	        /**fin de eliminacion**/
+        if($codigo!=0){
+            /**eliminamos detalle comprobante***/
+            $listaDetalleComprobante=$this->comprobantedetalle_model->listar($comprobante);
+            if(count($listaDetalleComprobante)>0){
+                foreach ($listaDetalleComprobante as $valorDetalle){
+                    $codigoDetalle=$valorDetalle->CPDEP_Codigo;
+                    $this->comprobantedetalle_model->eliminar($codigoDetalle);
+                }
+            }
+            /**fin de eliminacion**/
         }
         
         
         if (is_array($prodcodigo)) {
             foreach ($prodcodigo as $indice => $valor) {
-            	if ($detaccion[$indice] != 'e') {
-            		
-	                $filter = new stdClass();
-	                $filter->CPP_Codigo = $comprobante;
-	                $filter->PROD_Codigo = $prodcodigo[$indice];
-	                if ($flagBS[$indice] == 'B')
-	                    $filter->UNDMED_Codigo = $produnidad[$indice];
-	                else
-	                    $filter->UNDMED_Codigo = NULL;
-	                $filter->CPDEC_Cantidad = $prodcantidad[$indice];
-	                if ($tipo_docu != 'B' && $tipo_docu != 'N') {
-	                    $filter->CPDEC_Pu = $prodpu[$indice];
-	                    $filter->CPDEC_Subtotal = $prodprecio[$indice];
-	                    $filter->CPDEC_Descuento = $proddescuento[$indice];
-	                    $filter->CPDEC_Igv = $prodigv[$indice];
-	                } else {
-	                    $filter->CPDEC_Subtotal_ConIgv = $prodprecio_conigv[$indice];
-	                    $filter->CPDEC_Descuento_ConIgv = $proddescuento_conigv[$indice];
-	                }
-	                $filter->CPDEC_Total = $prodimporte[$indice];
-	                $filter->CPDEC_Pu_ConIgv = $prodpu_conigv[$indice];
-	                $filter->CPDEC_Descuento100 = $proddescuento100[$indice];
-	                $filter->CPDEC_Igv100 = $prodigv100[$indice];
-	                if ($tipo_oper == 'V')
-	                    $filter->CPDEC_Costo = $prodcosto[$indice];
-	                
-	                $filter->CPDEC_Descripcion = strtoupper($proddescri[$indice]);
-	                $filter->CPDEC_GenInd =$flagGenInd[$indice]; 
-	                $filter->CPDEC_Observacion = "";
-					$filter->ALMAP_Codigo=$almacenProducto[$indice];
-					$filter->GUIAREMP_Codigo=$codigoGuiarem[$indice];
-					$this->comprobantedetalle_model->insertar($filter);
-            	}
+                if ($detaccion[$indice] != 'e') {
+                    
+                    $filter = new stdClass();
+                    $filter->CPDEC_ITEMS = $indice+1;
+
+                    $filter->CPP_Codigo = $comprobante;
+                    $filter->PROD_Codigo = $prodcodigo[$indice];
+                    if ($flagBS[$indice] == 'B')
+                        $filter->UNDMED_Codigo = $produnidad[$indice];
+                    else
+                        $filter->UNDMED_Codigo = NULL;
+                    $filter->CPDEC_Cantidad = $prodcantidad[$indice];
+                    if ($tipo_docu != 'B' && $tipo_docu != 'N') {
+                        $filter->CPDEC_Pu = $prodpu[$indice];
+                        $filter->CPDEC_Subtotal = $prodprecio[$indice];
+                        $filter->CPDEC_Descuento = $proddescuento[$indice];
+                        $filter->CPDEC_Igv = $prodigv[$indice];
+                    } else {
+                        $filter->CPDEC_Subtotal_ConIgv = $prodprecio_conigv[$indice];
+                        $filter->CPDEC_Descuento_ConIgv = $proddescuento_conigv[$indice];
+                    }
+                    $filter->CPDEC_Total = $prodimporte[$indice];
+                    $filter->CPDEC_Pu_ConIgv = $prodpu_conigv[$indice];
+                    $filter->CPDEC_Descuento100 = $proddescuento100[$indice];
+                    $filter->CPDEC_Igv100 = $prodigv100[$indice];
+                    if ($tipo_oper == 'V')
+                        $filter->CPDEC_Costo = $prodcosto[$indice];
+                    
+                    $filter->CPDEC_Descripcion = strtoupper($proddescri[$indice]);
+                    $filter->CPDEC_GenInd =$flagGenInd[$indice]; 
+                    $filter->CPDEC_Observacion = "";
+                    $filter->ALMAP_Codigo=$almacenProducto[$indice];
+                    $filter->GUIAREMP_Codigo=$codigoGuiarem[$indice];
+                    $this->comprobantedetalle_model->insertar($filter);
+                }
             }
         }
         
         if($codigo!=null &&  $codigo!=0){
-        	if($estadoComprobante==1){
-	        	if($this->db->query("CALL COMPROBANTE_DISPARADOR_MODIFICAR($codigo)"))
-	        	{
-	        		exit('{"result":"ok", "codigo":"' . $codigo . '"}');
-	        	}else{
-	        		exit('{"result":"error", "campo":"consulte con el administrador"}');
-	        	}
-        	}
+            if($estadoComprobante==1){
+                if($this->db->query("CALL COMPROBANTE_DISPARADOR_MODIFICAR($codigo)"))
+                {
+                    exit('{"result":"ok", "codigo":"' . $codigo . '"}');
+                }else{
+                    exit('{"result":"error", "campo":"consulte con el administrador"}');
+                }
+            }
         }
         
         exit('{"result":"ok", "codigo":"' . $comprobante . '"}');
@@ -1670,7 +1673,7 @@ public function select_cmbVendedor($index){
         } else {
             $data['guia'] = $guiainp_codigo;
         }
-//	
+//  
         $d_formapago = $this->formapago_model->obtener2($forma_pago_id);
         $forma_pago = $d_formapago[0]->FORPAC_Descripcion;
         $d_moneda = $this->moneda_model->obtener($moneda_id);
@@ -1797,10 +1800,10 @@ public function select_cmbVendedor($index){
         
         /**ponemos en en estado seleccionado presupuesto**/
         if($presupuesto!=null && trim($presupuesto)!="" &&  $presupuesto!=0){
-	        $estadoSeleccion=1;
-	        $codigoPresupuesto=$presupuesto;
-	        /**1:sdeleccionado,0:deseleccionado**/
-	        $this->presupuesto_model->modificarTipoSeleccion($codigoPresupuesto,$estadoSeleccion);
+            $estadoSeleccion=1;
+            $codigoPresupuesto=$presupuesto;
+            /**1:sdeleccionado,0:deseleccionado**/
+            $this->presupuesto_model->modificarTipoSeleccion($codigoPresupuesto,$estadoSeleccion);
         }
         /**fin de poner**/
         
@@ -1817,13 +1820,13 @@ public function select_cmbVendedor($index){
         $estadoAsociacion=1;
         $listaGuiaremAsociados=$this->comprobante_model->buscarComprobanteGuiarem($codigo,$estadoAsociacion);
         if(count($listaGuiaremAsociados)>0){
-        	foreach ($listaGuiaremAsociados as $j=>$valorGuiarem){
-        		$objeto=new stdClass();
-        		$objeto->codigoGuiarem=$valorGuiarem->GUIAREMP_Codigo;
-        		$objeto->serie=$valorGuiarem->GUIAREMC_Serie;
-        		$objeto->numero=$valorGuiarem->GUIAREMC_Numero;
-        		$listaGuiarem[]=$objeto;
-        	}
+            foreach ($listaGuiaremAsociados as $j=>$valorGuiarem){
+                $objeto=new stdClass();
+                $objeto->codigoGuiarem=$valorGuiarem->GUIAREMP_Codigo;
+                $objeto->serie=$valorGuiarem->GUIAREMC_Serie;
+                $objeto->numero=$valorGuiarem->GUIAREMC_Numero;
+                $listaGuiarem[]=$objeto;
+            }
         }
         $data['listaGuiaremAsociados']=$listaGuiarem;
         /**fin de verificacion**/
@@ -1831,10 +1834,10 @@ public function select_cmbVendedor($index){
         /***verificamos si factua o boleta  propviene de comprobvante**/
         $isProvieneCanje=false;
         if($tipo_oper=='V' && $tipo_docu!='N'){
-        	$listaRelacionadosCanje=$this->comprobante_model->buscarComprobanteRelacionadoCanje($codigo);
-        	if(count($listaRelacionadosCanje)>0){
-        		$isProvieneCanje=true;
-        	}
+            $listaRelacionadosCanje=$this->comprobante_model->buscarComprobanteRelacionadoCanje($codigo);
+            if(count($listaRelacionadosCanje)>0){
+                $isProvieneCanje=true;
+            }
         }
         $data['isProvieneCanje'] =$isProvieneCanje;
         
@@ -1856,18 +1859,18 @@ public function select_cmbVendedor($index){
         $data['ordencompra'] = $ordencompra;
         /**verificamos si orden de compra existe **/
         if($ordencompra!=null && $ordencompra!=0 && trim($ordencompra)!=""){
-        	$datosOrdenCompra=$this->ocompra_model->obtener_ocompra($ordencompra);
-        	$data['serieOC'] = $datosOrdenCompra[0]->OCOMC_Serie;
-        	$data['numeroOC']= $datosOrdenCompra[0]->OCOMC_Numero;
-        	$data['valorOC']=($tipo_oper=="V")?"0":"1";
+            $datosOrdenCompra=$this->ocompra_model->obtener_ocompra($ordencompra);
+            $data['serieOC'] = $datosOrdenCompra[0]->OCOMC_Serie;
+            $data['numeroOC']= $datosOrdenCompra[0]->OCOMC_Numero;
+            $data['valorOC']=($tipo_oper=="V")?"0":"1";
         }
         /**fin de verificacion**/
         $data['presupuesto_codigo'] = $presupuesto;
         /**verificamos si presupuesto o cotizacion  existe **/
         if($presupuesto!=null && $presupuesto!=0 && trim($presupuesto)!=""){
-        	$datosOrdenCompra=$this->presupuesto_model->obtener_presupuesto($presupuesto);
-        	$data['seriePre'] = $datosOrdenCompra[0]->PRESUC_Serie;
-        	$data['numeroPre']= $datosOrdenCompra[0]->PRESUC_Numero;
+            $datosOrdenCompra=$this->presupuesto_model->obtener_presupuesto($presupuesto);
+            $data['seriePre'] = $datosOrdenCompra[0]->PRESUC_Serie;
+            $data['numeroPre']= $datosOrdenCompra[0]->PRESUC_Numero;
         }
         /**fin de verificacion**/
         
@@ -1908,9 +1911,9 @@ public function select_cmbVendedor($index){
         $data['serie_suger'] = "";
         $data['numero_suger'] = "";
         $data['tdc'] = $tdc;
-		$data['guiaremision'] = $guiaremision;    
-		$data['dRef'] = $guiaremision;
-		$data['tipoOperCodigo'] =$tipo;
+        $data['guiaremision'] = $guiaremision;    
+        $data['dRef'] = $guiaremision;
+        $data['tipoOperCodigo'] =$tipo;
         $detalle_comprobante = $this->obtener_lista_detalles($codigo);
         $data['detalle_comprobante'] = $detalle_comprobante;
         unset($_SESSION['serie']);
@@ -1918,55 +1921,55 @@ public function select_cmbVendedor($index){
         unset($_SESSION['serieRealBD']);
         /**gcbq verificamos si el detalle dee comprobante contiene productos individuales**/
         if($detalle_comprobante!=null  && count($detalle_comprobante)>0){
-        	/**iniciamos la libreria actualizacion de serie seleccionada solo se da en ventas**/
-        	$this->load->model('almacen/almacenproductoserie_model');
-        	/**fin**/
-        	
-			foreach ($detalle_comprobante as $key=>$valor){
-				/**verificamos si es individual**/
-				if($valor->CPDEC_GenInd!=null && trim($valor->CPDEC_GenInd)=="I"){
-					/**obtenemos serie de ese producto **/+
-					$producto_id=$valor->PROD_Codigo;
-					$almacen=$valor->ALMAP_Codigo;
-					$filterSerie= new stdClass();
-					$filterSerie->PROD_Codigo=$producto_id;
-					$filterSerie->SERIC_FlagEstado='1';
-					
-					$filterSerie->DOCUP_Codigo=$tipo;
-					$filterSerie->SERDOC_NumeroRef=$codigo;
-					$filterSerie->ALMAP_Codigo=$almacen;
-					$listaSeriesProducto=$this->seriedocumento_model->buscar($filterSerie,null,null);
-					if($listaSeriesProducto!=null  &&  count($listaSeriesProducto)>0){
-						$reg = array();
-						$regBD = array();
-						foreach($listaSeriesProducto as $serieValor){
-							/**lo ingresamos como se ssion ah 2 variables 1:session que se muestra , 2:sesion que queda intacta bd
-							 * cuando se actualice la session  1 se compara con la session 2.**/
-							$codigoSerie=$serieValor->SERIP_Codigo;
-							$filter = new stdClass();
-							$filter->serieNumero= $serieValor->SERIC_Numero;
-							$filter->serieCodigo=$codigoSerie;
-							$filter->serieDocumentoCodigo=$serieValor->SERDOC_Codigo;
-							$reg[] =$filter;
-							
-							
-							$filterBD = new stdClass();
-							$filterBD->SERIC_Numero= $serieValor->SERIC_Numero;
-							$filterBD->SERIP_Codigo=$codigoSerie;
-							$filterBD->SERDOC_Codigo=$serieValor->SERDOC_Codigo;
-							$regBD[] =$filterBD;
-							
-							/**si es venta lo seleccionamos en almacenproduyctoserie capaz exita perdida de datos**/
-							if($tipo_oper=='V'){
-								$this->almacenproductoserie_model->seleccionarSerieBD($codigoSerie,1);
-							}
-							/**fin de seleccion verificacion**/
-						}
-						$_SESSION['serieReal'][$almacen][$producto_id] = $reg;
-						$_SESSION['serieRealBD'][$almacen][$producto_id] = $regBD;
-					}
-				}
-			}
+            /**iniciamos la libreria actualizacion de serie seleccionada solo se da en ventas**/
+            $this->load->model('almacen/almacenproductoserie_model');
+            /**fin**/
+            
+            foreach ($detalle_comprobante as $key=>$valor){
+                /**verificamos si es individual**/
+                if($valor->CPDEC_GenInd!=null && trim($valor->CPDEC_GenInd)=="I"){
+                    /**obtenemos serie de ese producto **/+
+                    $producto_id=$valor->PROD_Codigo;
+                    $almacen=$valor->ALMAP_Codigo;
+                    $filterSerie= new stdClass();
+                    $filterSerie->PROD_Codigo=$producto_id;
+                    $filterSerie->SERIC_FlagEstado='1';
+                    
+                    $filterSerie->DOCUP_Codigo=$tipo;
+                    $filterSerie->SERDOC_NumeroRef=$codigo;
+                    $filterSerie->ALMAP_Codigo=$almacen;
+                    $listaSeriesProducto=$this->seriedocumento_model->buscar($filterSerie,null,null);
+                    if($listaSeriesProducto!=null  &&  count($listaSeriesProducto)>0){
+                        $reg = array();
+                        $regBD = array();
+                        foreach($listaSeriesProducto as $serieValor){
+                            /**lo ingresamos como se ssion ah 2 variables 1:session que se muestra , 2:sesion que queda intacta bd
+                             * cuando se actualice la session  1 se compara con la session 2.**/
+                            $codigoSerie=$serieValor->SERIP_Codigo;
+                            $filter = new stdClass();
+                            $filter->serieNumero= $serieValor->SERIC_Numero;
+                            $filter->serieCodigo=$codigoSerie;
+                            $filter->serieDocumentoCodigo=$serieValor->SERDOC_Codigo;
+                            $reg[] =$filter;
+                            
+                            
+                            $filterBD = new stdClass();
+                            $filterBD->SERIC_Numero= $serieValor->SERIC_Numero;
+                            $filterBD->SERIP_Codigo=$codigoSerie;
+                            $filterBD->SERDOC_Codigo=$serieValor->SERDOC_Codigo;
+                            $regBD[] =$filterBD;
+                            
+                            /**si es venta lo seleccionamos en almacenproduyctoserie capaz exita perdida de datos**/
+                            if($tipo_oper=='V'){
+                                $this->almacenproductoserie_model->seleccionarSerieBD($codigoSerie,1);
+                            }
+                            /**fin de seleccion verificacion**/
+                        }
+                        $_SESSION['serieReal'][$almacen][$producto_id] = $reg;
+                        $_SESSION['serieRealBD'][$almacen][$producto_id] = $regBD;
+                    }
+                }
+            }
         }
         /**fin de procewso de realizaciom**/
         
@@ -2107,6 +2110,8 @@ public function select_cmbVendedor($index){
             foreach ($detacodi as $indice => $valor) {
                 $detalle_accion = $detaccion[$indice];
 
+
+
                 
 
                 $filter = new stdClass();
@@ -2145,62 +2150,64 @@ public function select_cmbVendedor($index){
                 
                 $producto_id=$prodcodigo[$indice];
                 if ($detalle_accion == 'n') {
+
+
                     $this->comprobantedetalle_model->insertar($filter);
                     
                     /**gcbq insertar serie de cada producto**/
                     if($flagGenInd[$indice]='I'){
-                    	if($producto_id!=null){
-                    		/**obtenemos las series de session por producto***/
-                    		$seriesProducto=$this->session->userdata('serieReal');
-                    		if ($seriesProducto!=null && count($seriesProducto) > 0 && $seriesProducto!= "") {
-                    			foreach ($seriesProducto as $alm2 => $arrAlmacen2) {
-                    				if($alm2==$codigoAlmacenProducto){
-                    					foreach ($arrAlmacen2 as $ind2 => $arrserie2) {
-		                    				if ($ind2 == $producto_id) {
-		                    					$serial = $arrserie2;
-		                    					if($serial!=null && count($serial)>0){
-		                    						foreach ($serial as $i => $serie) {
-		                    							/**INSERTAMOS EN SERIE SI ES COMPRA**/
-		                    							$filterSerie= new stdClass();
-		                    							if($tipo_oper == 'C'){
-		                    								$filterSerie->PROD_Codigo=$producto_id;
-		                    								$filterSerie->SERIC_Numero=$serie->serieNumero;
-		                    								$filterSerie->SERIC_FechaRegistro=date("Y-m-d H:i:s");
-		                    								$filterSerie->SERIC_FlagEstado='1';
-		                    								$filterSerie->ALMAP_Codigo=$codigoAlmacenProducto;
-		                    								$serieCodigo=$this->serie_model->insertar($filterSerie);
-		                    								$tipoIngreso=1;
-		                    							}
-		                    							
-		                    							/**SI ES VENTA SE crea un nuevo registro en seriedocumento solamente**/
-		                    							if($tipo_oper == 'V'){
-		                    								$serieCodigo=$serie->serieCodigo;
-		                    								$tipoIngreso=2;
-		                    							}
-		                    							/**insertamso serie documento**/
-		                    							$filterSerieD= new stdClass();
-		                    							$filterSerieD->SERDOC_Codigo=null;
-		                    							$filterSerieD->SERIP_Codigo=$serieCodigo;
-		                    							$filterSerieD->DOCUP_Codigo=$tipo;
-		                    							$filterSerieD->SERDOC_NumeroRef=$codigo;
-		                    							/**1:ingreso 2:salida**/
-		                    							$filterSerieD->TIPOMOV_Tipo=$tipoIngreso;
-		                    							$filterSerieD->SERDOC_FechaRegistro=date("Y-m-d H:i:s");
-		                    							$filterSerieD->SERDOC_FlagEstado=1;
-		                    							$this->seriedocumento_model->insertar($filterSerieD);
-		                    							/**FIN DE INSERTAR EN SERIE**/
-		                    							/**FIN DE INSERTAR EN SERIE**/
-		                    						}
-		                    					}
-		                    
-		                    					break;
-		                    				}
-                    					}
-                    					break;
-                    				}
-                    			}
-                    		}
-                    	}
+                        if($producto_id!=null){
+                            /**obtenemos las series de session por producto***/
+                            $seriesProducto=$this->session->userdata('serieReal');
+                            if ($seriesProducto!=null && count($seriesProducto) > 0 && $seriesProducto!= "") {
+                                foreach ($seriesProducto as $alm2 => $arrAlmacen2) {
+                                    if($alm2==$codigoAlmacenProducto){
+                                        foreach ($arrAlmacen2 as $ind2 => $arrserie2) {
+                                            if ($ind2 == $producto_id) {
+                                                $serial = $arrserie2;
+                                                if($serial!=null && count($serial)>0){
+                                                    foreach ($serial as $i => $serie) {
+                                                        /**INSERTAMOS EN SERIE SI ES COMPRA**/
+                                                        $filterSerie= new stdClass();
+                                                        if($tipo_oper == 'C'){
+                                                            $filterSerie->PROD_Codigo=$producto_id;
+                                                            $filterSerie->SERIC_Numero=$serie->serieNumero;
+                                                            $filterSerie->SERIC_FechaRegistro=date("Y-m-d H:i:s");
+                                                            $filterSerie->SERIC_FlagEstado='1';
+                                                            $filterSerie->ALMAP_Codigo=$codigoAlmacenProducto;
+                                                            $serieCodigo=$this->serie_model->insertar($filterSerie);
+                                                            $tipoIngreso=1;
+                                                        }
+                                                        
+                                                        /**SI ES VENTA SE crea un nuevo registro en seriedocumento solamente**/
+                                                        if($tipo_oper == 'V'){
+                                                            $serieCodigo=$serie->serieCodigo;
+                                                            $tipoIngreso=2;
+                                                        }
+                                                        /**insertamso serie documento**/
+                                                        $filterSerieD= new stdClass();
+                                                        $filterSerieD->SERDOC_Codigo=null;
+                                                        $filterSerieD->SERIP_Codigo=$serieCodigo;
+                                                        $filterSerieD->DOCUP_Codigo=$tipo;
+                                                        $filterSerieD->SERDOC_NumeroRef=$codigo;
+                                                        /**1:ingreso 2:salida**/
+                                                        $filterSerieD->TIPOMOV_Tipo=$tipoIngreso;
+                                                        $filterSerieD->SERDOC_FechaRegistro=date("Y-m-d H:i:s");
+                                                        $filterSerieD->SERDOC_FlagEstado=1;
+                                                        $this->seriedocumento_model->insertar($filterSerieD);
+                                                        /**FIN DE INSERTAR EN SERIE**/
+                                                        /**FIN DE INSERTAR EN SERIE**/
+                                                    }
+                                                }
+                            
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        }
                     }
                     /**fin de insertar serie**/
                     
@@ -2209,129 +2216,129 @@ public function select_cmbVendedor($index){
                     
                     /**gcbq insertar serie de cada producto**/
                     if($flagGenInd[$indice]='I'){
-                    	if($producto_id!=null){
-                    		/**obtenemos las series de session por producto***/
-                    		$seriesProducto=$this->session->userdata('serieReal');
-                    		$serieReal = $seriesProducto;
-                    		if ($seriesProducto!=null && count($seriesProducto) > 0 && $seriesProducto!= "") {
-                    			/***pongo todos en estado cero de las series asociadas a ese producto**/
-                    			$seriesProductoBD=$this->session->userdata('serieRealBD');
-                    			$serieBD = $seriesProductoBD;
-                    			if($serieBD!=null && count($serieBD)>0){
-                    				foreach ($serieBD as $almBD => $arrAlmacenBD) {
-                    					if($almBD==$codigoAlmacenProducto){
-                    						foreach ($arrAlmacenBD as $ind1BD => $arrserieBD) {
-		                    					if ($ind1BD == $producto_id) {
-		                    						foreach ($arrserieBD as $keyBD => $valueBD) {
-		                    							/**cambiamos a ewstado 0**/
-		                    							$filterSerie= new stdClass();
-		                    							/**SI ES COMPRA SE MODIFICA EL ESTADO***/
-		                    							if($tipo_oper == 'C'){
-		                    								$filterSerie->SERIC_FlagEstado='0';
-		                    								$this->serie_model->modificar($valueBD->SERIP_Codigo,$filterSerie);
-		                    							}
-		                    								
-		                    								
-		                    							$filterSerieD= new stdClass();
-		                    							$filterSerieD->SERDOC_FlagEstado='0';
-		                    							$this->seriedocumento_model->modificar($valueBD->SERDOC_Codigo,$filterSerieD);
-		                    							
-		                    							if($tipo_oper == 'V'){
-		                    								/**deseleccionamos los registros en estadoSeleccion cero:0:desleccionado**/
-		                    								$this->almacenproductoserie_model->seleccionarSerieBD($valueBD->SERIP_Codigo,0);
-		                    							}	
-		                    						}
-		                    					}
-                    						}
-                    					}	
-                    				}
-                    			}
-                    			/**fin de poner estado cero**/
-                    			foreach ($serieReal  as $alm2 => $arrAlmacen2) {
-                    				if($alm2==$codigoAlmacenProducto){
-                    					foreach ($arrAlmacen2  as $ind2 => $arrserie2) {
-		                    				if ($ind2 == $producto_id) {
-		                    						foreach ($arrserie2 as $i => $serie) {
-		                    							$filterSerie= new stdClass();
-		                    							/**INSERTAMOS EN SERIE**/
-		                    							if($tipo_oper == 'C'){
-			                    							$filterSerie->PROD_Codigo=$producto_id;
-			                    							$filterSerie->SERIC_Numero=$serie->serieNumero;
-			                    							if($serie->serieCodigo!=null && $serie->serieCodigo!=0)
-			                    								$filterSerie->SERIC_FechaModificacion=date("Y-m-d H:i:s");
-			                    							else
-			                    								$filterSerie->SERIC_FechaRegistro=date("Y-m-d H:i:s");
-			                    							
-			                    							$filterSerie->SERIC_FlagEstado='1';
-			                    							if($serie->serieCodigo!=null && $serie->serieCodigo!=0){
-			                    								$this->serie_model->modificar($serie->serieCodigo,$filterSerie);
-			                    								$filterSerieD= new stdClass();
-			                    								$filterSerieD->SERDOC_FlagEstado='1';
-			                    								$this->seriedocumento_model->modificar($serie->serieDocumentoCodigo,$filterSerieD);
-			                    							}else{
-			                    								$filterSerie->ALMAP_Codigo=$codigoAlmacenProducto;
-			                    								$codigoSerie=$this->serie_model->insertar($filterSerie);
-			                    								/**insertamso serie documento**/
-			                    								/**DOCUMENTO COMPROBANTE**/
-			                    								$filterSerieD= new stdClass();
-			                    								$filterSerieD->SERDOC_Codigo=null;
-			                    								$filterSerieD->SERIP_Codigo=$codigoSerie;
-			                    								$filterSerieD->DOCUP_Codigo=$tipo;
-			                    								$filterSerieD->SERDOC_NumeroRef=$codigo;
-			                    								/**1:ingreso**/
-			                    								$filterSerieD->TIPOMOV_Tipo=1;
-			                    								$filterSerieD->SERDOC_FechaRegistro=date("Y-m-d H:i:s");
-			                    								$filterSerieD->SERDOC_FlagEstado='1';
-			                    								$this->seriedocumento_model->insertar($filterSerieD);
-			                    								/**FIN DE INSERTAR EN SERIE**/
-			                    							}
-		                    							}
-		                    							/**FIN DE INSERTAR EN SERIE**/
-		                    							/**ACTUALIZAMOS  EN SERIE  CON EL DOCUMENTO Y NUMERO DE REFERENCIA**/
-		                    							if($tipo_oper=='V'){
-		                    								if($serie->serieDocumentoCodigo!=null && $serie->serieDocumentoCodigo!=0){
-		                    									$filterSerie->SERDOC_FlagEstado='1';
-		                    									$this->seriedocumento_model->modificar($serie->serieDocumentoCodigo,$filterSerie);
-		                    								}else{
-		                    									/**insertamso serie documento**/
-		                    									/**DOCUMENTO COMPROBANTE**/
-		                    									$filterSerieD= new stdClass();
-		                    									$filterSerieD->SERDOC_Codigo=null;
-		                    									$filterSerieD->SERIP_Codigo=$serie->serieCodigo;
-		                    									$filterSerieD->DOCUP_Codigo=$tipo;
-		                    									$filterSerieD->SERDOC_NumeroRef=$codigo;
-		                    									/**1:ingreso**/
-		                    									$filterSerieD->TIPOMOV_Tipo=2;
-		                    									$filterSerieD->SERDOC_FechaRegistro=date("Y-m-d H:i:s");
-		                    									$filterSerieD->SERDOC_FlagEstado='1';
-		                    									$this->seriedocumento_model->insertar($filterSerieD);
-		                    									/**FIN DE INSERTAR EN SERIE**/
-		                    								}
-		                    								/**los registros en estadoSeleccion 1:seleccionado**/
-		                    								$this->almacenproductoserie_model->seleccionarSerieBD($serie->serieCodigo,1);
-		                    							}
-		                    						}
-		                    					break;
-		                    				}
-                    					}	
-                    				}
-                    			}
-                    			
-                    			//if($estado=='2'){
-                    				if($tipo_oper == 'C'){
-                    				/**eliminamos los registros en estado cero**/
-                    				$this->seriedocumento_model->eliminarEstadoDocumentoSerie($tipo,$codigo);
-                    				}
-                    				
-                    				if($tipo_oper == 'V'){
-                    					/**eliminamos los registros en estado cero solo de serieDocumento**/
-                    					$this->seriedocumento_model->eliminarDocumento($codigo,$tipo);
-                    				}
-                    				
-                    			//}
-                    			
-                    		}
-                    	}
+                        if($producto_id!=null){
+                            /**obtenemos las series de session por producto***/
+                            $seriesProducto=$this->session->userdata('serieReal');
+                            $serieReal = $seriesProducto;
+                            if ($seriesProducto!=null && count($seriesProducto) > 0 && $seriesProducto!= "") {
+                                /***pongo todos en estado cero de las series asociadas a ese producto**/
+                                $seriesProductoBD=$this->session->userdata('serieRealBD');
+                                $serieBD = $seriesProductoBD;
+                                if($serieBD!=null && count($serieBD)>0){
+                                    foreach ($serieBD as $almBD => $arrAlmacenBD) {
+                                        if($almBD==$codigoAlmacenProducto){
+                                            foreach ($arrAlmacenBD as $ind1BD => $arrserieBD) {
+                                                if ($ind1BD == $producto_id) {
+                                                    foreach ($arrserieBD as $keyBD => $valueBD) {
+                                                        /**cambiamos a ewstado 0**/
+                                                        $filterSerie= new stdClass();
+                                                        /**SI ES COMPRA SE MODIFICA EL ESTADO***/
+                                                        if($tipo_oper == 'C'){
+                                                            $filterSerie->SERIC_FlagEstado='0';
+                                                            $this->serie_model->modificar($valueBD->SERIP_Codigo,$filterSerie);
+                                                        }
+                                                            
+                                                            
+                                                        $filterSerieD= new stdClass();
+                                                        $filterSerieD->SERDOC_FlagEstado='0';
+                                                        $this->seriedocumento_model->modificar($valueBD->SERDOC_Codigo,$filterSerieD);
+                                                        
+                                                        if($tipo_oper == 'V'){
+                                                            /**deseleccionamos los registros en estadoSeleccion cero:0:desleccionado**/
+                                                            $this->almacenproductoserie_model->seleccionarSerieBD($valueBD->SERIP_Codigo,0);
+                                                        }   
+                                                    }
+                                                }
+                                            }
+                                        }   
+                                    }
+                                }
+                                /**fin de poner estado cero**/
+                                foreach ($serieReal  as $alm2 => $arrAlmacen2) {
+                                    if($alm2==$codigoAlmacenProducto){
+                                        foreach ($arrAlmacen2  as $ind2 => $arrserie2) {
+                                            if ($ind2 == $producto_id) {
+                                                    foreach ($arrserie2 as $i => $serie) {
+                                                        $filterSerie= new stdClass();
+                                                        /**INSERTAMOS EN SERIE**/
+                                                        if($tipo_oper == 'C'){
+                                                            $filterSerie->PROD_Codigo=$producto_id;
+                                                            $filterSerie->SERIC_Numero=$serie->serieNumero;
+                                                            if($serie->serieCodigo!=null && $serie->serieCodigo!=0)
+                                                                $filterSerie->SERIC_FechaModificacion=date("Y-m-d H:i:s");
+                                                            else
+                                                                $filterSerie->SERIC_FechaRegistro=date("Y-m-d H:i:s");
+                                                            
+                                                            $filterSerie->SERIC_FlagEstado='1';
+                                                            if($serie->serieCodigo!=null && $serie->serieCodigo!=0){
+                                                                $this->serie_model->modificar($serie->serieCodigo,$filterSerie);
+                                                                $filterSerieD= new stdClass();
+                                                                $filterSerieD->SERDOC_FlagEstado='1';
+                                                                $this->seriedocumento_model->modificar($serie->serieDocumentoCodigo,$filterSerieD);
+                                                            }else{
+                                                                $filterSerie->ALMAP_Codigo=$codigoAlmacenProducto;
+                                                                $codigoSerie=$this->serie_model->insertar($filterSerie);
+                                                                /**insertamso serie documento**/
+                                                                /**DOCUMENTO COMPROBANTE**/
+                                                                $filterSerieD= new stdClass();
+                                                                $filterSerieD->SERDOC_Codigo=null;
+                                                                $filterSerieD->SERIP_Codigo=$codigoSerie;
+                                                                $filterSerieD->DOCUP_Codigo=$tipo;
+                                                                $filterSerieD->SERDOC_NumeroRef=$codigo;
+                                                                /**1:ingreso**/
+                                                                $filterSerieD->TIPOMOV_Tipo=1;
+                                                                $filterSerieD->SERDOC_FechaRegistro=date("Y-m-d H:i:s");
+                                                                $filterSerieD->SERDOC_FlagEstado='1';
+                                                                $this->seriedocumento_model->insertar($filterSerieD);
+                                                                /**FIN DE INSERTAR EN SERIE**/
+                                                            }
+                                                        }
+                                                        /**FIN DE INSERTAR EN SERIE**/
+                                                        /**ACTUALIZAMOS  EN SERIE  CON EL DOCUMENTO Y NUMERO DE REFERENCIA**/
+                                                        if($tipo_oper=='V'){
+                                                            if($serie->serieDocumentoCodigo!=null && $serie->serieDocumentoCodigo!=0){
+                                                                $filterSerie->SERDOC_FlagEstado='1';
+                                                                $this->seriedocumento_model->modificar($serie->serieDocumentoCodigo,$filterSerie);
+                                                            }else{
+                                                                /**insertamso serie documento**/
+                                                                /**DOCUMENTO COMPROBANTE**/
+                                                                $filterSerieD= new stdClass();
+                                                                $filterSerieD->SERDOC_Codigo=null;
+                                                                $filterSerieD->SERIP_Codigo=$serie->serieCodigo;
+                                                                $filterSerieD->DOCUP_Codigo=$tipo;
+                                                                $filterSerieD->SERDOC_NumeroRef=$codigo;
+                                                                /**1:ingreso**/
+                                                                $filterSerieD->TIPOMOV_Tipo=2;
+                                                                $filterSerieD->SERDOC_FechaRegistro=date("Y-m-d H:i:s");
+                                                                $filterSerieD->SERDOC_FlagEstado='1';
+                                                                $this->seriedocumento_model->insertar($filterSerieD);
+                                                                /**FIN DE INSERTAR EN SERIE**/
+                                                            }
+                                                            /**los registros en estadoSeleccion 1:seleccionado**/
+                                                            $this->almacenproductoserie_model->seleccionarSerieBD($serie->serieCodigo,1);
+                                                        }
+                                                    }
+                                                break;
+                                            }
+                                        }   
+                                    }
+                                }
+                                
+                                //if($estado=='2'){
+                                    if($tipo_oper == 'C'){
+                                    /**eliminamos los registros en estado cero**/
+                                    $this->seriedocumento_model->eliminarEstadoDocumentoSerie($tipo,$codigo);
+                                    }
+                                    
+                                    if($tipo_oper == 'V'){
+                                        /**eliminamos los registros en estado cero solo de serieDocumento**/
+                                        $this->seriedocumento_model->eliminarDocumento($codigo,$tipo);
+                                    }
+                                    
+                                //}
+                                
+                            }
+                        }
                     }
                     /**fin de insertar serie**/
                     
@@ -2339,87 +2346,97 @@ public function select_cmbVendedor($index){
                 } elseif ($detalle_accion == 'e') {                    
                     /**gcbq insertar serie de cada producto**/
                     if($flagGenInd[$indice]='I'){
-                    	/***pongo todos en estado cero de las series asociadas a ese producto**/
-                    			$seriesProductoBD=$this->session->userdata('serieRealBD');
-                    			$serieBD = $seriesProductoBD;
-                    			if($serieBD!=null && count($serieBD)>0){
-                    				foreach ($serieBD as $alm1BD => $arrAlmaBD) {
-                    					if($alm1BD ==$codigoAlmacenProducto){
-                    						foreach ($arrAlmaBD as $ind1BD => $arrserieBD) {
-		                    					if ($ind1BD == $producto_id) {
-		                    							foreach ($arrserieBD as $keyBD => $valueBD) {
-		                    								$serieCodigo=$valueBD->SERIP_Codigo;
-		                    								/**cambiamos a ewstado 0**/
-		                    								$filterSerie= new stdClass();
-		                    								
-		                    								/**SI ES COMPRA SE MODIFICA EL ESTADO***/
-		                    								if($tipo_oper == 'C'){
-		                    									$filterSerie->SERIC_FlagEstado='0';
-		                    									$this->serie_model->modificar($serieCodigo,$filterSerie);
-		                    								}
-		                    							
-		                    								/**si es venta solamente cambia de estado seridocumento**/	
-		                    								$filterSerieD= new stdClass();
-		                    								$filterSerieD->SERDOC_FlagEstado='0';
-		                    								$this->seriedocumento_model->modificar($valueBD->SERDOC_Codigo,$filterSerieD);
-		                    								
-		                    								/**TIPO OPERACION VENTA SE DESHABILITAN LAS SERIES SELECCIONADAS POR EL COMPROBANTE**/
-		                    								if($tipo_oper == 'V'){
-		                    									/**eliminamos los registros en estadoSeleccion cero:0:desleccionado**/
-		                    									$this->almacenproductoserie_model->seleccionarSerieBD($serieCodigo,0);
-		                    								}
-		                    								/**FIN DE DESELECCIONAR***/
-		                    							}
-		                    					}
-                    						}
-                    					}
-                    				}
-                    				
-                    				//if($estado=='2'){
-                    					if($tipo_oper == 'C'){
-                    						/**eliminamos los registros en estado cero**/
-                    						$this->seriedocumento_model->eliminarEstadoDocumentoSerie($tipo,$codigo);
-                    					}
-                    					if($tipo_oper == 'V'){
-                    						/**eliminamos los registros en estado cero solo de serieDocumento**/
-                    						$this->seriedocumento_model->eliminarDocumento($codigo,$tipo);
-                    					}
-                    				//}
-                    				
-                    				
-                    				
-                    			}
-                    			/**fin de poner estado cero**/
+                        /***pongo todos en estado cero de las series asociadas a ese producto**/
+                                $seriesProductoBD=$this->session->userdata('serieRealBD');
+                                $serieBD = $seriesProductoBD;
+                                if($serieBD!=null && count($serieBD)>0){
+                                    foreach ($serieBD as $alm1BD => $arrAlmaBD) {
+                                        if($alm1BD ==$codigoAlmacenProducto){
+                                            foreach ($arrAlmaBD as $ind1BD => $arrserieBD) {
+                                                if ($ind1BD == $producto_id) {
+                                                        foreach ($arrserieBD as $keyBD => $valueBD) {
+                                                            $serieCodigo=$valueBD->SERIP_Codigo;
+                                                            /**cambiamos a ewstado 0**/
+                                                            $filterSerie= new stdClass();
+                                                            
+                                                            /**SI ES COMPRA SE MODIFICA EL ESTADO***/
+                                                            if($tipo_oper == 'C'){
+                                                                $filterSerie->SERIC_FlagEstado='0';
+                                                                $this->serie_model->modificar($serieCodigo,$filterSerie);
+                                                            }
+                                                        
+                                                            /**si es venta solamente cambia de estado seridocumento**/  
+                                                            $filterSerieD= new stdClass();
+                                                            $filterSerieD->SERDOC_FlagEstado='0';
+                                                            $this->seriedocumento_model->modificar($valueBD->SERDOC_Codigo,$filterSerieD);
+                                                            
+                                                            /**TIPO OPERACION VENTA SE DESHABILITAN LAS SERIES SELECCIONADAS POR EL COMPROBANTE**/
+                                                            if($tipo_oper == 'V'){
+                                                                /**eliminamos los registros en estadoSeleccion cero:0:desleccionado**/
+                                                                $this->almacenproductoserie_model->seleccionarSerieBD($serieCodigo,0);
+                                                            }
+                                                            /**FIN DE DESELECCIONAR***/
+                                                        }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                    //if($estado=='2'){
+                                        if($tipo_oper == 'C'){
+                                            /**eliminamos los registros en estado cero**/
+                                            $this->seriedocumento_model->eliminarEstadoDocumentoSerie($tipo,$codigo);
+                                        }
+                                        if($tipo_oper == 'V'){
+                                            /**eliminamos los registros en estado cero solo de serieDocumento**/
+                                            $this->seriedocumento_model->eliminarDocumento($codigo,$tipo);
+                                        }
+                                    //}
+                                    
+                                    
+                                    
+                                }
+                                /**fin de poner estado cero**/
                     }
                     
                     if($estado==2){
-                    	$this->comprobantedetalle_model->eliminar($valor);
+                        $this->comprobantedetalle_model->eliminar($valor);
                     }else{
-                    	$objetoM=new stdClass();
-                    	$objetoM->CPDEC_FlagEstado=0;
-                    	$this->comprobantedetalle_model->modificar($valor,$objetoM);
+                        $objetoM=new stdClass();
+                        $objetoM->CPDEC_FlagEstado=0;
+                        $this->comprobantedetalle_model->modificar($valor,$objetoM);
                     }
                     
                 }
                 
             }
         }
-        
+         $this->item($codigo);
         /**ingreso de modificacion comprobante en los diferentes movimientos 
          * verifica si alguna guia de remision lo contiene y lo modifica segun el comprobante
          * **/
         if($codigo!=null &&  $codigo!=0 && $estado==1){
-        	if($this->db->query("CALL COMPROBANTE_GUIAREM_MODIFICAR($codigo)"))
-        	{
-        		exit('{"result":"ok", "codigo":"' . $codigo . '"}');
-        	}else{
-        		exit('{"result":"error", "campo":"consulte con el administrador"}');
-        	}
+            if($this->db->query("CALL COMPROBANTE_GUIAREM_MODIFICAR($codigo)"))
+            {
+                exit('{"result":"ok", "codigo":"' . $codigo . '"}');
+            }else{
+                exit('{"result":"error", "campo":"consulte con el administrador"}');
+            }
         }
+
         /**finde modificacion**/
         exit('{"result":"ok", "codigo":"' . $codigo . '"}');
     }
+function item($codigo){
+            $detalle= $this->comprobantedetalle_model->listar($codigo);
+            
+            foreach ($detalle as $key => $value) {
+                
+                $filter2->CPDEC_ITEMS = $key +1 ;   
+                $this->comprobantedetalle_model->modificar($value->CPDEP_Codigo, $filter2);
+            }
 
+}
     public function comprobante_eliminar()
     {
         $this->load->library('layout', 'layout');
@@ -2430,34 +2447,34 @@ public function select_cmbVendedor($index){
     
    /**gcbq json verificacion de cantidad por producto y cantidad por serie este metodo lo usa json de inventario guiarem y otros***/
     public function verificacionCantidadJson(){
-    	$valorProducto= $this->input->post('valorProductoJ');
-    	$valorCantidad= $this->input->post('valorCantidadJ');
-    	$almacen= $this->input->post('almacen');
-    	
-    	$serie_value2 = $this->session->userdata('serieReal');
-    	$serial = array();
-    	if ($serie_value2!=null && count($serie_value2) > 0 && $serie_value2 != "") {
-    		foreach ($serie_value2 as $alm2 => $arrAlmacen2) {
-    			if($alm2==$almacen){
-    				foreach ($arrAlmacen2 as $ind2 => $arrserie2) {
-		    			if ($ind2 == $valorProducto) {
-		    				$serial = $arrserie2;
-		    				break;
-		    			}
-    			
-    				}
-    				break;
-    			}
-    		}
-    	}
-    	if(count($serial)!=$valorCantidad){
-    		echo 0;
-    	}else{
-    		echo 1;
-    	}
-    	
-    	
-    	
+        $valorProducto= $this->input->post('valorProductoJ');
+        $valorCantidad= $this->input->post('valorCantidadJ');
+        $almacen= $this->input->post('almacen');
+        
+        $serie_value2 = $this->session->userdata('serieReal');
+        $serial = array();
+        if ($serie_value2!=null && count($serie_value2) > 0 && $serie_value2 != "") {
+            foreach ($serie_value2 as $alm2 => $arrAlmacen2) {
+                if($alm2==$almacen){
+                    foreach ($arrAlmacen2 as $ind2 => $arrserie2) {
+                        if ($ind2 == $valorProducto) {
+                            $serial = $arrserie2;
+                            break;
+                        }
+                
+                    }
+                    break;
+                }
+            }
+        }
+        if(count($serial)!=$valorCantidad){
+            echo 0;
+        }else{
+            echo 1;
+        }
+        
+        
+        
     }
     
     
@@ -3140,14 +3157,14 @@ public function select_cmbVendedor($index){
 
         //DISPARADOR BEGIN
         if ($estado == 2) {
-        	if($codigo!=null &&  $codigo!=0){
-        		if($query = $this->db->query("CALL COMPROBANTE_DISPARADOR($codigo)"))
-        		{
-        			print_r($query->row());
-        		}else{
-        			show_error('Error!');
-        		}
-        	}
+            if($codigo!=null &&  $codigo!=0){
+                if($query = $this->db->query("CALL COMPROBANTE_DISPARADOR($codigo)"))
+                {
+                    print_r($query->row());
+                }else{
+                    show_error('Error!');
+                }
+            }
         }
 // DISPARADOR END
 //**************************************************************************
@@ -3676,16 +3693,16 @@ public function select_cmbVendedor($index){
                 $detalle_comprobante = $this->obtener_lista_detalles($codigo);
                 $this->cezpdf = new backgroundPDF('a4', 'portrait', 'image', array('img' => 'images/img_db/' . $notimg));
                 /*     
-if($_SESSION['compania']=='1'){	
+if($_SESSION['compania']=='1'){ 
 //magdalena
             $posiciongeneralx=10;
             $posiciongeneraly=-4;
-			}
+            }
                         
                         else{
-			$posiciongeneralx=18;
+            $posiciongeneralx=18;
             $posiciongeneraly=-6;
-			}*/
+            }*/
 
                   $posiciongeneralx = 0;
                 $posiciongeneraly = 52;
@@ -3834,20 +3851,20 @@ if($_SESSION['compania']=='1'){
 
                 /*
     FINALDE IMPRE
-			$this->cezpdf->ezText(' ', 9, array("leading" => 1200, "left" => 0));   
+            $this->cezpdf->ezText(' ', 9, array("leading" => 1200, "left" => 0));   
             $this->cezpdf->addText( 90, 705, 8, 'ESTA LISTA CORRESPONDE A');
             $this->cezpdf->addText(90,685, 8, 'FACTURA');
-			$this->cezpdf->addText(250, 685, 8, $numero.' Nro '.$serie);
-			
-			/*$this->cezpdf->addText(90, 665, 8, 'BOLETA');
-			$this->cezpdf->addText(250, 665, 8, $numero_ref);
-			
+            $this->cezpdf->addText(250, 685, 8, $numero.' Nro '.$serie);
+            
+            /*$this->cezpdf->addText(90, 665, 8, 'BOLETA');
+            $this->cezpdf->addText(250, 665, 8, $numero_ref);
+            
             $this->cezpdf->addText(90,  645, 8, 'GUIA DE REMISION');
             $this->cezpdf->addText(250, 645, 8, $docurefe_codigo );
 
 
             $this->cezpdf->addText(275, 585, 8, 'LISTA DE IMEIS');
-			
+            
             $this->cezpdf->addText(90, 620, 6,  utf8_decode_seguro($prod_nombreimei));*/
 
 
@@ -4089,7 +4106,7 @@ if($_SESSION['compania']=='1'){
                 $detalle_comprobante = $this->obtener_lista_detalles($codigo);
 
                 if ($_SESSION['compania'] == '3') {
-//dragon yuan mafgdalena			
+//dragon yuan mafgdalena            
                     $this->cezpdf = new backgroundPDF('a4', 'portrait', 'image', array('img' => 'images/img_db/' . $notimg));
                     //$this->cezpdf->selectFont(APPPATH.'libraries/fonts/Courier.afm');
                     /* Cabecera */
@@ -5063,7 +5080,7 @@ if($_SESSION['compania']=='1'){
             $this->cezpdf->ezText(utf8_decode_seguro($hora), 7, array("leading" => 0, "left" => 445));
 
             $this->cezpdf->ezText('', '', array("leading" => 70));
-			*/
+            */
 
 
             /* Listado de detalles */
@@ -5167,13 +5184,13 @@ if($_SESSION['compania']=='1'){
 
             /*             * Sub Totales* */
             /*
-			$delta = 130;
+            $delta = 130;
             $positionx = 420;
             $positiony = 350 + $delta;
             // $this->cezpdf->addText(20, 230, 9, "Tipo de cambio " . $TDC[0]->TIPCAMC_FactorConversion . utf8_decode_seguro(" vÃ¯Â¿Â½lido solo ") . $fecha . " // S/. " . ($total * $TDC[0]->TIPCAMC_FactorConversion) . " NUEVOS SOLES");
             $this->cezpdf->addText(110, $positiony - 21, 7, "SON " . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . ' ' . $moneda_simbolo . ' ' . number_format($total, 2));
             $this->cezpdf->addText($positionx + 90, $positiony - 42, 10, $moneda_simbolo . ' ' . number_format($total, 2));
-			*/
+            */
         } else {
             $datos_comprobante = $this->comprobante_model->obtener_comprobante($codigo);
 //            $presupuesto = $datos_comprobante[0]->PRESUP_Codigo;
@@ -5786,10 +5803,10 @@ if($_SESSION['compania']=='1'){
                 /*if($_SESSION['compania']=='1'){//sede 002 ccmi
             $posiciongeneralx-=5;
             $posiciongeneraly=22;
-			}else{
+            }else{
             $posiciongeneralx=8;
             $posiciongeneraly=20;
-			}*/
+            }*/
             //CODIGO PARA LA BOLETA
                 $posiciongeneralx = -25;
                 $posiciongeneraly = 60;
@@ -5887,7 +5904,7 @@ if($_SESSION['compania']=='1'){
                 $posiciongeneralix = 0;
                 $posiciongeneraliy = 0;
                 /*
-			$this->cezpdf->ezText(' ', 9, array("leading" => 1200, "left" => 0));
+            $this->cezpdf->ezText(' ', 9, array("leading" => 1200, "left" => 0));
             $this->cezpdf->addText($posiciongeneralix+90, $posiciongeneraliy+705, 8, 'ESTA LISTA CORRESPONDE A');
 
             $this->cezpdf->addText($posiciongeneralix+90, $posiciongeneraliy+665, 8, 'BOLETA :');
@@ -6290,8 +6307,8 @@ if($_SESSION['compania']=='1'){
         $Test->Render("images/img_dinamic/imagen4.png");
         echo '<h3>4. Ventas</h3>
                Considerando las ventas en el presente aÃƒÂ±o<br />
-			   <img style="margin-top:5px; margin-bottom:20px;" src="' . base_url() . 'images/img_dinamic/imagen4.png" alt="Imagen 4" />
-			   <br />';
+               <img style="margin-top:5px; margin-bottom:20px;" src="' . base_url() . 'images/img_dinamic/imagen4.png" alt="Imagen 4" />
+               <br />';
         /* Imagen 5 => VENTAS */
         /* $listado=$this->ocompra_model->reporte_comparativo_compras_ventas('V'); 
           $reg=$listado[0];
@@ -6986,17 +7003,17 @@ if($_SESSION['compania']=='1'){
     {
         $listado = $this->comprobante_model->estadisticas_compras_ventas_mensual($tipo, $anio, $mes);
         echo '<script type="text/javascript" src="' . base_url() . 'js/ventas/reporteexcel.js"></script>
-		<h2 >ESTADISTICAS DE VENTAS</h2>
-		<a href="javascript:;" onclick="tableToExcel()" ><img  style="margin:15px 0px;"  src="' . base_url() . 'images/xls.png" width="22" height="22" class="imgBoton" ></a>
-		<table id="Table1" border="1" >
-		<tr width="100%" >
-		<td>MES</td><td>FECHA</td>
-		<td>NOMBRE / RAZON ZOCIAL</td>
-		<td>DNI / RUC</td>
-		<td>VALOR DE VENTA</td>
-		<td>IGV</td>
-		<td>VENTA</td>
-		</tr>';
+        <h2 >ESTADISTICAS DE VENTAS</h2>
+        <a href="javascript:;" onclick="tableToExcel()" ><img  style="margin:15px 0px;"  src="' . base_url() . 'images/xls.png" width="22" height="22" class="imgBoton" ></a>
+        <table id="Table1" border="1" >
+        <tr width="100%" >
+        <td>MES</td><td>FECHA</td>
+        <td>NOMBRE / RAZON ZOCIAL</td>
+        <td>DNI / RUC</td>
+        <td>VALOR DE VENTA</td>
+        <td>IGV</td>
+        <td>VENTA</td>
+        </tr>';
 
         foreach ($listado as $key => $value) {
             if ($value->EMPRC_RazonSocial != "") {
@@ -7769,44 +7786,44 @@ if($_SESSION['compania']=='1'){
         $this->load->view("ventas/comprobante_x_orden_producto", $data);
 
     }
-	    
-	public function getOrderNumeroSerie($numero){
-	 
-	$cantidad=strlen($numero);
-	
-	if($cantidad==1){
-	    $dato ="00000$numero";
-	}
-	if($cantidad==2){
-	     $dato ="0000$numero";
-	}
-	if($cantidad==3){
-	    $dato ="000$numero";
-	}
-	if($cantidad==4){
-	    $dato= "00$numero";
-	}
-	if($cantidad==5){
-	    $dato ="0$numero";
-	}
-	if($cantidad==6){
-	    $dato ="$numero";
-	}
-	return $dato;
-	}
-	
-	
-	
-	public function eliminarGuiaRelacionadasComprobante($tipo,$comprobante){
-		/**verificamos para ELIMINAR LAS GUIAS RELACIONADAS TIPO:1**/
-		/**modificamos a estado 0 LOS REGUISTROS ASOCIADOS AL DOCUMENTO y seriesDocumento asociado***/
-		$estado=0;
-		$this->comprobante_model->modificarEstadoDocumetoCodigoAsociado($comprobante,$estado);
-		/**eliminamos las series creadas**/
-		$this->seriedocumento_model->eliminarDocumetoCodigoAsociado($tipo,$comprobante);
-		/**FIN DE ELIMINACION DE DOCUMENTOS***/
-	
-	}
+        
+    public function getOrderNumeroSerie($numero){
+     
+    $cantidad=strlen($numero);
+    
+    if($cantidad==1){
+        $dato ="00000$numero";
+    }
+    if($cantidad==2){
+         $dato ="0000$numero";
+    }
+    if($cantidad==3){
+        $dato ="000$numero";
+    }
+    if($cantidad==4){
+        $dato= "00$numero";
+    }
+    if($cantidad==5){
+        $dato ="0$numero";
+    }
+    if($cantidad==6){
+        $dato ="$numero";
+    }
+    return $dato;
+    }
+    
+    
+    
+    public function eliminarGuiaRelacionadasComprobante($tipo,$comprobante){
+        /**verificamos para ELIMINAR LAS GUIAS RELACIONADAS TIPO:1**/
+        /**modificamos a estado 0 LOS REGUISTROS ASOCIADOS AL DOCUMENTO y seriesDocumento asociado***/
+        $estado=0;
+        $this->comprobante_model->modificarEstadoDocumetoCodigoAsociado($comprobante,$estado);
+        /**eliminamos las series creadas**/
+        $this->seriedocumento_model->eliminarDocumetoCodigoAsociado($tipo,$comprobante);
+        /**FIN DE ELIMINACION DE DOCUMENTOS***/
+    
+    }
 //////////////////////////////////////////////
 
 
@@ -7961,7 +7978,7 @@ $this->cezpdf->ezText(('TOTAL'.'                  '.$sum), 7, array("left" => 38
         $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => $tipo_doc . '.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
         $this->cezpdf->ezStream($cabecera);       
 
-}	
+}   
 
 
 
@@ -7982,226 +7999,226 @@ echo $resultado;
     
     
     public function alterno($tipo_oper = '', $tipo_docu = '', $j = '0'){
-    	$this->load->library('layout', 'layout');
-    	$data['compania'] = $this->somevar['compania'];
-    	$tipo_oper = $this->uri->segment(4);
-    	$tipo_docu = $this->uri->segment(5);
-    	$ver2 = "";
-    	
-    	$this->load->library('layout', 'layout');
-    	
-    	$data['action'] = 'index.php/ventas/comprobante/comprobantes/' . $tipo_oper . '/' . $tipo_docu;
-    	
-    	
-    	$conf['base_url'] = site_url('ventas/comprobante/comprobantes/' . $tipo_oper . '/' . $tipo_docu);
-    	$registros = $this->comprobante_model->contar_comprobantes($tipo_oper, $tipo_docu, NULL, '', '');
-    	$conf['per_page'] = 15;
-    	$conf['num_links'] = 3;
-    	$conf['first_link'] = "&lt;&lt;";
-    	$conf['last_link'] = "&gt;&gt;";
-    	$conf['total_rows'] = $registros;
-    	$conf['uri_segment'] = 6;
-    	$offset = (int)$this->uri->segment(6);
-    	
-    	$listaGuiaremAsociados=$this->comprobante_model->listar_comprobantealterna();
-    	 $data['registros']=count($listaGuiaremAsociados);
-    	$item = $j + 1;
-    	$contadoVacios = 1;
-    	$lista = array();
-    	if (count($listaGuiaremAsociados) > 0) {
-    		foreach ($listaGuiaremAsociados as $indice => $valor) {
-    					$codigo = $valor->CCA_Codigo;
-    					$fecha = $valor->CCA_FechaRegistro;
-    					$serie = $valor->CCA_Serie;
-    					$numero = $valor->CCA_Numero;
-    					$codigocliente = $valor->CLIP_Codigo;
-    					$buscarcliente = $this->comprobante_model->obtener_clienteempresa($codigocliente);
-    					$nombrecliente = "";
-    					foreach ($buscarcliente as $indice1 => $valor1){
-    						$nombrecliente = $valor1->EMPRC_RazonSocial;
-    					}
-    					
-//     					$editar = "<a href='javascript:;' onclick='editar_comprobante(" . $codigo . ")' target='_parent'><img src='" . base_url() . "images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
-    					$ver2 = "<a href='javascript:;' onclick='ver_pdf_conmenbretealterno_antiguo(" . $codigo .",8,1)'  target='_parent'><img src='" . base_url() . "images/pdf.png' width='16' height='16' border='0' title='Ver PDF'></a>";    					 
-    					$eliminar = "<a href='javascript:;' onclick='eliminar_comprobantealterno(" . $codigo . ")' target='_parent'><img src='" . base_url() . "images/eliminar.png' width='16' height='16' border='0' title='Eliminar'></a>";
-    					
-    				$lista[] = array($item++, $fecha, $serie,$this->getOrderNumeroSerie($numero), $nombrecliente , $ver2,$eliminar );
+        $this->load->library('layout', 'layout');
+        $data['compania'] = $this->somevar['compania'];
+        $tipo_oper = $this->uri->segment(4);
+        $tipo_docu = $this->uri->segment(5);
+        $ver2 = "";
+        
+        $this->load->library('layout', 'layout');
+        
+        $data['action'] = 'index.php/ventas/comprobante/comprobantes/' . $tipo_oper . '/' . $tipo_docu;
+        
+        
+        $conf['base_url'] = site_url('ventas/comprobante/comprobantes/' . $tipo_oper . '/' . $tipo_docu);
+        $registros = $this->comprobante_model->contar_comprobantes($tipo_oper, $tipo_docu, NULL, '', '');
+        $conf['per_page'] = 15;
+        $conf['num_links'] = 3;
+        $conf['first_link'] = "&lt;&lt;";
+        $conf['last_link'] = "&gt;&gt;";
+        $conf['total_rows'] = $registros;
+        $conf['uri_segment'] = 6;
+        $offset = (int)$this->uri->segment(6);
+        
+        $listaGuiaremAsociados=$this->comprobante_model->listar_comprobantealterna();
+         $data['registros']=count($listaGuiaremAsociados);
+        $item = $j + 1;
+        $contadoVacios = 1;
+        $lista = array();
+        if (count($listaGuiaremAsociados) > 0) {
+            foreach ($listaGuiaremAsociados as $indice => $valor) {
+                        $codigo = $valor->CCA_Codigo;
+                        $fecha = $valor->CCA_FechaRegistro;
+                        $serie = $valor->CCA_Serie;
+                        $numero = $valor->CCA_Numero;
+                        $codigocliente = $valor->CLIP_Codigo;
+                        $buscarcliente = $this->comprobante_model->obtener_clienteempresa($codigocliente);
+                        $nombrecliente = "";
+                        foreach ($buscarcliente as $indice1 => $valor1){
+                            $nombrecliente = $valor1->EMPRC_RazonSocial;
+                        }
+                        
+//                      $editar = "<a href='javascript:;' onclick='editar_comprobante(" . $codigo . ")' target='_parent'><img src='" . base_url() . "images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
+                        $ver2 = "<a href='javascript:;' onclick='ver_pdf_conmenbretealterno_antiguo(" . $codigo .",8,1)'  target='_parent'><img src='" . base_url() . "images/pdf.png' width='16' height='16' border='0' title='Ver PDF'></a>";                      
+                        $eliminar = "<a href='javascript:;' onclick='eliminar_comprobantealterno(" . $codigo . ")' target='_parent'><img src='" . base_url() . "images/eliminar.png' width='16' height='16' border='0' title='Eliminar'></a>";
+                        
+                    $lista[] = array($item++, $fecha, $serie,$this->getOrderNumeroSerie($numero), $nombrecliente , $ver2,$eliminar );
 
-    		}
-    	}
-    	
-    	$data['lista'] = $lista;
-    	$this->pagination->initialize($conf);
-    	$data['paginacion'] = $this->pagination->create_links();
-    	$detalle_comprobante = $this->obtener_lista_detalles($codigo);
-    	
-    	
-    	
-    	$this->layout->view('ventas/comprobanteindex_alterno',$data);
+            }
+        }
+        
+        $data['lista'] = $lista;
+        $this->pagination->initialize($conf);
+        $data['paginacion'] = $this->pagination->create_links();
+        $detalle_comprobante = $this->obtener_lista_detalles($codigo);
+        
+        
+        
+        $this->layout->view('ventas/comprobanteindex_alterno',$data);
     }
     
     public function comprobante_eliminaralterno(){
-    	$codigo = $this->input->post('codigo');
-    	$this->comprobante_model->comprobante_eliminaralterno($codigo);
+        $codigo = $this->input->post('codigo');
+        $this->comprobante_model->comprobante_eliminaralterno($codigo);
     }
     
     public function ver_pdf_conmenbrete_alternoantiguo($codigo)
     {
     
-    	$hoy = date("Y-m-d");
-    	$datos_comprobante = $this->comprobante_model->obtener_comprobantealterna($codigo);
+        $hoy = date("Y-m-d");
+        $datos_comprobante = $this->comprobante_model->obtener_comprobantealterna($codigo);
 
-    	$numero = $datos_comprobante[0]->CCA_Numero;
-    	$serie = $datos_comprobante[0]->CCA_Serie;
-    	$codigocliente = $datos_comprobante[0]->CLIP_Codigo;
-    	$fecha =$datos_comprobante[0]->CCA_FechaRegistro;
-    	$valordeventa = $datos_comprobante[0]->CCA_SubTotal;
-    	$igvtotal = $datos_comprobante[0]->CCA_IGVTotal;
-    	$preciodeventa = $datos_comprobante[0]->CCA_PrecioTotal;
-    	
-		$buscarcliente = $this->comprobante_model->obtener_clienteempresa($codigocliente);
-    	$Senior = $buscarcliente[0]->EMPRC_RazonSocial;
-    	$ruc = $buscarcliente[0]->EMPRC_Ruc;
-    	$direccion = $buscarcliente[0]->EMPRC_Direccion;
-    	
-    	
+        $numero = $datos_comprobante[0]->CCA_Numero;
+        $serie = $datos_comprobante[0]->CCA_Serie;
+        $codigocliente = $datos_comprobante[0]->CLIP_Codigo;
+        $fecha =$datos_comprobante[0]->CCA_FechaRegistro;
+        $valordeventa = $datos_comprobante[0]->CCA_SubTotal;
+        $igvtotal = $datos_comprobante[0]->CCA_IGVTotal;
+        $preciodeventa = $datos_comprobante[0]->CCA_PrecioTotal;
+        
+        $buscarcliente = $this->comprobante_model->obtener_clienteempresa($codigocliente);
+        $Senior = $buscarcliente[0]->EMPRC_RazonSocial;
+        $ruc = $buscarcliente[0]->EMPRC_Ruc;
+        $direccion = $buscarcliente[0]->EMPRC_Direccion;
+        
+        
     
-    	
-    	$this->cezpdf = new Cezpdf('a4', 'portrait');
-    	$this->cezpdf->selectFont('system/application/libraries/fonts/Helvetica-Bold.afm');
-    	$notimg = "facturaalternacompro.jpg"; 
-    	$this->cezpdf = new backgroundPDF('a4', 'portrait', 'image', array('img' => 'images/documentos/' . $notimg));
-    	
-    	/* Cabecera */
-    	    	$this->cezpdf->addText(400, 690, 23, $serie . ' - ' . $numero);    	
-    	    	$this->cezpdf->addText(85, 653, 9, $Senior);
-    	    	$this->cezpdf->addText(85, 630, 9, $direccion);
-    	    	$this->cezpdf->addText(85, 605, 9, $ruc);
-    	    	
-    	    	$anio = substr($fecha, 0, 4);
-    	    	$mes = mes_textual(substr($fecha, 3, 2));
-    	    	$dia = substr($fecha, 8, 3);
-    	    	
-    	    	$fecha_text = utf8_decode_seguro( $dia. '									' .$mes. '
-	    	    					'.$anio );
-    	    	$this->cezpdf->addText(400, 603, 11,$fecha_text);
-    	    	
-    	    	$buscarccd = $this->comprobante_model->obtener_comprobantealternadetalle($codigo);
-    	    	$moneda_simbolo = "S/";
-    	    	$y = 560;
-    	    	foreach ($buscarccd as $indice => $valor){
-    	    		$cantidad = $valor->CDA_Cantidad;
-					$nombreprod = $valor->PROD_Nombre;
-					$preciouni = $valor->CDA_PrecioPorProducto;
-					$importe = $valor->CDA_PUC_IGV ;
-					
-    	    		    	$this->cezpdf->addText(70, $y, 9,  $cantidad);
-    	    		    	
-    	    		    	$this->cezpdf->addText(120, $y, 9,  $nombreprod);
-    	    		    	$this->cezpdf->addText(440, $y, 9, $moneda_simbolo . ' ' . number_format($preciouni, 2));
-    	    		    	$this->cezpdf->addText(500, $y, 9, $moneda_simbolo . ' ' . number_format($importe, 2));
-    	    		    	$y-=20;
-    	    	}
-    	    	
-    	$this->cezpdf->addText(100, 160, 9, strtoupper(num2letras(round($preciodeventa, 2))) . ' ' . 'Soles' . ' ' . $moneda_simbolo . ' ' . number_format($preciodeventa, 2));
-    	$this->cezpdf->addText(500, 130, 9, $moneda_simbolo . ' ' . (number_format($valordeventa, 2)));
-    	$this->cezpdf->addText(500, 110, 9, $moneda_simbolo . ' ' . number_format($igvtotal, 2));
-    	$this->cezpdf->addText(500, 85, 9, $moneda_simbolo . ' ' . number_format(($preciodeventa), 2));
-    	 
-    	$cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'nama_file.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
-    	$this->cezpdf->ezStream($cabecera);
+        
+        $this->cezpdf = new Cezpdf('a4', 'portrait');
+        $this->cezpdf->selectFont('system/application/libraries/fonts/Helvetica-Bold.afm');
+        $notimg = "facturaalternacompro.jpg"; 
+        $this->cezpdf = new backgroundPDF('a4', 'portrait', 'image', array('img' => 'images/documentos/' . $notimg));
+        
+        /* Cabecera */
+                $this->cezpdf->addText(400, 690, 23, $serie . ' - ' . $numero);     
+                $this->cezpdf->addText(85, 653, 9, $Senior);
+                $this->cezpdf->addText(85, 630, 9, $direccion);
+                $this->cezpdf->addText(85, 605, 9, $ruc);
+                
+                $anio = substr($fecha, 0, 4);
+                $mes = mes_textual(substr($fecha, 3, 2));
+                $dia = substr($fecha, 8, 3);
+                
+                $fecha_text = utf8_decode_seguro( $dia. '                                   ' .$mes. '
+                                    '.$anio );
+                $this->cezpdf->addText(400, 603, 11,$fecha_text);
+                
+                $buscarccd = $this->comprobante_model->obtener_comprobantealternadetalle($codigo);
+                $moneda_simbolo = "S/";
+                $y = 560;
+                foreach ($buscarccd as $indice => $valor){
+                    $cantidad = $valor->CDA_Cantidad;
+                    $nombreprod = $valor->PROD_Nombre;
+                    $preciouni = $valor->CDA_PrecioPorProducto;
+                    $importe = $valor->CDA_PUC_IGV ;
+                    
+                            $this->cezpdf->addText(70, $y, 9,  $cantidad);
+                            
+                            $this->cezpdf->addText(120, $y, 9,  $nombreprod);
+                            $this->cezpdf->addText(440, $y, 9, $moneda_simbolo . ' ' . number_format($preciouni, 2));
+                            $this->cezpdf->addText(500, $y, 9, $moneda_simbolo . ' ' . number_format($importe, 2));
+                            $y-=20;
+                }
+                
+        $this->cezpdf->addText(100, 160, 9, strtoupper(num2letras(round($preciodeventa, 2))) . ' ' . 'Soles' . ' ' . $moneda_simbolo . ' ' . number_format($preciodeventa, 2));
+        $this->cezpdf->addText(500, 130, 9, $moneda_simbolo . ' ' . (number_format($valordeventa, 2)));
+        $this->cezpdf->addText(500, 110, 9, $moneda_simbolo . ' ' . number_format($igvtotal, 2));
+        $this->cezpdf->addText(500, 85, 9, $moneda_simbolo . ' ' . number_format(($preciodeventa), 2));
+         
+        $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'nama_file.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
+        $this->cezpdf->ezStream($cabecera);
     
     }
     
     
     public function comprobantenuevo_alterno(){
-    		$this->load->library('layout', 'layout');
-    		
-    		$compania = $this->somevar['compania'];
-    		$data['compania'] = $compania;
-    		$data['cboVendedor'] = $this->OPTION_generador($this->directivo_model->listar_directivo($this->session->userdata('empresa'), '4'), 'DIREP_Codigo', array('PERSC_ApellidoPaterno', 'PERSC_ApellidoMaterno', 'PERSC_Nombre'), '', array('', '::Seleccione::'), ' ');
-    		$data['cboMoneda'] = $this->OPTION_generador($this->moneda_model->listar(), 'MONED_Codigo', 'MONED_Descripcion', '1');
-    		$lista_almacen = $this->almacen_model->seleccionar();
-    		$data['cboAlmacen'] = form_dropdown("almacen", $lista_almacen, obtener_val_x_defecto($lista_almacen), " class='comboMedio' style='width:50%;' id='almacen'");
-    		$data['cmbVendedor']=$this->select_cmbVendedor($this->session->set_userdata('codUsuario'));
-    		$comp_confi = $this->companiaconfiguracion_model->obtener($compania);
-    		$data['igv'] = $comp_confi[0]->COMPCONFIC_Igv;
-    		$cambio_dia = $this->tipocambio_model->obtener_tdc_dolar(date('Y-m-d'));
-    		$data['tdc'] = $cambio_dia[0]->TIPCAMC_FactorConversion;
+            $this->load->library('layout', 'layout');
+            
+            $compania = $this->somevar['compania'];
+            $data['compania'] = $compania;
+            $data['cboVendedor'] = $this->OPTION_generador($this->directivo_model->listar_directivo($this->session->userdata('empresa'), '4'), 'DIREP_Codigo', array('PERSC_ApellidoPaterno', 'PERSC_ApellidoMaterno', 'PERSC_Nombre'), '', array('', '::Seleccione::'), ' ');
+            $data['cboMoneda'] = $this->OPTION_generador($this->moneda_model->listar(), 'MONED_Codigo', 'MONED_Descripcion', '1');
+            $lista_almacen = $this->almacen_model->seleccionar();
+            $data['cboAlmacen'] = form_dropdown("almacen", $lista_almacen, obtener_val_x_defecto($lista_almacen), " class='comboMedio' style='width:50%;' id='almacen'");
+            $data['cmbVendedor']=$this->select_cmbVendedor($this->session->set_userdata('codUsuario'));
+            $comp_confi = $this->companiaconfiguracion_model->obtener($compania);
+            $data['igv'] = $comp_confi[0]->COMPCONFIC_Igv;
+            $cambio_dia = $this->tipocambio_model->obtener_tdc_dolar(date('Y-m-d'));
+            $data['tdc'] = $cambio_dia[0]->TIPCAMC_FactorConversion;
 
-    		
-    		$this->layout->view('ventas/comprobantenuevo_alterno', $data);
-    	}
+            
+            $this->layout->view('ventas/comprobantenuevo_alterno', $data);
+        }
     
-    	public function comprobantegrabar_alterno(){
+        public function comprobantegrabar_alterno(){
 
-    		$filter = new stdClass();
-    		
-    		
-    		$serie = $this->input->post('serie');
-    		$numero = $this->input->post('numero');
-    		$igv = $this->input->post('igv');
-    		$codigoCliente = $this->input->post('cliente');
-    		$codigoMoneda = $this->input->post('moneda');
-    		$tdc = $this->input->post('tdc');
-    		$codigoVendedor = $this->input->post('cmbVendedor');
-    		$codigoAlmacen = $this->input->post('almacen');
-			$subTotal = $this->input->post('preciototal');
-			$descuento = $this->input->post('descuentotal');
-			$igvTotal = $this->input->post('igvtotal');
-			$precioTotal = $this->input->post('importetotal');
-			$observacion = $this->input->post('observacion');
-			
-			$filter->CCA_Numero =$numero;
-			$filter->CCA_Serie =$serie;
-			$filter->CCA_IGV =$igv;
-			$filter->CLIP_Codigo =$codigoCliente;
-			$filter->MONED_Codigo =$codigoMoneda;
-			$filter->CCA_TDC =$tdc;
-			$filter->PERSP_Codigo =$codigoVendedor;
-			$filter->COMPP_Codigo =$codigoAlmacen;
-			$filter->CCA_Obervacion =$observacion;
-			$filter->CCA_SubTotal =$subTotal;
-			$filter->CCA_Descuento =$descuento;
-			$filter->CCA_IGVTotal =$igvTotal;
-			$filter->CCA_PrecioTotal =$precioTotal;
-			$filter->CCA_Flag = "1";
-			$filter->CCA_FechaRegistro =date("Y-m-d H:i:s");
-			
-			$codigoComprobanteAlterno = $this->comprobante_model->guardarcomproalterno($filter);
-			
-			
-			$filter1 = new stdClass();
-			
-			$prodcodigo = $this->input->post('prodcodigo');
-			$unidmedi = $this->input->post('produnidad');
-			$prodcantidad = $this->input->post('prodcantidad');
-			$prodpu_conigv = $this->input->post('prodpu_conigv');
-			$prodpu = $this->input->post('prodpu');
-			$prodprecio = $this->input->post('prodprecio');
+            $filter = new stdClass();
+            
+            
+            $serie = $this->input->post('serie');
+            $numero = $this->input->post('numero');
+            $igv = $this->input->post('igv');
+            $codigoCliente = $this->input->post('cliente');
+            $codigoMoneda = $this->input->post('moneda');
+            $tdc = $this->input->post('tdc');
+            $codigoVendedor = $this->input->post('cmbVendedor');
+            $codigoAlmacen = $this->input->post('almacen');
+            $subTotal = $this->input->post('preciototal');
+            $descuento = $this->input->post('descuentotal');
+            $igvTotal = $this->input->post('igvtotal');
+            $precioTotal = $this->input->post('importetotal');
+            $observacion = $this->input->post('observacion');
+            
+            $filter->CCA_Numero =$numero;
+            $filter->CCA_Serie =$serie;
+            $filter->CCA_IGV =$igv;
+            $filter->CLIP_Codigo =$codigoCliente;
+            $filter->MONED_Codigo =$codigoMoneda;
+            $filter->CCA_TDC =$tdc;
+            $filter->PERSP_Codigo =$codigoVendedor;
+            $filter->COMPP_Codigo =$codigoAlmacen;
+            $filter->CCA_Obervacion =$observacion;
+            $filter->CCA_SubTotal =$subTotal;
+            $filter->CCA_Descuento =$descuento;
+            $filter->CCA_IGVTotal =$igvTotal;
+            $filter->CCA_PrecioTotal =$precioTotal;
+            $filter->CCA_Flag = "1";
+            $filter->CCA_FechaRegistro =date("Y-m-d H:i:s");
+            
+            $codigoComprobanteAlterno = $this->comprobante_model->guardarcomproalterno($filter);
+            
+            
+            $filter1 = new stdClass();
+            
+            $prodcodigo = $this->input->post('prodcodigo');
+            $unidmedi = $this->input->post('produnidad');
+            $prodcantidad = $this->input->post('prodcantidad');
+            $prodpu_conigv = $this->input->post('prodpu_conigv');
+            $prodpu = $this->input->post('prodpu');
+            $prodprecio = $this->input->post('prodprecio');
 
-// 						echo "<script>alert('count(prodcodigo)  : ".count($prodcodigo) ."')</script>";
-					
-			
-				for ($i=0;$i<count($prodcodigo);$i++){
-					$filter1->CCA_Codigo = $codigoComprobanteAlterno;
-					$filter1->PROD_Codigo = $prodcodigo[$i];
-					$filter1->UNDMED_Codigo = $unidmedi[$i]; 
-					$filter1->CDA_Cantidad = $prodcantidad[$i];
-					$filter1->CDA_PUC_IGV = $prodpu_conigv[$i];
-					$filter1->CDA_PUS_IGV = $prodpu[$i];
-					$filter1->CDA_PrecioPorProducto = $prodprecio[$i]; 
-					$filter1->CDA_Flag = "1";
-					$filter1->CDA_FechaRegistro = date("Y-m-d H:i:s");
-					
-					$this->comprobante_model->guardarcomalternodetalle($filter1);
-				}
-			
-    	}
+//                      echo "<script>alert('count(prodcodigo)  : ".count($prodcodigo) ."')</script>";
+                    
+            
+                for ($i=0;$i<count($prodcodigo);$i++){
+                    $filter1->CCA_Codigo = $codigoComprobanteAlterno;
+                    $filter1->PROD_Codigo = $prodcodigo[$i];
+                    $filter1->UNDMED_Codigo = $unidmedi[$i]; 
+                    $filter1->CDA_Cantidad = $prodcantidad[$i];
+                    $filter1->CDA_PUC_IGV = $prodpu_conigv[$i];
+                    $filter1->CDA_PUS_IGV = $prodpu[$i];
+                    $filter1->CDA_PrecioPorProducto = $prodprecio[$i]; 
+                    $filter1->CDA_Flag = "1";
+                    $filter1->CDA_FechaRegistro = date("Y-m-d H:i:s");
+                    
+                    $this->comprobante_model->guardarcomalternodetalle($filter1);
+                }
+            
+        }
     }
     
 
-	
-	
+    
+    
 
 ?>
