@@ -307,6 +307,8 @@ if (empty($persona))
                     $("#cliente").val(ui.item.codigo);
                     $("#ruc_cliente").val(ui.item.ruc);
                     $("#buscar_producto").focus();
+                    codigo=ui.item.codigo;
+                    get_obra(codigo);
                 },
                 minLength: 2
             });
@@ -336,6 +338,8 @@ if (empty($persona))
                     $("#cliente").val(ui.item.codigo);
                     $("#ruc_cliente").val(ui.item.ruc);
                     $("#buscar_producto").focus();
+                    codigo=ui.item.codigo;
+                    get_obra(codigo);
                 },
                 minLength: 2
             });
@@ -433,6 +437,7 @@ if (empty($persona))
             $("#cliente").val(codigo);
             $("#buscar_cliente").val(ruc);
             $("#nombre_cliente").val(razon_social);
+            get_obra(codigo);
         }
         function seleccionar_proveedor(codigo, ruc, razon_social) {
             $("#proveedor").val(codigo);
@@ -675,6 +680,20 @@ if (empty($persona))
 		}else{
 			alert("Debe de seleccionar un almacen para el producto.");
 		}
+	}
+	function get_obra(codigo) {
+		//alert(codigo);
+		$.post("<?php echo base_url(); ?>index.php/compras/pedido/obra", {
+						"codigoempre" : codigo
+			}, function(data) {
+				//alert("hola"+data);
+				var c = JSON.parse(data);
+				$('#obra').html('');
+				$('#obra').append("<option value='0'>::Seleccione::</option>");
+				$.each(c,function(i,item){
+					$('#obra').append("<option value='"+item.PROYP_Codigo+"'>"+item.proyecto+"</option>");
+				});
+		});
 	}
     </script>
 
@@ -1047,6 +1066,10 @@ Vendedor&nbsp;&nbsp;&nbsp;
                                 class="comboMedio"><?php echo $cboFormaPago; ?></select></td>
                     <td>Almacen*</td>
                     <td><?php echo $cboAlmacen; ?></td>
+                </tr>
+                 <tr>
+                    <td>Obra*</td>
+                    <td colspan="5"> <?php echo $cboObra;?>	</td>
                 </tr>
             </table>
         </div>

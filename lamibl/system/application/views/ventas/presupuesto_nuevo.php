@@ -300,7 +300,7 @@ if (empty($persona))
                                 echo '<input type="text" name="serie" id="serie" value="' . $serie . '" class="cajaGeneral cajaSoloLectura" size="3" maxlength="3" placeholder="Serie" /> ';
                                 echo '<input type="text" name="numero" id="numero" value="' . $numero . '" class="cajaGeneral cajaSoloLectura" size="10" maxlength="6" placeholder="Numero"  /> ';
                                 echo '<a href="javascript:;" id="linkVerSerieNum"' . ($codigo != '' ? 'style="display:none"' : '') . '>
-                                <p style="display:none">' . $serie_suger . '-'. $numero_suger . '</p><image src="' . base_url() . 'images/flecha.png" border="0" alt="Serie y número sugerido" title="Serie y número sugerido" /></a>';
+                                <p style="display:none">' . $serie_suger . '-'. $numero_suger . '</p><image src="' . base_url() . 'images/flecha.png" border="0" alt="Serie y nÃºmero sugerido" title="Serie y nÃºmero sugerido" /></a>';
                                 break;
                             case '3':
                                 echo '<input type="text" name="codigo_usuario" id="codigo_usuario" value="' . $codigo_usuario . '" class="cajaGeneral" size="20" maxlength="50"  />';
@@ -312,7 +312,7 @@ if (empty($persona))
                         echo '<input type="text" name="numero" id="numero" value="' . $numero . '" class="cajaGeneral" size="10" maxlength="6" placeholder="Numero"  /> ';
                        
                         echo '<a href="javascript:;" id="linkVerSerieNum"' . ($codigo != '' ? 'style="display:none"' : '') . '>
-                        <p style="display:none">' . $serie_suger . '-'. $numero_suger . '</p><image src="' . base_url() . 'images/flecha.png" border="0" alt="Serie y número sugerido" title="Serie y número sugerido" /></a>';
+                        <p style="display:none">' . $serie_suger . '-'. $numero_suger . '</p><image src="' . base_url() . 'images/flecha.png" border="0" alt="Serie y nÃºmero sugerido" title="Serie y nÃºmero sugerido" /></a>';
 
                     }
                                //var_dump($tipo_codificacion);
@@ -328,7 +328,7 @@ if (empty($persona))
                                     Calendar.setup({
                                         inputField     :    "fecha",      // id del campo de texto
                                         ifFormat       :    "%d/%m/%Y",       // formato de la fecha, cuando se escriba en el campo de texto
-                                        button         :    "Calendario1"   // el id del botón que lanzará el calendario
+                                        button         :    "Calendario1"   // el id del botÃ³n que lanzarÃ¡ el calendario
                                     });
                                 </script>
                             </td>
@@ -387,7 +387,7 @@ if (empty($persona))
                                     echo $temp[0];
                                 } else
                                     echo '1';
-                                ?>" <?php if ($contacto == '') echo 'style="display:none;"'; ?> id="linkVerPersona"><img height='16' id="" width='16' src='<?php echo base_url(); ?>/images/ver.png' title='Más Información' border='0' /></a>
+                                ?>" <?php if ($contacto == '') echo 'style="display:none;"'; ?> id="linkVerPersona"><img height='16' id="" width='16' src='<?php echo base_url(); ?>/images/ver.png' title='MÃ¡s InformaciÃ³n' border='0' /></a>
                             </td>
                             <td>I.G.V.</td>
                             <td><input name="igv" type="text" class="cajaGeneral cajaSoloLectura" size="2" maxlength="2" id="igv" value="<?php echo $igv; ?>" onkeypress="return numbersonly(this,event,'.');" onblur="modifica_igv_total();" readonly="readonly" /> %</td>
@@ -582,15 +582,15 @@ if (empty($persona))
               <textarea id="observacion" name="observacion" class="cajaTextArea" cols="52" rows="8"><?php echo $observacion; ?></textarea></td>
         </tr>  
         <tr>
-                <td width="15%">Garantía</td>
-                 <td><input type="text" size="56" maxlength="100" class="cajaGeneral" name="garantia" id="garantia" value="<?php if ($codigo != '') echo $garantia; else echo '1 AÑO CONTRA DEFECTOS DE FABRICA'; ?>" /></td>
+                <td width="15%">GarantÃ­a</td>
+                 <td><input type="text" size="56" maxlength="100" class="cajaGeneral" name="garantia" id="garantia" value="<?php if ($codigo != '') echo $garantia; else echo '1 AÃ‘O CONTRA DEFECTOS DE FABRICA'; ?>" /></td>
         </tr>
         <tr>
             <td width="15%">Validez de la pte.</td>
             <td><input type="text" size="56" maxlength="100" class="cajaGeneral" name="validez" id="validez" value="<?php if ($codigo != '') echo $validez; else echo (FORMATO_IMPRESION == 4 ? '5' : '30' ) . ' DIAS CALENDARIOS'; ?>" /></td>
         </tr>
         <tr>
-                <td width="15%">Modo de impresión</td>
+                <td width="15%">Modo de impresiÃ³n</td>
                 <td><select name="modo_impresion" <?php if ($tipo_docu == 'B') echo 'disabled="disabled"'; ?> id="modo_impresion" class="comboGrande" style="width:307px">
                     <option <?php if ($modo_impresion == '1') echo 'selected="selected"'; ?> value="1">LOS PRECIOS DE LOS PRODUCTOS DEBEN INCLUIR IGV</option>
                        <option <?php if ($modo_impresion == '2') echo 'selected="selected"'; ?> value="2">LOS PRECIOS DE LOS PRODUCTOS NO DEBEN INCLUIR IGV</option>

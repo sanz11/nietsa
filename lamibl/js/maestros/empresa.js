@@ -3,11 +3,16 @@ jQuery(document).ready(function(){
     base_url   = $("#base_url").val();
     
    $("#imgGuardarEmpresa").click(function(){
-
+	   if($('#cboDistrito').val()!='00'){
 		dataString = $('#frmEmpresa').serialize();
 		$("#container").show();
 
 		$("#frmEmpresa").submit();
+	   }
+   	else{
+   		alert("Ingrese el ubigeo del cliente");
+   		$('#cboDistrito').focus();
+   	}
     });
     $("#buscarEmpresa").click(function(){
 		$("#form_busqueda").submit();

@@ -32,7 +32,7 @@ class Proyecto_model extends model {
             return $data;
         }
     }
-    public function obtener_NAMEProyecto($proyecto){
+ public function obtener_NAMEProyecto($proyecto){
     	$query = $this->db->where('PROYP_Codigo',$proyecto)->get('cji_proyecto');
     	if($query->num_rows()>0){
     		foreach($query->result() as $fila){
@@ -41,6 +41,7 @@ class Proyecto_model extends model {
     		return $data;
     	}
     }
+    
     
     public function obtener_direccion($proyecto){
     	$query = $this->db->where('PROYP_Codigo',$proyecto)->get('cji_direccion');

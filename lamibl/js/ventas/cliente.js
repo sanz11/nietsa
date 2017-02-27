@@ -9,11 +9,15 @@ jQuery(document).ready(function(){
     }
     
     $("#imgGuardarCliente").click(function(){
-
+    	if($('#cboDistrito').val()!='00'){
 		dataString = $('#frmCliente').serialize();
 		$("#container").show();
 		$("#frmCliente").submit();
-
+    	}
+    	else{
+    		alert("Ingrese el ubigeo del cliente");
+    		$('#cboDistrito').focus();
+    	}
 
 		
     });

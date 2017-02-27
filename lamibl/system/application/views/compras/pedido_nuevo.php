@@ -275,7 +275,7 @@
                                             Calendar.setup({
                                                 inputField     :    "fechai",      // id del campo de texto
                                                 ifFormat       :    "%Y-%m-%d",       // formato de la fecha, cuando se escriba en el campo de texto
-                                                button         :    "Calendario1"   // el id del botÔøΩ0‚Ä°1ÔøΩ0‚Ä¶6n que lanzarÔøΩ0‚Ä°1ÔøΩ0‚Äû3 el calendario
+                                                button         :    "Calendario1"   // el id del botÅ0á1Å0Ö6n que lanzarÅ0á1Å0Ñ3 el calendario
                                             });
                                         </script>
 							</td>

@@ -45,7 +45,7 @@ class Pedido extends Controller{
             $data['numdoc'] = "";
             $data['nombre'] = "";
             $data['telefono']  = "";
-            $data['titulo_tabla']    = "RELACIÓN DE PEDIDOS / REQUERIMIENTOS";
+            $data['titulo_tabla']    = "RELACIÃ“N DE PEDIDOS / REQUERIMIENTOS";
             $data['registros']  = count($this->pedido_model->listar_pedidos_todos());
             $data['action'] = base_url()."index.php/compras/pedido/pedidos";
             $conf['base_url']   = site_url('maestros/compras/pedidos/');
@@ -647,7 +647,7 @@ class Pedido extends Controller{
 		$data['numdoc']    = $filter->PERSC_NumeroDocIdentidad;
 		$data['nombre']    = $filter->nombre;
 		$data['telefono']  = $filter->PERSC_Telefono;
-		$data['titulo_tabla']    = "RESULTADO DE BÚSQUEDA DE PERSONAS";
+		$data['titulo_tabla']    = "RESULTADO DE BÃšSQUEDA DE PERSONAS";
 	
 		$data['registros']  = count($this->persona_model->buscar_personas($filter));
 		$data['action'] = base_url()."index.php/maestros/persona/buscar_personas";
@@ -685,6 +685,7 @@ class Pedido extends Controller{
 	}
 	public function getOrderNumero($numero){
 	
+                 $dato ="";
 		$cantidad=strlen($numero);
 	
 		if($cantidad==1){
@@ -709,6 +710,7 @@ class Pedido extends Controller{
 	}
 	public function getOrderSerie($numero){
 	
+                $dato ="";
 		$cantidad=strlen($numero);
 	
 		if($cantidad==1){

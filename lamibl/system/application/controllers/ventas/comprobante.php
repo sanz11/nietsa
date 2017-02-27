@@ -43,6 +43,7 @@ class Comprobante extends Controller{
         $this->load->model('maestros/tipocambio_model');
         $this->load->model('maestros/persona_model');
         $this->load->model('maestros/moneda_model');
+        $this->load->model('maestros/proyecto_model');
         $this->load->model('maestros/formapago_model');
         $this->load->model('maestros/condicionentrega_model');
         $this->load->model('maestros/configuracion_model');
@@ -932,6 +933,7 @@ class Comprobante extends Controller{
             $data['cambio_comp'] = "0";
             $data['total_det'] = "0";   
             $data['codigo'] = $codigo;
+            $data['cboObra'] = form_dropdown("obra", array('' => ':: Seleccione ::'), "", " class='comboGrande'  id='obra'");
             $data['contiene_igv'] = (($comp_confi[0]->COMPCONFIC_PrecioContieneIgv == '1') ? true : false);
             $oculto = form_hidden(array('codigo' => $codigo, 'base_url' => base_url(), 'tipo_oper' => $tipo_oper, 'tipo_docu' => $tipo_docu, 'contiene_igv' => ($data['contiene_igv'] == true ? '1' : '0')));
             $data['url_action'] = base_url() . "index.php/ventas/comprobante/comprobante_insertar";
@@ -1076,6 +1078,7 @@ public function select_cmbVendedor($index){
         $flagGenInd = $this->input->post('flagGenIndDet');
         $prodcantidad = $this->input->post('prodcantidad');
         $proddescri = $this->input->post('proddescri');
+        $obra = $this->input->post('obra');
         $dref = $this->input->post('dRef');
         $guiarem_id = $this->input->post("codigo");
         $tipo_oper = $this->input->post('tipo_oper');
@@ -1182,6 +1185,7 @@ public function select_cmbVendedor($index){
         if ($dref!=null  && trim($dref)=='') {
             $filter->GUIAREMP_Codigo = $dref;
         }
+        $filter->PROYP_Codigo=$obra;
         $comprobante = $this->comprobante_model->insertar_comprobante($filter);
 
         $flagBS = $this->input->post('flagBS');
@@ -1764,6 +1768,17 @@ public function select_cmbVendedor($index){
         $fecha = mysql_to_human($datos_comprobante[0]->CPC_Fecha);
         $vendedor = $datos_comprobante[0]->CPC_Vendedor;
         $tdc = $datos_comprobante[0]->CPC_TDC;
+        
+        $codigocliente = $datos_comprobante[0]->CLIP_Codigo;
+        $codigoproyecto = $datos_comprobante[0]->PROYP_Codigo;
+        
+        if($codigoproyecto != 0){
+        	$listaproyecto = $this->proyecto_model->seleccionar($codigocliente);
+        	$data['cboObra'] = form_dropdown("obra",$listaproyecto,$codigoproyecto, " class='comboGrande'  id='obra' ");
+        }else{
+        	$data['cboObra'] = form_dropdown("obra", array('' => ':: Seleccione ::'), "", " class='comboGrande'  id='obra'");
+        }
+        
         $data['numeroAutomatico'] = $datos_comprobante[0]->CPC_NumeroAutomatico;
         $data['cmbVendedor']=$this->select_cmbVendedor($vendedor);
         $ruc_cliente = '';
@@ -2000,6 +2015,7 @@ public function select_cmbVendedor($index){
 
         $prodpu= $this->input->post('prodpu');
         $prodprecio= $this->input->post('prodprecio');
+        $obra= $this->input->post('obra');
 
         $filter = new stdClass();
         $filter->FORPAP_Codigo = NULL;
@@ -2014,6 +2030,7 @@ public function select_cmbVendedor($index){
         $filter->CPC_igv100 = $this->input->post('igv');
         $filter->CPC_TipoDocumento = $tipo_docu;
         $filter->CPC_NumeroAutomatico= $this->input->post('numeroAutomatico');
+        $filter->PROYP_Codigo=$obra;
 
         $nombre = $this->input->post('nombre_cliente');
 

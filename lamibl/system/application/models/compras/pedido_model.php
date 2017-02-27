@@ -184,7 +184,6 @@ WHERE pe.PEDIC_FlagEstado = 1";
       
     $this->db->select('*');
         $this->db->from('cji_pedido',$number_items,$offset);
-        $this->db->join('cji_centrocosto','cji_pedido.CENCOST_Codigo = cji_centrocosto.CENCOSP_Codigo','left');
         $this->db->where('cji_pedido.COMPP_Codigo',$compania);
         $this->db->where('PEDIC_FlagEstado',0);
         $query = $this->db->get();

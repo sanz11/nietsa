@@ -203,10 +203,11 @@ class Guiarem extends controller
 	                    $editar = '<a href="#" onClick="relacionado_comprobante('."'.$numeroref.'".')" ><img src="'.base_url().'images/relacion_comprobante.png" width="16" height="16" border="0" title="Relacionado" /></a>';
 	                }
 	 $tipo_oper2='"'.$tipo_oper.'"';
-	                if ($estado == '2' && $tipo_oper == 'V' && $numeroref == '')
-	                    $ver = "<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(" . $codigo.", ".$ConversorDeNumero .",1,".$tipo_oper2. ")'><img src='" . base_url() . "images/icono_imprimir.png' width='16' height='16' border='0' title='Imprimir'></a>";
-	                else
-	                    $ver = '';
+	             //   if ($estado == '2' && $tipo_oper == 'V' && $numeroref == '')
+	                    $ver = "<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(" . $codigo.", ".$ConversorDeNumero .",0,".$tipo_oper2. ")'>
+<img src='" . base_url() . "images/icono_imprimir.png' width='16' height='16' border='0' title='Imprimir'></a>";
+	               // else
+	                 //   $ver = '';
 	
 	                $ver2 = "<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(" . $codigo .",".$ConversorDeNumero.",1,".$tipo_oper2.")'><img src='" . base_url() . "images/pdf.png' width='16' height='16' border='0' title='Ver PDF'></a>";
 	                if ($estado == '2' && $numeroref == '')
@@ -227,7 +228,7 @@ class Guiarem extends controller
 	                if ($oc != "" || count($list_com) > 0 || $numeroref != "") {
 	                    $eliminar = "<img src='" . base_url() . "images/icono-factura.gif' height='16px' alt='Activo' title='Relacionado' />";
 	                } else {
-	                    $eliminar = ($estado == '1' || $estado == '2' ? "<a href='" . base_url() . "index.php/seguridad/usuario/ventana_confirmacion_usuario2/guiarem/" . $codigo . "' id='linkVerProveedor'><img src='" . base_url() . "images/eliminar.png' alt='Activo' title='Eliminar' /></a> " : "<img src='" . base_url() . "images/inactive.png' alt='Anulado' title='Eliminar' />");
+	                    $eliminar = ($estado == '1' || $estado == '2' ? "<a href='" . base_url() . "index.php/seguridad/usuario/ventana_confirmacion_usuario2/guiarem/" . $codigo . "' id='linkVerProveedor'><img src='" . base_url() . "images/eliminar.png' alt='Activo' title='Anular' /></a> " : "<img src='" . base_url() . "images/inactive.png' alt='Anulado' title='Eliminar' />");
 	                		
 	                }
 	
@@ -245,10 +246,10 @@ class Guiarem extends controller
                 		$editar ='';
                 	
                 	$img=0;
-                	if($estado==1)
+                	//if($estado==1)
                 		$ver = "<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(" . $codigo.", ".$ConversorDeNumero .",".$img.")'><img src='" . base_url() . "images/icono_imprimir.png' width='16' height='16' border='0' title='Imprimir'></a>";
-                	else
-                		$ver ="";
+                	//else
+                		//$ver ="";
                 	$img=1;
                 	$ver2 = "<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(" . $codigo.", ".$ConversorDeNumero.",".$img.")'><img src='" . base_url() . "images/pdf.png' width='16' height='16' border='0' title='Ver PDF'></a>";
                 	$disparador = "";
@@ -1265,7 +1266,8 @@ class Guiarem extends controller
 	                $filter2->GUIAREMDETC_GenInd = $detflag;
 	                $filter2->GUIAREMDETC_Descripcion = strtoupper($descri);
 	                $filter2->ALMAP_Codigo=$codigoAlmacenProducto;
-	                
+	                $filter2->GUIAREMDETC_ITEM = $indice+1;
+
 	                if ($guiarem_id == "") {
 	                } else {
 	                	if($accion!="e"){
@@ -1460,11 +1462,14 @@ class Guiarem extends controller
 	                		if($codigoDetalle!=0 && trim($codigoDetalle)!=""){
 	                			if($estado!=null && $estado==2){
 	                				$this->guiaremdetalle_model->eliminar($codigoDetalle);
+
 	                			}else{
 	                				$objetoM=new stdClass();
 	                				$objetoM->GUIAREMDETC_FlagEstado=0;
 	                				$this->guiaremdetalle_model->modificar($codigoDetalle,$objetoM);
+                                   
 	                			}
+                                 
 	                		}
 	                		
 	                	}
@@ -1473,7 +1478,7 @@ class Guiarem extends controller
 	
 	            }
 	        }
-	
+	$this->item($guiarem_id);
 			/**verificamos si el estado de la guiarem se encuentra en estado 1 ya ejecuto el disparador**/
 	        if($estado!=null && $estado==1){
 	        	if($guiarem_id!=null && $guiarem_id!=0){
@@ -1488,7 +1493,16 @@ class Guiarem extends controller
    		}
    		exit('{"result":"ok", "codigo":"' . $guiarem_id . '"}');
     }
+function item($codigo){
+            $detalle= $this->guiaremdetalle_model->listar2($codigo);
+            
+            foreach ($detalle as $key => $value) {
+                
+                $filter3->GUIAREMDETC_ITEM = $key +1 ;   
+                $this->guiaremdetalle_model->modificar($value->GUIAREMDETP_Codigo, $filter3);
+            }
 
+}
     public function disparador($codigo, $tipo_oper = 'V')
     {
     	if($codigo!=null && $codigo!=0){
