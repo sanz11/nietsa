@@ -779,6 +779,16 @@ public function delete_chikera($codigo){
 $data  = array("CHEK_FlagEstado"=>'0');
 $this->db->where('CHEK_Codigo',$codigo);
 $this->db->update('cji_chekera',$data); 
-}
+}public function buscar_empresa_sucursal($primero,$codempresa){
+    $this->db->where('TESTP_Codigo',$primero);
+    $this->db->where('EMPRP_Codigo',$codempresa);
+     $query= $this->db->get('cji_emprestablecimiento');
+    if($query->num_rows>0){
+            foreach($query->result() as $fila){
+                $data[] = $fila;
+            }
+            return $data;
+ }       
+    }
 }
 ?>

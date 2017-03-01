@@ -1230,7 +1230,7 @@ public function select_cmbVendedor($index){
         if (is_array($prodcodigo)) {
             foreach ($prodcodigo as $indice => $valor) {
                 $filter = new stdClass();
-                $filter->CPDEC_ITEMS = $indice+1;
+             //   $filter->CPDEC_ITEMS = $indice+1;
                 $filter->CPP_Codigo = $comprobante;
                 $filter->PROD_Codigo = $prodcodigo[$indice];
 
@@ -1566,7 +1566,7 @@ public function select_cmbVendedor($index){
                 if ($detaccion[$indice] != 'e') {
                     
                     $filter = new stdClass();
-                    $filter->CPDEC_ITEMS = $indice+1;
+               //     $filter->CPDEC_ITEMS = $indice+1;
 
                     $filter->CPP_Codigo = $comprobante;
                     $filter->PROD_Codigo = $prodcodigo[$indice];
@@ -2411,7 +2411,7 @@ public function select_cmbVendedor($index){
                 
             }
         }
-         $this->item($codigo);
+       //  $this->item($codigo);
         /**ingreso de modificacion comprobante en los diferentes movimientos 
          * verifica si alguna guia de remision lo contiene y lo modifica segun el comprobante
          * **/
