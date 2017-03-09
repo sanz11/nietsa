@@ -113,13 +113,7 @@ function obtener_nombre_producto(producto){
     });
 }
 
-function ver_reporte_productos(){
-  var anio = $("#anioVenta4").val();
-  if(anio != ''){
-    base_url   = $("#base_url").val();
-    $("#result_data").load(base_url+"index.php/almacen/producto/listar_unidad_medida_producto/"+producto);
-  }
-}
+
 </script>
 <script>
  $.datepicker.regional['es'] = {
@@ -258,16 +252,55 @@ function ver_reporte_productos(){
                             Reportes de Venta por producto
                           </td>
                         </tr>
+                         <tr>
+           		   <td> Producto<input type="hidden" name="reporteProducto" id="reporteProducto" ></td>
+	   	 			<td><input type="text"  name="productoDescripcion"  onfinishinput="busqueda_producto(this);" 
+	   	 			id="productoDescripcion" class="cajaGrande cajaPadding cajaBusquedaGrande"></td>	
+                 </tr>
                         <tr>
-                          <td>Seleccione A&ntilde;o</td>
-                          <td>
-                            <?php echo $combo4; ?>
-                          </td>
-                        </tr>
+									<td>Seleccione A&ntilde;o</td>
+									<td>
+										<?php echo $combo; ?>
+									</td>
+                   <td>Seleccione Mes</td>
+                  <td>
+                    <select id="mesventa" name="mesventa">
+                      <option value="">Seleccione...</option>
+                      <option value="1">ENERO</option>
+                      <option value="2">FEBRERO</option>
+                      <option value="3">MARZO</option>
+                      <option value="4">ABRIL</option>
+                      <option value="5">MAYO</option>
+                      <option value="6">JUNIO</option>
+                      <option value="7">JULIO</option>
+                      <option value="8">AGOSTRO</option>
+                      <option value="9">SETIEMBRE</option>
+                      <option value="10">OCTUBRE</option>
+                      <option value="11">NOVIEMBRE</option>
+                      <option value="12">DICIEMBRE</option>
+                    </select>
+                  </td>
+                  <td>Seleccione tipo de documento</td>
+                   <td>
+                    <select id="tipodocumento" name="tipodocumento">
+                      <option value="">Seleccione...</option>
+                      <option value="F">FACTURA</option>
+                      <option value="B">BOLETA</option>
+                     
+                    </select>
+                  </td>
+								</tr>
+                <tr><td colspan="6"><hr></td></tr>
+                 <tr>
+                  <td align='left' >Fecha inicial</td>
+                   <td align='left' ><input type="text" id="fech1" name="fech1"></td>
+                   <td align='left' >Fecha final</td>
+                   <td align='left' ><input type="text" id="fech2" name="fech2"></td>
+                 </tr>
                         <tr>
                           <td colspan="2">
                             <a href="javascript:;" onclick="ver_reporte_productos()" >
-                              <img  style="margin:15px 0px;"  src="<?php echo base_url();?>images/botonbuscar.jpg" width="85" height="22" class="imgBoton" >
+                              <img  style="margin:15px 0px;"  src="<?php echo base_url();?>images/botonreporte.jpg" width="85" height="22" class="imgBoton" >
                             </a>
                           </td>
                         </tr>

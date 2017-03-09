@@ -1328,6 +1328,84 @@ public function verificar_inventariado($cod){
  		return $data;
  	}
  }
+
+ public function buscar_comprobante_producto($anio ,$mes ,$fech1 ,$fech2,$tipodocumento,$Prodcod) {
+ 	
+ 	$where="";
+ 	//----------
+ 	if($anio!="--" && $mes =="--" ){// SOLO AÑO
+ 		$where="AND YEAR(CPC_FechaRegistro)='" . $anio . "'";
+ 	}
+ 	if($anio!="--" && $mes !="--" ){// MES Y  AÑO
+ 		$where="AND YEAR(CPC_FechaRegistro)='" . $anio . "' AND MONTH(CPC_FechaRegistro)='" . $mes ."'";
+ 	}
+ 	if($anio=="--" && $mes !="--"){//MES CON AÑO ACTUAL
+ 		$where="AND YEAR(CPC_FechaRegistro)=' ".date("Y")."' AND MONTH(CPC_FechaRegistro)='" . $mes ."'";
+ 	}
+ 
+ 	//-----------------
+ 	 
+ 	if($anio=="--" && $mes =="--" && $fech1!="--" && $fech2=="--" ){//FECHA INICIAL
+ 		$where="AND CPC_FechaRegistro > '" . $fech1 . "'";
+ 	}
+ 	if($anio=="--" && $mes =="--" && $fech1!="--" && $fech2!="--"){//FECHA INICIAL Y FECHA FINAL
+ 		$where="AND CPC_FechaRegistro >= '" . $fech1 . "' AND CPC_FechaRegistro <= '" . $fech2 . "'";
+ 	}
+ 
+ 	
+ 	$wheretdoc= "";
+ 	if($tipodocumento !="--")
+ 		$wheretdoc= " AND CPC_TipoDocumento='".$tipodocumento."' ";
+ 
+ 		$wherepro= "";
+ 		if($Prodcod !="--")
+ 			$wherepro= " AND PROD_Codigo='".$Prodcod."' ";//CPDEP_Codigo
+ 
+ 			$sql = " SELECT com.*,CONCAT(pe.PERSC_Nombre , ' ', pe.PERSC_ApellidoPaterno, ' ', pe.PERSC_ApellidoMaterno) as nombre , MONED_Simbolo from cji_comprobante com
+         inner join cji_comprobantedetalle cd on cd.CPP_Codigo = com.CPP_Codigo
+ 					inner join cji_cliente cl on cl.CLIP_Codigo = com.CLIP_Codigo
+        inner join cji_persona pe on pe.PERSP_Codigo = cl.PERSP_Codigo
+		inner JOIN cji_moneda m ON m.MONED_Codigo=com.MONED_Codigo
+        WHERE CPC_TipoOperacion='V' ".$wheretdoc.$where.$wherepro."
+ 			
+        UNION
+		SELECT com.* ,EMPRC_RazonSocial as nombre ,MONED_Simbolo from cji_comprobante com
+         inner join cji_comprobantedetalle cd on cd.CPP_Codigo = com.CPP_Codigo
+        inner join cji_cliente cl on cl.CLIP_Codigo = com.CLIP_Codigo
+        inner join cji_empresa es on es.EMPRP_Codigo = cl.EMPRP_Codigo
+		inner JOIN cji_moneda m ON m.MONED_Codigo = com.MONED_Codigo
+        WHERE CPC_TipoOperacion='V' ".$wheretdoc.$where.$wherepro."";
+ 			
+//  			$sql = " SELECT com.* from cji_comprobante com
+//         inner join cji_comprobantedetalle cd on cd.CPP_Codigo = com.CPP_Codigo
+//         WHERE CPC_TipoOperacion='V' ".$wherepro.$wheretdoc.$where."";
+ 
+ 			//echo $sql;
+ 			$query = $this->db->query($sql);
+ 			if ($query->num_rows > 0) {
+ 				foreach ($query->result() as $fila) {
+ 					$data[] = $fila;
+ 				}
+ 				return $data;
+ 			}
+ 			return array();
+ }
+ public function autocompleteProducto($keyword){
+ 	try {
+ 		$sql = "SELECT  PROD_Nombre,PROD_Codigo FROM cji_producto where PROD_Nombre LIKE '%" . $keyword . "%' and PROD_FlagEstado = 1 ";
+ 
+ 		$query = $this->db->query($sql);
+ 		if ($query->num_rows > 0) {
+ 			foreach ($query->result() as $fila) {
+ 				$data[] = $fila;
+ 			}
+ 			return $data;
+ 		}
+ 
+ 	} catch (Exception $e) {
+ 		 
+ 	}
+ }
  
  
 }

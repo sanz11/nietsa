@@ -592,7 +592,7 @@ function calcula_importe(n){
     pu_conigv = document.getElementById(i).value;
     cantidad = document.getElementById(b).value;
     igv100 = document.getElementById(g).value;
-    descuento100 =0;  //document.getElementById(h).value;
+    descuento100 =document.getElementById(h).value;
     precio = money_format(pu*cantidad);
     total_dscto = money_format(precio*descuento100/100);
     precio2 = money_format(precio-parseFloat(total_dscto));
@@ -670,7 +670,7 @@ function calcula_totales(){
 
     $("#importetotal").val(importetotal.toFixed(2));  //val(importe_total.toFixed(2))
     $("#igvtotal").val(igvtotal.toFixed(2));  //val(igv_total.toFixed(2))
-    $("#descuentotal").val(0);
+    $("#descuentotal").val(descuento.toFixed(2));
     $("#preciototal").val(preciototal.toFixed(2));  //val(precio_total.toFixed(2))
 }
 function modifica_pu_conigv(n){
@@ -753,14 +753,11 @@ function listar_unidad_medida_producto(producto){
         });
         var nombre;
         nombre=nombre_producto;
-        if(flagBS=='B'){
-            if(marca)
-                nombre+=' / Marca:'+marca;
-            if(modelo)
-                nombre+=' / Modelo: '+modelo;
-            if(presentacion)
-                nombre+=' / Prest: '+presentacion;
-        }
+        //        if (flagBS == 'B') {
+//        	if(marca){ nombre+=' / '+marca;}
+//            if(modelo){ nombre+=' /  '+modelo;}
+//            if(presentacion){nombre+=' /  '+presentacion;}
+//        }
         $("#nombre_producto").val(nombre);
         listar_precios_x_producto_unidad(producto);
     });

@@ -512,7 +512,7 @@ class Configuracionimpresion extends Controller{
                                     $pdf->SetFont('Arial', '', $docuitem_tamletra);
                                     $pdf->SetY($docuitem_posiy);
                                     $pdf->SetX($docuitem_posix);
-                                    $pdf->MultiCell($docuitem_wid,$docuitem_hei, mb_strtoupper($valorVariableMostrar),0,$alineamiento);
+                                    $pdf->MultiCell($docuitem_wid,$docuitem_hei, utf8_decode(mb_strtoupper($valorVariableMostrar)),0,$alineamiento);
                                     $docuitem_posiy=$docuitem_posiy+4;
                                 }
                             }
@@ -537,7 +537,7 @@ class Configuracionimpresion extends Controller{
                         $pdf->SetFont('Arial', '', $docuitem_tamletra);
                         $pdf->SetY($docuitem_posiy);
                         $pdf->SetX($docuitem_posix);
-                        $pdf->MultiCell($docuitem_wid,$docuitem_hei, mb_strtoupper($valorVariableMostrar),0,$alineamiento);
+                        $pdf->MultiCell($docuitem_wid,$docuitem_hei, utf8_decode(mb_strtoupper($valorVariableMostrar)),0,$alineamiento);
                         
                     }
                 }

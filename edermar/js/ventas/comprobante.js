@@ -1457,14 +1457,11 @@ function listar_unidad_medida_producto(producto) {
         else
             nombre = nombre_producto;
 
-        if (flagBS == 'B') {
-          if(marca)
-             nombre+=' / '+marca;
-             if(modelo)
-             nombre+=' /  '+modelo;
-             if(presentacion)
-             nombre+=' /  '+presentacion;
-        }
+      //        if (flagBS == 'B') {
+//        	if(marca){ nombre+=' / '+marca;}
+//            if(modelo){ nombre+=' /  '+modelo;}
+//            if(presentacion){nombre+=' /  '+presentacion;}
+//        }
         $("#nombre_producto").val(nombre);
         listar_precios_x_producto_unidad();
     });
@@ -2696,5 +2693,55 @@ function agregar_todo_recu(guia) {
   
     var url3 =base_url2+ "index.php/ventas/comprobante/verPdf/" + tipo_oper2 + "/" + tipo_docu2+"/"+dataEviar;
     window.open(url3, '', "width=800,height=600,menubars=no,resizable=no;");
+ 
+}
+
+function ver_reporte_productos() {
+
+    var prod = $("#productoDescripcion").val();
+
+    var anio = $("#anioVenta").val();
+    var mes = $("#mesventa").val();
+    var fech1 = $("#fech1").val();
+    var fech2 = $("#fech2").val();
+   
+    var tipodocumento = $("#tipodocumento").val();
+    var Prodcod = $("#reporteProducto").val();
+    
+    if(anio=="0") {anio="--";} 
+    if(mes=="")   {mes="--";} 
+  
+    if(tipodocumento=="")  {tipodocumento="--";}
+
+    var datafechaIni="";var datafechafin="";
+
+    if(fech1=="") {
+        fech1="--";
+    }else{
+        fechai=$("#fech1").val().split("/"); 
+        fech1=fechai[2]+"-"+fechai[1]+"-"+fechai[0];
+    }
+
+    if(fech2=="") {
+        fech2="--";
+    }else{
+        fechaf=$("#fech2").val().split("/");
+        fech2=fechaf[2]+"-"+fechaf[1]+"-"+fechaf[0];
+
+    }
+    
+
+    url = base_url + "index.php/ventas/comprobante/ver_reporte_pdf_productos/" + anio+"/" + mes+"/" + fech1+"/" + fech2+"/"+tipodocumento +"/"+Prodcod;
+    if(Prodcod!="" && prod !="")  {
+    	 if($("#fech1").val() <= $("#fech2").val())  {
+    		 window.open(url, '', "width=800,height=600,menubars=no,resizable=no;");
+    	 }else{
+    	    	alert("Seleccione un rango de fechas validas");
+    	    	$("#fech2").focus();
+    	    }
+    }else{
+    	alert("Seleccione un Producto");
+    	$("#productoDescripcion").focus();
+    }
  
 }

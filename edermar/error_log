@@ -86,3 +86,6 @@ Stack trace:
 #5 /home/osaerp/public_html/desarrollo/diselac/index.php(229): require_once('/home/osaerp/pu...')
 #6 {main}
   thrown in /home/osaerp/public_html/desarrollo/diselac/system/application/libraries/fpdf/fpdf.php on line 271
+[09-Mar-2017 11:17:43 America/Lima] PHP Fatal error:  Call to undefined method Comprobante_model::autocompleteProducto() in /home/osaerp/public_html/desarrollo/edermar/system/application/controllers/ventas/comprobante.php on line 8362
+[09-Mar-2017 11:18:21 America/Lima] PHP Fatal error:  Call to undefined method Comprobante_model::autocompleteProducto() in /home/osaerp/public_html/desarrollo/edermar/system/application/controllers/ventas/comprobante.php on line 8362
+[09-Mar-2017 11:19:16 America/Lima] PHP Fatal error:  Call to undefined method Comprobante_model::autocompleteProducto() in /home/osaerp/public_html/desarrollo/edermar/system/application/controllers/ventas/comprobante.php on line 8362

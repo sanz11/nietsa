@@ -558,14 +558,11 @@ function listar_unidad_medida_producto(producto){
         });
         var nombre;
         nombre=nombre_producto;
-        if(flagBS=='B'){
-            if(marca)
-                nombre+=' / '+marca;
-            if(modelo)
-                nombre+=' / Modelo: '+modelo;
-            if(presentacion)
-                nombre+=' / Prest: '+presentacion;  
-        }
+       //        if (flagBS == 'B') {
+//        	if(marca){ nombre+=' / '+marca;}
+//            if(modelo){ nombre+=' /  '+modelo;}
+//            if(presentacion){nombre+=' /  '+presentacion;}
+//        }
         $("#nombre_producto").val(nombre);
         listar_precios_x_producto_unidad(producto);
     });
