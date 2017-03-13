@@ -162,7 +162,7 @@ class Presupuesto extends Controller {
                 $lista[] = array($item++, $fecha, $serie, $this->getOrderNumeroSerie($numero), $codigo_usuario, $nombre_cliente, $nom_tipodocu, $total, $img_estado, $editar, $ver, $ver2, $ver3, $enviarcorreo, $vermensaje, $eliminar);
             }
         }
-        $data['titulo_tabla'] = "RELACIÓN DE PRE-VENTA";
+        $data['titulo_tabla'] = "RELACIÃ“N DE PRE-VENTA";
         $data['titulo_busqueda'] = "BUSCAR PRE-VENTA";
         $data['lista'] = $lista;
         $data['oculto'] = form_hidden(array('base_url' => base_url()));
@@ -902,7 +902,7 @@ public function select_cmbVendedor($index){
         <td style="color:#454545;padding:53px 30px 35px;font-family:Segoe UI, Arial, Helvetica;font-size:14px;line-height:20px;" width="600">
 <table border="0" cellspacing="0" cellpadding="0" style="color:#454545;font-size:14px;line-height:20px;font-family:Segoe UI, Arial, Helvetica;">
 <tr>
-<td style="padding:0px;">Cuándo:&nbsp;' . date("Y-m-d") . '</td>
+<td style="padding:0px;">CuÃ¡ndo:&nbsp;' . date("Y-m-d") . '</td>
 </tr>
 <tr>
 <td style="padding:0px;">' . $mensaje . '</td>
@@ -913,7 +913,7 @@ public function select_cmbVendedor($index){
 </tr>
     <tr>
         <td style="padding:0px 30px;background-color:#969696;color:#ffffff;font-size:78%;font-family:Segoe UI, Arial, Helvetica;" width="600">
-            <br>Translogint E.I.R.L<br><br>
+            <br>Diselac S.A.C<br><br>
         </td>
 		
     </tr>
@@ -1073,10 +1073,10 @@ public function select_cmbVendedor($index){
 
 
         $xls .= "<table>
-		<tr><td>" . utf8_decode_seguro('Se�or(es) :') . " </td><td>$nombre_cliente</td><td></td><td>R.U.C. : </td><td>$ruc</td><td>Fecha : </td><td>$fecha</td></tr>
-		<tr><td>" . utf8_decode_seguro('Direcci�n :') . " </td><td>$direccion</td><td></td><td></td><td></td><td></td></tr>
-		<tr><td>" . utf8_decode_seguro('Atenci�n Sr(a) :') . " </td><td>$nombre_contacto " . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '') . "</td><td></td>&nbsp;&nbsp;&nbsp;<td></td><td></td><td></td><td></td><td></td></tr>
-		<tr><td>" . utf8_decode_seguro('Tel�fono : ') . "</td><td>$telefono</td><td></td><td></td><td></td><td>E-mail :</td><td>$email</td></tr>
+		<tr><td>" . utf8_decode_seguro('Señor(es) :') . " </td><td>$nombre_cliente</td><td></td><td>R.U.C. : </td><td>$ruc</td><td>Fecha : </td><td>$fecha</td></tr>
+		<tr><td>" . utf8_decode_seguro('Dirección :') . " </td><td>$direccion</td><td></td><td></td><td></td><td></td></tr>
+		<tr><td>" . utf8_decode_seguro('Atención Sr(a) :') . " </td><td>$nombre_contacto " . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '') . "</td><td></td>&nbsp;&nbsp;&nbsp;<td></td><td></td><td></td><td></td><td></td></tr>
+		<tr><td>" . utf8_decode_seguro('Teléfono : ') . "</td><td>$telefono</td><td></td><td></td><td></td><td>E-mail :</td><td>$email</td></tr>
 		</table><br><br>
 		";
 
@@ -1093,7 +1093,7 @@ public function select_cmbVendedor($index){
 		<table border=1>
 			<tr><th>Item</th>
       $extra
-      <th>" . utf8_decode_seguro('Descripci�n') . "</th>
+      <th>" . utf8_decode_seguro('Descripción') . "</th>
       <th>Uni.</th>
       <th>Cant.</th>
       <th>Precio Uni.</th>
@@ -1163,7 +1163,7 @@ public function select_cmbVendedor($index){
 			<table>
 			<tr><td colspan=2><b>CONDICIONES DE VENTA:</b></td></tr>";
         if (FORMATO_IMPRESION != 3) {
-            $xls .= "<tr><td>" . utf8_decode_seguro('Tipo de Cambio del Día :') . "</td><td>" . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '') . "</td></tr>
+            $xls .= "<tr><td>" . utf8_decode_seguro('Tipo de Cambio del DÃ­a :') . "</td><td>" . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '') . "</td></tr>
         <tr><td>Moneda</td><td>$moneda_nombre</td></tr>";
         }
         $xls .= "<tr><td>Forma de Pago</td><td>" . utf8_decode_seguro($forma_pago) . "</td></tr>";
@@ -1171,11 +1171,11 @@ public function select_cmbVendedor($index){
             $xls .= "<tr><td>Los Precios de los Productos</td><td>" . ($modo_impresion == '1' ? 'CONTIENEN IGV' : 'NO CONTIENEN IGV') . "</td></tr>";
 
         if (FORMATO_IMPRESION == 3) {
-            $xls .= "<tr><td>" . utf8_decode_seguro('Banco de Crédito Soles') . "</td><td>" . utf8_decode_seguro('N°  191-1435467-0-65') . "</td></tr>
-        <tr><td>" . utf8_decode_seguro('Banco de Crédito Dólares') . "</td><td>" . utf8_decode_seguro('N° 191-1466829-1-62') . "</td></tr>";
+            $xls .= "<tr><td>" . utf8_decode_seguro('Banco de CrÃ©dito Soles') . "</td><td>" . utf8_decode_seguro('NÂ°  191-1435467-0-65') . "</td></tr>
+        <tr><td>" . utf8_decode_seguro('Banco de CrÃ©dito DÃ³lares') . "</td><td>" . utf8_decode_seguro('NÂ° 191-1466829-1-62') . "</td></tr>";
         } else {
-            $xls .= "<tr><td>" . utf8_decode_seguro('Cta. Cte. en Soles') . "</td><td>" . utf8_decode_seguro('N°  191-1435467-0-65') . "</td></tr>
-        <tr><td>" . utf8_decode_seguro('Cta. Cte. en Dólares') . "</td><td>" . utf8_decode_seguro('N° 191-1466829-1-62') . "</td></tr>";
+            $xls .= "<tr><td>" . utf8_decode_seguro('Cta. Cte. en Soles') . "</td><td>" . utf8_decode_seguro('NÂ°  191-1435467-0-65') . "</td></tr>
+        <tr><td>" . utf8_decode_seguro('Cta. Cte. en DÃ³lares') . "</td><td>" . utf8_decode_seguro('NÂ° 191-1466829-1-62') . "</td></tr>";
         }
 
         $xls .= "<tr><td>Tiempo de Entrega</td><td>$tiempo_entrega</td></tr>";
@@ -1295,10 +1295,10 @@ public function select_cmbVendedor($index){
         $this->cezpdf->ezText('', '', array("leading" => 35));
 
         /* Datos del cliente */
-        $db_data = array(array('cols1' => '','cols2' => utf8_decode_seguro('Se�or(es)'), 'cols3' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols4' => 'R.U.C.', 'cols5' => ': ' . $ruc . '   Fecha: ' . $fecha),
-            array('cols1' => '','cols2' => utf8_decode_seguro('Direcci�n'), 'cols3' => ': ' . utf8_decode_seguro($direccion), 'cols4' => 'Vend.', 'cols5' => ': ' . $vendedor_nombre), //NOMBRE DEL VENDEDOR
-            array('cols1' => '','cols2' => utf8_decode_seguro('Atenci�n Sr(a)'), 'cols3' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols4' => '', 'cols5' => ''),
-            array('cols1' => '','cols2' => utf8_decode_seguro('Tel�fono'), 'cols3' => ': ' . $telefono, 'cols4' => 'E-mail', 'cols5' => ': ' . $email)
+        $db_data = array(array('cols1' => '','cols2' => utf8_decode_seguro('Señor(es)'), 'cols3' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols4' => 'R.U.C.', 'cols5' => ': ' . $ruc . '   Fecha: ' . $fecha),
+            array('cols1' => '','cols2' => utf8_decode_seguro('Dirección'), 'cols3' => ': ' . utf8_decode_seguro($direccion), 'cols4' => 'Vend.', 'cols5' => ': ' . $vendedor_nombre), //NOMBRE DEL VENDEDOR
+            array('cols1' => '','cols2' => utf8_decode_seguro('Atención Sr(a)'), 'cols3' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols4' => '', 'cols5' => ''),
+            array('cols1' => '','cols2' => utf8_decode_seguro('Teléfono'), 'cols3' => ': ' . $telefono, 'cols4' => 'E-mail', 'cols5' => ': ' . $email)
         );
 
         $this->cezpdf->ezTable($db_data, "", "", array(
@@ -1337,7 +1337,7 @@ public function select_cmbVendedor($index){
         $col_names = array(
             'cols1' => 'Item',
             'cols2' => 'Marca',
-            'cols3' => utf8_decode_seguro('Descripci�n'),
+            'cols3' => utf8_decode_seguro('Descripción'),
             'cols4' => 'Uni.',
             'cols5' => 'Cant.',
             'cols6' => 'Precio Uni.',
@@ -1404,13 +1404,13 @@ public function select_cmbVendedor($index){
         }
         /* Condiciones de venta */
          $db_data = array(array('cols0' => '<b>CONDICIONES DE VENTA:</b>', 'cols1' => ''),
-            array('cols0' => utf8_decode_seguro('Tipo de Cambio del D�a'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
+            array('cols0' => utf8_decode_seguro('Tipo de Cambio del Día'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
             array('cols0' => 'Moneda', 'cols1' => ': ' . $moneda_nombre),
             array('cols0' => 'Forma de Pago', 'cols1' => ': ' . utf8_decode_seguro($forma_pago)),
             array('cols0' => 'Los Precios de los Productos ', 'cols1' => ': ' . ($modo_impresion == '1' ? 'CONTIENEN IGV' : 'NO CONTIENEN IGV')),
             array('cols0' => 'Tiempo de Entrega', 'cols1' => ': ' . $tiempo_entrega),
             array('cols0' => 'Lugar de Entrega', 'cols1' => ': ' . utf8_decode_seguro($lugar_entrega)),
-            //array('cols0' => utf8_decode_seguro('GarantÃ­a'), 'cols1' => ': ' . utf8_decode_seguro($garantia)),
+            //array('cols0' => utf8_decode_seguro('GarantÃƒÂ­a'), 'cols1' => ': ' . utf8_decode_seguro($garantia)),
             array('cols0' => 'Validez de la Oferta', 'cols1' => ': ' . utf8_decode_seguro($validez)),
             array('cols0' => 'Contacto', 'cols1' => ': ' . utf8_decode_seguro($vendedor_nombre . ($vendedor_nombre_area != '' ? ' - AREA: ' . $vendedor_nombre_area : '')))
         );
@@ -1798,25 +1798,25 @@ public function select_cmbVendedor($index){
         $detalle_presupuesto = $this->obtener_lista_detalles($codigo);
 
         $xls = "<table>
-        		<tr><td colspan=7 align=center>" . utf8_decode_seguro('<b>Cotización: ') . $codificacion . '</b></td></tr></table>';
+        		<tr><td colspan=7 align=center>" . utf8_decode_seguro('<b>CotizaciÃ³n: ') . $codificacion . '</b></td></tr></table>';
 
 
         $xls .= "<table >
      
-		<tr><td>" . utf8_decode_seguro('Se�or(es) :') . "</td>
+		<tr><td>" . utf8_decode_seguro('Señor(es) :') . "</td>
 		 <td>" . utf8_decode("$nombre_cliente") . "</td>
          <td>R.U.C. : $ruc </td>
          <td>Fecha : </td><td>$fecha</td></tr>
 
-		<tr> <td>" . utf8_decode_seguro('Direcci�n :') . " 
+		<tr> <td>" . utf8_decode_seguro('Dirección :') . " 
         </td><td>" . utf8_decode_seguro("$direccion") . "
 
         </td><td>Vend:
         </td><td>" . utf8_decode_seguro("$vendedor_nombre") . "</td><td></td></tr>
 
-		<tr><td>" . utf8_decode_seguro('Atenci�n Sr(a) :') . " 
+		<tr><td>" . utf8_decode_seguro('Atención Sr(a) :') . " 
         </td><td>" . utf8_decode_seguro("$nombre_contacto ") . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '') . "</td><td></td>&nbsp;&nbsp;&nbsp;<td></td><td></td><td></td><td></td><td></td></tr>
-		<tr><td>" . utf8_decode_seguro('Tel�fono : ') . "</td><td>$telefono</td><td></td><td></td><td></td><td>E-mail :</td><td>$email</td></tr>
+		<tr><td>" . utf8_decode_seguro('Teléfono : ') . "</td><td>$telefono</td><td></td><td></td><td></td><td>E-mail :</td><td>$email</td></tr>
 		</table><br><br>
 		";
 
@@ -1833,7 +1833,7 @@ public function select_cmbVendedor($index){
 		<table border=1>
 			<tr><th>Item</th>
       $extra
-      <th>" . utf8_decode_seguro('Descripci�n') . "</th>
+      <th>" . utf8_decode_seguro('Descripción') . "</th>
       <th>Uni.</th>
       <th>Cant.</th>
       <th>Precio Uni.</th>
@@ -1903,7 +1903,7 @@ public function select_cmbVendedor($index){
 // 			<table>
 // 			<tr><td colspan=2><b>CONDICIONES DE VENTA:</b></td></tr>";
 //         if (FORMATO_IMPRESION != 3) {
-//             $xls .= "<tr><td>" . utf8_decode_seguro('Tipo de Cambio del Día :') . "</td><td>" . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '') . "</td></tr>
+//             $xls .= "<tr><td>" . utf8_decode_seguro('Tipo de Cambio del DÃ­a :') . "</td><td>" . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '') . "</td></tr>
 //         <tr><td>Moneda</td><td>$moneda_nombre</td></tr>";
 //         }
 //         $xls .= "<tr><td>Forma de Pago</td><td>" . utf8_decode_seguro($forma_pago) . "</td></tr>";
@@ -1911,11 +1911,11 @@ public function select_cmbVendedor($index){
 //             $xls .= "<tr><td>Los Precios de los Productos</td><td>" . ($modo_impresion == '1' ? 'CONTIENEN IGV' : 'NO CONTIENEN IGV') . "</td></tr>";
 
 //         if (FORMATO_IMPRESION == 3) {
-//             $xls .= "<tr><td>" . utf8_decode_seguro('Banco de Crédito Soles') . "</td><td>" . utf8_decode_seguro('N°  191-1435467-0-65') . "</td></tr>
-//         <tr><td>" . utf8_decode_seguro('Banco de Crédito Dólares') . "</td><td>" . utf8_decode_seguro('N° 191-1466829-1-62') . "</td></tr>";
+//             $xls .= "<tr><td>" . utf8_decode_seguro('Banco de CrÃ©dito Soles') . "</td><td>" . utf8_decode_seguro('NÂ°  191-1435467-0-65') . "</td></tr>
+//         <tr><td>" . utf8_decode_seguro('Banco de CrÃ©dito DÃ³lares') . "</td><td>" . utf8_decode_seguro('NÂ° 191-1466829-1-62') . "</td></tr>";
 //         } else {
-//             $xls .= "<tr><td>" . utf8_decode_seguro('Cta. Cte. en Soles') . "</td><td>" . utf8_decode_seguro('N°  191-1435467-0-65') . "</td></tr>
-//         <tr><td>" . utf8_decode_seguro('Cta. Cte. en Dólares') . "</td><td>" . utf8_decode_seguro('N° 191-1466829-1-62') . "</td></tr>";
+//             $xls .= "<tr><td>" . utf8_decode_seguro('Cta. Cte. en Soles') . "</td><td>" . utf8_decode_seguro('NÂ°  191-1435467-0-65') . "</td></tr>
+//         <tr><td>" . utf8_decode_seguro('Cta. Cte. en DÃ³lares') . "</td><td>" . utf8_decode_seguro('NÂ° 191-1466829-1-62') . "</td></tr>";
 //         }
 
 //         $xls .= "<tr><td>Tiempo de Entrega</td><td>$tiempo_entrega</td></tr>";
@@ -2026,15 +2026,15 @@ public function select_cmbVendedor($index){
         $delta = 20;
 
         $this->cezpdf->ezText('', '', array("leading" => 100));
-        $this->cezpdf->ezText(utf8_decode_seguro('<b>Cotización: ') . $codificacion . '</b>', 17, array("leading" => 40, 'left' => 185));
+        $this->cezpdf->ezText(utf8_decode_seguro('<b>CotizaciÃ³n: ') . $codificacion . '</b>', 17, array("leading" => 40, 'left' => 185));
         $this->cezpdf->ezText('', '', array("leading" => 10));
 
 
         /* Datos del cliente */
-        $db_data = array(array('cols1' => utf8_decode_seguro('Se�or(es)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols3' => 'R.U.C.', 'cols4' => ': ' . $ruc . '       Fecha: ' . $fecha),
-            array('cols1' => utf8_decode_seguro('Direcci�n'), 'cols2' => ': ' . utf8_decode_seguro($direccion), 'cols3' => '', 'cols4' => ''),
-            array('cols1' => utf8_decode_seguro('Atenci�n Sr(a)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols3' => '', 'cols4' => ''),
-            array('cols1' => utf8_decode_seguro('Tel�fono'), 'cols2' => ': ' . $telefono, 'cols3' => 'E-mail', 'cols4' => ': ' . $email)
+        $db_data = array(array('cols1' => utf8_decode_seguro('Señor(es)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols3' => 'R.U.C.', 'cols4' => ': ' . $ruc . '       Fecha: ' . $fecha),
+            array('cols1' => utf8_decode_seguro('Dirección'), 'cols2' => ': ' . utf8_decode_seguro($direccion), 'cols3' => '', 'cols4' => ''),
+            array('cols1' => utf8_decode_seguro('Atención Sr(a)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols3' => '', 'cols4' => ''),
+            array('cols1' => utf8_decode_seguro('Teléfono'), 'cols2' => ': ' . $telefono, 'cols3' => 'E-mail', 'cols4' => ': ' . $email)
         );
 
         $this->cezpdf->ezTable($db_data, "", "", array(
@@ -2070,7 +2070,7 @@ public function select_cmbVendedor($index){
         $col_names = array(
             'cols1' => 'Item',
             'cols2' => 'Marca',
-            'cols3' => utf8_decode_seguro('Descripci�n'),
+            'cols3' => utf8_decode_seguro('Descripción'),
             'cols4' => 'Uni.',
             'cols5' => 'Cant.',
             'cols6' => 'Precio Uni.',
@@ -2130,12 +2130,12 @@ public function select_cmbVendedor($index){
         }
         /* Condiciones de venta */
         $db_data = array(array('cols0' => '<b>CONDICIONES DE VENTA:</b>', 'cols1' => ''),
-            array('cols0' => utf8_decode_seguro('Tipo de Cambio del Día'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
+            array('cols0' => utf8_decode_seguro('Tipo de Cambio del DÃ­a'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
             array('cols0' => 'Moneda', 'cols1' => ': ' . $moneda_nombre),
             array('cols0' => 'Forma de Pago', 'cols1' => ': ' . utf8_decode_seguro($forma_pago)),
             array('cols0' => 'Los Precios de los Productos ', 'cols1' => ': ' . ($modo_impresion == '1' ? 'CONTIENEN IGV' : 'NO CONTIENEN IGV')),
-            array('cols0' => utf8_decode_seguro('Cta. Cte. en Soles'), 'cols1' => ': ' . utf8_decode_seguro('N°  191-1435467-0-65')),
-            array('cols0' => utf8_decode_seguro('Cta. Cte. en Dólares'), 'cols1' => ': ' . utf8_decode_seguro('N° 191-1466829-1-62')),
+            array('cols0' => utf8_decode_seguro('Cta. Cte. en Soles'), 'cols1' => ': ' . utf8_decode_seguro('NÂ°  191-1435467-0-65')),
+            array('cols0' => utf8_decode_seguro('Cta. Cte. en DÃ³lares'), 'cols1' => ': ' . utf8_decode_seguro('NÂ° 191-1466829-1-62')),
             array('cols0' => 'Tiempo de Entrega', 'cols1' => ': ' . $tiempo_entrega),
             array('cols0' => 'Lugar de Entrega', 'cols1' => ': ' . utf8_decode_seguro($lugar_entrega)),
             array('cols0' => 'Validez de la Oferta', 'cols1' => ': ' . utf8_decode_seguro($validez)),
@@ -2261,15 +2261,15 @@ public function select_cmbVendedor($index){
         $delta = 20;
 
         $this->cezpdf->ezText('', '', array("leading" => 100));
-        $this->cezpdf->ezText(utf8_decode_seguro('<b>Cotización: ') . $codificacion . '</b>', 17, array("leading" => 40, 'left' => 185));
+        $this->cezpdf->ezText(utf8_decode_seguro('<b>CotizaciÃ³n: ') . $codificacion . '</b>', 17, array("leading" => 40, 'left' => 185));
         $this->cezpdf->ezText('', '', array("leading" => 10));
 
 
         /* Datos del cliente */
-        $db_data = array(array('cols1' => utf8_decode_seguro('Se�or(es)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols3' => 'R.U.C.', 'cols4' => ': ' . $ruc . '       Fecha: ' . $fecha),
-            array('cols1' => utf8_decode_seguro('Direcci�n'), 'cols2' => ': ' . utf8_decode_seguro($direccion), 'cols3' => '', 'cols4' => ''),
-            array('cols1' => utf8_decode_seguro('Atenci�n Sr(a)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols3' => '', 'cols4' => ''),
-            array('cols1' => utf8_decode_seguro('Tel�fono'), 'cols2' => ': ' . $telefono, 'cols3' => 'E-mail', 'cols4' => ': ' . $email)
+        $db_data = array(array('cols1' => utf8_decode_seguro('Señor(es)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols3' => 'R.U.C.', 'cols4' => ': ' . $ruc . '       Fecha: ' . $fecha),
+            array('cols1' => utf8_decode_seguro('Dirección'), 'cols2' => ': ' . utf8_decode_seguro($direccion), 'cols3' => '', 'cols4' => ''),
+            array('cols1' => utf8_decode_seguro('Atención Sr(a)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols3' => '', 'cols4' => ''),
+            array('cols1' => utf8_decode_seguro('Teléfono'), 'cols2' => ': ' . $telefono, 'cols3' => 'E-mail', 'cols4' => ': ' . $email)
         );
         $this->cezpdf->ezTable($db_data, "", "", array(
             'width' => 525,
@@ -2304,7 +2304,7 @@ public function select_cmbVendedor($index){
         $col_names = array(
             'cols1' => 'Item',
             'cols2' => 'Marca',
-            'cols3' => utf8_decode_seguro('Descripci�n'),
+            'cols3' => utf8_decode_seguro('Descripción'),
             'cols4' => 'Uni.',
             'cols5' => 'Cant.',
             'cols6' => 'Precio Uni.',
@@ -2371,7 +2371,7 @@ public function select_cmbVendedor($index){
         }
         /* Condiciones de venta */
         $db_data = array(array('cols0' => '<b>CONDICIONES DE VENTA:</b>', 'cols1' => ''),
-            array('cols0' => utf8_decode_seguro('Tipo de Cambio del Día'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
+            array('cols0' => utf8_decode_seguro('Tipo de Cambio del DÃ­a'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
             array('cols0' => 'Moneda', 'cols1' => ': ' . $moneda_nombre),
             array('cols0' => 'Forma de Pago', 'cols1' => ': ' . utf8_decode_seguro($forma_pago)),
             array('cols0' => 'Los Precios de los Productos ', 'cols1' => ': ' . ($modo_impresion == '1' ? 'CONTIENEN IGV' : 'NO CONTIENEN IGV')),
@@ -2501,15 +2501,15 @@ public function select_cmbVendedor($index){
         $delta = 20;
 
         $this->cezpdf->ezText('', '', array("leading" => 100));
-        $this->cezpdf->ezText(utf8_decode_seguro('<b>Cotización: ') . $codificacion . '</b>', 17, array("leading" => 40, 'left' => 185));
+        $this->cezpdf->ezText(utf8_decode_seguro('<b>CotizaciÃ³n: ') . $codificacion . '</b>', 17, array("leading" => 40, 'left' => 185));
         $this->cezpdf->ezText('', '', array("leading" => 10));
 
 
         /* Datos del cliente */
-        $db_data = array(array('cols1' => utf8_decode_seguro('Se�or(es)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols3' => 'R.U.C.', 'cols4' => ': ' . $ruc . '       Fecha: ' . $fecha),
-            array('cols1' => utf8_decode_seguro('Direcci�n'), 'cols2' => ': ' . utf8_decode_seguro($direccion), 'cols3' => '', 'cols4' => ''),
-            array('cols1' => utf8_decode_seguro('Atenci�n Sr(a)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols3' => '', 'cols4' => ''),
-            array('cols1' => utf8_decode_seguro('Tel�fono'), 'cols2' => ': ' . $telefono, 'cols3' => 'E-mail', 'cols4' => ': ' . $email)
+        $db_data = array(array('cols1' => utf8_decode_seguro('Señor(es)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols3' => 'R.U.C.', 'cols4' => ': ' . $ruc . '       Fecha: ' . $fecha),
+            array('cols1' => utf8_decode_seguro('Dirección'), 'cols2' => ': ' . utf8_decode_seguro($direccion), 'cols3' => '', 'cols4' => ''),
+            array('cols1' => utf8_decode_seguro('Atención Sr(a)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols3' => '', 'cols4' => ''),
+            array('cols1' => utf8_decode_seguro('Teléfono'), 'cols2' => ': ' . $telefono, 'cols3' => 'E-mail', 'cols4' => ': ' . $email)
         );
         $this->cezpdf->ezTable($db_data, "", "", array(
             'width' => 525,
@@ -2546,7 +2546,7 @@ public function select_cmbVendedor($index){
         $col_names = array(
             'cols1' => 'Item',
             'cols2' => 'Marca',
-            'cols3' => utf8_decode_seguro('Descripci�n'),
+            'cols3' => utf8_decode_seguro('Descripción'),
             'cols4' => 'Uni.',
             'cols5' => 'Cant.',
             'cols6' => 'Precio Uni.',
@@ -2613,13 +2613,13 @@ public function select_cmbVendedor($index){
         }
         /* Condiciones de venta */
         $db_data = array(array('cols0' => '<b>CONDICIONES DE VENTA:</b>', 'cols1' => ''),
-            array('cols0' => utf8_decode_seguro('Tipo de Cambio del Día'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
+            array('cols0' => utf8_decode_seguro('Tipo de Cambio del DÃ­a'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
             array('cols0' => 'Moneda', 'cols1' => ': ' . $moneda_nombre),
             array('cols0' => 'Forma de Pago', 'cols1' => ': ' . utf8_decode_seguro($forma_pago)),
             array('cols0' => 'Los Precios de los Productos ', 'cols1' => ': ' . ($modo_impresion == '1' ? 'CONTIENEN IGV' : 'NO CONTIENEN IGV')),
             array('cols0' => 'Tiempo de Entrega', 'cols1' => ': ' . $tiempo_entrega),
             array('cols0' => 'Lugar de Entrega', 'cols1' => ': ' . utf8_decode_seguro($lugar_entrega)),
-            //array('cols0' => utf8_decode_seguro('Garantía'), 'cols1' => ': ' . utf8_decode_seguro($garantia)),
+            //array('cols0' => utf8_decode_seguro('GarantÃ­a'), 'cols1' => ': ' . utf8_decode_seguro($garantia)),
             array('cols0' => 'Validez de la Oferta', 'cols1' => ': ' . utf8_decode_seguro($validez)),
             array('cols0' => 'Contacto', 'cols1' => ': ' . utf8_decode_seguro($vendedor_nombre . ($vendedor_nombre_area != '' ? ' - AREA: ' . $vendedor_nombre_area : '')))
         );
@@ -2778,10 +2778,10 @@ public function select_cmbVendedor($index){
         $this->cezpdf->ezText('', '', array("leading" => 35));
 
         /* Datos del cliente */
-        $db_data = array(array('cols1' => '','cols2' => utf8_decode_seguro('Se�or(es)'), 'cols3' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols4' => 'R.U.C.', 'cols5' => ': ' . $ruc . '   Fecha: ' . $fecha),
-            array('cols1' => '','cols2' => utf8_decode_seguro('Direcci�n'), 'cols3' => ': ' . utf8_decode_seguro($direccion), 'cols4' => 'Vend.', 'cols5' => ': ' . $vendedor_nombre), //NOMBRE DEL VENDEDOR
-            array('cols1' => '','cols2' => utf8_decode_seguro('Atenci�n Sr(a)'), 'cols3' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols4' => '', 'cols5' => ''),
-            array('cols1' => '','cols2' => utf8_decode_seguro('Tel�fono'), 'cols3' => ': ' . $telefono, 'cols4' => 'E-mail', 'cols5' => ': ' . $email)
+        $db_data = array(array('cols1' => '','cols2' => utf8_decode_seguro('Señor(es)'), 'cols3' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols4' => 'R.U.C.', 'cols5' => ': ' . $ruc . '   Fecha: ' . $fecha),
+            array('cols1' => '','cols2' => utf8_decode_seguro('Dirección'), 'cols3' => ': ' . utf8_decode_seguro($direccion), 'cols4' => 'Vend.', 'cols5' => ': ' . $vendedor_nombre), //NOMBRE DEL VENDEDOR
+            array('cols1' => '','cols2' => utf8_decode_seguro('Atención Sr(a)'), 'cols3' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols4' => '', 'cols5' => ''),
+            array('cols1' => '','cols2' => utf8_decode_seguro('Teléfono'), 'cols3' => ': ' . $telefono, 'cols4' => 'E-mail', 'cols5' => ': ' . $email)
         );
 
         $this->cezpdf->ezTable($db_data, "", "", array(
@@ -2820,7 +2820,7 @@ public function select_cmbVendedor($index){
         $col_names = array(
             'cols1' => 'Item',
             'cols2' => 'Marca',
-            'cols3' => utf8_decode_seguro('Descripci�n'),
+            'cols3' => utf8_decode_seguro('Descripción'),
             'cols4' => 'Uni.',
             'cols5' => 'Cant.',
             'cols6' => 'Precio Uni.',
@@ -2887,13 +2887,13 @@ public function select_cmbVendedor($index){
         }
         /* Condiciones de venta */
          $db_data = array(array('cols0' => '<b>CONDICIONES DE VENTA:</b>', 'cols1' => ''),
-            array('cols0' => utf8_decode_seguro('Tipo de Cambio del D�a'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
+            array('cols0' => utf8_decode_seguro('Tipo de Cambio del Día'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
             array('cols0' => 'Moneda', 'cols1' => ': ' . $moneda_nombre),
             array('cols0' => 'Forma de Pago', 'cols1' => ': ' . utf8_decode_seguro($forma_pago)),
             array('cols0' => 'Los Precios de los Productos ', 'cols1' => ': ' . ($modo_impresion == '1' ? 'CONTIENEN IGV' : 'NO CONTIENEN IGV')),
             array('cols0' => 'Tiempo de Entrega', 'cols1' => ': ' . $tiempo_entrega),
             array('cols0' => 'Lugar de Entrega', 'cols1' => ': ' . utf8_decode_seguro($lugar_entrega)),
-            //array('cols0' => utf8_decode_seguro('GarantÃ­a'), 'cols1' => ': ' . utf8_decode_seguro($garantia)),
+            //array('cols0' => utf8_decode_seguro('GarantÃƒÂ­a'), 'cols1' => ': ' . utf8_decode_seguro($garantia)),
             array('cols0' => 'Validez de la Oferta', 'cols1' => ': ' . utf8_decode_seguro($validez)),
             array('cols0' => 'Contacto', 'cols1' => ': ' . utf8_decode_seguro($vendedor_nombre . ($vendedor_nombre_area != '' ? ' - AREA: ' . $vendedor_nombre_area : '')))
         );
@@ -3022,15 +3022,15 @@ public function select_cmbVendedor($index){
 
         $delta = 20;
 
-        $this->cezpdf->ezText(utf8_decode_seguro('<b>Cotización: ') . $codificacion . '</b>', 17, array("leading" => 40, 'left' => 185));
+        $this->cezpdf->ezText(utf8_decode_seguro('<b>CotizaciÃ³n: ') . $codificacion . '</b>', 17, array("leading" => 40, 'left' => 185));
         $this->cezpdf->ezText('', '', array("leading" => 10));
 
 
         /* Datos del cliente */
-        $db_data = array(array('cols1' => utf8_decode_seguro('Se�or(es)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols3' => 'R.U.C.', 'cols4' => ': ' . $ruc . '       Fecha: ' . $fecha),
-            array('cols1' => utf8_decode_seguro('Direcci�n'), 'cols2' => ': ' . utf8_decode_seguro($direccion), 'cols3' => '', 'cols4' => ''),
-            array('cols1' => utf8_decode_seguro('Atenci�n Sr(a)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols3' => '', 'cols4' => ''),
-            array('cols1' => utf8_decode_seguro('Tel�fono'), 'cols2' => ': ' . $telefono, 'cols3' => 'E-mail', 'cols4' => ': ' . $email)
+        $db_data = array(array('cols1' => utf8_decode_seguro('Señor(es)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols3' => 'R.U.C.', 'cols4' => ': ' . $ruc . '       Fecha: ' . $fecha),
+            array('cols1' => utf8_decode_seguro('Dirección'), 'cols2' => ': ' . utf8_decode_seguro($direccion), 'cols3' => '', 'cols4' => ''),
+            array('cols1' => utf8_decode_seguro('Atención Sr(a)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols3' => '', 'cols4' => ''),
+            array('cols1' => utf8_decode_seguro('Teléfono'), 'cols2' => ': ' . $telefono, 'cols3' => 'E-mail', 'cols4' => ': ' . $email)
         );
         $this->cezpdf->ezTable($db_data, "", "", array(
             'width' => 525,
@@ -3065,7 +3065,7 @@ public function select_cmbVendedor($index){
         $col_names = array(
             'cols1' => 'Item',
             'cols2' => 'Marca',
-            'cols3' => utf8_decode_seguro('Descripci�n'),
+            'cols3' => utf8_decode_seguro('Descripción'),
             'cols4' => 'Uni.',
             'cols5' => 'Cant.',
             'cols6' => 'Precio Uni.',
@@ -3132,7 +3132,7 @@ public function select_cmbVendedor($index){
         }
         /* Condiciones de venta */
         $db_data = array(array('cols0' => '<b>CONDICIONES DE VENTA:</b>', 'cols1' => ''),
-            array('cols0' => utf8_decode_seguro('Tipo de Cambio del Día'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
+            array('cols0' => utf8_decode_seguro('Tipo de Cambio del DÃ­a'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
             array('cols0' => 'Moneda', 'cols1' => ': ' . $moneda_nombre),
             array('cols0' => 'Forma de Pago', 'cols1' => ': ' . utf8_decode_seguro($forma_pago)),
             array('cols0' => 'Los Precios de los Productos ', 'cols1' => ': ' . ($modo_impresion == '1' ? 'CONTIENEN IGV' : 'NO CONTIENEN IGV')),
@@ -3249,18 +3249,18 @@ public function select_cmbVendedor($index){
         }
 
         $this->cezpdf_horizontal->ezText(utf8_decode_seguro($datos_empresa[0]->EMPRC_RazonSocial), 8, array("left" => 15));
-        $this->cezpdf_horizontal->ezText(utf8_decode_seguro('Lima: Av. Chorrillos Nº 200 Chorrillos - Lima  Telf.: 251 6727  Fax: 252 7547'), 8, array("left" => 15));
+        $this->cezpdf_horizontal->ezText(utf8_decode_seguro('Lima: Av. Chorrillos NÂº 200 Chorrillos - Lima  Telf.: 251 6727  Fax: 252 7547'), 8, array("left" => 15));
         $this->cezpdf_horizontal->ezText('Cusco: Av. Garcilaso S/N C.C. La Salle Of. 143 Wanchaq - Cusco  Telf.: 84-253453  Telefax: 84-263225', 8, array("left" => 15));
         $this->cezpdf_horizontal->ezText('www.instrumentosysistemas.com ventas@instrumentosysistemas.com', 8, array("left" => 15));
-        $this->cezpdf_horizontal->ezText(utf8_decode_seguro('<b>Cotización Nro.  ') . ($codigo_usuario != '' ? $codigo_usuario : $numero) . '</b>', 17, array("leading" => 30, "left" => 300));
+        $this->cezpdf_horizontal->ezText(utf8_decode_seguro('<b>CotizaciÃ³n Nro.  ') . ($codigo_usuario != '' ? $codigo_usuario : $numero) . '</b>', 17, array("leading" => 30, "left" => 300));
         $this->cezpdf_horizontal->ezText('', '');
 
 
         /* Datos del cliente */
-        $db_data = array(array('cols1' => utf8_decode_seguro('Se�or(es)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols3' => 'R.U.C.', 'cols4' => ': ' . $ruc, 'cols5' => 'Fecha', 'cols6' => ': ' . $fecha, 'cols7' => ''),
-            array('cols1' => utf8_decode_seguro('Direcci�n'), 'cols2' => ': ' . $direccion, 'cols3' => '', 'cols4' => '', 'cols5' => '', 'cols6' => '', 'cols7' => ''),
+        $db_data = array(array('cols1' => utf8_decode_seguro('Señor(es)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols3' => 'R.U.C.', 'cols4' => ': ' . $ruc, 'cols5' => 'Fecha', 'cols6' => ': ' . $fecha, 'cols7' => ''),
+            array('cols1' => utf8_decode_seguro('Dirección'), 'cols2' => ': ' . $direccion, 'cols3' => '', 'cols4' => '', 'cols5' => '', 'cols6' => '', 'cols7' => ''),
             array('cols1' => utf8_decode_seguro('Contacto'), 'cols2' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols3' => '', 'cols4' => '', 'cols5' => '', 'cols6' => '', 'cols7' => ''),
-            array('cols1' => utf8_decode_seguro('Tel�fono'), 'cols2' => ': ' . $telefono, 'cols3' => 'E-mail', 'cols4' => ': ' . $email, 'cols5' => '', 'cols6' => '', 'cols7' => '')
+            array('cols1' => utf8_decode_seguro('Teléfono'), 'cols2' => ': ' . $telefono, 'cols3' => 'E-mail', 'cols4' => ': ' . $email, 'cols5' => '', 'cols6' => '', 'cols7' => '')
         );
         $this->cezpdf_horizontal->ezTable($db_data, "", "", array(
             'width' => 740,
@@ -3303,10 +3303,10 @@ public function select_cmbVendedor($index){
                 if ($contador == 11) {
                     $col_names = array(
                         'cols1' => 'Item',
-                        'cols2' => utf8_decode_seguro('Código'),
+                        'cols2' => utf8_decode_seguro('CÃ³digo'),
                         'cols3' => 'Marca',
                         'cols4' => 'Modelo',
-                        'cols5' => utf8_decode_seguro('Descripci�n'),
+                        'cols5' => utf8_decode_seguro('Descripción'),
                         'cols6' => 'Uni.',
                         'cols7' => 'Cant.',
                         'cols8' => 'Precio Uni.',
@@ -3342,10 +3342,10 @@ public function select_cmbVendedor($index){
                 if (($contador - 11 > 0) AND ( $contador - 11) % 25 == 0) {
                     $col_names = array(
                         'cols1' => 'Item',
-                        'cols2' => utf8_decode_seguro('Código'),
+                        'cols2' => utf8_decode_seguro('CÃ³digo'),
                         'cols3' => 'Marca',
                         'cols4' => 'Modelo',
-                        'cols5' => utf8_decode_seguro('Descripci�n'),
+                        'cols5' => utf8_decode_seguro('Descripción'),
                         'cols6' => 'Uni.',
                         'cols7' => 'Cant.',
                         'cols8' => 'Precio Uni.',
@@ -3398,10 +3398,10 @@ public function select_cmbVendedor($index){
                 if ($contador == $total_items AND $sobrantes > 0) {
                     $col_names = array(
                         'cols1' => 'Item',
-                        'cols2' => utf8_decode_seguro('Código'),
+                        'cols2' => utf8_decode_seguro('CÃ³digo'),
                         'cols3' => 'Marca',
                         'cols4' => 'Modelo',
-                        'cols5' => utf8_decode_seguro('Descripci�n'),
+                        'cols5' => utf8_decode_seguro('Descripción'),
                         'cols6' => 'Uni.',
                         'cols7' => 'Cant.',
                         'cols8' => 'Precio Uni.',
@@ -3453,10 +3453,10 @@ public function select_cmbVendedor($index){
                     if ($contador == $total_items) {
                         $col_names = array(
                             'cols1' => 'Item',
-                            'cols2' => utf8_decode_seguro('Código'),
+                            'cols2' => utf8_decode_seguro('CÃ³digo'),
                             'cols3' => 'Marca',
                             'cols4' => 'Modelo',
-                            'cols5' => utf8_decode_seguro('Descripci�n'),
+                            'cols5' => utf8_decode_seguro('Descripción'),
                             'cols6' => 'Uni.',
                             'cols7' => 'Cant.',
                             'cols8' => 'Precio Uni.',
@@ -3492,10 +3492,10 @@ public function select_cmbVendedor($index){
                     if ($contador % 8 == 0) {
                         $col_names = array(
                             'cols1' => 'Item',
-                            'cols2' => utf8_decode_seguro('Código'),
+                            'cols2' => utf8_decode_seguro('CÃ³digo'),
                             'cols3' => 'Marca',
                             'cols4' => 'Modelo',
-                            'cols5' => utf8_decode_seguro('Descripci�n'),
+                            'cols5' => utf8_decode_seguro('Descripción'),
                             'cols6' => 'Uni.',
                             'cols7' => 'Cant.',
                             'cols8' => 'Precio Uni.',
@@ -3548,10 +3548,10 @@ public function select_cmbVendedor($index){
                     if ($contador == $total_items) {
                         $col_names = array(
                             'cols1' => 'Item',
-                            'cols2' => utf8_decode_seguro('Código'),
+                            'cols2' => utf8_decode_seguro('CÃ³digo'),
                             'cols3' => 'Marca',
                             'cols4' => 'Modelo',
-                            'cols5' => utf8_decode_seguro('Descripci�n'),
+                            'cols5' => utf8_decode_seguro('Descripción'),
                             'cols6' => 'Uni.',
                             'cols7' => 'Cant.',
                             'cols8' => 'Precio Uni.',
@@ -3608,11 +3608,11 @@ public function select_cmbVendedor($index){
         /* Condiciones de venta */
         $db_data = array(array('cols0' => '<b>Condiciones de venta:</b>', 'cols1' => '', 'cols2' => ''),
             array('cols0' => 'Forma de pago', 'cols1' => ': ', 'cols2' => utf8_decode_seguro(strtoupper($forma_pago))),
-            array('cols0' => utf8_decode_seguro('Banco de Crédito Soles'), 'cols1' => ':', 'cols2' => 'Cta. Cte. No. 285-1178292-0-25'),
-            array('cols0' => utf8_decode_seguro('Banco de Crédito Dólares'), 'cols1' => ':', 'cols2' => 'Cta. Cte. No. 285-1202278-1-18'),
+            array('cols0' => utf8_decode_seguro('Banco de CrÃ©dito Soles'), 'cols1' => ':', 'cols2' => 'Cta. Cte. No. 285-1178292-0-25'),
+            array('cols0' => utf8_decode_seguro('Banco de CrÃ©dito DÃ³lares'), 'cols1' => ':', 'cols2' => 'Cta. Cte. No. 285-1202278-1-18'),
             array('cols0' => 'Lugar de entrega', 'cols1' => ':', 'cols2' => utf8_decode_seguro(strtoupper($lugar_entrega))),
             array('cols0' => 'Plazo de entrega', 'cols1' => ':', 'cols2' => utf8_decode_seguro(strtoupper($tiempo_entrega))),
-           // array('cols0' => utf8_decode_seguro('Garantía'), 'cols1' => ':', 'cols2' => utf8_decode_seguro($garantia)),
+           // array('cols0' => utf8_decode_seguro('GarantÃ­a'), 'cols1' => ':', 'cols2' => utf8_decode_seguro($garantia)),
             array('cols0' => 'Validez de la Pte.', 'cols1' => ':', 'cols2' => utf8_decode_seguro($validez))
         );
         $this->cezpdf_horizontal->ezTable($db_data, "", "", array(
@@ -3748,15 +3748,15 @@ public function select_cmbVendedor($index){
 
         $delta = 20;
 
-        $this->cezpdf->ezText(utf8_decode_seguro('<b>Cotización: ') . $codificacion . '</b>', 17, array("leading" => 40, 'left' => 185));
+        $this->cezpdf->ezText(utf8_decode_seguro('<b>CotizaciÃ³n: ') . $codificacion . '</b>', 17, array("leading" => 40, 'left' => 185));
         $this->cezpdf->ezText('', '', array("leading" => 10));
 
 
         /* Datos del cliente */
-        $db_data = array(array('cols1' => utf8_decode_seguro('Se�or(es)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols3' => 'R.U.C.', 'cols4' => ': ' . $ruc . '       Fecha: ' . $fecha),
-            array('cols1' => utf8_decode_seguro('Direcci�n'), 'cols2' => ': ' . utf8_decode_seguro($direccion), 'cols3' => 'Vend.', 'cols4' => ': ' . $nom),
-            array('cols1' => utf8_decode_seguro('Atenci�n Sr(a)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols3' => '', 'cols4' => ''),
-            array('cols1' => utf8_decode_seguro('Tel�fono'), 'cols2' => ': ' . $telefono, 'cols3' => 'E-mail', 'cols4' => ': ' . $email)
+        $db_data = array(array('cols1' => utf8_decode_seguro('Señor(es)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols3' => 'R.U.C.', 'cols4' => ': ' . $ruc . '       Fecha: ' . $fecha),
+            array('cols1' => utf8_decode_seguro('Dirección'), 'cols2' => ': ' . utf8_decode_seguro($direccion), 'cols3' => 'Vend.', 'cols4' => ': ' . $nom),
+            array('cols1' => utf8_decode_seguro('Atención Sr(a)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols3' => '', 'cols4' => ''),
+            array('cols1' => utf8_decode_seguro('Teléfono'), 'cols2' => ': ' . $telefono, 'cols3' => 'E-mail', 'cols4' => ': ' . $email)
         );
         $this->cezpdf->ezTable($db_data, "", "", array(
             'width' => 525,
@@ -3793,7 +3793,7 @@ public function select_cmbVendedor($index){
         $col_names = array(
             'cols1' => 'Item',
             'cols2' => 'Marca',
-            'cols3' => utf8_decode_seguro('Descripci�n'),
+            'cols3' => utf8_decode_seguro('Descripción'),
             'cols4' => 'Uni.',
             'cols5' => 'Cant.',
             'cols6' => 'Precio Uni.',
@@ -3860,13 +3860,13 @@ public function select_cmbVendedor($index){
         }
         /* Condiciones de venta */
         $db_data = array(array('cols0' => '<b>CONDICIONES DE VENTA:</b>', 'cols1' => ''),
-            array('cols0' => utf8_decode_seguro('Tipo de Cambio del Día'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
+            array('cols0' => utf8_decode_seguro('Tipo de Cambio del DÃ­a'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
             array('cols0' => 'Moneda', 'cols1' => ': ' . $moneda_nombre),
             array('cols0' => 'Forma de Pago', 'cols1' => ': ' . utf8_decode_seguro($forma_pago)),
             array('cols0' => 'Los Precios de los Productos ', 'cols1' => ': ' . ($modo_impresion == '1' ? 'CONTIENEN IGV' : 'NO CONTIENEN IGV')),
             array('cols0' => 'Tiempo de Entrega', 'cols1' => ': ' . $tiempo_entrega),
             array('cols0' => 'Lugar de Entrega', 'cols1' => ': ' . utf8_decode_seguro($lugar_entrega)),
-            //array('cols0' => utf8_decode_seguro('Garantía'), 'cols1' => ': ' . utf8_decode_seguro($garantia)),
+            //array('cols0' => utf8_decode_seguro('GarantÃ­a'), 'cols1' => ': ' . utf8_decode_seguro($garantia)),
             array('cols0' => 'Validez de la Oferta', 'cols1' => ': ' . utf8_decode_seguro($validez)),
             array('cols0' => 'Contacto', 'cols1' => ': ' . utf8_decode_seguro($vendedor_nombre . ($vendedor_nombre_area != '' ? ' - AREA: ' . $vendedor_nombre_area : '')))
         );
@@ -4256,15 +4256,15 @@ public function select_cmbVendedor($index){
 
         $delta = 20;
 
-        $this->cezpdf->ezText(utf8_decode_seguro('<b>Cotización: ') . $codificacion . '</b>', 17, array("leading" => 40, 'left' => 185));
+        $this->cezpdf->ezText(utf8_decode_seguro('<b>CotizaciÃ³n: ') . $codificacion . '</b>', 17, array("leading" => 40, 'left' => 185));
         $this->cezpdf->ezText('', '', array("leading" => 10));
 
 
         /* Datos del cliente */
-        $db_data = array(array('cols1' => utf8_decode_seguro('Se�or(es)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols3' => 'R.U.C.', 'cols4' => ': ' . $ruc . '       Fecha: ' . $fecha),
-            array('cols1' => utf8_decode_seguro('Direcci�n'), 'cols2' => ': ' . utf8_decode_seguro($direccion), 'cols3' => '', 'cols4' => ''),
-            array('cols1' => utf8_decode_seguro('Atenci�n Sr(a)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols3' => '', 'cols4' => ''),
-            array('cols1' => utf8_decode_seguro('Tel�fono'), 'cols2' => ': ' . $telefono, 'cols3' => 'E-mail', 'cols4' => ': ' . $email)
+        $db_data = array(array('cols1' => utf8_decode_seguro('Señor(es)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols3' => 'R.U.C.', 'cols4' => ': ' . $ruc . '       Fecha: ' . $fecha),
+            array('cols1' => utf8_decode_seguro('Dirección'), 'cols2' => ': ' . utf8_decode_seguro($direccion), 'cols3' => '', 'cols4' => ''),
+            array('cols1' => utf8_decode_seguro('Atención Sr(a)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols3' => '', 'cols4' => ''),
+            array('cols1' => utf8_decode_seguro('Teléfono'), 'cols2' => ': ' . $telefono, 'cols3' => 'E-mail', 'cols4' => ': ' . $email)
         );
         $this->cezpdf->ezTable($db_data, "", "", array(
             'width' => 525,
@@ -4301,7 +4301,7 @@ public function select_cmbVendedor($index){
         $col_names = array(
             'cols1' => 'Item',
             'cols2' => 'Marca',
-            'cols3' => utf8_decode_seguro('Descripci�n'),
+            'cols3' => utf8_decode_seguro('Descripción'),
             'cols4' => 'Uni.',
             'cols5' => 'Cant.',
             'cols6' => 'Precio Uni.',
@@ -4368,13 +4368,13 @@ public function select_cmbVendedor($index){
         }
         /* Condiciones de venta */
         $db_data = array(array('cols0' => '<b>CONDICIONES DE VENTA:</b>', 'cols1' => ''),
-            array('cols0' => utf8_decode_seguro('Tipo de Cambio del Día'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
+            array('cols0' => utf8_decode_seguro('Tipo de Cambio del DÃ­a'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
             array('cols0' => 'Moneda', 'cols1' => ': ' . $moneda_nombre),
             array('cols0' => 'Forma de Pago', 'cols1' => ': ' . utf8_decode_seguro($forma_pago)),
             array('cols0' => 'Los Precios de los Productos ', 'cols1' => ': ' . ($modo_impresion == '1' ? 'CONTIENEN IGV' : 'NO CONTIENEN IGV')),
             array('cols0' => 'Tiempo de Entrega', 'cols1' => ': ' . $tiempo_entrega),
             array('cols0' => 'Lugar de Entrega', 'cols1' => ': ' . utf8_decode_seguro($lugar_entrega)),
-            //array('cols0' => utf8_decode_seguro('Garantía'), 'cols1' => ': ' . utf8_decode_seguro($garantia)),
+            //array('cols0' => utf8_decode_seguro('GarantÃ­a'), 'cols1' => ': ' . utf8_decode_seguro($garantia)),
             array('cols0' => 'Validez de la Oferta', 'cols1' => ': ' . utf8_decode_seguro($validez)),
             array('cols0' => 'Contacto', 'cols1' => ': ' . utf8_decode_seguro($vendedor_nombre . ($vendedor_nombre_area != '' ? ' - AREA: ' . $vendedor_nombre_area : '')))
         );
@@ -4496,15 +4496,15 @@ public function select_cmbVendedor($index){
 
         $delta = 20;
 
-        $this->cezpdf->ezText(utf8_decode_seguro('<b>Cotización: ') . $codificacion . '</b>', 17, array("leading" => 40, 'left' => 185));
+        $this->cezpdf->ezText(utf8_decode_seguro('<b>CotizaciÃ³n: ') . $codificacion . '</b>', 17, array("leading" => 40, 'left' => 185));
         $this->cezpdf->ezText('', '', array("leading" => 10));
 
 
         /* Datos del cliente */
-        $db_data = array(array('cols1' => utf8_decode_seguro('Se�or(es)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols3' => 'R.U.C.', 'cols4' => ': ' . $ruc . '       Fecha: ' . $fecha),
-            array('cols1' => utf8_decode_seguro('Direcci�n'), 'cols2' => ': ' . utf8_decode_seguro($direccion), 'cols3' => '', 'cols4' => ''),
-            array('cols1' => utf8_decode_seguro('Atenci�n Sr(a)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols3' => '', 'cols4' => ''),
-            array('cols1' => utf8_decode_seguro('Tel�fono'), 'cols2' => ': ' . $telefono, 'cols3' => 'E-mail', 'cols4' => ': ' . $email)
+        $db_data = array(array('cols1' => utf8_decode_seguro('Señor(es)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols3' => 'R.U.C.', 'cols4' => ': ' . $ruc . '       Fecha: ' . $fecha),
+            array('cols1' => utf8_decode_seguro('Dirección'), 'cols2' => ': ' . utf8_decode_seguro($direccion), 'cols3' => '', 'cols4' => ''),
+            array('cols1' => utf8_decode_seguro('Atención Sr(a)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols3' => '', 'cols4' => ''),
+            array('cols1' => utf8_decode_seguro('Teléfono'), 'cols2' => ': ' . $telefono, 'cols3' => 'E-mail', 'cols4' => ': ' . $email)
         );
         $this->cezpdf->ezTable($db_data, "", "", array(
             'width' => 525,
@@ -4541,7 +4541,7 @@ public function select_cmbVendedor($index){
         $col_names = array(
             'cols1' => 'Item',
             'cols2' => 'Marca',
-            'cols3' => utf8_decode_seguro('Descripci�n'),
+            'cols3' => utf8_decode_seguro('Descripción'),
             'cols4' => 'Uni.',
             'cols5' => 'Cant.',
             'cols6' => 'Precio Uni.',
@@ -4608,13 +4608,13 @@ public function select_cmbVendedor($index){
         }
         /* Condiciones de venta */
         $db_data = array(array('cols0' => '<b>CONDICIONES DE VENTA:</b>', 'cols1' => ''),
-            array('cols0' => utf8_decode_seguro('Tipo de Cambio del Día'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
+            array('cols0' => utf8_decode_seguro('Tipo de Cambio del DÃ­a'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
             array('cols0' => 'Moneda', 'cols1' => ': ' . $moneda_nombre),
             array('cols0' => 'Forma de Pago', 'cols1' => ': ' . utf8_decode_seguro($forma_pago)),
             array('cols0' => 'Los Precios de los Productos ', 'cols1' => ': ' . ($modo_impresion == '1' ? 'CONTIENEN IGV' : 'NO CONTIENEN IGV')),
             array('cols0' => 'Tiempo de Entrega', 'cols1' => ': ' . $tiempo_entrega),
             array('cols0' => 'Lugar de Entrega', 'cols1' => ': ' . utf8_decode_seguro($lugar_entrega)),
-           // array('cols0' => utf8_decode_seguro('Garantía'), 'cols1' => ': ' . utf8_decode_seguro($garantia)),
+           // array('cols0' => utf8_decode_seguro('GarantÃ­a'), 'cols1' => ': ' . utf8_decode_seguro($garantia)),
             array('cols0' => 'Validez de la Oferta', 'cols1' => ': ' . utf8_decode_seguro($validez)),
             array('cols0' => 'Contacto', 'cols1' => ': ' . utf8_decode_seguro($vendedor_nombre . ($vendedor_nombre_area != '' ? ' - AREA: ' . $vendedor_nombre_area : '')))
         );
@@ -4736,15 +4736,15 @@ public function select_cmbVendedor($index){
 
         $delta = 20;
 
-        $this->cezpdf->ezText(utf8_decode_seguro('<b>Cotización: ') . $codificacion . '</b>', 17, array("leading" => 40, 'left' => 185));
+        $this->cezpdf->ezText(utf8_decode_seguro('<b>CotizaciÃ³n: ') . $codificacion . '</b>', 17, array("leading" => 40, 'left' => 185));
         $this->cezpdf->ezText('', '', array("leading" => 10));
 
 
         /* Datos del cliente */
-        $db_data = array(array('cols1' => utf8_decode_seguro('Se�or(es)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols3' => 'R.U.C.', 'cols4' => ': ' . $ruc . '       Fecha: ' . $fecha),
-            array('cols1' => utf8_decode_seguro('Direcci�n'), 'cols2' => ': ' . utf8_decode_seguro($direccion), 'cols3' => '', 'cols4' => ''),
-            array('cols1' => utf8_decode_seguro('Atenci�n Sr(a)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols3' => '', 'cols4' => ''),
-            array('cols1' => utf8_decode_seguro('Tel�fono'), 'cols2' => ': ' . $telefono, 'cols3' => 'E-mail', 'cols4' => ': ' . $email)
+        $db_data = array(array('cols1' => utf8_decode_seguro('Señor(es)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols3' => 'R.U.C.', 'cols4' => ': ' . $ruc . '       Fecha: ' . $fecha),
+            array('cols1' => utf8_decode_seguro('Dirección'), 'cols2' => ': ' . utf8_decode_seguro($direccion), 'cols3' => '', 'cols4' => ''),
+            array('cols1' => utf8_decode_seguro('Atención Sr(a)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols3' => '', 'cols4' => ''),
+            array('cols1' => utf8_decode_seguro('Teléfono'), 'cols2' => ': ' . $telefono, 'cols3' => 'E-mail', 'cols4' => ': ' . $email)
         );
         $this->cezpdf->ezTable($db_data, "", "", array(
             'width' => 525,
@@ -4781,7 +4781,7 @@ public function select_cmbVendedor($index){
         $col_names = array(
             'cols1' => 'Item',
             'cols2' => 'Marca',
-            'cols3' => utf8_decode_seguro('Descripci�n'),
+            'cols3' => utf8_decode_seguro('Descripción'),
             'cols4' => 'Uni.',
             'cols5' => 'Cant.',
             'cols6' => 'Precio Uni.',
@@ -4848,13 +4848,13 @@ public function select_cmbVendedor($index){
         }
         /* Condiciones de venta */
         $db_data = array(array('cols0' => '<b>CONDICIONES DE VENTA:</b>', 'cols1' => ''),
-            array('cols0' => utf8_decode_seguro('Tipo de Cambio del D�a'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
+            array('cols0' => utf8_decode_seguro('Tipo de Cambio del Día'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
             array('cols0' => 'Moneda', 'cols1' => ': ' . $moneda_nombre),
             array('cols0' => 'Forma de Pago', 'cols1' => ': ' . utf8_decode_seguro($forma_pago)),
             array('cols0' => 'Los Precios de los Productos ', 'cols1' => ': ' . ($modo_impresion == '1' ? 'CONTIENEN IGV' : 'NO CONTIENEN IGV')),
             array('cols0' => 'Tiempo de Entrega', 'cols1' => ': ' . $tiempo_entrega),
             array('cols0' => 'Lugar de Entrega', 'cols1' => ': ' . utf8_decode_seguro($lugar_entrega)),
-           // array('cols0' => utf8_decode_seguro('Garantía'), 'cols1' => ': ' . utf8_decode_seguro($garantia)),
+           // array('cols0' => utf8_decode_seguro('GarantÃ­a'), 'cols1' => ': ' . utf8_decode_seguro($garantia)),
             array('cols0' => 'Validez de la Oferta', 'cols1' => ': ' . utf8_decode_seguro($validez)),
             array('cols0' => 'Contacto', 'cols1' => ': ' . utf8_decode_seguro($vendedor_nombre . ($vendedor_nombre_area != '' ? ' - AREA: ' . $vendedor_nombre_area : '')))
         );
@@ -4946,7 +4946,7 @@ public function select_cmbVendedor($index){
         $this->cezpdf->selectFont(APPPATH . 'libraries/fonts/Helvetica.afm');
         $delta = 20;
 
-        $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
+        $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","SÃ¡bado");
     $meses = array("enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre");
  
 $fechhoy="".$dias[date('w')]." ".date('d')." de ".$meses[date('n')-1]. " del ".date('Y');

@@ -295,25 +295,26 @@ jQuery(document).ready(function () {
     });
     
     $("#cancelarComprobanteAlterna").click(function () {
-        url = base_url + "index.php/ventas/comprobante/alterno";
+        url = base_url + "index.php/ventas/comprobantealterno/alterno";
         location.href = url;
     });
     
+  
     $("#grabarComprobanteAlterna").click(function () {
-    	
-        url = base_url + "index.php/ventas/comprobante/comprobantegrabar_alterno";
+        var codigo=$('#codigo').val();
+        if(codigo==''){
+            url = base_url + "index.php/ventas/comprobante/comprobantegrabar_alterno";
+        }
+        else{
+            url = base_url + "index.php/ventas/comprobantealterno/comprobantemodificar_alterno";
+        }
         dataEnviar = $('#grabarcomprobantealterno').serialize();
-        
-        $.post(url,dataEnviar,function(data){
-			url = base_url+"index.php/ventas/comprobante/alterno";
-			location.href = url;
-		});
-        
-           
+       $.post(url,dataEnviar,function(data){
+            urls = base_url+"index.php/ventas/comprobantealterno/alterno";
+            location.href = urls;
+        }); 
     });
-    
-    
-    
+
     $("#limpiarComprobante").click(function () {
         url = base_url + "index.php/ventas/comprobante/comprobantes" + "/" + tipo_oper + "/" + tipo_docu + "/0/1";
         location.href = url;
@@ -325,7 +326,7 @@ jQuery(document).ready(function () {
     });
     
     $("#nuevasimulaCompro").click(function(){
-    	location.href = base_url+"index.php/ventas/comprobante/comprobantenuevo_alterno";
+    	location.href = base_url+"index.php/ventas/comprobantealterno/comprobantenuevo_alterno";
     });
 
     $("#repo1").click(function () {
@@ -395,6 +396,43 @@ jQuery(document).ready(function () {
         ver_comprobante_pdf($('#codigo').val());
         $("#cancelarComprobante").click();
         return true;*/
+    });
+    
+    $("#linkVerDirecciones").click(function () {
+    	
+        if (tipo_oper == 'V')
+            cliente = $("#cliente").val();
+        $("#lista_direcciones ul").html('');
+        $("#lista_direcciones").slideToggle("fast", function () {
+            if (tipo_oper == 'V')
+                var url = base_url + "index.php/ventas/cliente/JSON_listar_sucursalesCliente/" + cliente;
+            else
+                url = base_url + "index.php/maestros/empresa/JSON_listar_sucursalesEmpresa";
+            
+            $.getJSON(url, function (data) {
+                $.each(data, function (i, item) {
+                    fila = '';
+                    if (item.Tipo == '1')
+                        fila += '<li style="list-style: none; font-weight:bold; color:#aaa">' + item.Titulo + '</li>';
+                    else {
+                        fila += '<li><a href="javascript:;">' + item.EESTAC_Direccion;
+                        if (item.distrito != '')
+                            fila += ' ' + item.distrito;
+                        if (item.provincia != '')
+                            fila += ' - ' + item.provincia;
+                        if (item.departamento != '')
+                            fila += ' - ' + item.departamento;
+                        fila += '</a></li>';
+                    }
+                    $("#lista_direcciones ul").append(fila);
+                });
+            });
+            return true;
+        });
+    });
+    $("#lista_direcciones li a").live('click', function () {
+        $("#direccionsuc").val($(this).html());
+        $('#lista_direcciones').slideUp("fast");
     });
 
     function activarBusqueda()
@@ -605,7 +643,7 @@ function setLimite(limite) {
 function eliminar_comprobantealterno($codigo){
 	  if (confirm('Esta seguro que desea eliminar este comprobante alterno?')) {
 	        dataString = "codigo=" + $codigo;
-	        url = base_url + "index.php/ventas/comprobante/comprobante_eliminaralterno";
+	        url = base_url + "index.php/ventas/comprobantealterno/comprobante_eliminaralterno";
 	        $.post(url, dataString, function (data) {
 	            location.href = base_url + "index.php/ventas/comprobante/alterno";
 	        });
@@ -694,6 +732,10 @@ function estadisticas_compras_ventas_mensual_excel(tipo) {
 function editar_comprobante(comprobante) {
     //alert(base_url)
     location.href = base_url + "index.php/ventas/comprobante/comprobante_editar/" + comprobante + "/" + tipo_oper + "/" + tipo_docu;
+}
+function editar_comprobantealterno(comprobante) {
+    //alert(base_url)
+    location.href = base_url + "index.php/ventas/comprobantealterno/comprobanteeditar_alterno/" + comprobante;
 }
 
 function eliminar_comprobante(comprobante) {
@@ -1000,10 +1042,10 @@ function calcula_importe(n) {
 
     importe = money_format(precio - parseFloat(total_dscto) + parseFloat(total_igv));
 
-    document.getElementById(c).value = total_dscto;
-    document.getElementById(d).value = total_igv;
-    document.getElementById(e).value = precio;
-    document.getElementById(f).value = importe;
+    document.getElementById(c).value = total_dscto.toFixed(2);
+    document.getElementById(d).value = total_igv.toFixed(2);
+    document.getElementById(e).value = precio.toFixed(2);
+    document.getElementById(f).value = importe.toFixed(2);
 
     calcula_totales();
 }
@@ -1386,7 +1428,7 @@ function modifica_pu(n) {
         pu = 0;
     }
 
-    document.getElementById(i).value = pu_conigv;
+    document.getElementById(i).value = pu_conigv.toFixed(2);
 
     calcula_importe(n);
 }
@@ -2664,6 +2706,10 @@ function agregar_todo_recu(guia) {
 	    var url = base_url + "index.php/ventas/comprobante/ver_pdf_conmenbrete_alternoantiguo/"+comprobante;
 	    window.open(url, '', "width=800,height=600,menubars=no,resizable=no;");
 	}
+    function ver_pdf_conmenbretealterno_antiguo1(comprobante) {
+        var url = base_url + "index.php/ventas/comprobante/ver_pdf_conmenbrete_alternoantiguo1/"+comprobante;
+        window.open(url, '', "width=800,height=600,menubars=no,resizable=no;");
+    }
 
     function verPdf(){
     var dataEviar="_____";
@@ -2698,3 +2744,4 @@ function agregar_todo_recu(guia) {
     window.open(url3, '', "width=800,height=600,menubars=no,resizable=no;");
  
 }
+   

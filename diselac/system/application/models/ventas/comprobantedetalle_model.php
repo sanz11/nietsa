@@ -21,6 +21,17 @@ class Comprobantedetalle_model extends Model{
             return $data;
         }
     }
+    public function listar_detallealterno($comprobante_detalle){
+         $where = array("CCA_Codigo"=>$comprobante_detalle,"CDA_Flag"=>"1");
+        $query = $this->db->order_by('CDA_Codigo')->where($where)->get('cji_comprobante_alternodetalle
+');
+        if($query->num_rows>0){
+            foreach($query->result() as $fila){
+                $data[] = $fila;
+            }
+            return $data;
+        }
+    }
     public function insertar($filter=null)
     {
         $this->db->insert('cji_comprobantedetalle',(array)$filter);

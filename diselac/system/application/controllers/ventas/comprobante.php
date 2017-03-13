@@ -951,7 +951,12 @@ class Comprobante extends Controller{
             $data['cboGuiaRemision'] = $this->OPTION_generador($this->guiarem_model->listar_guiarem_nocomprobante($tipo_oper), 'GUIAREMP_Codigo', array('codigo', 'nombre'), '', array('', '::Seleccione::'), ' / ');
             $data['cboVendedor'] = $this->OPTION_generador($this->directivo_model->listar_directivo($this->session->userdata('empresa'), '4'), 'DIREP_Codigo', array('PERSC_ApellidoPaterno', 'PERSC_ApellidoMaterno', 'PERSC_Nombre'), '', array('', '::Seleccione::'), ' ');
             $cambio_dia = $this->tipocambio_model->obtener_tdc_dolar(date('Y-m-d'));
-
+            
+            
+            $punto_llegada="";
+            $data['direccionsuc'] = form_input(array("name" => "direccionsuc", "id" => "direccionsuc", "class" => "cajaGeneral", "size" => "40", "maxlength" => "250", "value" => $punto_llegada));
+           
+            
             if (count($cambio_dia) > 0) {
                 $data['tdc'] = $cambio_dia[0]->TIPCAMC_FactorConversion;
             } else {
@@ -1074,6 +1079,8 @@ public function select_cmbVendedor($index){
         //VERIFICO SI TODAS LAS SERIES HAN SIDO INGRESADAS
         $prodcodigo = $this->input->post('prodcodigo');
         $flagGenInd = $this->input->post('flagGenIndDet');
+        $direccion = $this->input->post('direccionsuc');
+        $filter->CPC_Direccion = $direccion;
         $prodcantidad = $this->input->post('prodcantidad');
         $proddescri = $this->input->post('proddescri');
         $dref = $this->input->post('dRef');
@@ -1085,6 +1092,7 @@ public function select_cmbVendedor($index){
         $filter = new stdClass();
         $filter->CPC_TipoOperacion = $tipo_oper;
         $filter->CPC_TipoDocumento = $tipo_docu;
+        
         $filter->ALMAP_Codigo = $this->input->post('almacen');
         $filter->CPC_NumeroAutomatico= $this->input->post('numeroAutomatico');
 
@@ -1230,7 +1238,7 @@ public function select_cmbVendedor($index){
         if (is_array($prodcodigo)) {
             foreach ($prodcodigo as $indice => $valor) {
                 $filter = new stdClass();
-             //   $filter->CPDEC_ITEMS = $indice+1;
+                $filter->CPDEC_ITEMS = $indice+1;
                 $filter->CPP_Codigo = $comprobante;
                 $filter->PROD_Codigo = $prodcodigo[$indice];
 
@@ -1450,6 +1458,8 @@ public function select_cmbVendedor($index){
         //if ($this->input->post('vendedor') != '')
             $filter->CPC_Vendedor = $this->input->post('cmbVendedor');
         $filter->CPC_TDC = $this->input->post('tdc');
+        $direccion = $this->input->post('direccionsuc');
+        $filter->CPC_Direccion = $direccion;
 
 
         $comp_confi = $this->companiaconfiguracion_model->obtener($this->somevar['compania']);
@@ -1566,7 +1576,7 @@ public function select_cmbVendedor($index){
                 if ($detaccion[$indice] != 'e') {
                     
                     $filter = new stdClass();
-               //     $filter->CPDEC_ITEMS = $indice+1;
+                    $filter->CPDEC_ITEMS = $indice+1;
 
                     $filter->CPP_Codigo = $comprobante;
                     $filter->PROD_Codigo = $prodcodigo[$indice];
@@ -1749,6 +1759,7 @@ public function select_cmbVendedor($index){
         $numero = $datos_comprobante[0]->CPC_Numero;
         $cliente = $datos_comprobante[0]->CLIP_Codigo;
         $proveedor = $datos_comprobante[0]->PROVP_Codigo;
+        $direccion = $datos_comprobante[0]->CPC_Direccion;
         $forma_pago = $datos_comprobante[0]->FORPAP_Codigo;
         $moneda = $datos_comprobante[0]->MONED_Codigo;
         $subtotal = $datos_comprobante[0]->CPC_subtotal;
@@ -1853,6 +1864,7 @@ public function select_cmbVendedor($index){
         $data['cboFormaPago'] = $this->OPTION_generador($this->formapago_model->listar(), 'FORPAP_Codigo', 'FORPAC_Descripcion', $forma_pago);
         $data['cboMoneda'] = $this->OPTION_generador($this->moneda_model->listar(), 'MONED_Codigo', 'MONED_Descripcion', $moneda);
         $data['cboVendedor'] = $this->OPTION_generador($this->directivo_model->listar_directivo($this->session->userdata('empresa'), '4'), 'DIREP_Codigo', array('PERSC_ApellidoPaterno', 'PERSC_ApellidoMaterno', 'PERSC_Nombre'), $vendedor, array('', '::Seleccione::'), ' ');
+        $data['direccionsuc'] = form_input(array("name" => "direccionsuc", "id" => "direccionsuc", "class" => "cajaGeneral", "size" => "40", "maxlength" => "250", "value" => $direccion));
         $data['serie'] = $serie;
         $data['numero'] = $numero;
         
@@ -2003,8 +2015,12 @@ public function select_cmbVendedor($index){
 
         $prodpu= $this->input->post('prodpu');
         $prodprecio= $this->input->post('prodprecio');
+        
+        $direccion = $this->input->post('direccionsuc');
+       
 
         $filter = new stdClass();
+        $filter->CPC_Direccion = $direccion;
         $filter->FORPAP_Codigo = NULL;
         //if ($this->input->post('forma_pago') != '' && $this->input->post('forma_pago') != '0')
         $filter->FORPAP_Codigo = $this->input->post('forma_pago');
@@ -2411,7 +2427,7 @@ public function select_cmbVendedor($index){
                 
             }
         }
-       //  $this->item($codigo);
+         $this->item($codigo);
         /**ingreso de modificacion comprobante en los diferentes movimientos 
          * verifica si alguna guia de remision lo contiene y lo modifica segun el comprobante
          * **/
@@ -8038,11 +8054,11 @@ echo $resultado;
                             $nombrecliente = $valor1->EMPRC_RazonSocial;
                         }
                         
-//                      $editar = "<a href='javascript:;' onclick='editar_comprobante(" . $codigo . ")' target='_parent'><img src='" . base_url() . "images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
+                      $editar = "<a href='javascript:;' onclick='editar_comprobantealterno(" . $codigo . ")' target='_parent'><img src='" . base_url() . "images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
                         $ver2 = "<a href='javascript:;' onclick='ver_pdf_conmenbretealterno_antiguo(" . $codigo .",8,1)'  target='_parent'><img src='" . base_url() . "images/pdf.png' width='16' height='16' border='0' title='Ver PDF'></a>";                      
                         $eliminar = "<a href='javascript:;' onclick='eliminar_comprobantealterno(" . $codigo . ")' target='_parent'><img src='" . base_url() . "images/eliminar.png' width='16' height='16' border='0' title='Eliminar'></a>";
                         
-                    $lista[] = array($item++, $fecha, $serie,$this->getOrderNumeroSerie($numero), $nombrecliente , $ver2,$eliminar );
+                    $lista[] = array($item++, $fecha, $serie,$this->getOrderNumeroSerie($numero), $nombrecliente ,$editar, $ver2,$eliminar );
 
             }
         }
@@ -8086,26 +8102,25 @@ echo $resultado;
         
         $this->cezpdf = new Cezpdf('a4', 'portrait');
         $this->cezpdf->selectFont('system/application/libraries/fonts/Helvetica-Bold.afm');
-        $notimg = "facturaalternacompro.jpg"; 
+        $notimg = "factura1.jpg"; 
         $this->cezpdf = new backgroundPDF('a4', 'portrait', 'image', array('img' => 'images/documentos/' . $notimg));
         
         /* Cabecera */
-                $this->cezpdf->addText(400, 690, 23, $serie . ' - ' . $numero);     
-                $this->cezpdf->addText(85, 653, 9, $Senior);
-                $this->cezpdf->addText(85, 630, 9, $direccion);
-                $this->cezpdf->addText(85, 605, 9, $ruc);
+                $this->cezpdf->addText(358, 726, 23, $serie . ' -        ' . $numero);     
+                $this->cezpdf->addText(85, 703, 9, $Senior);
+                $this->cezpdf->addText(82, 686, 8, $direccion);
+                $this->cezpdf->addText(85, 668, 9, $ruc);
                 
                 $anio = substr($fecha, 0, 4);
-                $mes = mes_textual(substr($fecha, 3, 2));
+                $mes = mes_textual(substr($fecha, 5, 2));//
                 $dia = substr($fecha, 8, 3);
                 
-                $fecha_text = utf8_decode_seguro( $dia. '                                   ' .$mes. '
-                                    '.$anio );
-                $this->cezpdf->addText(400, 603, 11,$fecha_text);
+                $fecha_text = utf8_decode_seguro( $dia. '      ' .$mes. '              '.$anio );
+                $this->cezpdf->addText(367, 660, 11,$fecha_text);
                 
                 $buscarccd = $this->comprobante_model->obtener_comprobantealternadetalle($codigo);
                 $moneda_simbolo = "S/";
-                $y = 560;
+                $y = 633;
                 foreach ($buscarccd as $indice => $valor){
                     $cantidad = $valor->CDA_Cantidad;
                     $nombreprod = $valor->PROD_Nombre;
@@ -8114,21 +8129,87 @@ echo $resultado;
                     
                             $this->cezpdf->addText(70, $y, 9,  $cantidad);
                             
-                            $this->cezpdf->addText(120, $y, 9,  $nombreprod);
-                            $this->cezpdf->addText(440, $y, 9, $moneda_simbolo . ' ' . number_format($preciouni, 2));
-                            $this->cezpdf->addText(500, $y, 9, $moneda_simbolo . ' ' . number_format($importe, 2));
+                            $this->cezpdf->addText(105, $y, 9,  $nombreprod);
+                            $this->cezpdf->addText(450, $y, 9, $moneda_simbolo . ' ' . number_format($preciouni, 2));
+                            $this->cezpdf->addText(400, $y, 9, $moneda_simbolo . ' ' . number_format($importe, 2));
                             $y-=20;
                 }
                 
-        $this->cezpdf->addText(100, 160, 9, strtoupper(num2letras(round($preciodeventa, 2))) . ' ' . 'Soles' . ' ' . $moneda_simbolo . ' ' . number_format($preciodeventa, 2));
-        $this->cezpdf->addText(500, 130, 9, $moneda_simbolo . ' ' . (number_format($valordeventa, 2)));
-        $this->cezpdf->addText(500, 110, 9, $moneda_simbolo . ' ' . number_format($igvtotal, 2));
-        $this->cezpdf->addText(500, 85, 9, $moneda_simbolo . ' ' . number_format(($preciodeventa), 2));
+        $this->cezpdf->addText(100, 330, 9, strtoupper(num2letras(round($preciodeventa, 2))) . ' ' . 'Soles' . ' ' . $moneda_simbolo . ' ' . number_format($preciodeventa, 2));
+        $this->cezpdf->addText(460, 320, 9, $moneda_simbolo . ' ' . (number_format($valordeventa, 2)));
+        $this->cezpdf->addText(460, 300, 9, $moneda_simbolo . ' ' . number_format($igvtotal, 2));
+        $this->cezpdf->addText(460, 280, 9, $moneda_simbolo . ' ' . number_format(($preciodeventa), 2));
          
         $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'nama_file.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
         $this->cezpdf->ezStream($cabecera);
     
     }
+    public function ver_pdf_conmenbrete_alternoantiguo1($codigo)
+    {
+    
+       $hoy = date("Y-m-d");
+        $datos_comprobante = $this->comprobante_model->obtener_comprobantealterna($codigo);
+
+        $numero = $datos_comprobante[0]->CCA_Numero;
+        $serie = $datos_comprobante[0]->CCA_Serie;
+        $codigocliente = $datos_comprobante[0]->CLIP_Codigo;
+        $fecha =$datos_comprobante[0]->CCA_FechaRegistro;
+        $valordeventa = $datos_comprobante[0]->CCA_SubTotal;
+        $igvtotal = $datos_comprobante[0]->CCA_IGVTotal;
+        $preciodeventa = $datos_comprobante[0]->CCA_PrecioTotal;
+        
+        $buscarcliente = $this->comprobante_model->obtener_clienteempresa($codigocliente);
+        $Senior = $buscarcliente[0]->EMPRC_RazonSocial;
+        $ruc = $buscarcliente[0]->EMPRC_Ruc;
+        $direccion = $buscarcliente[0]->EMPRC_Direccion;
+        
+        
+    
+        
+        $this->cezpdf = new Cezpdf('a4', 'portrait');
+        $this->cezpdf->selectFont('system/application/libraries/fonts/Helvetica-Bold.afm');
+        $notimg = "comprobantecompra1.jpg"; 
+        $this->cezpdf = new backgroundPDF('a4', 'portrait', 'image', array('img' => 'images/documentos/' . $notimg));
+        
+        /* Cabecera */
+                //$this->cezpdf->addText(358, 726, 23, $serie . ' -        ' . $numero);     
+                $this->cezpdf->addText(85, 703, 9, $Senior);
+                $this->cezpdf->addText(82, 686, 8, $direccion);
+                $this->cezpdf->addText(85, 668, 9, $ruc);
+                
+                $anio = substr($fecha, 0, 4);
+                $mes = mes_textual(substr($fecha, 5, 2));//
+                $dia = substr($fecha, 8, 3);
+                
+                $fecha_text = utf8_decode_seguro( $dia. '      ' .$mes. '              '.$anio );
+                $this->cezpdf->addText(367, 660, 11,$fecha_text);
+                
+                $buscarccd = $this->comprobante_model->obtener_comprobantealternadetalle($codigo);
+                $moneda_simbolo = "S/";
+                $y = 633;
+                foreach ($buscarccd as $indice => $valor){
+                    $cantidad = $valor->CDA_Cantidad;
+                    $nombreprod = $valor->PROD_Nombre;
+                    $preciouni = $valor->CDA_PrecioPorProducto;
+                    $importe = $valor->CDA_PUC_IGV ;
+                    
+                            $this->cezpdf->addText(70, $y, 9,  $cantidad);
+                            
+                            $this->cezpdf->addText(105, $y, 9,  $nombreprod);
+                            $this->cezpdf->addText(450, $y, 9, $moneda_simbolo . ' ' . number_format($preciouni, 2));
+                            $this->cezpdf->addText(400, $y, 9, $moneda_simbolo . ' ' . number_format($importe, 2));
+                            $y-=20;
+                }
+                
+        $this->cezpdf->addText(100, 330, 9, strtoupper(num2letras(round($preciodeventa, 2))) . ' ' . 'Soles' . ' ' . $moneda_simbolo . ' ' . number_format($preciodeventa, 2));
+        $this->cezpdf->addText(460, 320, 9, $moneda_simbolo . ' ' . (number_format($valordeventa, 2)));
+        $this->cezpdf->addText(460, 300, 9, $moneda_simbolo . ' ' . number_format($igvtotal, 2));
+        $this->cezpdf->addText(460, 280, 9, $moneda_simbolo . ' ' . number_format(($preciodeventa), 2));
+         
+        $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'nama_file.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
+        $this->cezpdf->ezStream($cabecera);
+    }
+    
     
     
     public function comprobantenuevo_alterno(){

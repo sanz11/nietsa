@@ -101,8 +101,8 @@ public function productos($flagBS = 'B', $j = '0' ,$limpia='')
         $conf['per_page'] =50;
         $offset = (int)$this->uri->segment(5);
 
-        //$listado_productos = $this->producto_model->listar_productos($flagBS, "1", "", "1", $conf['per_page'], $offset);
-        $listado_productos = $this->producto_model->productos_activos($flagBS, $conf['per_page'], $offset);
+        $listado_productos = $this->producto_model->listar_productos($flagBS, "1", "", "1", $conf['per_page'], $offset);
+        //$listado_productos = $this->producto_model->productos_activos($flagBS, $conf['per_page'], $offset);
         $data['registros'] = count($this->producto_model->productos_activos($flagBS));
        // $data['registros'] = count($this->producto_model->listar_productos($flagBS, "1"));
         $conf['total_rows'] = $data['registros'];

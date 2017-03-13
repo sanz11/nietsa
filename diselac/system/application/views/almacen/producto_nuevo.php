@@ -211,7 +211,15 @@
                                         else
                                             echo 'Servicio';
                                         ?> (*)</td>
-                                    <td><input type="text" class="cajaGrande" name="nombre_producto" id="nombre_producto" required="required" style="width:320px"   value="<?php echo str_replace('"', "''", $nombre_producto); ?>" onblur="buscar_productoint();"></td>
+                                    <td>
+ <?php
+                                        if ($flagBS == 'B')
+                              echo '<input type="text" class="cajaGrande" name="nombre_producto" id="nombre_producto" required="required" style="width:320px"   value="'.str_replace("", "", $nombre_producto).'" onblur="buscar_productoint();"></td> ';
+                                        else
+                                            echo '<textarea rows="8" cols="56" class="cajaTextArea"  name="nombre_producto" id="nombre_producto" required="required"   onblur="buscar_productoint();">'.str_replace("", "", $nombre_producto).' </textarea>';
+                                        ?>
+
+</td>
                                     <td><?php
                                         if ($flagBS == 'B')
                                             echo 'Marca';
@@ -329,9 +337,16 @@
                                         <td></td>-->
 
                                 </tr>
-                                <tr>
-                                    <td valign="top">Descripción</td>
+                                <tr><?php if ($flagBS == 'B'){?>
+                                        	 <td valign="top">DescripciÃ³n</td>
                                     <td><textarea rows="8" cols="56" class="cajaTextArea"  name="descripcion_producto" id="descripcion_producto"><?php echo $descripcion_breve; ?></textarea></td>
+                                   
+                                        <?php }  else{?>
+                                        	 <td valign="top"></td>
+                                    <td><textarea style="display: none" rows="8" cols="56" class="cajaTextArea"  name="descripcion_producto" id="descripcion_producto"><?php echo $descripcion_breve; ?></textarea></td>
+                                   
+                                      <?php  }
+                                        ?>
                                     <td valign="top"><?php
                                         if ($flagBS == 'B')
                                             echo 'Imagen';

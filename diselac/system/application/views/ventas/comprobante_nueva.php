@@ -8,7 +8,7 @@ if (empty($persona))
 
 ?>
 <html>
-<head>
+<head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
     <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-ui-1.8.17.custom.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>js/funciones.js"></script>
@@ -1048,6 +1048,24 @@ Vendedor&nbsp;&nbsp;&nbsp;
                     <td>Almacen*</td>
                     <td><?php echo $cboAlmacen; ?></td>
                 </tr>
+                <?php if ($tipo_docu != 'B'){?>
+                	<tr>
+                		<td width="8%">
+                        	Direcci&oacute;n
+                    	</td>
+                    	<td colspan="3">
+                    		<?php echo $direccionsuc; ?>
+                    		<a href="javascript:;" id="linkVerDirecciones">
+                       			 <img src="<?php echo base_url(); ?>images/ver.png" border="0"/>
+                    		</a>
+
+                    		<div id="lista_direcciones" class="cuadro_flotante" style="width:315px;">
+                       		 	<ul>
+                       		 	</ul>
+                    		</div>
+                		</td>
+                	</tr>
+                	<?php }?>
             </table>
         </div>
         <div id="frmBusqueda"  <?php echo $hidden; ?>>
@@ -1596,7 +1614,7 @@ Vendedor&nbsp;&nbsp;&nbsp;
 
                 <?php if ($tipo_oper == 'V') { ?>
 
-                    <tr>
+                    <!--<tr>
 
                         <td class="busqueda">VISA</td>
 
@@ -1607,7 +1625,7 @@ Vendedor&nbsp;&nbsp;&nbsp;
  onKeyPress="return numbersonly(this,event,'.');"/></div>
                         </td>
 
-                    </tr>
+                    </tr>-->
 
                 <?php } ?>
 

@@ -572,6 +572,14 @@ $query = $this->db->get('cji_directivo u');
         $this->db->where($where);
         $this->db->update('cji_comprobante', (array) $filter);
     }
+    public function modificar_comprobantealterno($comprobante, $filter = null) {
+       /* $user = $this->somevar ['user'];
+        $filter->CCA_Codigo = $user;
+*/
+        $where = array("CCA_Codigo" => $comprobante);
+        $this->db->where($where);
+        $this->db->update('cji_comprobante_alterno', (array) $filter);
+    }
     
     public function buscarRolUsuario($nombre){
     	
@@ -1262,6 +1270,14 @@ public function verificar_inventariado($cod){
  	$this->db->insert("cji_comprobante_alternodetalle",(array)$filter);
  	return $this->db->insert_id();
  }
+
+public function eliminaralternodetalle1($codigo){
+    $where = array("CDA_Codigo" => $codigo);
+    $this->db->delete("cji_comprobante_alternodetalle",$where);
+    //$this->db->where("CDA_Codigo", $codigo);
+
+ }
+
     
  public function listar_comprobantealterna( $number_items = '', $offset = '', $fecha_registro = '') {
  	$sql = "select * from cji_comprobante_alterno where CCA_Flag = 1;";
@@ -1302,7 +1318,11 @@ public function verificar_inventariado($cod){
  	return array();
  }
  
- 
+ public function obtener_comprobantealterno($comprobante,$filter){
+      
+        $this->db->where('CDA_Codigo', $comprobante);
+        $this->db->update("cji_comprobante_alternodetalle",(array) $filter);
+ }
  public function obtener_comprobantealternadetalle($codigo){
  	$sql = "select * from cji_producto producto inner join cji_comprobante_alternodetalle comproaldeta 
  			on producto.PROD_Codigo = comproaldeta.PROD_Codigo where CDA_Flag = 1 and CCA_Codigo = $codigo;";
@@ -1317,16 +1337,10 @@ public function verificar_inventariado($cod){
  }
  
  public function  comprobante_eliminaralterno($codigo) {
- 	$sql = "update cji_comprobante_alterno comproalter
-			inner join cji_comprobante_alternodetalle comproalterdeta on comproalterdeta.CCA_Codigo = comproalter.CCA_Codigo
-			 set CDA_Flag = 0 , CCA_Flag = 0 where comproalter.CCA_Codigo = $codigo";
- 	$query = $this->db->query($sql);
- 	if($query->num_rows >0){
- 		foreach ($query->resul() as $fila){
- 			$data[] = $fila;
- 		}
- 		return $data;
- 	}
+ 	$filter= new stdClass;
+    $filter->CCA_Flag=0;
+ 	$this->db->where('CCA_Codigo', $codigo);
+        $this->db->update("cji_comprobante_alterno",(array) $filter);
  }
  
  

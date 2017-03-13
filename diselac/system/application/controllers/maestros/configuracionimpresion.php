@@ -532,7 +532,13 @@ class Configuracionimpresion extends Controller{
                             
                         }
                         if ($numeroEnLetra==1) {
-                            $valorVariableMostrar='SON: '.num2letras(round($valorVariableMostrar, 2));
+                           $valorVariableMostrar='SON '.num2letras(round($valorVariableMostrar, 2));
+                            //print_r($valorVariableMostrar)   ;              
+                        }
+                        elseif($numeroEnLetra==2){
+
+                            $valorVariableMostrar=mes_textual(round($valorVariableMostrar, 2));
+                           // print_r($valorVariableMostrar)   ; 
                         }
                         $pdf->SetFont('Arial', '', $docuitem_tamletra);
                         $pdf->SetY($docuitem_posiy);

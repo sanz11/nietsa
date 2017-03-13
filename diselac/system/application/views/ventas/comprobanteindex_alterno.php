@@ -37,7 +37,9 @@
                                 <td width="5%">SERIE</td>
                                 <td width="6%">NUMERO</td>
                                 <td width="20%">CLIENTE</td>
+                                <td width="20%">MODIFICAR</td>
                                 <td width="5%">PDF</td>
+                                <td width="5%">IMPRIMIR</td>
                                 <td width="6%">ELIMINAR</td>
 						 	</tr>
 						 	
@@ -53,6 +55,10 @@
                             <td><div align="center"><?php echo $valor[4];?></div></td>
                             <td><div align="center"><?php echo $valor[5];?></div></td>
                             <td><div align="center"><?php echo $valor[6];?></div></td>
+ <td><div align="center"><?php echo $valor[7];?></div></td>
+                            <td><div align="center"><?php echo $valor[8];?></div></td>
+                           
+
                             
                         </tr>
                         <?php

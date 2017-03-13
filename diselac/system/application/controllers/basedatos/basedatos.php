@@ -121,10 +121,10 @@ class basedatos extends Controller{
 				$ordenAdjG=$objCelda['G'];
 				
 				
-				$proddes = ($ordenAdjD);
+				$proddes = $ordenAdjD;
 			//	$arrlength = 0;
 				if(trim($proddes) !="" ){
-					$lista_proDet = $this->producto_model->verificaProductoDetalle(($ordenAdjD));
+					$lista_proDet = $this->producto_model->verificaProductoDetalle($ordenAdjD);
 					if(count($lista_proDet) > 0){
 						$nombreprodcto = $lista_proDet[0]->PROD_Nombre;
 						
@@ -145,7 +145,7 @@ class basedatos extends Controller{
 						}else{
 							/**SI NO EXISTE SE CREA UNA NUEVA MARCA EN LA TABLA cji_marca ***/
 							$filtros = new stdClass();
-							$filtros->MARCC_Descripcion = ($ordenAdjC);
+							$filtros->MARCC_Descripcion = $ordenAdjC;
 							$marcacodigo = $this->marca_model->insertar($filtros);
 							
 						}
@@ -164,8 +164,9 @@ class basedatos extends Controller{
 							/**SI NO EXISTE SE CREA UNA NUEVA FAMILIA EN LA TABLA cji_familia ***/
 							
 							$codigointerno = ""; // verificar esto
+						//	echo "<script>alert('codigoInterno : ".$codigointerno."')</script>";
 							$flagBS = "B";
-							$descripcion = ($ordenAdjB);
+							$descripcion = $ordenAdjB;
 							$codrelacion = "0";
 								
 							$familiacodigo =	$this->familia_model->insertar_familia($flagBS,$descripcion,$codrelacion,$codigointerno, $codigousuario='');
@@ -180,9 +181,9 @@ class basedatos extends Controller{
 					$marca = $marcacodigo;
 					$linea = "NULL";
 					$padre = "NULL";
-					$nombre_producto = ($ordenAdjD);
-					$nombrecorto_producto = ($ordenAdjE);
-					$descripcion_breve = ($ordenAdjF);
+					$nombre_producto = $ordenAdjD;
+					$nombrecorto_producto =$ordenAdjE;
+					$descripcion_breve = $ordenAdjF;
 					$pdf = "";
 					$comentario = "";
 					$stock_min = "";
@@ -839,21 +840,6 @@ class basedatos extends Controller{
 		$eliminar = "DELETE FROM cji_almacenproductoserie";
 		$this->eliminar_model->Eliminar_Tabla($eliminar);
 		
-		$eliminar = "DELETE FROM cji_cajamovimiento";
-		$this->eliminar_model->Eliminar_Tabla($eliminar);
-		$eliminar = "DELETE FROM cji_reponsblmoviminto";
-		$this->eliminar_model->Eliminar_Tabla($eliminar);
-		
-		$eliminar = "DELETE FROM cji_tipoalmacen";
-		$this->eliminar_model->Eliminar_Tabla($eliminar);
-		$eliminar = "DELETE FROM cji_almacen";
-		$this->eliminar_model->Eliminar_Tabla($eliminar);
-		$eliminar = "DELETE FROM cji_estate";
-		$this->eliminar_model->Eliminar_Tabla($eliminar);
-		$eliminar = "DELETE FROM cji_reportefinal";
-		$this->eliminar_model->Eliminar_Tabla($eliminar);
-		$eliminar = "DELETE FROM cji_seguimiento_presupuesto";
-		$this->eliminar_model->Eliminar_Tabla($eliminar);
 		
 		
 		$eliminar = "DELETE FROM cji_permiso";
@@ -881,59 +867,7 @@ class basedatos extends Controller{
 	}
 	
 	public  function eliminarTransaccionales(){
-		
-		$eliminar = "DELETE FROM cji_cotizacion";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_cotizaciondetalle";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_comprobante";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_comprobantedetalle";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_guiarem";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_guiaremdetalle";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_guiasa";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_guiasadetalle";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_guiain";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_guiaindetalle";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_guiatrans";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_guiatransdetalle";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_ordencompra";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_ocompradetalle";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_presupuesto";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_presupuestodetalle";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_nota";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_notadetalle";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_cuentas";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_cuentasempresas";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_cuentaspago";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_pago";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_kardex";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_inventario";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_inventariodetalle";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
-		$eliminar = "DELETE FROM cji_letra";
-		$this->eliminar_model->EliminarTransaccionales($eliminar);
+		$this->eliminar_model->EliminarTransaccionales();
 		
 		echo "0";
 	}

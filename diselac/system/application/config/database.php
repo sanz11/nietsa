@@ -23,9 +23,9 @@
  * The $active_record variables lets you determine whether or not to load| the active record class*/
 $active_group = "default";$active_record = TRUE;
 $db['default']['hostname'] = "localhost";
-$db['default']['username'] = "root"; //vsimport_vipex
-$db['default']['password'] = ""; //Vipex2015
-$db['default']['database'] = "osaerp_diselac"; //vsimport_root
+$db['default']['username'] = "root"; //osaerp_diselac
+$db['default']['password'] = ""; //_KfmzPsqAlyq
+$db['default']['database'] = "osaerp_diselac"; //osaerp_diselac
 $db['default']['dbdriver'] = "mysqli";
 $db['default']['dbprefix'] = "";
 $db['default']['pconnect'] = TRUE;

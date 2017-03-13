@@ -457,14 +457,8 @@ class Proveedor extends Controller
             $this->persona_model->modificar_datosPersona($persona, $ubigeo_nacimiento, $ubigeo_domicilio, $estado_civil, $nacionalidad, $nombres, $paterno, $materno, $ruc_persona, $tipo_documento, $numero_documento, $direccion, $telefono, $movil, $email, $domicilio, $sexo, $fax, $web, $ctactesoles, $ctactedolares);
         } elseif ($tipo_persona == 1) {
             $this->empresa_model->modificar_datosEmpresa($empresa, $tipocodigo, $ruc, $razon_social, $telefono, $movil, $fax, $web, $email, $sector_comercial, $ctactesoles, $ctactedolares,$direccion);
-            
-
-$buscar_sucursale=$this->empresa_model->buscar_empresa_sucursal('1',$empresa);
-        if(count( $buscar_sucursale)>0){
             $this->empresa_model->modificar_sucursalEmpresaPrincipal($empresa, '1', $ubigeo_domicilio, 'PRINCIPAL', $direccion);
-        }else{
-           $this->empresa_model->insertar_sucursalEmpresaPrincipal('1', $empresa, $ubigeo_domicilio, 'PRINCIPAL', $direccion);          
-        }
+            //Modificar contactows empresa
         }
     }
 

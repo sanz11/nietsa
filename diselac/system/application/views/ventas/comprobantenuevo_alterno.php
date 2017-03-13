@@ -1,6 +1,6 @@
 
 <html>
-<head>
+<head><meta http-equiv="Content-Type" content="text/html; charset=gb18030">
     <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-ui-1.8.17.custom.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>js/funciones.js"></script>
@@ -219,13 +219,14 @@
 <form id="grabarcomprobantealterno" method="post" >
     <div id="zonaContenido" align="center">
         <div id="frmBusqueda">
+        <input type="hidden" name="codigo" id="codigo" value="<?=$codigo?>">
             <table class="fuente8" width="100%" cellspacing="5" cellpadding="5" >
                 <tr>
                     <td width="8%">N&uacute;mero*</td>
                     <td width="60%" valign="middle">                  
                     
-                        <input class="cajaGeneral" name="serie" type="text" id="serie" size="3" maxlength="3" />&nbsp;
-                        <input class="cajaGeneral" name="numero" type="text" id="numero" size="6" maxlength="6" />
+         <input class="cajaGeneral" name="serie" type="text" id="serie" size="3" maxlength="3" value="<?=$serie?>" />
+         <input class="cajaGeneral" name="numero" type="text" id="numero" size="6" maxlength="6" value="<?=$numero?>" />
                         
                         <label style="margin-left:20px;">IGV</label>
                         <input NAME="igv" type="text" class="cajaGeneral cajaSoloLectura" id="igv" size="2" maxlength="2" value="<?php echo $igv; ?>"
@@ -396,23 +397,15 @@
                             }
                             ?>
                             
-                            <tr id="<?php echo $indice ?>" t-doc="<?php echo $tipo_docu ?>"
+                            <tr id="<?php echo $indice ?>" 
                                 class="<?php echo $clase; ?>"
                                style="<?php if($codigoGuiaremAsociadaDetalle!=0){
                                 	echo  "background-color:".$colorGuiar[$codigoGuiaremAsociadaDetalle].";color:#000000;";
                                 }?>">
-                                <td width="3%">
+    <td width="3%">
    <div align="center">
+   <font color="red"><strong><a href="#" onclick="eliminar_producto_comprobante(<?=$indice?>);"><span style="border:1px solid red;background: #ffffff;">&nbsp;X&nbsp;</span></a></strong></font>
    
-   <?php  if(count($listaGuiaremAsociados)==0){ ?>
-   		<font color="red"><strong><a href="javascript:;"
-         onclick="eliminar_producto_comprobante(<?php echo $indice; ?>);">
-		<span
-   			style="border:1px solid red;background: #ffffff;">&nbsp;X&nbsp;</span></a>
-			</strong>
-		</font>
-		
-		<?php } ?>
         </div>
                                 </td>
    <td width="4%">
@@ -467,8 +460,8 @@
     <div align="center"><input type="text" size="5" maxlength="10" class="cajaGeneral"
          name="prodpu[<?php echo $indice; ?>]"
      id="prodpu[<?php echo $indice; ?>]"
-     value="<?php echo $prodpu; ?>"
-    onblur="modifica_pu(<?php echo $indice; ?>);"
+     value="<?php echo $prodpu; ?>" readonly="readonly"
+    
      onkeypress="return numbersonly(this,event,'.');" <?php echo $readonly; ?>/>
         <td width="6%">
      <div align="center">
@@ -476,7 +469,7 @@
          class="cajaGeneral cajaSoloLectura"
           name="prodprecio[<?php echo $indice; ?>]"
         id="prodprecio[<?php echo $indice; ?>]"
-        value="<?php echo $prodsubtotal; ?>"
+        value="<?php echo $prodtotal; ?>"
           readonly="readonly"/></div>
      </td>
      <?php } else { ?>
@@ -526,7 +519,7 @@
      <input type="text" size="5" maxlength="10"
              class="cajaGeneral cajaSoloLectura"
               name="prodprecio[<?php echo $indice; ?>]"   id="prodprecio[<?php echo $indice; ?>]"
-              value="<?php echo $prodsubtotal; ?>"
+              value="<?php echo $prodtotal; ?>"
                  readonly="readonly"/></div>
                                                 </td>
 
@@ -641,7 +634,7 @@
 
                             <tr>
 
-                                <td colspan="4">Observaci贸n</td>
+                                <td colspan="4">Observación</td>
 
                             </tr>
 
@@ -718,7 +711,7 @@
 
                 <?php } ?>
 
-                <tr>
+               <!-- <tr>
 
                     <td class="busqueda">Descuento</td>
 
@@ -740,7 +733,7 @@
 
                     <?php } ?>
 
-                </tr>
+                </tr>-->
 
                 <?php //if ($tipo_docu != 'B' && $tipo_docu != 'N') { ?>
 

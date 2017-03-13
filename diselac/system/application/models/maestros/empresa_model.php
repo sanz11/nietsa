@@ -15,7 +15,7 @@ class Empresa_model extends Model
     {
         $arreglo = array(''=>':: Seleccione ::');
         $filter  = new stdClass();
-        $filter->SECCOMP_Codigo='1';
+        $filter->SECCOMP_Codigo='9';
         $lista = $this->listar_empresas($filter);
         if(count($lista)>0){
             foreach($lista as $indice=>$valor)  //1: Empresa de transporte
@@ -779,16 +779,6 @@ public function delete_chikera($codigo){
 $data  = array("CHEK_FlagEstado"=>'0');
 $this->db->where('CHEK_Codigo',$codigo);
 $this->db->update('cji_chekera',$data); 
-}public function buscar_empresa_sucursal($primero,$codempresa){
-    $this->db->where('TESTP_Codigo',$primero);
-    $this->db->where('EMPRP_Codigo',$codempresa);
-     $query= $this->db->get('cji_emprestablecimiento');
-    if($query->num_rows>0){
-            foreach($query->result() as $fila){
-                $data[] = $fila;
-            }
-            return $data;
- }       
-    }
+}
 }
 ?>
