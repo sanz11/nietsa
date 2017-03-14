@@ -1048,7 +1048,7 @@ Vendedor&nbsp;&nbsp;&nbsp;
                     <td>Almacen*</td>
                     <td><?php echo $cboAlmacen; ?></td>
                 </tr>
-                <?php if ($tipo_docu != 'B'){?>
+                <?php if ($tipo_docu != 'B' && $tipo_oper != 'C'){?>
                 	<tr>
                 		<td width="8%">
                         	Direcci&oacute;n

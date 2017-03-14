@@ -1343,6 +1343,64 @@ public function eliminaralternodetalle1($codigo){
         $this->db->update("cji_comprobante_alterno",(array) $filter);
  }
  
+ public function obtener_ubigeocompra($codigo){
+ 	$sql = "SELECT 
+CASE pro.EMPRP_Codigo WHEN 0 THEN 
+(SELECT pe.PERSC_Direccion FROM cji_persona pe WHERE pe.PERSP_Codigo = pro.PERSP_Codigo ) 
+   ELSE (SELECT empresa.EESTAC_Direccion FROM cji_empresa emp inner join cji_emprestablecimiento empresa on emp.EMPRP_Codigo = empresa.EMPRP_Codigo  WHERE emp.EMPRP_Codigo= pro.EMPRP_Codigo  and empresa.TESTP_Codigo=1) end as DIRECCION,
+
+CASE pro.EMPRP_Codigo WHEN 0 THEN 
+(SELECT CONCAT(SUBSTRING(pe.UBIGP_Domicilio, 1, 2 ),'0000') FROM cji_persona pe WHERE pe.PERSP_Codigo = pro.PERSP_Codigo ) 
+   ELSE (SELECT CONCAT(SUBSTRING(UBIGP_Codigo , 1, 2 ),'0000') FROM cji_empresa emp inner join cji_emprestablecimiento empresa on emp.EMPRP_Codigo = empresa.EMPRP_Codigo  WHERE emp.EMPRP_Codigo= pro.EMPRP_Codigo  and empresa.TESTP_Codigo=1) end as DEPARTAMENTO,
+   
+CASE pro.EMPRP_Codigo WHEN 0 THEN 
+(SELECT CONCAT(SUBSTRING(pe.UBIGP_Domicilio, 1, 2 ),SUBSTRING(pe.UBIGP_Domicilio, 3, 2 ),'00') FROM cji_persona pe WHERE pe.PERSP_Codigo = pro.PERSP_Codigo )
+   ELSE (SELECT CONCAT(SUBSTRING(UBIGP_Codigo, 1, 2 ),SUBSTRING(UBIGP_Codigo, 3, 2 ),'00') FROM cji_empresa emp inner join cji_emprestablecimiento empresa on emp.EMPRP_Codigo = empresa.EMPRP_Codigo WHERE emp.EMPRP_Codigo= pro.EMPRP_Codigo  and empresa.TESTP_Codigo=1) END as PROVINCIA,
+   
+CASE pro.EMPRP_Codigo WHEN 0 THEN 
+(SELECT SUBSTRING(pe.UBIGP_Domicilio, 5, 6 ) FROM cji_persona pe WHERE pe.PERSP_Codigo = pro.PERSP_Codigo )
+   ELSE (SELECT UBIGP_Codigo FROM cji_empresa emp inner join cji_emprestablecimiento empresa on emp.EMPRP_Codigo = empresa.EMPRP_Codigo WHERE  
+emp.EMPRP_Codigo= pro.EMPRP_Codigo and empresa.TESTP_Codigo=1) END as DISTRITO
+ 
+FROM cji_proveedor pro 
+where pro.PROVP_Codigo =".$codigo."";
+ 	
+ 	$query = $this->db->query($sql);
+ 	if ($query->num_rows > 0) {
+ 		foreach ($query->result() as $fila) {
+ 			$data[] = $fila;
+ 		}
+ 		return $data;
+ 	}
+ 	return array();
+ }
+ public function obtener_lugaru($codigo){
+ 	
+//  	$this->db->select('p.PERSP_Codigo,p.PERSC_Nombre,p.PERSC_ApellidoPaterno');
+//  	$this->db->join('cji_persona p','p.PERSP_Codigo=u.PERSP_Codigo');
+//  	if($dato != ""){
+//  		$this->db->where('u.PERSP_Codigo',$dato);
+//  	}
+//  	$query = $this->db->get('cji_directivo u');
+//  	if ($query->num_rows > 0) {
+//  		foreach ($query->result() as $fila) {
+//  			$data[] = $fila;
+//  		}
+//  		return $data;
+//  	}
+ 	
+ 	$this->db->select('UBIGC_Descripcion');
+ 	$query = $this->db->where('UBIGP_Codigo', $codigo)->get('cji_ubigeo');
+ 
+ 	if ($query->num_rows > 0) {
+ 		foreach ($query->result() as $fila) {
+ 			$data[] = $fila;
+ 		}
+ 		return $data;
+ 	}
+ 	return array();
+ }
+ 
  
 }
 

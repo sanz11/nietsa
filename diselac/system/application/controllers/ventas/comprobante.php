@@ -1079,8 +1079,7 @@ public function select_cmbVendedor($index){
         //VERIFICO SI TODAS LAS SERIES HAN SIDO INGRESADAS
         $prodcodigo = $this->input->post('prodcodigo');
         $flagGenInd = $this->input->post('flagGenIndDet');
-        $direccion = $this->input->post('direccionsuc');
-        $filter->CPC_Direccion = $direccion;
+      
         $prodcantidad = $this->input->post('prodcantidad');
         $proddescri = $this->input->post('proddescri');
         $dref = $this->input->post('dRef');
@@ -1090,6 +1089,7 @@ public function select_cmbVendedor($index){
         $serie = $this->input->post('serie');
         $numero = $this->input->post('numero');
         $filter = new stdClass();
+        
         $filter->CPC_TipoOperacion = $tipo_oper;
         $filter->CPC_TipoDocumento = $tipo_docu;
         
@@ -1144,11 +1144,20 @@ public function select_cmbVendedor($index){
         )
             $filter->CPC_NombreAuxiliar = $nombre;
 
-        if ($tipo_oper == 'V')
+        if ($tipo_oper == 'V'){
             $filter->CLIP_Codigo = $this->input->post('cliente');
-        else
+            $direccion = $this->input->post('direccionsuc');
+            $filter->CPC_Direccion = $direccion;
+        }else{
             $filter->PROVP_Codigo = $this->input->post('proveedor');
-        
+            $PCodigo = $this->input->post('proveedor');
+            $ubigeo = $this->comprobante_model->obtener_ubigeocompra($PCodigo);
+            $depar = $this->comprobante_model->obtener_lugaru($ubigeo[0]->DEPARTAMENTO);
+            $provi = $this->comprobante_model->obtener_lugaru($ubigeo[0]->PROVINCIA);
+            $distri = $this->comprobante_model->obtener_lugaru($ubigeo[0]->DISTRITO);
+            $direccion = $ubigeo[0]->DIRECCION." ".$depar[0]->UBIGC_Descripcion." - ".$provi[0]->UBIGC_Descripcion." - ".$distri[0]->UBIGC_Descripcion;
+            $filter->CPC_Direccion = $direccion;
+        }
         if ($this->input->post('presupuesto_codigo') != '' && $this->input->post('presupuesto_codigo') != '0')
             $filter->PRESUP_Codigo = $this->input->post('presupuesto_codigo');
         
@@ -1430,10 +1439,21 @@ public function select_cmbVendedor($index){
         $filter->CPC_igv100 = $this->input->post('igv');
         $estadoComprobante=$this->input->post('estado');
         $filter->CPC_FlagEstado=$estadoComprobante;
-        if ($tipo_oper == 'V')
-            $filter->CLIP_Codigo = $this->input->post('cliente');
-        else
-            $filter->PROVP_Codigo = $this->input->post('proveedor');
+        if ($tipo_oper == 'V'){
+        	$filter->CLIP_Codigo = $this->input->post('cliente');
+        	$direccion = $this->input->post('direccionsuc');
+        	$filter->CPC_Direccion = $direccion;
+        }else{
+        	$filter->PROVP_Codigo = $this->input->post('proveedor');
+        	$PCodigo = $this->input->post('proveedor');
+        	$ubigeo = $this->comprobante_model->obtener_ubigeocompra($PCodigo);
+        	$depar = $this->comprobante_model->obtener_lugaru($ubigeo[0]->DEPARTAMENTO);
+        	$provi = $this->comprobante_model->obtener_lugaru($ubigeo[0]->PROVINCIA);
+        	$distri = $this->comprobante_model->obtener_lugaru($ubigeo[0]->DISTRITO);
+        	$direccion = $ubigeo[0]->DIRECCION." ".$depar[0]->UBIGC_Descripcion." - ".$provi[0]->UBIGC_Descripcion." - ".$distri[0]->UBIGC_Descripcion;
+        	$filter->CPC_Direccion = $direccion;
+        }
+            
         if ($this->input->post('presupuesto') != '' && $this->input->post('presupuesto') != '0')
             $filter->PRESUP_Codigo = $this->input->post('presupuesto');
         if ($this->input->post('ordencompra') != '' && $this->input->post('ordencompra') != '0')
@@ -1458,9 +1478,7 @@ public function select_cmbVendedor($index){
         //if ($this->input->post('vendedor') != '')
             $filter->CPC_Vendedor = $this->input->post('cmbVendedor');
         $filter->CPC_TDC = $this->input->post('tdc');
-        $direccion = $this->input->post('direccionsuc');
-        $filter->CPC_Direccion = $direccion;
-
+      
 
         $comp_confi = $this->companiaconfiguracion_model->obtener($this->somevar['compania']);
         $mueve = $comp_confi[0]->COMPCONFIC_StockComprobante;
@@ -2016,11 +2034,8 @@ public function select_cmbVendedor($index){
         $prodpu= $this->input->post('prodpu');
         $prodprecio= $this->input->post('prodprecio');
         
-        $direccion = $this->input->post('direccionsuc');
-       
-
+     
         $filter = new stdClass();
-        $filter->CPC_Direccion = $direccion;
         $filter->FORPAP_Codigo = NULL;
         //if ($this->input->post('forma_pago') != '' && $this->input->post('forma_pago') != '0')
         $filter->FORPAP_Codigo = $this->input->post('forma_pago');
@@ -2043,10 +2058,24 @@ public function select_cmbVendedor($index){
         )
             $filter->CPC_NombreAuxiliar = $nombre;
 
-        if ($tipo_oper == 'V')
-            $filter->CLIP_Codigo = $this->input->post('cliente');
-        else
-            $filter->PROVP_Codigo = $this->input->post('proveedor');
+       
+        if ($tipo_oper == 'V'){
+            	$filter->CLIP_Codigo = $this->input->post('cliente');
+            	$direccion = $this->input->post('direccionsuc');
+            	$filter->CPC_Direccion = $direccion;
+        }else{
+            	$filter->PROVP_Codigo = $this->input->post('proveedor');
+            	$PCodigo = $this->input->post('proveedor');
+            	$ubigeo = $this->comprobante_model->obtener_ubigeocompra($PCodigo);
+            	$depar = $this->comprobante_model->obtener_lugaru($ubigeo[0]->DEPARTAMENTO);
+            	$provi = $this->comprobante_model->obtener_lugaru($ubigeo[0]->PROVINCIA);
+            	$distri = $this->comprobante_model->obtener_lugaru($ubigeo[0]->DISTRITO);
+            	$direccion = $ubigeo[0]->DIRECCION." ".$depar[0]->UBIGC_Descripcion." - ".$provi[0]->UBIGC_Descripcion." - ".$distri[0]->UBIGC_Descripcion;
+            	$filter->CPC_Direccion = $direccion;
+            }
+            
+            
+            
         $filter->PRESUP_Codigo = NULL;
         if ($this->input->post('presupuesto_codigo') != '' && $this->input->post('presupuesto_codigo') != '0')
             $filter->PRESUP_Codigo = $this->input->post('presupuesto_codigo');

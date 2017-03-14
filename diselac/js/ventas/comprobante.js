@@ -70,6 +70,8 @@ jQuery(document).ready(function () {
         $("#grabarComprobante").css('visibility', 'hidden');
         var codigo = $('#codigo').val();
         var tipo_d = $("#cboTipoDocu").val();
+        
+        
         if ($("#serie").val() == "") {
             $("#serie").focus();
             alert("Ingrese la serie.");
@@ -121,6 +123,15 @@ jQuery(document).ready(function () {
                 return false;
             }
         }
+        if (tipo_oper == 'V' && tipo_d == 'F') {
+        	  if ($('#direccionsuc').val() == '') {
+        		alert("Debe seleccionar La dirección.");
+        		$("#direccionsuc").focus();
+        		$('#grabarComprobante').css('visibility', 'visible');
+        		$('img#loading').css('visibility', 'hidden');
+        		return false;
+        	}
+        } 
 
         if ($("#forma_pago").val() == '') {
             alert("Seleccione Forma de pago.");
