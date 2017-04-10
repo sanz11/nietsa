@@ -1,0 +1,33 @@
+#wrapperMenuDerecho{  
+    width: 100%;
+    float:left;
+}
+.divIconosGenerales{
+	width: 48%;
+	height: 100px;
+	float:right;
+	background: #bccddc;
+	border: 1px solid white;
+}
+.cAMenuD{
+	width: 100%;
+	height: 100%;
+	float: left;
+}
+
+
+.imagenMenuDer{
+	width: 100%;
+	height: 80px;
+	display: block;
+	margin: 0 auto;
+}
+
+.idSpanMenuDer{
+	font: 7pt verdana, arial;
+	width: 100%;
+	height: 20px;
+	display: block;
+	margin: 0 auto;
+	
+}

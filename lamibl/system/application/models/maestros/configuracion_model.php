@@ -29,8 +29,14 @@ class Configuracion_model extends Model {
         $this->db->where($where);
         $this->db->update('cji_configuracion', $data);
     }
+    public function update_numero_pedido($numero, $compania) {
+        $where = array("COMPP_Codigo" => $compania, "DOCUP_Codigo" => 1);
+        $data['CONFIC_Numero']=$numero;
+        $this->db->where($where);
+        $this->db->update('cji_configuracion', $data);
+    }
 
-    function obtener_numero_documento($compania, $tipo_doc) {
+    function obtener_numero_documento($compania, $tipo_doc) {//jjjjjj
         $where = array("COMPP_Codigo" => $compania, "DOCUP_Codigo" => $tipo_doc);
         $query = $this->db->where($where)->get('cji_configuracion');
         if ($query->num_rows > 0) {

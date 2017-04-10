@@ -556,7 +556,7 @@ public function select_cmbVendedor($index){
 
 
         $compania = $this->somevar['compania'];
-        $configuracion_datos = $this->configuracion_model->obtener_numero_documento($compania, $tipo);
+    $configuracion_datos = $this->configuracion_model->obtener_numero_documento($compania, $tipo);
         $numero_predt = $this->presupuesto_model->ultimo_numero();
         $numero = $numero_predt[0]->PRESUC_Numero;
         $num = $configuracion_datos[0]->CONFIC_Numero + 1;
@@ -566,47 +566,11 @@ public function select_cmbVendedor($index){
 
 
 
-        /* $numero_predt = $this->presupuesto_model->ultimo_numero();
-          $numero = $numero_predt[0]->PRESUC_Numero;
-          $filter->PRESUC_Numero = $numero + 1;
-          $numero = $this->input->post('numero');
-          $filter->PRESUC_Numero=$this->input->post('numero'); */
-
-        /* $compania = $this->somevar['compania'];
-          $configuracion_datos = $this->configuracion_model->obtener_numero_documento($compania, $tipo);
-          $num = $configuracion_datos[0]->CONFIC_Numero + 1;
-          $filter->PRESUC_Numero = '000' . $num;
-         */
-
-
-
-
-
-
-
-
-
-
-
-//guardar serie de presupuesto
-//********************************************************
         ///SERIE NUMERO GUARDAR PRESUPEUSTO FLO
         if ($this->input->post('serie') != '' && $this->input->post('serie') != '0') {
             $filter->PRESUC_Serie = $this->input->post('serie');
         }
-        /* if ($this->input->post('numero') != '' && $this->input->post('numero') != '0') {
-          $filter->PRESUC_Numero= $this->input->post('numero');
-          } */
-
-        /*
-          $numero_predt = $this->presupuesto_model->ultimo_numero();
-          $numero = $numero_predt[0]->PRESUC_Numero;
-          $filter->PRESUC_Numero = $numero + 1;
-          $numero = $this->input->post('numero');
-          $filter->PRESUC_Numero=$this->input->post('numero'); */
-
-
-
+       
         if ($this->input->post('codigo_usuario'))
             $filter->PRESUC_CodigoUsuario = $this->input->post('codigo_usuario');
         $filter->MONED_Codigo = $this->input->post('moneda');
@@ -961,7 +925,7 @@ public function select_cmbVendedor($index){
 </tr>
     <tr>
         <td style="padding:0px 30px;background-color:#969696;color:#ffffff;font-size:78%;font-family:Segoe UI, Arial, Helvetica;" width="600">
-            <br>Translogint E.I.R.L<br><br>
+            <br>LAMIBL<br><br>
         </td>
 		
     </tr>
@@ -1240,276 +1204,251 @@ public function select_cmbVendedor($index){
 
     public function presupuesto_ver_pdf_correo($codigo, $img) {
 
-        $datos_presupuesto = $this->presupuesto_model->obtener_presupuesto($codigo);
-        $tipo_docu = $datos_presupuesto[0]->PRESUC_TipoDocumento;
-        $serie = $datos_presupuesto[0]->PRESUC_Serie;
-        $numero = $datos_presupuesto[0]->PRESUC_Numero;
-        $codigo_usuario = $datos_presupuesto[0]->PRESUC_CodigoUsuario;
-        $codificacion = ($codigo_usuario != '' ? $codigo_usuario : ($serie != '' ? $serie . '/' . $numero : 'Nro. ' . $numero));
-        $cliente = $datos_presupuesto[0]->CLIP_Codigo;
-        $subtotal = $datos_presupuesto[0]->PRESUC_subtotal;
-        $descuento = $datos_presupuesto[0]->PRESUC_descuento;
-        $igv = $datos_presupuesto[0]->PRESUC_igv;
-        $igv100 = $datos_presupuesto[0]->PRESUC_igv100;
-        $descuento100 = $datos_presupuesto[0]->PRESUC_descuento100;
-        $total = $datos_presupuesto[0]->PRESUC_total;
-        $observacion = $datos_presupuesto[0]->PRESUC_Observacion;
-        $tipo_docu = $datos_presupuesto[0]->PRESUC_TipoDocumento;
-        $fecha = mysql_to_human($datos_presupuesto[0]->PRESUC_Fecha);
-        $lugar_entrega = $datos_presupuesto[0]->PRESUC_LugarEntrega;
-        $tiempo_entrega = $datos_presupuesto[0]->PRESUC_TiempoEntrega;
-        $garantia = $datos_presupuesto[0]->PRESUC_Garantia;
-        $validez = $datos_presupuesto[0]->PRESUC_Validez;
-        $contacto = $datos_presupuesto[0]->PERSP_Codigo;
-        $area = $datos_presupuesto[0]->AREAP_Codigo;
-        $vendedor_persona = $datos_presupuesto[0]->PRESUC_VendedorPersona;
-        $vendedor_area = $datos_presupuesto[0]->PRESUC_VenedorArea;
-        $modo_impresion = ((int) $datos_presupuesto[0]->PRESUC_ModoImpresion > 0 ? $datos_presupuesto[0]->PRESUC_ModoImpresion : '1');
 
-        $forma_pago = '';
-        if ($datos_presupuesto[0]->FORPAP_Codigo != '') {
-            $datos_formapago = $this->formapago_model->obtener($datos_presupuesto[0]->FORPAP_Codigo);
-            $forma_pago = $datos_formapago[0]->FORPAC_Descripcion;
-        }
-        $datos_cliente = $this->cliente_model->obtener_datosCliente($cliente);
-        $empresa = $datos_cliente[0]->EMPRP_Codigo;
-        $persona = $datos_cliente[0]->PERSP_Codigo;
-        $tipo = $datos_cliente[0]->CLIC_TipoPersona;
-
-
-        $datos_moneda = $this->moneda_model->obtener($datos_presupuesto[0]->MONED_Codigo);
-        $moneda_nombre = (count($datos_moneda) > 0 ? $datos_moneda[0]->MONED_Descripcion : 'NUEVOS SOLES');
-        $moneda_simbolo = (count($datos_moneda) > 0 ? $datos_moneda[0]->MONED_Simbolo : 'S/.');
-
-        $temp = $this->obtener_datos_cliente($cliente, $tipo_docu);
-        $nombre_cliente = $temp['nombre'];
-        $ruc = $temp['numdoc'];
-        $direccion = $temp['direccion'];
-        $telefono = ($temp['telefono'] == '' ? $temp['movil'] : $temp['telefono']);
-        $fax = $temp['fax'];
-        $email = $temp['email'];
-
-        $nombre_contacto = $nombre_cliente;
-        if ($contacto != '' && $contacto != '0') {
-            $datos_persona = $this->persona_model->obtener_datosPersona($contacto);
-            if (count($datos_persona) > 0)
-                $nombre_contacto = $datos_persona[0]->PERSC_Nombre . ' ' . $datos_persona[0]->PERSC_ApellidoPaterno . ' ' . $datos_persona[0]->PERSC_ApellidoMaterno;
-        }
-        $nombre_area = '';
-        if ($area != '' && $area != '0') {
-            $datos_area = $this->area_model->obtener_area($area);
-            if (count($datos_area) > 0)
-                $nombre_area = $datos_area[0]->AREAC_Descripcion;
-        }
-        $vendedor_nombre = '';
-        if ($vendedor_persona != '' && $vendedor_persona != '0') {
-            $datos_persona = $this->persona_model->obtener_datosPersona($vendedor_persona);
-            if (count($datos_persona) > 0)
-                $vendedor_nombre = $datos_persona[0]->PERSC_Nombre . ' ' . $datos_persona[0]->PERSC_ApellidoPaterno . ' ' . $datos_persona[0]->PERSC_ApellidoMaterno;
-        }
-        $vendedor_nombre_area = '';
-        if ($vendedor_area != '' && $vendedor_area != '0') {
-            $datos_area = $this->area_model->obtener_area($vendedor_area);
-            if (count($datos_area) > 0)
-                $vendedor_nombre_area = $datos_area[0]->AREAC_Descripcion;
-        }
-        $filter = new stdClass();
-        $filter->TIPCAMC_Fecha = date('Y-m-d', time());
-        $filter->TIPCAMC_MonedaDestino = 2;  // De soles a dolares
-        $data_tipocambio = $this->tipocambio_model->buscar($filter);
-        $tipo_cambio = '';
-        if (count($data_tipocambio) > 0)
-            $tipo_cambio = $data_tipocambio[0]->TIPCAMC_FactorConversion;
-
-        $detalle_presupuesto = $this->obtener_lista_detalles($codigo);
-
-        $this->cezpdf = new Cezpdf('a4');
-        $datacreator = array(
-            'Title' => 'Estadillo de ',
-            'Name' => 'Estadillo de ',
-            'Author' => 'ccapaempresas.com',
-            'Subject' => 'PDF con Tablas',
-            'Creator' => '',
-            'Producer' => 'ccapaempresas.com'
-        );
-
-        $this->cezpdf->addInfo($datacreator);
-        /* Para las imagenes */
-
-        if ($modo_impresion == 0) {
-            $this->cezpdf->ezImage("images/img_db/ferremax_cabe.jpg", -10, 555, 'none', 'left');
-        } else {
-            $this->cezpdf->ezImage("images/img_db/ferremax_cabe_jmb.jpg", -10, 555, 'none', 'left');
-        }
-
-        if ($img == 0) {
-            $this->cezpdf->ezImage("images/img_db/ferremax_cabe.jpg", -10, 555, 'none', 'left');
-        }
-
-
-        if ($img == 0) {
-            if ($this->somevar['compania'] == 1) {
-                $this->cezpdf->ezImage("images/img_db/ferremax_cabe.jpg", -10, 555, 'none', 'left');
-            } else {
-                $this->cezpdf->ezImage("images/img_db/ferremax_cabe.jpg", -10, 555, 'none', 'left');
-            }
-        }
-
-
-        $this->cezpdf = new backgroundPDF('a4', 'portrait', 'image', array('img' => 'images/img_db/' . '""'));
-        $this->cezpdf->ezText(utf8_decode_seguro('TRANSLOGINT'), 11, array("left" => 15));
-        $this->cezpdf->ezText(utf8_decode_seguro('Principal: Av. El Polo Mz.H Lt.12 C'), 9, array("left" => 15));
-        $this->cezpdf->ezText(utf8_decode_seguro('Urb.El Club, 1era Etapa'), 9, array("left" => 15));
-        $this->cezpdf->ezText(utf8_decode_seguro('Huachipa, Lurigancho, Lima - Peru'), 9, array("left" => 15));
-//            $this->cezpdf->ezText('E-mail: madypla@hotmail.com,  web: www.madyplac.com', 9, array("left" => 15));    
-
-
-        $delta = 20;
-
-//        $this->cezpdf->ezText('', '', array("leading" => 100));
-        $this->cezpdf->ezText(utf8_decode_seguro('<b>Presupuesto ') . $codificacion . '</b>', 17, array("leading" => 40, 'left' => 185));
-        $this->cezpdf->ezText('', '', array("leading" => 10));
-
-
-        /* Datos del cliente */
-        $db_data = array(array('cols1' => utf8_decode_seguro('SeÃ±or(es)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols3' => 'R.U.C.', 'cols4' => ': ' . $ruc . '       Fecha: ' . $fecha),
-            array('cols1' => utf8_decode_seguro('DirecciÃ³n'), 'cols2' => ': ' . utf8_decode_seguro($direccion), 'cols3' => '', 'cols4' => ''),
-            array('cols1' => utf8_decode_seguro('AtenciÃ³n Sr(a)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols3' => '', 'cols4' => ''),
-            array('cols1' => utf8_decode_seguro('TelÃ©fono'), 'cols2' => ': ' . $telefono, 'cols3' => 'E-mail', 'cols4' => ': ' . $email)
-        );
-        $this->cezpdf->ezTable($db_data, "", "", array(
-            'width' => 525,
-            'showLines' => 0,
-            'shaded' => 0,
-            'showHeadings' => 0,
-            'xPos' => 'center',
-            'fontSize' => 8,
-            'cols' => array(
-                'cols1' => array('width' => 65, 'justification' => 'left'),
-                'cols2' => array('width' => 275, 'justification' => 'left'),
-                'cols3' => array('width' => 35, 'justification' => 'left'),
-                'cols4' => array('width' => 150, 'justification' => 'left')
-            )
-        ));
-
-        $this->cezpdf->ezText('', 8);
-
-        /* Listado de detalles */
-        $db_data = array();
-        foreach ($detalle_presupuesto as $indice => $valor) {
-            $producto = $valor->PROD_Codigo;
-            $marca_prod = $this->producto_model->obtener_marca_modelo_por_producto($producto);
-            $db_data[] = array(
-                'cols1' => $indice + 1,
-                'cols2' => $marca_prod[0]->MARCC_Descripcion,
-                'cols3' => utf8_decode_seguro($valor->PROD_Nombre . ($valor->PROD_Modelo != '' ? ' - ' . $valor->PROD_Modelo : '')),
-                'cols4' => $valor->UNDMED_Simbolo,
-                'cols5' => $valor->PRESDEC_Cantidad,
-                'cols6' => number_format(($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2),
-                'cols7' => number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2)
-            );
-        }
-        $col_names = array(
-            'cols1' => 'Item',
-            'cols2' => 'Marca',
-            'cols3' => utf8_decode_seguro('DescripciÃ³n'),
-            'cols4' => 'Uni.',
-            'cols5' => 'Cant.',
-            'cols6' => 'Precio Uni.',
-            'cols7' => 'Precio Total'
-        );
-
-        $this->cezpdf->ezTable($db_data, $col_names, '', array(
-            'width' => 525,
-            'showLines' => 1,
-            'shaded' => 0,
-            'showHeadings' => 1,
-            'xPos' => 'center',
-            'fontSize' => 8,
-            'cols' => array(
-                'cols1' => array('width' => 30, 'justification' => 'center'),
-                'cols2' => array('width' => 70, 'justification' => 'left'),
-                'cols3' => array('width' => 235, 'justification' => 'left'),
-                'cols4' => array('width' => 40, 'justification' => 'left'),
-                'cols5' => array('width' => 40, 'justification' => 'left'),
-                'cols6' => array('width' => 50, 'justification' => 'right'),
-                'cols7' => array('width' => 60, 'justification' => 'right')
-            )
-        ));
-
-        $this->cezpdf->ezText('', '');
-
-        /* Totales */
-        if ($tipo_docu != 'B') {
-            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>VALOR VENTA</b>', 'cols2' => '<b>' . number_format($subtotal, 2) . '</b>'),
-                array('cols0' => '', 'cols1' => '<b>IMPUESTO</b>', 'cols2' => '<b>' . number_format($igv, 2) . '</b>'),
-                array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>')
-            );
-        } else {
-            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>'),
-                array('cols0' => '', 'cols1' => '', 'cols2' => '')
-            );
-        }
-
-        $this->cezpdf->ezTable($db_data, "", "", array(
-            'width' => 525,
-            'showLines' => 0,
-            'shaded' => 0,
-            'showHeadings' => 0,
-            'xPos' => 'center',
-            'fontSize' => 8,
-            'cols' => array(
-                'cols0' => array('width' => 395, 'justification' => 'left'),
-                'cols1' => array('width' => 70, 'justification' => 'left'),
-                'cols2' => array('width' => 60, 'justification' => 'right')
-            )
-        ));
-
-        $vendedor_nombre = '';
-        if ($vendedor_persona != '' && $vendedor_persona != '0') {
-            $datos_persona = $this->persona_model->obtener_datosPersona($vendedor_persona);
-            if (count($datos_persona) > 0)
-                $vendedor_nombre = $datos_persona[0]->PERSC_Nombre . ' ' . $datos_persona[0]->PERSC_ApellidoPaterno . ' ' . $datos_persona[0]->PERSC_ApellidoMaterno;
-        }
-        $vendedor_nombre_area = '';
-        if ($vendedor_area != '' && $vendedor_area != '0') {
-            $datos_area = $this->area_model->obtener_area($vendedor_area);
-            if (count($datos_area) > 0)
-                $vendedor_nombre_area = $datos_area[0]->AREAC_Descripcion;
-        }
-        /* Condiciones de venta */
-        $db_data = array(array('cols0' => '<b>CONDICIONES DE VENTA:</b>', 'cols1' => ''),
-            array('cols0' => utf8_decode_seguro('Tipo de Cambio del DÃ­a'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
-            array('cols0' => 'Moneda', 'cols1' => ': ' . $moneda_nombre),
-            array('cols0' => 'Forma de Pago', 'cols1' => ': ' . utf8_decode_seguro($forma_pago)),
-            array('cols0' => 'Los Precios de los Productos ', 'cols1' => ': ' . ($modo_impresion == '1' ? 'CONTIENEN IGV' : 'NO CONTIENEN IGV')),
-            array('cols0' => 'Tiempo de Entrega', 'cols1' => ': ' . $tiempo_entrega),
-            array('cols0' => 'Lugar de Entrega', 'cols1' => ': ' . utf8_decode_seguro($lugar_entrega)),
-            array('cols0' => utf8_decode_seguro('GarantÃ­a'), 'cols1' => ': ' . utf8_decode_seguro($garantia)),
-            array('cols0' => 'Validez de la Oferta', 'cols1' => ': ' . utf8_decode_seguro($validez)),
-            array('cols0' => 'Contacto', 'cols1' => ': ' . utf8_decode_seguro($vendedor_nombre . ($vendedor_nombre_area != '' ? ' - AREA: ' . $vendedor_nombre_area : '')))
-        );
-        $this->cezpdf->ezTable($db_data, "", "", array(
-            'width' => 525,
-            'showLines' => 0,
-            'shaded' => 0,
-            'showHeadings' => 0,
-            'xPos' => 'center',
-            'fontSize' => 8,
-            'cols' => array(
-                'cols0' => array('width' => 120, 'justification' => 'left'),
-                'cols1' => array('width' => 415, 'justification' => 'left'),
-            )
-        ));
-
-        $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => $codificacion . '.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
-        return $this->cezpdf->ezOutput($cabecera);
+    	$datos_presupuesto = $this->presupuesto_model->obtener_presupuesto($codigo);
+    	$tipo_docu = $datos_presupuesto[0]->PRESUC_TipoDocumento;
+    	$serie = $datos_presupuesto[0]->PRESUC_Serie;
+    	$numero = $datos_presupuesto[0]->PRESUC_Numero;
+    	$codigo_usuario = $datos_presupuesto[0]->PRESUC_CodigoUsuario;
+    	$codificacion = ($codigo_usuario != '' ? $codigo_usuario : ($serie != '' ? $serie . '-' . $this->getOrderNumeroSerie($numero) : 'Nro. ' . $numero));
+    	$cliente = $datos_presupuesto[0]->CLIP_Codigo;
+    	$subtotal = $datos_presupuesto[0]->PRESUC_subtotal;
+    	$descuento = $datos_presupuesto[0]->PRESUC_descuento;
+    	$igv = $datos_presupuesto[0]->PRESUC_igv;
+    	$igv100 = $datos_presupuesto[0]->PRESUC_igv100;
+    	$descuento100 = $datos_presupuesto[0]->PRESUC_descuento100;
+    	$total = $datos_presupuesto[0]->PRESUC_total;
+    	$observacion = $datos_presupuesto[0]->PRESUC_Observacion;
+    	$tipo_docu = $datos_presupuesto[0]->PRESUC_TipoDocumento;
+    	$fecha = mysql_to_human($datos_presupuesto[0]->PRESUC_Fecha);
+    	$lugar_entrega = $datos_presupuesto[0]->PRESUC_LugarEntrega;
+    	$tiempo_entrega = $datos_presupuesto[0]->PRESUC_TiempoEntrega;
+    	$garantia = $datos_presupuesto[0]->PRESUC_Garantia;
+    	$validez = $datos_presupuesto[0]->PRESUC_Validez;
+    	$contacto = $datos_presupuesto[0]->PERSP_Codigo;
+    	$area = $datos_presupuesto[0]->AREAP_Codigo;
+    	$vendedor_persona = $datos_presupuesto[0]->PRESUC_VendedorPersona;
+    	$vendedor_area = $datos_presupuesto[0]->PRESUC_VenedorArea;
+    	$modo_impresion = ((int) $datos_presupuesto[0]->PRESUC_ModoImpresion > 0 ? $datos_presupuesto[0]->PRESUC_ModoImpresion : '1');
+    	
+    	$forma_pago = '';
+    	if ($datos_presupuesto[0]->FORPAP_Codigo != '') {
+    		$datos_formapago = $this->formapago_model->obtener($datos_presupuesto[0]->FORPAP_Codigo);
+    		$forma_pago = $datos_formapago[0]->FORPAC_Descripcion;
+    	}
+    	$datos_cliente = $this->cliente_model->obtener_datosCliente($cliente);
+    	$empresa = $datos_cliente[0]->EMPRP_Codigo;
+    	$persona = $datos_cliente[0]->PERSP_Codigo;
+    	$tipo = $datos_cliente[0]->CLIC_TipoPersona;
+    	
+    	
+    	$datos_moneda = $this->moneda_model->obtener($datos_presupuesto[0]->MONED_Codigo);
+    	$moneda_nombre = (count($datos_moneda) > 0 ? $datos_moneda[0]->MONED_Descripcion : 'NUEVOS SOLES');
+    	$moneda_simbolo = (count($datos_moneda) > 0 ? $datos_moneda[0]->MONED_Simbolo : 'S/.');
+    	
+    	$temp = $this->obtener_datos_cliente($cliente, $tipo_docu);
+    	$nombre_cliente = $temp['nombre'];
+    	$ruc = $temp['numdoc'];
+    	$direccion = $temp['direccion'];
+    	$telefono = ($temp['telefono'] == '' ? $temp['movil'] : $temp['telefono']);
+    	$fax = $temp['fax'];
+    	$email = $temp['email'];
+    	
+    	
+    	$nombre_contacto = $nombre_cliente;
+    	if ($contacto != '' && $contacto != '0') {
+    		$datos_persona = $this->persona_model->obtener_datosPersona($contacto);
+    		if (count($datos_persona) > 0)
+    			$nombre_contacto = $datos_persona[0]->PERSC_Nombre . ' ' . $datos_persona[0]->PERSC_ApellidoPaterno . ' ' . $datos_persona[0]->PERSC_ApellidoMaterno;
+    	}
+    	$nombre_area = '';
+    	if ($area != '' && $area != '0') {
+    		$datos_area = $this->area_model->obtener_area($area);
+    		if (count($datos_area) > 0)
+    			$nombre_area = $datos_area[0]->AREAC_Descripcion;
+    	}
+    	$vendedor_nombre = '';
+    	if ($vendedor_persona != '' && $vendedor_persona != '0') {
+    		$datos_persona = $this->persona_model->obtener_datosPersona($vendedor_persona);
+    		if (count($datos_persona) > 0)
+    			$vendedor_nombre = $datos_persona[0]->PERSC_Nombre . ' ' . $datos_persona[0]->PERSC_ApellidoPaterno . ' ' . $datos_persona[0]->PERSC_ApellidoMaterno;
+    	}
+    	$vendedor_nombre_area = '';
+    	if ($vendedor_area != '' && $vendedor_area != '0') {
+    		$datos_area = $this->area_model->obtener_area($vendedor_area);
+    		if (count($datos_area) > 0)
+    			$vendedor_nombre_area = $datos_area[0]->AREAC_Descripcion;
+    	}
+    	$filter = new stdClass();
+    	$filter->TIPCAMC_Fecha = date('Y-m-d', time());
+    	$filter->TIPCAMC_MonedaDestino = 2;  // De soles a dolares
+    	$data_tipocambio = $this->tipocambio_model->buscar($filter);
+    	$tipo_cambio = '';
+    	if (count($data_tipocambio) > 0)
+    		$tipo_cambio = $data_tipocambio[0]->TIPCAMC_FactorConversion;
+    	
+    		$detalle_presupuesto = $this->obtener_lista_detalles($codigo);
+    		 
+    		$this->cezpdf = new Cezpdf('a4');
+    		//$this->cezpdf = new backgroundPDF('a4', 'portrait', 'image', array('img' => 'images/documentos/presupuestformato.jpg'));
+    		$this->cezpdf->ezImage("images/documentos/presupuestformato.jpg", -28, 590, 'none', 'left');
+    		$datacreator = array(
+    				'Title' => 'Estadillo de ',
+    				'Name' => 'Estadillo de ',
+    				'Author' => 'gian carlos',
+    				'Subject' => 'PDF con Tablas',
+    				'Creator' => 'ccapaempresas.com',
+    				'Producer' => 'ccapaempresas.com'
+    		);
+    		 
+    		 
+    		//$this->cezpdf->ezText('', '', array("leading" => 100));
+    		$this->cezpdf->ezText(utf8_decode_seguro('PRESUPUESTO'), 12, array("leading" => -710, 'left' => 420));
+    		$this->cezpdf->ezText($codificacion . '</b>', 15, array("leading" => 25, 'left' => 420));
+    		$this->cezpdf->ezText('', '', array("leading" => 35));
+    	
+    		/* Datos del cliente */
+    		$db_data = array(array('cols1' => '','cols2' => utf8_decode_seguro('Se?r(es)'), 'cols3' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols4' => 'R.U.C.', 'cols5' => ': ' . $ruc . '   Fecha: ' . $fecha),
+    				array('cols1' => '','cols2' => utf8_decode_seguro('Direcci?'), 'cols3' => ': ' . utf8_decode_seguro($direccion), 'cols4' => 'Vend.', 'cols5' => ': ' . $vendedor_nombre), //NOMBRE DEL VENDEDOR
+    				array('cols1' => '','cols2' => utf8_decode_seguro('Atenci? Sr(a)'), 'cols3' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols4' => '', 'cols5' => ''),
+    				array('cols1' => '','cols2' => utf8_decode_seguro('Tel?ono'), 'cols3' => ': ' . $telefono, 'cols4' => 'E-mail', 'cols5' => ': ' . $email)
+    		);
+    	
+    		$this->cezpdf->ezTable($db_data, "", "", array(
+    				'width' => 525,
+    				'showLines' => 0,
+    				'shaded' => 0,
+    				'showHeadings' => 0,
+    				'xPos' => 'center',
+    				'fontSize' => 8,
+    				'cols' => array(
+    						'cols1' => array('width' => 45, 'justification' => 'left'),
+    						'cols2' => array('width' => 60, 'justification' => 'left'),
+    						'cols3' => array('width' => 240, 'justification' => 'left'),
+    						'cols4' => array('width' => 35, 'justification' => 'right'),
+    						'cols5' => array('width' => 140, 'justification' => 'left')
+    				)
+    		));
+    	
+    		$this->cezpdf->ezText('', 8);
+    	
+    		/* Listado de detalles */
+    		$db_data = array();
+    		foreach ($detalle_presupuesto as $indice => $valor) {
+    			$producto = $valor->PROD_Codigo;
+    			$marca_prod = $this->producto_model->obtener_marca_modelo_por_producto($producto);
+    			$db_data[] = array(
+    					'cols1' => $indice + 1,
+    					'cols2' => $marca_prod[0]->MARCC_Descripcion,
+    					'cols3' => utf8_decode_seguro($valor->PROD_Nombre . ($valor->PROD_Modelo != '' ? ' - ' . $valor->PROD_Modelo : '')),
+    					'cols4' => $valor->UNDMED_Simbolo,
+    					'cols5' => $valor->PRESDEC_Cantidad,
+    					'cols6' => number_format(($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2),
+    					'cols7' => number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2)
+    			);
+    		}
+    		$col_names = array(
+    				'cols1' => 'Item',
+    				'cols2' => 'Marca',
+    				'cols3' => utf8_decode_seguro('Descripci?'),
+    				'cols4' => 'Uni.',
+    				'cols5' => 'Cant.',
+    				'cols6' => 'Precio Uni.',
+    				'cols7' => 'Precio Total'
+    		);
+    	
+    		$this->cezpdf->ezTable($db_data, $col_names, '', array(
+    				'width' => 500,
+    				'showLines' => 1,
+    				'shaded' => 0,
+    				'showHeadings' => 1,
+    				'xPos' => '320',
+    				'fontSize' => 8,
+    				'cols' => array(
+    						'cols1' => array('width' => 30, 'justification' => 'center'),
+    						'cols2' => array('width' => 60, 'justification' => 'left'),
+    						'cols3' => array('width' => 200, 'justification' => 'left'),
+    						'cols4' => array('width' => 30, 'justification' => 'left'),
+    						'cols5' => array('width' => 30, 'justification' => 'left'),
+    						'cols6' => array('width' => 50, 'justification' => 'right'),
+    						'cols7' => array('width' => 60, 'justification' => 'right')
+    				)
+    		));
+    	
+    		$this->cezpdf->ezText('', '');
+    	
+    		/* Totales */
+    		if ($tipo_docu != 'B') {
+    			$db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>VALOR VENTA</b>', 'cols2' => '<b>' . number_format($subtotal, 2) . '</b>'),
+    					array('cols0' => '', 'cols1' => '<b>IMPUESTO</b>', 'cols2' => '<b>' . number_format($igv, 2) . '</b>'),
+    					array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>')
+    			);
+    		} else {
+    			$db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>'),
+    					array('cols0' => '', 'cols1' => '', 'cols2' => '')
+    			);
+    		}
+    	
+    		$this->cezpdf->ezTable($db_data, "", "", array(
+    				'width' => 525,
+    				'showLines' => 0,
+    				'shaded' => 0,
+    				'showHeadings' => 0,
+    				'xPos' => '320',
+    				'fontSize' => 8,
+    				'cols' => array(
+    						'cols0' => array('width' => 330, 'justification' => 'left'),
+    						'cols1' => array('width' => 70, 'justification' => 'left'),
+    						'cols2' => array('width' => 60, 'justification' => 'right')
+    				)
+    		));
+    	
+    		$vendedor_nombre = '';
+    		if ($vendedor_persona != '' && $vendedor_persona != '0') {
+    			$datos_persona = $this->persona_model->obtener_datosPersona($vendedor_persona);
+    			if (count($datos_persona) > 0)
+    				$vendedor_nombre = $datos_persona[0]->PERSC_Nombre . ' ' . $datos_persona[0]->PERSC_ApellidoPaterno . ' ' . $datos_persona[0]->PERSC_ApellidoMaterno;
+    		}
+    		$vendedor_nombre_area = '';
+    		if ($vendedor_area != '' && $vendedor_area != '0') {
+    			$datos_area = $this->area_model->obtener_area($vendedor_area);
+    			if (count($datos_area) > 0)
+    				$vendedor_nombre_area = $datos_area[0]->AREAC_Descripcion;
+    		}
+    		/* Condiciones de venta */
+    		$db_data = array(array('cols0' => '<b>CONDICIONES DE VENTA:</b>', 'cols1' => ''),
+    				array('cols0' => utf8_decode_seguro('Tipo de Cambio del D?'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
+    				array('cols0' => 'Moneda', 'cols1' => ': ' . $moneda_nombre),
+    				array('cols0' => 'Forma de Pago', 'cols1' => ': ' . utf8_decode_seguro($forma_pago)),
+    				array('cols0' => 'Los Precios de los Productos ', 'cols1' => ': ' . ($modo_impresion == '1' ? 'CONTIENEN IGV' : 'NO CONTIENEN IGV')),
+    				array('cols0' => 'Tiempo de Entrega', 'cols1' => ': ' . $tiempo_entrega),
+    				array('cols0' => 'Lugar de Entrega', 'cols1' => ': ' . utf8_decode_seguro($lugar_entrega)),
+    				//array('cols0' => utf8_decode_seguro('Garantía'), 'cols1' => ': ' . utf8_decode_seguro($garantia)),
+    				array('cols0' => 'Validez de la Oferta', 'cols1' => ': ' . utf8_decode_seguro($validez)),
+    				array('cols0' => 'Contacto', 'cols1' => ': ' . utf8_decode_seguro($vendedor_nombre . ($vendedor_nombre_area != '' ? ' - AREA: ' . $vendedor_nombre_area : ''))),
+    				array('cols0' => 'Observaci?', 'cols1' => ': ' . utf8_decode_seguro($observacion))
+    		);
+    	
+    		$this->cezpdf->ezText('', 15);
+    		$this->cezpdf->ezTable($db_data, "", "", array(
+    				'width' => 525,
+    				'showLines' => 0,
+    				'shaded' => 0,
+    				'showHeadings' => 0,
+    				'xPos' => '360',
+    				'fontSize' => 8,
+    				'cols' => array(
+    						'cols0' => array('width' => 120, 'justification' => 'left'),
+    						'cols1' => array('width' => 415, 'justification' => 'left'),
+    				)
+    		));
+    	
+    		$cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => $codificacion . '.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
+    		return $this->cezpdf->ezOutput($cabecera);
+    	
 
         ///////////////
     }
-
-    ////////////////
-
 
     public function presupuesto_modificar() {
         $data_confi = $this->companiaconfiguracion_model->obtener($this->somevar['compania']);
@@ -2746,254 +2685,249 @@ public function select_cmbVendedor($index){
 
         //////SIN DOCUMENTO  STV
 
-        $datos_presupuesto = $this->presupuesto_model->obtener_presupuesto($codigo);
-        $tipo_docu = $datos_presupuesto[0]->PRESUC_TipoDocumento;
-        $serie = $datos_presupuesto[0]->PRESUC_Serie;
-        $numero = $datos_presupuesto[0]->PRESUC_Numero;
-        $codigo_usuario = $datos_presupuesto[0]->PRESUC_CodigoUsuario;
-        $codificacion = ($codigo_usuario != '' ? $codigo_usuario : ($serie != '' ? $serie . '-' . $this->getOrderNumeroSerie($numero) : 'Nro. ' . $numero));
-        $cliente = $datos_presupuesto[0]->CLIP_Codigo;
-        $subtotal = $datos_presupuesto[0]->PRESUC_subtotal;
-        $descuento = $datos_presupuesto[0]->PRESUC_descuento;
-        $igv = $datos_presupuesto[0]->PRESUC_igv;
-        $igv100 = $datos_presupuesto[0]->PRESUC_igv100;
-        $descuento100 = $datos_presupuesto[0]->PRESUC_descuento100;
-        $total = $datos_presupuesto[0]->PRESUC_total;
-        $observacion = $datos_presupuesto[0]->PRESUC_Observacion;
-        $tipo_docu = $datos_presupuesto[0]->PRESUC_TipoDocumento;
-        $fecha = mysql_to_human($datos_presupuesto[0]->PRESUC_Fecha);
-        $lugar_entrega = $datos_presupuesto[0]->PRESUC_LugarEntrega;
-        $tiempo_entrega = $datos_presupuesto[0]->PRESUC_TiempoEntrega;
-        $garantia = $datos_presupuesto[0]->PRESUC_Garantia;
-        $validez = $datos_presupuesto[0]->PRESUC_Validez;
-        $contacto = $datos_presupuesto[0]->PERSP_Codigo;
-        $area = $datos_presupuesto[0]->AREAP_Codigo;
-        $vendedor_persona = $datos_presupuesto[0]->PRESUC_VendedorPersona;
-        $vendedor_area = $datos_presupuesto[0]->PRESUC_VenedorArea;
-        $modo_impresion = ((int) $datos_presupuesto[0]->PRESUC_ModoImpresion > 0 ? $datos_presupuesto[0]->PRESUC_ModoImpresion : '1');
 
-        $forma_pago = '';
-        if ($datos_presupuesto[0]->FORPAP_Codigo != '') {
-            $datos_formapago = $this->formapago_model->obtener($datos_presupuesto[0]->FORPAP_Codigo);
-            $forma_pago = $datos_formapago[0]->FORPAC_Descripcion;
-        }
-        $datos_cliente = $this->cliente_model->obtener_datosCliente($cliente);
-        $empresa = $datos_cliente[0]->EMPRP_Codigo;
-        $persona = $datos_cliente[0]->PERSP_Codigo;
-        $tipo = $datos_cliente[0]->CLIC_TipoPersona;
-
-
-        $datos_moneda = $this->moneda_model->obtener($datos_presupuesto[0]->MONED_Codigo);
-        $moneda_nombre = (count($datos_moneda) > 0 ? $datos_moneda[0]->MONED_Descripcion : 'NUEVOS SOLES');
-        $moneda_simbolo = (count($datos_moneda) > 0 ? $datos_moneda[0]->MONED_Simbolo : 'S/.');
-
-        $temp = $this->obtener_datos_cliente($cliente, $tipo_docu);
-        $nombre_cliente = $temp['nombre'];
-        $ruc = $temp['numdoc'];
-        $direccion = $temp['direccion'];
-        $telefono = ($temp['telefono'] == '' ? $temp['movil'] : $temp['telefono']);
-        $fax = $temp['fax'];
-        $email = $temp['email'];
-
-
-        $nombre_contacto = $nombre_cliente;
-        if ($contacto != '' && $contacto != '0') {
-            $datos_persona = $this->persona_model->obtener_datosPersona($contacto);
-            if (count($datos_persona) > 0)
-                $nombre_contacto = $datos_persona[0]->PERSC_Nombre . ' ' . $datos_persona[0]->PERSC_ApellidoPaterno . ' ' . $datos_persona[0]->PERSC_ApellidoMaterno;
-        }
-        $nombre_area = '';
-        if ($area != '' && $area != '0') {
-            $datos_area = $this->area_model->obtener_area($area);
-            if (count($datos_area) > 0)
-                $nombre_area = $datos_area[0]->AREAC_Descripcion;
-        }
-        $vendedor_nombre = '';
-        if ($vendedor_persona != '' && $vendedor_persona != '0') {
-            $datos_persona = $this->persona_model->obtener_datosPersona($vendedor_persona);
-            if (count($datos_persona) > 0)
-                $vendedor_nombre = $datos_persona[0]->PERSC_Nombre . ' ' . $datos_persona[0]->PERSC_ApellidoPaterno . ' ' . $datos_persona[0]->PERSC_ApellidoMaterno;
-        }
-        $vendedor_nombre_area = '';
-        if ($vendedor_area != '' && $vendedor_area != '0') {
-            $datos_area = $this->area_model->obtener_area($vendedor_area);
-            if (count($datos_area) > 0)
-                $vendedor_nombre_area = $datos_area[0]->AREAC_Descripcion;
-        }
-        $filter = new stdClass();
-        $filter->TIPCAMC_Fecha = date('Y-m-d', time());
-        $filter->TIPCAMC_MonedaDestino = 2;  // De soles a dolares
-        $data_tipocambio = $this->tipocambio_model->buscar($filter);
-        $tipo_cambio = '';
-        if (count($data_tipocambio) > 0)
-            $tipo_cambio = $data_tipocambio[0]->TIPCAMC_FactorConversion;
-
-
-        $detalle_presupuesto = $this->obtener_lista_detalles($codigo);
-
-        $this->cezpdf = new Cezpdf('a4');
-        $datacreator = array(
-            'Title' => 'Estadillo de ',
-            'Name' => 'Estadillo de ',
-            'Author' => 'gian carlos',
-            'Subject' => 'PDF con Tablas',
-            'Creator' => 'ccapaempresas.com',
-            'Producer' => 'ccapaempresas.com'
-        );
-
-
-        /*$this->cezpdf->addInfo($datacreator);
-        if ($_SESSION['empresa'] == '3') {
-            $this->cezpdf->ezImage("images/cabeceras/presupuestoyuan.jpg", -10, 0, 'none', 'left');
-        } else {
-            $this->cezpdf->ezImage("images/cabeceras/presupuestotek.jpg", -10, 100, 'none', 'left');
-        }*/
-        //$this->cezpdf = new backgroundPDF('a4', 'portrait', 'image', array('img' => 'images/img_db/ferremax_cabe.jpg'));
-        /* $this->cezpdf->ezText(utf8_decode_seguro('TRANSLOGINT'), 11, array("left" => 15));
-          $this->cezpdf->ezText(utf8_decode_seguro('Principal: Av. El Polo Mz.H Lt.12 C'), 9, array("left" => 15));
-          $this->cezpdf->ezText(utf8_decode_seguro('Urb.El Club, 1era Etapa'), 9, array("left" => 15));
-          $this->cezpdf->ezText(utf8_decode_seguro('Huachipa, Lurigancho, Lima - Peru'), 9, array("left" => 15));
-          $this->cezpdf->ezText('E-mail: madypla@hotmail.com,  web: www.madyplac.com', 9, array("left" => 15));
-          $delta = 20; */
-
-        //$this->cezpdf->ezText('', '', array("leading" => 100));
-        $this->cezpdf->ezText(utf8_decode_seguro('<b>PRESUPUESTO: ') . $codificacion . '</b>', 20, array("leading" => 40, 'left' => 185));
-        $this->cezpdf->ezText('', '', array("leading" => 10));
-
-        /* Datos del cliente */
-        $db_data = array(array('cols1' => utf8_decode_seguro('SeÃ±or(es)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols3' => 'R.U.C.', 'cols4' => ': ' . $ruc . '       Fecha: ' . $fecha),
-            array('cols1' => utf8_decode_seguro('DirecciÃ³n'), 'cols2' => ': ' . utf8_decode_seguro($direccion), 'cols3' => 'Vend.', 'cols4' => ': ' . $vendedor_nombre), //NOMBRE DEL VENDEDOR
-            array('cols1' => utf8_decode_seguro('AtenciÃ³n Sr(a)'), 'cols2' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols3' => '', 'cols4' => ''),
-            array('cols1' => utf8_decode_seguro('TelÃ©fono'), 'cols2' => ': ' . $telefono, 'cols3' => 'E-mail', 'cols4' => ': ' . $email)
-        );
-
-        $this->cezpdf->ezTable($db_data, "", "", array(
-            'width' => 525,
-            'showLines' => 0,
-            'shaded' => 0,
-            'showHeadings' => 0,
-            'xPos' => 'center',
-            'fontSize' => 8,
-            'cols' => array(
-                'cols1' => array('width' => 65, 'justification' => 'left'),
-                'cols2' => array('width' => 275, 'justification' => 'left'),
-                'cols3' => array('width' => 35, 'justification' => 'left'),
-                'cols4' => array('width' => 150, 'justification' => 'left')
-            )
-        ));
-
-        $this->cezpdf->ezText('', 8);
-
-        /* Listado de detalles */
-        $db_data = array();
-        foreach ($detalle_presupuesto as $indice => $valor) {
-            $producto = $valor->PROD_Codigo;
-            $marca_prod = $this->producto_model->obtener_marca_modelo_por_producto($producto);
-            $db_data[] = array(
-                'cols1' => $indice + 1,
-                'cols2' => $marca_prod[0]->MARCC_Descripcion,
-                'cols3' => utf8_decode_seguro($valor->PROD_Nombre . ($valor->PROD_Modelo != '' ? ' - ' . $valor->PROD_Modelo : '')),
-                'cols4' => $valor->UNDMED_Simbolo,
-                'cols5' => $valor->PRESDEC_Cantidad,
-                'cols6' => number_format(($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2),
-                'cols7' => number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2)
-            );
-        }
-        $col_names = array(
-            'cols1' => 'Item',
-            'cols2' => 'Marca',
-            'cols3' => utf8_decode_seguro('DescripciÃ³n'),
-            'cols4' => 'Uni.',
-            'cols5' => 'Cant.',
-            'cols6' => 'Precio Uni.',
-            'cols7' => 'Precio Total'
-        );
-
-        $this->cezpdf->ezTable($db_data, $col_names, '', array(
-            'width' => 525,
-            'showLines' => 1,
-            'shaded' => 0,
-            'showHeadings' => 1,
-            'xPos' => 'center',
-            'fontSize' => 8,
-            'cols' => array(
-                'cols1' => array('width' => 30, 'justification' => 'center'),
-                'cols2' => array('width' => 70, 'justification' => 'left'),
-                'cols3' => array('width' => 235, 'justification' => 'left'),
-                'cols4' => array('width' => 40, 'justification' => 'left'),
-                'cols5' => array('width' => 40, 'justification' => 'left'),
-                'cols6' => array('width' => 50, 'justification' => 'right'),
-                'cols7' => array('width' => 60, 'justification' => 'right')
-            )
-        ));
-
-        $this->cezpdf->ezText('', '');
-
-        /* Totales */
-        if ($tipo_docu != 'B') {
-            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>VALOR VENTA</b>', 'cols2' => '<b>' . number_format($subtotal, 2) . '</b>'),
-                array('cols0' => '', 'cols1' => '<b>IMPUESTO</b>', 'cols2' => '<b>' . number_format($igv, 2) . '</b>'),
-                array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>')
-            );
-        } else {
-            $db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>'),
-                array('cols0' => '', 'cols1' => '', 'cols2' => '')
-            );
-        }
-
-        $this->cezpdf->ezTable($db_data, "", "", array(
-            'width' => 525,
-            'showLines' => 0,
-            'shaded' => 0,
-            'showHeadings' => 0,
-            'xPos' => 'center',
-            'fontSize' => 8,
-            'cols' => array(
-                'cols0' => array('width' => 395, 'justification' => 'left'),
-                'cols1' => array('width' => 70, 'justification' => 'left'),
-                'cols2' => array('width' => 60, 'justification' => 'right')
-            )
-        ));
-
-        $vendedor_nombre = '';
-        if ($vendedor_persona != '' && $vendedor_persona != '0') {
-            $datos_persona = $this->persona_model->obtener_datosPersona($vendedor_persona);
-            if (count($datos_persona) > 0)
-                $vendedor_nombre = $datos_persona[0]->PERSC_Nombre . ' ' . $datos_persona[0]->PERSC_ApellidoPaterno . ' ' . $datos_persona[0]->PERSC_ApellidoMaterno;
-        }
-        $vendedor_nombre_area = '';
-        if ($vendedor_area != '' && $vendedor_area != '0') {
-            $datos_area = $this->area_model->obtener_area($vendedor_area);
-            if (count($datos_area) > 0)
-                $vendedor_nombre_area = $datos_area[0]->AREAC_Descripcion;
-        }
-        /* Condiciones de venta */
-        $db_data = array(array('cols0' => '<b>CONDICIONES DE VENTA:</b>', 'cols1' => ''),
-            array('cols0' => utf8_decode_seguro('Tipo de Cambio del DÃ­a'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
-            array('cols0' => 'Moneda', 'cols1' => ': ' . $moneda_nombre),
-            array('cols0' => 'Forma de Pago', 'cols1' => ': ' . utf8_decode_seguro($forma_pago)),
-            array('cols0' => 'Los Precios de los Productos ', 'cols1' => ': ' . ($modo_impresion == '1' ? 'CONTIENEN IGV' : 'NO CONTIENEN IGV')),
-            array('cols0' => 'Tiempo de Entrega', 'cols1' => ': ' . $tiempo_entrega),
-            array('cols0' => 'Lugar de Entrega', 'cols1' => ': ' . utf8_decode_seguro($lugar_entrega)),
-            array('cols0' => utf8_decode_seguro('GarantÃ­a'), 'cols1' => ': ' . utf8_decode_seguro($garantia)),
-            array('cols0' => 'Validez de la Oferta', 'cols1' => ': ' . utf8_decode_seguro($validez)),
-            array('cols0' => 'Contacto', 'cols1' => ': ' . utf8_decode_seguro($vendedor_nombre . ($vendedor_nombre_area != '' ? ' - AREA: ' . $vendedor_nombre_area : '')))
-        );
-        $this->cezpdf->ezTable($db_data, "", "", array(
-            'width' => 525,
-            'showLines' => 0,
-            'shaded' => 0,
-            'showHeadings' => 0,
-            'xPos' => 'center',
-            'fontSize' => 8,
-            'cols' => array(
-                'cols0' => array('width' => 120, 'justification' => 'left'),
-                'cols1' => array('width' => 415, 'justification' => 'left'),
-            )
-        ));
-
-        $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => $codificacion . '.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
-        $this->cezpdf->ezStream($cabecera);
+    	$datos_presupuesto = $this->presupuesto_model->obtener_presupuesto($codigo);
+    	$tipo_docu = $datos_presupuesto[0]->PRESUC_TipoDocumento;
+    	$serie = $datos_presupuesto[0]->PRESUC_Serie;
+    	$numero = $datos_presupuesto[0]->PRESUC_Numero;
+    	$codigo_usuario = $datos_presupuesto[0]->PRESUC_CodigoUsuario;
+    	$codificacion = ($codigo_usuario != '' ? $codigo_usuario : ($serie != '' ? $serie . '-' . $this->getOrderNumeroSerie($numero) : 'Nro. ' . $numero));
+    	$cliente = $datos_presupuesto[0]->CLIP_Codigo;
+    	$subtotal = $datos_presupuesto[0]->PRESUC_subtotal;
+    	$descuento = $datos_presupuesto[0]->PRESUC_descuento;
+    	$igv = $datos_presupuesto[0]->PRESUC_igv;
+    	$igv100 = $datos_presupuesto[0]->PRESUC_igv100;
+    	$descuento100 = $datos_presupuesto[0]->PRESUC_descuento100;
+    	$total = $datos_presupuesto[0]->PRESUC_total;
+    	$observacion = $datos_presupuesto[0]->PRESUC_Observacion;
+    	$tipo_docu = $datos_presupuesto[0]->PRESUC_TipoDocumento;
+    	$fecha = mysql_to_human($datos_presupuesto[0]->PRESUC_Fecha);
+    	$lugar_entrega = $datos_presupuesto[0]->PRESUC_LugarEntrega;
+    	$tiempo_entrega = $datos_presupuesto[0]->PRESUC_TiempoEntrega;
+    	$garantia = $datos_presupuesto[0]->PRESUC_Garantia;
+    	$validez = $datos_presupuesto[0]->PRESUC_Validez;
+    	$contacto = $datos_presupuesto[0]->PERSP_Codigo;
+    	$area = $datos_presupuesto[0]->AREAP_Codigo;
+    	$vendedor_persona = $datos_presupuesto[0]->PRESUC_VendedorPersona;
+    	$vendedor_area = $datos_presupuesto[0]->PRESUC_VenedorArea;
+    	$modo_impresion = ((int) $datos_presupuesto[0]->PRESUC_ModoImpresion > 0 ? $datos_presupuesto[0]->PRESUC_ModoImpresion : '1');
+    	
+    	$forma_pago = '';
+    	if ($datos_presupuesto[0]->FORPAP_Codigo != '') {
+    		$datos_formapago = $this->formapago_model->obtener($datos_presupuesto[0]->FORPAP_Codigo);
+    		$forma_pago = $datos_formapago[0]->FORPAC_Descripcion;
+    	}
+    	$datos_cliente = $this->cliente_model->obtener_datosCliente($cliente);
+    	$empresa = $datos_cliente[0]->EMPRP_Codigo;
+    	$persona = $datos_cliente[0]->PERSP_Codigo;
+    	$tipo = $datos_cliente[0]->CLIC_TipoPersona;
+    	
+    	
+    	$datos_moneda = $this->moneda_model->obtener($datos_presupuesto[0]->MONED_Codigo);
+    	$moneda_nombre = (count($datos_moneda) > 0 ? $datos_moneda[0]->MONED_Descripcion : 'NUEVOS SOLES');
+    	$moneda_simbolo = (count($datos_moneda) > 0 ? $datos_moneda[0]->MONED_Simbolo : 'S/.');
+    	
+    	$temp = $this->obtener_datos_cliente($cliente, $tipo_docu);
+    	$nombre_cliente = $temp['nombre'];
+    	$ruc = $temp['numdoc'];
+    	$direccion = $temp['direccion'];
+    	$telefono = ($temp['telefono'] == '' ? $temp['movil'] : $temp['telefono']);
+    	$fax = $temp['fax'];
+    	$email = $temp['email'];
+    	
+    	
+    	$nombre_contacto = $nombre_cliente;
+    	if ($contacto != '' && $contacto != '0') {
+    		$datos_persona = $this->persona_model->obtener_datosPersona($contacto);
+    		if (count($datos_persona) > 0)
+    			$nombre_contacto = $datos_persona[0]->PERSC_Nombre . ' ' . $datos_persona[0]->PERSC_ApellidoPaterno . ' ' . $datos_persona[0]->PERSC_ApellidoMaterno;
+    	}
+    	$nombre_area = '';
+    	if ($area != '' && $area != '0') {
+    		$datos_area = $this->area_model->obtener_area($area);
+    		if (count($datos_area) > 0)
+    			$nombre_area = $datos_area[0]->AREAC_Descripcion;
+    	}
+    	$vendedor_nombre = '';
+    	if ($vendedor_persona != '' && $vendedor_persona != '0') {
+    		$datos_persona = $this->persona_model->obtener_datosPersona($vendedor_persona);
+    		if (count($datos_persona) > 0)
+    			$vendedor_nombre = $datos_persona[0]->PERSC_Nombre . ' ' . $datos_persona[0]->PERSC_ApellidoPaterno . ' ' . $datos_persona[0]->PERSC_ApellidoMaterno;
+    	}
+    	$vendedor_nombre_area = '';
+    	if ($vendedor_area != '' && $vendedor_area != '0') {
+    		$datos_area = $this->area_model->obtener_area($vendedor_area);
+    		if (count($datos_area) > 0)
+    			$vendedor_nombre_area = $datos_area[0]->AREAC_Descripcion;
+    	}
+    	$filter = new stdClass();
+    	$filter->TIPCAMC_Fecha = date('Y-m-d', time());
+    	$filter->TIPCAMC_MonedaDestino = 2;  // De soles a dolares
+    	$data_tipocambio = $this->tipocambio_model->buscar($filter);
+    	$tipo_cambio = '';
+    	if (count($data_tipocambio) > 0)
+    		$tipo_cambio = $data_tipocambio[0]->TIPCAMC_FactorConversion;
+    	
+    	
+    		$detalle_presupuesto = $this->obtener_lista_detalles($codigo);
+    	
+    		$this->cezpdf = new Cezpdf('a4');
+    		//$this->cezpdf = new backgroundPDF('a4', 'portrait', 'image', array('img' => 'images/documentos/presupuestformato.jpg'));
+    		$this->cezpdf->ezImage("images/documentos/presupuestformato.jpg", -28, 590, 'none', 'left');
+    		$datacreator = array(
+    				'Title' => 'Estadillo de ',
+    				'Name' => 'Estadillo de ',
+    				'Author' => 'gian carlos',
+    				'Subject' => 'PDF con Tablas',
+    				'Creator' => 'ccapaempresas.com',
+    				'Producer' => 'ccapaempresas.com'
+    		);
+    	
+    	
+    		//$this->cezpdf->ezText('', '', array("leading" => 100));
+    		$this->cezpdf->ezText(utf8_decode_seguro('PRESUPUESTO'), 12, array("leading" => -710, 'left' => 420));
+    		$this->cezpdf->ezText($codificacion . '</b>', 15, array("leading" => 25, 'left' => 420));
+    		$this->cezpdf->ezText('', '', array("leading" => 35));
+    	
+    		/* Datos del cliente */
+    		$db_data = array(array('cols1' => '','cols2' => utf8_decode_seguro('Se?r(es)'), 'cols3' => ': ' . utf8_decode_seguro($nombre_cliente), 'cols4' => 'R.U.C.', 'cols5' => ': ' . $ruc . '   Fecha: ' . $fecha),
+    				array('cols1' => '','cols2' => utf8_decode_seguro('Direcci?'), 'cols3' => ': ' . utf8_decode_seguro($direccion), 'cols4' => 'Vend.', 'cols5' => ': ' . $vendedor_nombre), //NOMBRE DEL VENDEDOR
+    				array('cols1' => '','cols2' => utf8_decode_seguro('Atenci? Sr(a)'), 'cols3' => ': ' . utf8_decode_seguro($nombre_contacto . ($nombre_area != '' ? ' - AREA: ' . $nombre_area : '')), 'cols4' => '', 'cols5' => ''),
+    				array('cols1' => '','cols2' => utf8_decode_seguro('Tel?ono'), 'cols3' => ': ' . $telefono, 'cols4' => 'E-mail', 'cols5' => ': ' . $email)
+    		);
+    	
+    		$this->cezpdf->ezTable($db_data, "", "", array(
+    				'width' => 525,
+    				'showLines' => 0,
+    				'shaded' => 0,
+    				'showHeadings' => 0,
+    				'xPos' => 'center',
+    				'fontSize' => 8,
+    				'cols' => array(
+    						'cols1' => array('width' => 45, 'justification' => 'left'),
+    						'cols2' => array('width' => 60, 'justification' => 'left'),
+    						'cols3' => array('width' => 240, 'justification' => 'left'),
+    						'cols4' => array('width' => 35, 'justification' => 'right'),
+    						'cols5' => array('width' => 140, 'justification' => 'left')
+    				)
+    		));
+    	
+    		$this->cezpdf->ezText('', 8);
+    	
+    		/* Listado de detalles */
+    		$db_data = array();
+    		foreach ($detalle_presupuesto as $indice => $valor) {
+    			$producto = $valor->PROD_Codigo;
+    			$marca_prod = $this->producto_model->obtener_marca_modelo_por_producto($producto);
+    			$db_data[] = array(
+    					'cols1' => $indice + 1,
+    					'cols2' => $marca_prod[0]->MARCC_Descripcion,
+    					'cols3' => utf8_decode_seguro($valor->PROD_Nombre . ($valor->PROD_Modelo != '' ? ' - ' . $valor->PROD_Modelo : '')),
+    					'cols4' => $valor->UNDMED_Simbolo,
+    					'cols5' => $valor->PRESDEC_Cantidad,
+    					'cols6' => number_format(($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2),
+    					'cols7' => number_format($valor->PRESDEC_Cantidad * ($modo_impresion == '1' || $tipo_docu == 'B' ? $valor->PRESDEC_Pu_ConIgv : $valor->PRESDEC_Pu), 2)
+    			);
+    		}
+    		$col_names = array(
+    				'cols1' => 'Item',
+    				'cols2' => 'Marca',
+    				'cols3' => utf8_decode_seguro('Descripci?'),
+    				'cols4' => 'Uni.',
+    				'cols5' => 'Cant.',
+    				'cols6' => 'Precio Uni.',
+    				'cols7' => 'Precio Total'
+    		);
+    	
+    		$this->cezpdf->ezTable($db_data, $col_names, '', array(
+    				'width' => 500,
+    				'showLines' => 1,
+    				'shaded' => 0,
+    				'showHeadings' => 1,
+    				'xPos' => '320',
+    				'fontSize' => 8,
+    				'cols' => array(
+    						'cols1' => array('width' => 30, 'justification' => 'center'),
+    						'cols2' => array('width' => 60, 'justification' => 'left'),
+    						'cols3' => array('width' => 200, 'justification' => 'left'),
+    						'cols4' => array('width' => 30, 'justification' => 'left'),
+    						'cols5' => array('width' => 30, 'justification' => 'left'),
+    						'cols6' => array('width' => 50, 'justification' => 'right'),
+    						'cols7' => array('width' => 60, 'justification' => 'right')
+    				)
+    		));
+    	
+    		$this->cezpdf->ezText('', '');
+    	
+    		/* Totales */
+    		if ($tipo_docu != 'B') {
+    			$db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>VALOR VENTA</b>', 'cols2' => '<b>' . number_format($subtotal, 2) . '</b>'),
+    					array('cols0' => '', 'cols1' => '<b>IMPUESTO</b>', 'cols2' => '<b>' . number_format($igv, 2) . '</b>'),
+    					array('cols0' => '', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>')
+    			);
+    		} else {
+    			$db_data = array(array('cols0' => '<b>SON : ' . strtoupper(num2letras(round($total, 2))) . ' ' . $moneda_nombre . '</b>', 'cols1' => '<b>TOTAL ' . $moneda_simbolo . '</b>', 'cols2' => '<b>' . number_format($total, 2) . '</b>'),
+    					array('cols0' => '', 'cols1' => '', 'cols2' => '')
+    			);
+    		}
+    	
+    		$this->cezpdf->ezTable($db_data, "", "", array(
+    				'width' => 525,
+    				'showLines' => 0,
+    				'shaded' => 0,
+    				'showHeadings' => 0,
+    				'xPos' => '320',
+    				'fontSize' => 8,
+    				'cols' => array(
+    						'cols0' => array('width' => 330, 'justification' => 'left'),
+    						'cols1' => array('width' => 70, 'justification' => 'left'),
+    						'cols2' => array('width' => 60, 'justification' => 'right')
+    				)
+    		));
+    	
+    		$vendedor_nombre = '';
+    		if ($vendedor_persona != '' && $vendedor_persona != '0') {
+    			$datos_persona = $this->persona_model->obtener_datosPersona($vendedor_persona);
+    			if (count($datos_persona) > 0)
+    				$vendedor_nombre = $datos_persona[0]->PERSC_Nombre . ' ' . $datos_persona[0]->PERSC_ApellidoPaterno . ' ' . $datos_persona[0]->PERSC_ApellidoMaterno;
+    		}
+    		$vendedor_nombre_area = '';
+    		if ($vendedor_area != '' && $vendedor_area != '0') {
+    			$datos_area = $this->area_model->obtener_area($vendedor_area);
+    			if (count($datos_area) > 0)
+    				$vendedor_nombre_area = $datos_area[0]->AREAC_Descripcion;
+    		}
+    		/* Condiciones de venta */
+    		$db_data = array(array('cols0' => '<b>CONDICIONES DE VENTA:</b>', 'cols1' => ''),
+    				array('cols0' => utf8_decode_seguro('Tipo de Cambio del D?'), 'cols1' => ': ' . ($tipo_cambio > 0 ? round($tipo_cambio, 2) : '')),
+    				array('cols0' => 'Moneda', 'cols1' => ': ' . $moneda_nombre),
+    				array('cols0' => 'Forma de Pago', 'cols1' => ': ' . utf8_decode_seguro($forma_pago)),
+    				array('cols0' => 'Los Precios de los Productos ', 'cols1' => ': ' . ($modo_impresion == '1' ? 'CONTIENEN IGV' : 'NO CONTIENEN IGV')),
+    				array('cols0' => 'Tiempo de Entrega', 'cols1' => ': ' . $tiempo_entrega),
+    				array('cols0' => 'Lugar de Entrega', 'cols1' => ': ' . utf8_decode_seguro($lugar_entrega)),
+    				//array('cols0' => utf8_decode_seguro('Garantía'), 'cols1' => ': ' . utf8_decode_seguro($garantia)),
+    				array('cols0' => 'Validez de la Oferta', 'cols1' => ': ' . utf8_decode_seguro($validez)),
+    				array('cols0' => 'Contacto', 'cols1' => ': ' . utf8_decode_seguro($vendedor_nombre . ($vendedor_nombre_area != '' ? ' - AREA: ' . $vendedor_nombre_area : ''))),
+    				array('cols0' => 'Observaci?', 'cols1' => ': ' . utf8_decode_seguro($observacion))
+    				
+    		);
+    	
+    		$this->cezpdf->ezText('', 15);
+    		$this->cezpdf->ezTable($db_data, "", "", array(
+    				'width' => 525,
+    				'showLines' => 0,
+    				'shaded' => 0,
+    				'showHeadings' => 0,
+    				'xPos' => '360',
+    				'fontSize' => 8,
+    				'cols' => array(
+    						'cols0' => array('width' => 120, 'justification' => 'left'),
+    						'cols1' => array('width' => 415, 'justification' => 'left'),
+    				)
+    		));
+    	
+    		$cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => $codificacion . '.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
+    		$this->cezpdf->ezStream($cabecera);
 
         ///////////////
     }
@@ -4008,7 +3942,7 @@ public function select_cmbVendedor($index){
                     $flagBS = $datos_producto[0]->PROD_FlagBienServicio;
                     $costo = $datos_producto[0]->PROD_CostoPromedio;
                     $datos_umedida = $this->unidadmedida_model->obtener($unidad_medida);
-                    $nombre_unidad = $datos_umedida[0]->UNDMED_Simbolo;
+                    $nombre_unidad = $datos_umedida[0]->UNDMED_Descripcion;
 
 
                     $objeto = new stdClass();
@@ -4078,7 +4012,8 @@ public function select_cmbVendedor($index){
     				$pu = $valor->PEDIDETC_PSIGV;
     				$subtotal = $valor->PEDIDETC_Precio;
     				$igv = $valor->PEDIDETC_IGV;
-    				$descuento = "";
+    				$descuento = $valor->PEDIDETC_Descuento ;
+    				$descuento100 = $valor->PEDIDETC_Descuento100;
     				if($descuento == "")
     					$descuento = 0;
     				
@@ -4115,6 +4050,7 @@ public function select_cmbVendedor($index){
     				$objeto->PRESDEC_Pu = $pu;
     				$objeto->PRESDEC_Subtotal = $subtotal;
     				$objeto->PRESDEC_Descuento = $descuento;
+    				$objeto->PRESDEC_Descuento100 = $descuento100;
     				$objeto->PRESDEC_Igv = $igv;
     				$objeto->PRESDEC_Total = $total;
     				$objeto->PRESDEC_Pu_ConIgv = $pu_conigv;

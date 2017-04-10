@@ -7,7 +7,25 @@ jQuery(document).ready(function(){
 	contiene_igv = $("#contiene_igv").val();
 	tipo_docu   = $("#tipo_docu").val();
 	tipo_codificacion = $("#tipo_codificacion").val();
-    
+	
+	$("#imprimirPedido").click(function(){
+	    var numero = $("#txtNumDoc").val();
+	    var cliente = $("#cliente").val();
+	    var fechai=$("#fechai").val().split("/");
+	    var fechaf=$("#fechaf").val().split("/");
+
+	    var datafechaIni="";
+	    var datafechafin="";
+	///
+	  if(fechai==""){fechai="--";}else{fechai=fechai[2]+"-"+fechai[1]+"-"+fechai[0];}
+	  if(fechaf==""){fechaf="--";}else{fechaf=fechaf[2]+"-"+fechaf[1]+"-"+fechaf[0];}
+	  if(numero==""){numero="--";}
+	  if(cliente==""){cliente="--";}
+
+	url = base_url+"index.php/compras/pedido/registro_pedido_pdf/"+fechai+"/"+ fechaf+"/"+numero+"/"+ cliente;
+	window.open(url,'',"width=800,height=600,menubars=no,resizable=no;");
+	});
+
     $("#imgGuardarPedido").click(function(){
     	//validar campos llenados
     	serie   = $("#serie").val();
@@ -37,9 +55,17 @@ jQuery(document).ready(function(){
     			    		   }
     			    		   else{
     			    			   dataString = $('#frmPedido').serialize();
-    			    				url = base_url+"index.php/compras/pedido/insertar_pedido";
+    			    			   var codigo=$('#codigo').val();
+    			    			   
+    			    		        if(codigo==''){ 
+    			    		        	url = base_url+"index.php/compras/pedido/insertar_pedido";
+    			    		        	var mensaje="Se ha ingresado un pedido.";
+    			    		        }else{
+    			    		        	url = base_url+"index.php/compras/pedido/modificar_pedido";
+    			    		        	var mensaje="El pedido se modificó correctamente.";
+    			    		        }
+    			    				
     			    				$.post(url,dataString,function(data){
-    			    					alert('Se ha ingresado un pedido.');
     			    					location.href = base_url+"index.php/compras/pedido/pedidos";
     			    				});
     			    		   }
@@ -91,7 +117,22 @@ jQuery(document).ready(function(){
         }
     });
 	
-
+ $("#linkVerSerieNum").click(function () {
+        var temp = $("#linkVerSerieNum p").html();
+        var serienum = temp.split('-');
+       
+        //switch (tipo_codificacion) {
+            //case '1':
+                //$("#numero").val(serienum[1]);
+                
+               // break;
+           // case '2':
+                $("#serie").val(serienum[0]);
+                $("#numero").val(serienum[1]);
+               // alert(serienum[1]);
+               // break;
+        //}
+    });
     $('#nombre_cliente').keyup(function (e) {
         var key = e.keyCode || e.which;
         if (key == 13) {
@@ -154,12 +195,10 @@ jQuery(document).ready(function(){
 
 function eliminar_producto_pedido(n){
 	if(confirm('Esta seguro que desea eliminar este producto?')){
-		a                	= "prodcodigo["+n+"]";
-		//b					= "eliminado["+n+"]";
+		a                	= "detacodi["+n+"]";
 		e					= "detaccion["+n+"]";
 		fila            	= document.getElementById(a).parentNode.parentNode.parentNode;
 		fila.style.display	="none";
-		//document.getElementById(b).value="si";
 		document.getElementById(e).value="e";
 		
 		calcula_totales();
@@ -187,6 +226,7 @@ function agregar_producto_pedido(){
     codproducto     = $("#codproducto").val();
     producto        = $("#producto").val();
     nombre_producto = $("#nombre_producto").val();
+    descuento = $("#descuento").val();
     cantidad        = $("#cantidad").val();
     igv = parseInt($("#igv").val());
     precio_conigv = $("#precio").val();
@@ -244,7 +284,7 @@ function agregar_producto_pedido(){
     fila+= '<input type="hidden" name="prodstock['+n+']" id="prodstock['+n+']" value="'+stock+'"/>';
     fila+= '<input type="hidden" name="prodcosto['+n+']" id="prodcosto['+n+']" value="'+costo+'" readonly="readonly">';
     fila += '<input type="hidden" name="almacenProducto[' + n + ']" id="almacenProducto[' + n + ']" value="' + almacenProducto + '"/>';
-    fila+= '<input type="hidden" name="proddescuento100['+n+']" id="proddescuento100['+n+']" value="0">';
+    fila+= '<input type="hidden" name="proddescuento100['+n+']" id="proddescuento100['+n+']" value="'+descuento+'">';
     fila+= '<input type="hidden" name="proddescuento['+n+']" id="proddescuento['+n+']" onblur="calcula_importe2('+n+');" />';
     fila+= '<input type="text" size="5" maxlength="10" class="cajaGeneral cajaSoloLectura" name="prodimporte['+n+']" id="prodimporte['+n+']" value="0" readonly="readonly">';
     fila+= '</div></td>';
@@ -280,27 +320,34 @@ function calcula_importe(n){
     g = "prodigv100["+n+"]";
     h = "proddescuento100["+n+"]";
     i = "prodpu_conigv["+n+"]";
+   // k = "preciobruto["+n+"]";
     pu = document.getElementById(a).value;
     pu_conigv = document.getElementById(i).value;
     cantidad = document.getElementById(b).value;
     igv100 = document.getElementById(g).value;
-    descuento100 =0;  //document.getElementById(h).value;
+    descuento100 =document.getElementById(h).value;
     precio = money_format(pu*cantidad);
-    total_dscto = money_format(precio*descuento100/100);
+    precio_des=money_format(precio*descuento100/100);
+    precio_total=money_format(precio-parseFloat(precio_des));
+    preciodescuento=money_format(pu_conigv*cantidad);
+    total_dscto = money_format(preciodescuento*descuento100/100);
     precio2 = money_format(precio-parseFloat(total_dscto));
     
     if(pu_conigv=='')
         total_igv = money_format(precio2*igv100/100);
     else{
         total_igv = money_format((pu_conigv-pu)*cantidad);
+        igvdes= money_format(total_igv*descuento100/100);
+        igv=money_format(total_igv-parseFloat(igvdes));
     }
     importe = money_format(precio-parseFloat(total_dscto)+parseFloat(total_igv));
 
-    document.getElementById(c).value = total_dscto;
-    document.getElementById(d).value = total_igv;
-    document.getElementById(e).value = precio;
-    document.getElementById(f).value = importe;
-    
+    document.getElementById(c).value = total_dscto;//proddescuento
+    document.getElementById(d).value = igv;//prodigv
+    document.getElementById(e).value = precio_total;//prodprecio
+    document.getElementById(f).value = importe;//prodimporte
+    //document.getElementById(k).value = preciodescuento;//precio_bruto
+
     calcula_totales();
 } 
 function calcula_totales(){
@@ -311,46 +358,73 @@ function calcula_totales(){
     valor_venta = 0;
     igv_total = 0;
     precio_total = 0;
-
-    descuentoporciento = $("#descuento").val();
-    igvporciento = $("#igv").val();
+    bruto_total = 0;
+    importe_total =0;
+    bruto_desc = 0;
+   // descuentoporciento = $("#descuento").val();
+   // igvporciento = $("#igv").val();
 
     for(i=0;i<n;i++){//Estanb al reves los campos
-    	//d = "prodprecio["+i+"]";
-        //a = "prodimporte["+i+"]"
+        a = "prodimporte["+i+"]"
         b = "prodigv["+i+"]";
-        //c = "proddescuento["+i+"]";
+        c = "proddescuento["+i+"]";
         d = "prodprecio["+i+"]";
         e  = "detaccion["+i+"]";
+       
+        f  = "prodpu["+i+"]";
+        g  = "prodcantidad["+i+"]";
+
+        h = "proddescuento100["+i+"]";
+
+
        if(document.getElementById(e).value!='e'){
-    	   	//importe = parseFloat(document.getElementById(a).value);
-            //descuento = parseFloat(document.getElementById(c).value);
+    	   	importe = parseFloat(document.getElementById(a).value);
+            descuento = parseFloat(document.getElementById(c).value);
     	    preciosigv = parseFloat(document.getElementById(d).value);
-    	   igv = parseFloat(document.getElementById(b).value);
-           
+    	    igv = parseFloat(document.getElementById(b).value);
+            descuento100 = parseFloat(document.getElementById(h).value);
+            pu = document.getElementById(f).value;
+            cantidad = document.getElementById(g).value;
+            precio = money_format(pu*cantidad);
             
-            //igv_total = money_format(igv + igv_total);
-            //descuento_total = money_format(descuento + descuento_total);
-            //precio_total = money_format(precio + precio_total);
-            importe_bruto = money_format(preciosigv + importe_bruto);
-            
+            igv_total = money_format(igv + igv_total);
+            descuento_total = money_format(descuento + descuento_total);
+            bruto_total = money_format(precio + bruto_total);
+            bruto_desc = money_format(bruto_total*descuento100/100);
+            valor_venta = money_format(preciosigv + valor_venta);
+            importe_total=money_format(importe+importe_total);
             
         }
        
     }
-    desc=(importe_bruto*descuentoporciento)/100;
-    vventa=importe_bruto-desc;
-    igvtotal=(vventa*igvporciento)/100;
-    preciototal=vventa+igvtotal;
-
-   
-
-	
-    $("#importebruto").val(importe_bruto.toFixed(2));  
-    $("#descuentotal").val(desc.toFixed(2));
-    $("#vventa").val(vventa.toFixed(2)); 
-    $("#igvtotal").val(igvtotal.toFixed(2));  
-    $("#preciototal").val(preciototal.toFixed(2));
+    importebruto=money_format(bruto_total);
+    descuentotal=money_format(bruto_desc);
+    vventa=money_format(valor_venta);
+    igvtotal=money_format(igv_total);
+    preciototal=money_format(importe_total);
+   // desc=(importe_bruto*descuentoporciento)/100;
+  //  vventa=importe_bruto-desc;
+   // igvtotal=(vventa*igvporciento)/100;
+   // preciototal=vventa+igvtotal;
+    $("#importebruto").val(importebruto.toFixed(2)); // importe bruto 
+    $("#descuentotal").val(descuentotal.toFixed(2));//descuento total
+    $("#vventa").val(vventa.toFixed(2)); //valor de venta
+    $("#igvtotal").val(igvtotal.toFixed(2));  //valor del igv
+    $("#preciototal").val(preciototal.toFixed(2));// importe total
+}
+function modifica_descuento_total(){
+    descuento = $('#descuento').val();
+    n     = document.getElementById('tblDetallePedido').rows.length;
+    for(i=0;i<n;i++){
+        a = "proddescuento100["+i+"]";
+        document.getElementById(a).value = descuento;
+    }
+    for(jj=0;jj<n;jj++){
+        calcula_importe(jj);
+    }
+    calcula_totales();
+    modifica_pu_conigv();
+    
 }
 function modifica_pu_conigv(n) {
     a = "prodpu_conigv[" + n + "]";
@@ -537,9 +611,9 @@ function listar_precios_x_producto_unidad() {
 }
 
 function editar_pedido(pedido){
-	alert("Opción en mantenimiento");
-       /* var url = base_url+"index.php/compras/pedido/editar_pedido/"+pedido;
-	$("#zonaContenido").load(url);*/
+	//alert("Opción en mantenimiento");
+     var url = base_url+"index.php/compras/pedido/editar_pedido/"+pedido;
+	$("#zonaContenido").load(url);
 }
 function eliminar_pedido(pedido){
 	if(confirm('Esta seguro desea eliminar este pedido?')){
@@ -620,7 +694,8 @@ function verificarProductoDetalle(codigoProducto,codigoAlmacen){
 		}
 	}
 	return isEncuentra;
-}         
+}
+
        
 function mostrar_precio() {
     precio = $("#precioProducto").val();

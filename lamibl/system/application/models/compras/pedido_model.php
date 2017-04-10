@@ -47,19 +47,19 @@ public function updateSolicitudCotizacion($pedido){
   $this->db->where("PRESUP_Codigo",$pedido);
   $this->db->update("cji_presupuesto",$data);
 }
-  public function seleccionar_finalizados()
-  {
-      $arreglo = array(''=>':: Seleccione ::');
-      $lista = $this->listar_pedidos_finalizados();
-      if(count($lista)>0){
-          foreach($lista as $indice=>$valor)
-          {   $indice1   = $valor->PEDIP_Codigo;
-              $valor1    = $valor->PEDIC_Numero." ".$valor->PEDIC_Observacion." [".$valor->PEDIC_Tipo.']';                
-              $arreglo[$indice1] = $valor1;
-          }
-      }
-      return $arreglo;
-  }
+//   public function seleccionar_finalizados()
+//   {
+//       $arreglo = array(''=>':: Seleccione ::');
+//       $lista = $this->listar_pedidos_finalizados();
+//       if(count($lista)>0){
+//           foreach($lista as $indice=>$valor)
+//           {   $indice1   = $valor->PEDIP_Codigo;
+//               $valor1    = $valor->PEDIC_Numero." ".$valor->PEDIC_Observacion." [".$valor->PEDIC_Tipo.']';                
+//               $arreglo[$indice1] = $valor1;
+//           }
+//       }
+//       return $arreglo;
+//   }
 
   function listar_pedidos2($number_items='',$offset=''){
         $compania = $this->somevar['compania'];
@@ -153,19 +153,33 @@ public function updateSolicitudCotizacion($pedido){
         }     
 
   } 
-  function listar_pedidos_todos($number_items='',$offset='',$filter='')
+  function listar_pedidos_todos($filter='',$number_items='',$offset='')
         {
             $compania = $this->somevar['compania'];
+            $data_confi = $this->companiaconfiguracion_model->obtener($compania);
+            $data_confi_docu = $this->companiaconfidocumento_model->obtener($data_confi[0]->COMPCONFIP_Codigo, 13);
+            
+            $where = '';
+            if (isset($filter->fechai) && $filter->fechai != '' && isset($filter->fechaf) && $filter->fechaf != '')
+            	$where = ' and pe.PEDIC_FechaRegistro BETWEEN "' . human_to_mysql($filter->fechai) . '" AND "' . human_to_mysql($filter->fechaf) . '"';
+            	switch ($data_confi_docu[0]->COMPCONFIDOCP_Tipo) {
+            		case '1': if (isset($filter->numero) && $filter->numero != '')
+            			$where.=' and pe.PEDIC_Numero=' . $filter->numero; break;
+            	}
+            	if (isset($filter->cliente) && $filter->cliente != '')
+            		$where.=' and pe.CLIP_Codigo=' . $filter->cliente;
+            			$limit = "";
+            			if ((string) $offset != '' && $number_items != '')
+            				$limit = 'LIMIT ' . $offset . ',' . $number_items;
+            
+            
+            
 		
 		$sql = "select DISTINCT pe.PEDIP_Codigo,pe.PEDIC_Serie,pe.PEDIC_Numero,pe.CLIP_Codigo,pe.PROYP_Codigo,pe.PEDIC_EstadoPresupuesto, pr.PRESUC_Serie ,pr.PRESUC_Numero from cji_pedido pe
 inner join cji_pedidodetalle pedidetalle on pe.PEDIP_Codigo = pedidetalle.PEDIP_Codigo
 left join cji_presupuesto pr on pr.PRESUP_Codigo = pe.PRESUP_Codigo
-WHERE pe.PEDIC_FlagEstado = 1";
+WHERE pe.PEDIC_FlagEstado = 1 " . $where . "";
 		
-// 		$sql = "select DISTINCT pe.PEDIP_Codigo,pe.PEDIC_Serie,pe.PEDIC_Numero,pe.CLIP_Codigo,pe.PROYP_Codigo,pe.PEDIC_EstadoPresupuesto,CONCAT(p.PRESUC_Serie,"-",p.PRESUC_Numero) AS PRESUPUESTO from cji_pedido pe
-// inner join cji_pedidodetalle pedidetalle on pe.PEDIP_Codigo = pedidetalle.PEDIP_Codigo
-// inner join cji_presupuesto p on p.PRESUP_Codigo = pe.PRESUP_Codigo
-// WHERE pe.PEDIC_FlagEstado = 1";
 
       $query = $this->db->query($sql);
         if ($query->num_rows > 0) {
@@ -302,6 +316,25 @@ WHERE CPC_TipoOperacion="C" AND PEDIP_Codigo ='.$pedido.' ORDER BY PRESUP_Codigo
       return $data;
     }
     }
+
+public function ultimo_numero(){
+        $this->db->select("PRESUC_Numero");
+        $this->db->from("cji_presupuesto");
+       $this->db->order_by("PRESUC_Numero",'desc');
+       $this->db->limit(1);
+       $query= $this->db->get();
+         if ($query->num_rows > 0) {
+            foreach ($query->result() as $fila) {
+                $data[] = $fila;
+            }
+            return $data;
+        }
+        
+    }
+
+
+
+    
   public function getPedigoCodigo($pedido){
     $this->db->select('PEDIP_Codigo');
     $where = array("PEDIP_Codigo"  => $pedido,"PEDIC_FlagEstado" => "1");
@@ -313,7 +346,7 @@ WHERE CPC_TipoOperacion="C" AND PEDIP_Codigo ='.$pedido.' ORDER BY PRESUP_Codigo
       return $data;
     }
    } 
-  function insertar_pedido($serie,$numero,$fechasistema,$moneda,$obra,$cliente,$contacto,$igvpp,$importebruto,$descuentotal,$vventa,$igvtotal,$preciototal){
+  function insertar_pedido($serie,$numero,$fechasistema,$moneda,$obra,$cliente,$contacto,$igvpp,$importebruto,$descuentotal,$vventa,$igvtotal,$preciototal,$descuento100){
       $compania = $this->somevar['compania'];
       $usuario =  $this->somevar['usuario'];
   
@@ -331,6 +364,7 @@ WHERE CPC_TipoOperacion="C" AND PEDIP_Codigo ='.$pedido.' ORDER BY PRESUP_Codigo
       		'COMPP_Codigo' =>$compania,
       		'PEDIC_ImporteBruto' =>$importebruto,
       		'PEDIC_DescuentoTotal' =>$descuentotal,
+      		'PEDIC_Descuento100' =>$descuento100,
       		'PEDIC_ValorVenta' =>$vventa,
       		'PEDIC_IGVTotal' =>$igvtotal,
       		'PEDIC_PrecioTotal' =>$preciototal,
@@ -352,35 +386,18 @@ WHERE CPC_TipoOperacion="C" AND PEDIP_Codigo ='.$pedido.' ORDER BY PRESUP_Codigo
     }
     
     
-    function modificar_pedido($pedido,$centro_costo,$numero_documento,$observacion,$tipo_pedido,$tipo_documento,$num_refe){
+    function modificar_pedido($pedido,$filter=null){
+    	
       $compania = $this->somevar['compania'];
       $usuario =  $this->somevar['usuario'];
-      $fecha = date('Y-m-d h:i:s');
-      $data = array(
-        'PEDIC_Numero' => $numero_documento,
-        'CENCOST_Codigo' => $centro_costo,
-        'USUA_Codigo' => $usuario,
-        'USUA_Responsable' => $usuario,
-        'PEDIC_Observacion' => $observacion,
-        'PEDIC_FechaModificacion' => $fecha,
-        'COMPP_Codigo' => $compania,
-    'DOCUP_Codigo' => $tipo_documento,
-        'PEDIC_NumRefe' => $num_refe,
-        'PEDIC_Tipo' => $tipo_pedido
-      );
-      $this->db->where("PEDIP_Codigo",$pedido);
-      $this->db->update("cji_pedido",$data);
+      $filter->PEDIC_FechaModificacion= date('Y-m-d h:i:s');
+      
+      $where = array("PEDIP_Codigo" => $pedido);
+      $this->db->where($where);
+      $this->db->update('cji_pedido', (array) $filter);
+     
     }
-    /*function eliminar_pedido($pedido){
-    $data      = array("PEDIC_FlagEstado"=>'0');
-    $where = array("PEDIP_Codigo"=>$pedido);
-    $this->db->where($where);
-    $this->db->update('cji_pedido',$data);
-    $data      = array("PEDIDETC_FlagEstado"=>'0');
-    $where = array("PEDIP_Codigo"=>$pedido);
-    $this->db->where($where);
-    $this->db->update('cji_pedidodetalle',$data);
-    }*/
+   
   function eliminar_pedido($pedido){
   	$data     = array("PEDIC_FlagEstado"=>'0');
   	$where = array("PEDIP_Codigo"=>$pedido);
@@ -482,6 +499,41 @@ WHERE CPC_TipoOperacion="C" AND PEDIP_Codigo ='.$pedido.' ORDER BY PRESUP_Codigo
     		}
     		return $data;
     	}
+    	
+    }
+    public function listar_pedido_pdf($fechain, $fechafin, $numero, $cliente)
+    {
+    	$compania = $this->somevar['compania'];
+    	$data_confi = $this->companiaconfiguracion_model->obtener($compania);
+    	$data_confi_docu = $this->companiaconfidocumento_model->obtener($data_confi[0]->COMPCONFIP_Codigo, 13);
+    	
+    	$where = '';
+    	if ($fechain != '--' && $fechafin!= '--')
+    		$where = ' and pe.PEDIC_FechaRegistro BETWEEN "' . human_to_mysql($fechain) . '" AND "' . human_to_mysql($fechafin) . '"';
+    		switch ($data_confi_docu[0]->COMPCONFIDOCP_Tipo) {
+    			case '1': if ( $numero != '--')
+    				$where.=' and pe.PEDIC_Numero=' .  $numero; break;
+    		}
+    		if ($cliente != '--')
+    			$where.=' and pe.CLIP_Codigo=' . $cliente;
+    	
+    	
+    	
+    				$sql = "select DISTINCT pe.PEDIP_Codigo,pe.PEDIC_Serie,pe.PEDIC_Numero,pe.CLIP_Codigo,pe.PEDIC_PrecioTotal,substring(pe.PEDIC_FechaRegistro,1,10) as FECHA,pe.PROYP_Codigo,pe.PEDIC_EstadoPresupuesto, m.MONED_Simbolo, pr.PRESUC_Serie ,pr.PRESUC_Numero from cji_pedido pe
+inner join cji_pedidodetalle pedidetalle on pe.PEDIP_Codigo = pedidetalle.PEDIP_Codigo
+left join cji_presupuesto pr on pr.PRESUP_Codigo = pe.PRESUP_Codigo
+LEFT JOIN cji_moneda m ON m.MONED_Codigo=pe.MONED_Codigo
+WHERE pe.PEDIC_FlagEstado = 1 " . $where . "";
+    	
+    	
+    				$query = $this->db->query($sql);
+    				if ($query->num_rows > 0) {
+    					foreach ($query->result() as $fila) {
+    						$data[] = $fila;
+    					}
+    					return $data;
+    				}
+    				return array();
     	
     }
 }

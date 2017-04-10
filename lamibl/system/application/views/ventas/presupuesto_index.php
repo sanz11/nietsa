@@ -149,9 +149,9 @@ if(empty($persona)) header("location:$url");
                                                     <td align='left'>
                                                         <?php 
                                                         switch($tipo_codificacion){
-                                                            case '1': echo '<input type="text" name="numero" id="numero" value="'.$numero.'" class="cajaGeneral"size="10" maxlength="10"  />'; break;
-                                                            case '2': echo '<input type="text" name="serie" id="serie" value="'.$serie.'" class="cajaGeneral" size="3" maxlength="10"  /> ';
-                                                                      echo '<input type="text" name="numero" id="numero" value="'.$numero.'" class="cajaGeneral" size="10" maxlength="10"  /> '; break;
+                                                            case '1': echo '<input type="number" name="numero" id="numero" value="'.$numero.'" class="cajaGeneral"size="10" maxlength="10"   onkeypress="return numbersonly(this,event,'.');" />'; break;
+                                                            case '2': echo '<input type="number" name="serie" id="serie" value="'.$serie.'" class="cajaGeneral" size="3" maxlength="10"   onkeypress="return numbersonly(this,event,'.');" /> ';
+                                                                      echo '<input type="number" name="numero" id="numero" value="'.$numero.'" class="cajaGeneral" size="10" maxlength="10"   onkeypress="return numbersonly(this,event,'.');" /> '; break;
                                                             case '3': echo '<input type="text" name="codigo_usuario" id="codigo_usuario" value="'.$codigo_usuario.'" class="cajaGeneral" size="20" maxlength="50"  />'; break;
                                                         }
                                                         ?>

@@ -263,7 +263,7 @@ class Ocompra extends Controller
         $data['cboFormapago'] = form_dropdown("formapago", $this->formapago_model->seleccionar(), "1", " class='comboMedio' id='formapago'");
         $data['cboContacto'] = $this->OPTION_generador(array(), 'DIREP_Codigo', array('PERSC_ApellidoPaterno', 'PERSC_ApellidoMaterno', 'PERSC_Nombre'));
         $data['cboMiContacto'] = $this->OPTION_generador($this->directivo_model->listar_directivo($this->session->userdata('empresa'), ($tipo_oper == 'V' ? '4' : '5')), 'DIREP_Codigo', array('PERSC_ApellidoPaterno', 'PERSC_ApellidoMaterno', 'PERSC_Nombre'), '', array('', '::Seleccione::'), ' ');
-        $data['cboPedidos'] = form_dropdown("pedidos", $this->pedido_model->seleccionar_finalizados(), "", " onchange='load_cotizaciones();' class='comboGrande' id='pedidos'");
+        //$data['cboPedidos'] = form_dropdown("pedidos", $this->pedido_model->seleccionar_finalizados(), "", " onchange='load_cotizaciones();' class='comboGrande' id='pedidos'");
         $data['detalle_ocompra'] = array();
         $data['numero'] = "";
         $data['codigo_usuario'] = "";
@@ -550,7 +550,7 @@ class Ocompra extends Controller
 
         $data['cboMiContacto'] = $this->OPTION_generador($this->directivo_model->listar_directivo($this->session->userdata('empresa'), ($tipo_oper == 'V' ? '4' : '5')), 'DIREP_Codigo', array('PERSC_ApellidoPaterno', 'PERSC_ApellidoMaterno', 'PERSC_Nombre'), $mi_contacto, array('', '::Seleccione::'), ' ');
         $data['cboContacto'] = $this->OPTION_generador($this->directivo_model->listar_directivo($empresa, ($tipo_oper == 'V' ? '5' : '4')), 'DIREP_Codigo', array('PERSC_ApellidoPaterno', 'PERSC_ApellidoMaterno', 'PERSC_Nombre'), $contacto, array('', '::Seleccione::'), ' ');
-        $data['cboPedidos'] = form_dropdown("pedidos", $this->pedido_model->seleccionar_finalizados(), "", " onchange='load_cotizaciones();' class='comboGrande' id='pedidos'");
+        //$data['cboPedidos'] = form_dropdown("pedidos", $this->pedido_model->seleccionar_finalizados(), "", " onchange='load_cotizaciones();' class='comboGrande' id='pedidos'");
          $datos_usuario= $this->usuario_model->obtener($usuario);
          $numun ="";
          if(count($datos_usuario)>0){

@@ -17,6 +17,14 @@ class Guiaremdetalle_Model extends Model
                 return $query->result();
         }
      }
+     public function listar2($guiarem)
+     {
+        $where = array("GUIAREMP_Codigo"=>$guiarem, "GUIAREMDETC_FlagEstado"=>1);
+        $query = $this->db->order_by('GUIAREMDETP_Codigo')->where($where)->get('cji_guiaremdetalle');
+        if($query->num_rows>0){
+                return $query->result();
+        }
+     }
      public function obtener($id)
      {
         $where = array("GUIAREMDETP_Codigo"=>$id);

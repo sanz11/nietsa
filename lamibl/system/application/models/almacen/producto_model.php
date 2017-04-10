@@ -1429,7 +1429,17 @@ and pro.PROD_FlagActivo = 1 and pro.PROD_FlagEstado = 1 order by pro.PROD_FechaR
     
     }
     
-   
+   public function nameproducto($codigo){
+    	$this->db->select("p.*");
+    	$query = $this->db->where(array("PROD_Codigo"=>$codigo))->get('cji_producto p');
+    	if($query->num_rows > 0){
+    		foreach($query ->result() as $valor){
+    			$data[]=$valor;
+    		}
+    		return $data;
+    	}
+    }
+    
     
 
 }

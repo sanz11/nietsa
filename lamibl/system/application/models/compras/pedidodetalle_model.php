@@ -36,6 +36,7 @@ class Pedidodetalle_model extends Model{
 	
     public function insertar($filter=null)
     {
+    	$filter->PEDIDETC_FechaRegistro= date('Y-m-d h:i:s');
         $this->db->insert($this->_name,(array)$filter);
         return $this->db->insert_id();
     }
@@ -43,16 +44,17 @@ class Pedidodetalle_model extends Model{
         $this->db->insert($this->_name,(array)$filter);
         return $this->db->insert_id();
     }
-     public function modificar($presupuesto_detalle,$filter=null)
+     public function modificar($pedido_detalle,$filter=null)
     {
-        $where = array("PRESDEP_Codigo"=>$presupuesto_detalle);
+    	$filter->PEDIDETC_FechaModificacion= date('Y-m-d h:i:s');
+        $where = array("PEDIDETP_Codigo"=>$pedido_detalle);
         $this->db->where($where);
         $this->db->update($this->_name,(array)$filter);
     }
-    public function eliminar($presupuesto_detalle)
+    public function eliminar($pedido_detalle)
     {
-        $data      = array("PRESDEC_FlagEstado"=>'0');
-        $where = array("PRESDEP_Codigo"=>$presupuesto_detalle);
+        $data      = array("PEDIDETC_FlagEstado"=>'0');
+        $where = array("PEDIDETP_Codigo"=>$pedido_detalle);
         $this->db->where($where);
         $this->db->update($this->_name,$data);
     }

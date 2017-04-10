@@ -42,11 +42,35 @@ class Pedido extends Controller{
     }
     //holas
         public function pedidos($j=0){
-            $data['numdoc'] = "";
-            $data['nombre'] = "";
-            $data['telefono']  = "";
-            $data['titulo_tabla']    = "RELACIÃ“N DE PEDIDOS / REQUERIMIENTOS";
-            $data['registros']  = count($this->pedido_model->listar_pedidos_todos());
+        	
+
+        	$filter = new stdClass();
+        	if (count($_POST) > 0) {
+        		$filter->fechai = $this->input->post('fechai');
+        		$filter->fechaf = $this->input->post('fechaf');
+        		$filter->numero = $this->input->post('txtNumDoc');
+        		$filter->cliente = $this->input->post('cliente');
+        		$filter->ruc_cliente = $this->input->post('ruc_cliente');
+        		$filter->nombre_cliente = $this->input->post('nombre_cliente');
+        	
+        	} else {
+        		$filter->fechai = "";
+        		$filter->fechaf = "";
+        		$filter->numero = "";
+        		$filter->cliente = "";
+        		$filter->ruc_cliente = "";
+        		$filter->nombre_cliente = "";
+        	}
+        	$data['numdoc'] = $filter->numero;
+        	$data['fechai'] = $filter->fechai;
+        	$data['fechaf'] = $filter->fechaf;
+        	$data['cliente'] = $filter->cliente;
+        	$data['ruc_cliente'] = $filter->ruc_cliente;
+        	$data['nombre_cliente'] = $filter->nombre_cliente;
+            
+            
+            $data['titulo_tabla']    = "RELACÓN DE PEDIDOS / REQUERIMIENTOS";
+            $data['registros']  = count($this->pedido_model->listar_pedidos_todos($filter));
             $data['action'] = base_url()."index.php/compras/pedido/pedidos";
             $conf['base_url']   = site_url('maestros/compras/pedidos/');
             $conf['total_rows'] = $data['registros'];
@@ -59,7 +83,7 @@ class Pedido extends Controller{
             $conf['uri_segment'] = 4;
             $this->pagination->initialize($conf);
             $data['paginacion'] = $this->pagination->create_links();
-            $listado_pedidos = $this->pedido_model->listar_pedidos_todos($conf['per_page'],$j);
+            $listado_pedidos = $this->pedido_model->listar_pedidos_todos($filter,$conf['per_page'],$j);
             $item            = $j+1;
             $lista           = array();
         if(count($listado_pedidos)>0){
@@ -109,12 +133,15 @@ class Pedido extends Controller{
 					
                     $editar         = "<a href='javascript:;' onclick='editar_pedido(".$codigo.")'><img src='".base_url()."images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
 					$eliminar       = "<a href='javascript:;' onclick='eliminar_pedido(".$codigo.")'><img src='".base_url()."images/eliminar.png' width='16' height='16' border='0' title='Eliminar'></a>";
+                                        $ver2 = "<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(" . $codigo .",".$ConversorDeNumero.",0,".$tipo_oper2.")'  target='_parent'><img src='" . base_url() . "images/imprimir.png' width='16' height='16' border='0' title='Ver PDF'></a>";
+					
 					$ver = "<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(" . $codigo .",".$ConversorDeNumero.",".$imp.",".$tipo_oper2.")'  target='_parent'><img src='" . base_url() . "images/pdf.png' width='16' height='16' border='0' title='Ver PDF'></a>";
 					
-                    $lista[]        = array($item,$serie,$numero,$nombrededos,$nombreproyecto,$editar,$ver,$eliminar,$relacion,$numeropresupuesto);
+                    $lista[]        = array($item,$serie,$this->getOrderNumeroSerie($numero),$nombrededos,$nombreproyecto,$editar,$ver,$eliminar,$relacion,$numeropresupuesto,$ver2);
                     $item++;
                 }
             }
+         
           $data['lista'] = $lista;
           $this->layout->view("compras/pedido_index",$data);
     }
@@ -134,7 +161,7 @@ class Pedido extends Controller{
         		$combomoneda .= '<option value="'.$codigom.'">'.$descripcionm.'</option>';
         	}
         }
-		 $accion = "";
+		 $accion = "insertar";
         $modo = "insertar";
 		 $codigo = "";
         $data = array();
@@ -142,7 +169,7 @@ class Pedido extends Controller{
 		$data['contiene_igv'] = (($comp_confi[0]->COMPCONFIC_PrecioContieneIgv == '1') ? true : false);
         
          $data['cboContacto'] = form_dropdown("contacto", array('' => ':: Seleccione ::'), "", " class='comboGrande'  id='contacto'");
-		 $data['cboObra'] = form_dropdown("obra", array('' => ':: Seleccione ::'), "", " class='comboGrande'  id='obra' onchange='buscar_contacto()' ");
+		 $data['cboObra'] = form_dropdown("obra", array('' => ':: Seleccione ::'), "", " class='comboGrande'  id='obra' ' ");//onchange='buscar_contacto()
 		$data['fechai'] = form_input(array("name" => "fechai", "id" => "fechai", "class" => "cajaPequena", "readonly" => "readonly", "maxlength" => "10", "value" => "$hoy"));
         $document = $this->pedido_model->traerNumeroDoc();
 		$docum = $this->pedido_model->traerSerieDoc();
@@ -171,6 +198,12 @@ class Pedido extends Controller{
         $data['compania'] = $this->somevar['compania'];
         $data['combomoneda'] = $combomoneda;
         $data['importebruto'] ="";
+       $data['codigo'] ='';
+        $data["serie_numero_orden"]="";
+        $compania = $this->somevar['compania'];
+        $cofiguracion_datos = $this->configuracion_model->obtener_numero_documento($compania, 1);
+        $data['serie_suger'] = $cofiguracion_datos[0]->CONFIC_Serie;
+        $data['numero_suger'] = $this->getOrderNumeroSerie($cofiguracion_datos[0]->CONFIC_Numero + 1);
         $data['vventa'] ="";
         $data['titulo'] = "REGISTRAR PEDIDOS / REQUERIMIENTOS";
         $data['array_detalle'] = array();
@@ -182,17 +215,21 @@ class Pedido extends Controller{
    public function editar_pedido($pedido,$j='0'){
    	$data['modo'] = 'modificar';
    	$data['titulo'] = "EDITAR PEDIDO";
-   	
+   	 $data['codigo'] ='';
+   $data['numero_suger'] ='';
+     $data['serie_suger'] ='';
         $datos_pedido = $this->pedido_model->obtener_pedido($pedido);
         $data['id'] = "";
        
         $codigopedido = $datos_pedido[0]->PEDIP_Codigo;
-        $data['numero'] = $datos_pedido[0]->PEDIC_Numero;
-        $data['serie'] = $datos_pedido[0]->PEDIC_Serie;
+        $numero=$datos_pedido[0]->PEDIC_Numero;
+        $serie= $datos_pedido[0]->PEDIC_Serie;
+        $data['numero'] = $numero;
+        $data['serie'] = $serie;
         $data['igv'] = $datos_pedido[0]->PEDIC_IGV;
         $tipo_oper='C';
         $data['tipo_oper'] = $tipo_oper;
-        $data['descuento'] = "0";
+        $data['descuento'] = $datos_pedido[0]->PEDIC_Descuento100;
         $data['importetotal'] = "0";
         $compania = $this->somevar['compania'];
         $comp_confi = $this->companiaconfiguracion_model->obtener($compania);
@@ -235,8 +272,7 @@ class Pedido extends Controller{
             
             $accion = "";
             $modo = "modificar";
-            $codigo = "";
-            $oculto = form_hidden(array('accion' => $accion, 'codigo' => $codigo, 'empresa' => '', 'persona' => '', 'modo' => $modo, 'base_url' => base_url(), 'tipo_oper' => $tipo_oper, 'contiene_igv' => ($data['contiene_igv'] == true ? '1' : '0'))); 
+            $oculto = form_hidden(array('accion' => $accion, 'codigo' => $codigopedido, 'empresa' => '', 'persona' => '', 'modo' => $modo, 'base_url' => base_url(), 'tipo_oper' => $tipo_oper, 'contiene_igv' => ($data['contiene_igv'] == true ? '1' : '0'))); 
             $data['oculto'] = $oculto;
            
         
@@ -252,42 +288,84 @@ class Pedido extends Controller{
     }
 
    public function modificar_pedido(){
-
-        $pedido = $this->input->post('id');
-        $centro_costo = $this->input->post('centro_costo');
-        $numero_documento = $this->input->post('numero_documento');
-        $nombre_pedido = $this->input->post('nombre_pedido');
-        $cliente = $this->input->post('cliente');
-        $hora = $this->input->post('hora');
-        $fecha = $this->input->post('fechai');
-        $tipo_pedido = $this->input->post('tipo_pedido');
-        $tipo_documento = $this->input->post('tipo_documento');
-        $num_refe = $this->input->post('num_refe');
-        $observacion = $this->input->post('observacion_final');
-        $contacto = $this->input->post('contacto');
-    $this->pedido_model->modificar_pedido($centro_costo,$numero_documento,$nombre_pedido,$tipo_pedido,$tipo_documento,$num_refe,$observacion, $cliente, $fecha, $hora,$contacto);
+   	$pedido = $this->input->post('codigo');
+   	
+   	$filter = new stdClass();
+   	$filter->PEDIC_Numero = $this->input->post('numero');
+   	$filter->PEDIC_Serie = $this->input->post('serie');
+   	$filter->CLIP_Codigo =$this->input->post('cliente');
+       // $fecha = $this->input->post('fechai');
+   	$filter->ECONP_Contacto = $this->input->post('contacto');
+   	$filter->PROYP_Codigo = $this->input->post('obra');
+   	$filter->MONED_Codigo = $this->input->post('moneda');
+   	
+   	$filter->PEDIC_ImporteBruto =$this->input->post('importebruto');
+   	$filter->PEDIC_DescuentoTotal =$this->input->post('descuentotal');
+   	$filter->PEDIC_ValorVenta =$this->input->post('vventa');
+   	$filter->PEDIC_IGVTotal =$this->input->post('igvtotal');
+   	$filter->PEDIC_PrecioTotal =$this->input->post('preciototal');
+   	$filter->PEDIC_descuento100 = $this->input->post('descuento');
+        
+    $this->pedido_model->modificar_pedido($pedido,$filter);
     
-    $produnidad       = $this->input->post('produnidad');
-    $eliminado        = $this->input->post('eliminado');
-    $prodcantidad     = $this->input->post('prodcantidad');
-    $prodcodigo       = $this->input->post('prodcodigo');
-    $detalle          = $this->input->post('proddetalle');  
-    $this->pedidodetalle_model->eliminar_x_pedido($pedido);
-    if(count($prodcodigo) > 0){
-        foreach($prodcodigo as $indice=>$value){
-            $eseliminado = $eliminado[$indice];
-            if($eseliminado != 'si'){
-                $filterDP                       = new stdClass();
-                $filterDP->PROD_Codigo          = $prodcodigo[$indice];
-                $filterDP->UNDMED_Codigo        =$produnidad[$indice];
-                $filterDP->PEDIDETC_Cantidad    = $prodcantidad[$indice];
-                $filterDP->PEDIDETP_Detalle = $detalle[$indice];
-                $this->pedidodetalle_model->insertar_varios($filterDP,$pedido);
-            }
-       
-  }
-}
-}
+    //detalle
+    $prodcodigo = $this->input->post('prodcodigo');
+    $proddescuento = $this->input->post('proddescuento');
+    $produnidad = $this->input->post('produnidad');
+    $prodcantidad = $this->input->post('prodcantidad');
+    $prodpu = $this->input->post('prodpu');
+    $prodprecio = $this->input->post('prodprecio');
+    $prodigv = $this->input->post('prodigv');
+    $prodimporte = $this->input->post('prodimporte');
+    $prodpu_conigv = $this->input->post('prodpu_conigv');
+    
+    $detaccion = $this->input->post('detaccion');
+    $detacodi = $this->input->post('detacodi');
+    //$prodigv100 = $this->input->post('prodigv100');
+    $proddescuento100 = $this->input->post('proddescuento100');
+    $proddescri = $this->input->post('proddescri');
+    $pedido = $this->input->post('codigo');
+    
+    if (is_array($detacodi)) {
+    	foreach ($detacodi as $indice => $valor) {
+    		$detalle_accion = $detaccion[$indice];
+    	
+    		$filter = new stdClass();
+    		$filter->PEDIP_Codigo = $pedido;
+    		$filter->PROD_Codigo = $prodcodigo[$indice];
+    		if ($produnidad[$indice] == '' || $produnidad[$indice] == "null")
+    			$produnidad[$indice] = NULL;
+    			//if ($flagBS[$indice] == 'B')
+    			$filter->UNDMED_Codigo = $produnidad[$indice];
+    			$filter->PEDIDETC_Cantidad = $prodcantidad[$indice];
+    			//if ($tipo_docu != 'B') {
+    			$filter->PEDIDETC_PSIGV = $prodpu[$indice];
+    			$filter->PEDIDETC_Precio = $prodprecio[$indice];
+    			$filter->PEDIDETC_Descuento = $proddescuento[$indice];
+    			$filter->PEDIDETC_PSIGV = $prodigv[$indice];
+    			/* } else {
+    			 $filter->PRESDEC_Subtotal_ConIgv = $prodprecio_conigv[$indice];
+    			 $filter->PRESDEC_Descuento_ConIgv = $proddescuento_conigv[$indice];
+    			 } */
+    			$filter->PEDIDETC_Importe = $prodimporte[$indice];
+    			$filter->PEDIDETC_PCIGV = $prodpu_conigv[$indice];
+    			$filter->PEDIDETC_Descuento100 = $proddescuento100[$indice];
+    			//$filter->PRESDEC_Igv100 = $prodigv100[$indice];
+    			//$filter->PRESDEC_Descripcion = strtoupper($proddescri[$indice]);
+    			//$filter->PRESDEC_Observacion = "";
+    			
+    
+    			if ($detalle_accion == 'n') {
+    				$this->pedidodetalle_model->insertar($filter);
+    			} elseif ($detalle_accion == 'm') {
+    				$this->pedidodetalle_model->modificar($valor, $filter);
+    			} elseif ($detalle_accion == 'e') {
+    				$this->pedidodetalle_model->eliminar($valor);
+    			}
+    	}
+    }
+    exit('{"result":"ok", "codigo":"' . $pedido . '"}');
+    }
    public function busqueda_personas()
     {
         $ruc      = $this->input->post('ruc');
@@ -528,7 +606,10 @@ class Pedido extends Controller{
 			    	$unidaddescripcion     = $unidadbusca[0]->UNDMED_Descripcion;
 			    	$pu_CIGV =  $value->PEDIDETC_PCIGV;
 			    	$pu_SIGV =$value->PEDIDETC_PSIGV;
+			    	$descuento = $value->PEDIDETC_Descuento;
+			    	$descuento100 = $value->PEDIDETC_Descuento100;
 			    	$PRECIO = $value->PEDIDETC_Precio;
+			    	$codigo = $value->PEDIDETP_Codigo;
 			    	$IGV =$value->PEDIDETC_IGV;
 			    	$IMPORTE = $value->PEDIDETC_Importe;
 			    	
@@ -541,7 +622,10 @@ class Pedido extends Controller{
 			    	$objeto->PEDIDETC_PCIGV = $pu_CIGV;
 			    	$objeto->PEDIDETC_PSIGV = $pu_SIGV;
 			    	$objeto->PEDIDETC_Precio = $PRECIO;
+			    	$objeto->PEDIDETC_Descuento = $descuento;
+			    	$objeto->PEDIDETC_Descuento100 = $descuento100;
 			    	$objeto->PEDIDETC_IGV = $IGV;
+			    	$objeto->PEDIDETP_Codigo = $codigo;
 			    	$objeto->PEDIDETC_Importe = $IMPORTE;
 			    	$lista_detalles[] = $objeto;
 			    }
@@ -593,9 +677,10 @@ class Pedido extends Controller{
 		$vventa = $this->input->post('vventa');
 		$igvtotal = $this->input->post('igvtotal');
 		$preciototal= $this->input->post('preciototal');
+		$descuento100 = $this->input->post('descuento');
 	
 	
-		$cod_pedido = $this->pedido_model->insertar_pedido($serie,$numero,$fechasistema,$moneda,$obra,$cliente,$contacto,$igvpp,$importebruto,$descuentotal,$vventa,$igvtotal,$preciototal);
+		$cod_pedido = $this->pedido_model->insertar_pedido($serie,$numero,$fechasistema,$moneda,$obra,$cliente,$contacto,$igvpp,$importebruto,$descuentotal,$vventa,$igvtotal,$preciototal,$descuento100);
 	
 		$prodcodigo = $this->input->post('prodcodigo');
 		$prodcantidad = $this->input->post('prodcantidad');
@@ -603,9 +688,25 @@ class Pedido extends Controller{
 		$ppcigv = $this->input->post('prodpu_conigv');
 		$ppsigv = $this->input->post('prodpu');
 		$precio = $this->input->post('prodprecio');
+		$proddescuento100 = $this->input->post('proddescuento100');
+		$proddescuento = $this->input->post('proddescuento');
 		$igv =  $this->input->post('prodigv');
 		$importe = $this->input->post('prodimporte');
 	
+    $compania = $this->somevar['compania'];
+    $configuracion_datos = $this->configuracion_model->obtener_numero_documento($compania, 1);
+        $numero_predt = $this->pedido_model->ultimo_numero();
+        $numero = $numero_predt[0]->PEDIC_Numero;
+        $num = $configuracion_datos[0]->CONFIC_Numero + 1;
+        $filter->PEDIC_Numero = $numero + 1;
+        $numero = $this->input->post('numero');
+         $filter->PEDIC_Numero = $this->input->post('numero');
+         
+         if ($this->input->post('serie') != '' && $this->input->post('serie') != '0') {
+            $filter->PRESUC_Serie = $this->input->post('serie');
+         }
+         $this->configuracion_model->update_numero_pedido($this->input->post('numero'), $this->somevar['compania']);
+
 		//         $eliminado        = $this->input->post('eliminado');
 		$fecha = date('Y-m-d h:i:s');
 		if(count($prodcodigo) > 0){
@@ -621,6 +722,8 @@ class Pedido extends Controller{
 				$filterDP->PEDIDETC_PCIGV = $ppcigv[$indice];
 				$filterDP->PEDIDETC_PSIGV = $ppsigv[$indice];
 				$filterDP->PEDIDETC_Precio  = $precio[$indice];
+				$filterDP->PEDIDETC_Descuento100 = $proddescuento100[$indice];
+				$filterDP->PEDIDETC_Descuento = $proddescuento[$indice];
 				$filterDP->PEDIDETC_IGV = $igv[$indice];
 				$filterDP->PEDIDETC_Importe = $importe[$indice];
 				$filterDP->PEDIDETC_FechaRegistro =   $fecha;
@@ -748,6 +851,168 @@ class Pedido extends Controller{
 		
 		
 	}
+    public function getOrderNumeroSerie($numero) {
+        $cantidad = strlen($numero);
+        if ($cantidad == 1) {
+            $dato = "00000$numero";
+        }
+        if ($cantidad == 2) {
+            $dato = "0000$numero";
+        }
+        if ($cantidad == 3) {
+            $dato = "000$numero";
+        }
+        if ($cantidad == 4) {
+            $dato = "00$numero";
+        }
+        if ($cantidad == 5) {
+            $dato = "0$numero";
+        }
+        if ($cantidad == 6) {
+            $dato = "$numero";
+        }
+        return $dato;
+    }
+	
+	public function registro_pedido_pdf($fechai, $fechaf, $numero, $cliente)
+	{
+	
+		$fi = explode("-",$fechai);
+		$ff = explode("-",$fechaf);
+		$fechain = $fi[2].'/'.$fi[1].'/'.$fi[0];
+		$fechafin = $ff[2].'/'.$ff[1].'/'.$ff[0];
+		if($fechain=="//" || $fechafin=="//"){
+			$fechain = "--";
+			$fechafin = "--";
+		}
+	
+		$this->load->library('cezpdf');
+		$this->load->helper('pdf_helper');
+		//prep_pdf();
+		$this->cezpdf = new Cezpdf('a4');
+		$datacreator = array(
+				'Title' => 'Estadillo de ',
+				'Name' => 'Estadillo de ',
+				'Author' => 'Vicente Producciones',
+				'Subject' => 'PDF con Tablas',
+				'Creator' => 'info@vicenteproducciones.com',
+				'Producer' => 'http://www.vicenteproducciones.com'
+		);
+	
+		$this->cezpdf->addInfo($datacreator);
+		$this->cezpdf->selectFont(APPPATH . 'libraries/fonts/Helvetica.afm');
+		$delta = 20;
+	
+	
+		
+		$titulo="RELACION DE PEDIDOS";
+		$fonttitle = array("leading" => 30, "left" => 150);
+		$fontespacio = array("leading" => 10, "left" => 100);
+		$fontdataright = array("leading" => 10, "left" => 370);
+		
+		$hoy = date("d-m-Y");
+		$this->cezpdf->ezText($titulo, 17, $fonttitle);
+		$this->cezpdf->ezText("", 17, $fontespacio);
+		$this->cezpdf->ezText("FECHA DE REPORTE: ".$hoy, 8, $fontdataright);
+		$this->cezpdf->ezText("", 17, $fontespacio);
+	
+	
+		$db_data = array();
+	
+	
+		$listado_pedido = $this->pedido_model->listar_pedido_pdf($fechain, $fechafin, $numero, $cliente);
+	
+	
+		if (count($listado_pedido) > 0) {
+			foreach ($listado_pedido as $indice => $valor) {
+				$fecha = $valor->FECHA;
+			
+				
+				$serie =  $this->getOrderSerie($valor->PEDIC_Serie);
+				$numero =  $this->getOrderNumero($valor->PEDIC_Numero);
+				//cliente
+				$codigocliente   = $valor->CLIP_Codigo;//
+				$buscarcliente = $this->cliente_model->obtener_datosCliente($codigocliente);
+				foreach ($buscarcliente as $indice2=>$valor2){
+					$tipopersona = $valor2->CLIC_TipoPersona;
+				
+					if($tipopersona == 1){
+						$codigoempresa = $valor2->EMPRP_Codigo;
+						$buscarempresa = $this->cliente_model->obtener_datosCliente2($codigoempresa);
+						foreach ($buscarempresa as $indice3 => $valor3){
+							$nombrededos = $valor3->EMPRC_RazonSocial;
+						}
+					}else{
+						$codigopersona = $valor2->PERSP_Codigo;
+						$buscarpersona = $this->cliente_model->obtener_datosCliente3($codigopersona);
+						foreach ($buscarpersona as $indice4 => $valor4){
+							$nombre = $valor4->PERSC_Nombre;
+							$ap =$valor4->PERSC_ApellidoPaterno;
+							$am =$valor4->PERSC_ApellidoMaterno;
+							$nombrededos = $nombre." ".$ap." ".$am;
+						}
+					}
+				}
+				
+				//fin cliente
+				
+				$numeropresupuesto = $valor->PRESUC_Serie."-".$valor->PRESUC_Numero;//
+				
+				$total = $valor->MONED_Simbolo.$valor->PEDIC_PrecioTotal;
+				$Stotal+= $valor->PEDIC_PrecioTotal;
+	
+				$db_data[] = array(
+						'cols1' => $indice + 1,
+						'cols2' => $fecha,
+						'cols3' => $serie,//
+						'cols4' => $numero,//
+						'cols5' => $nombrededos,//
+						'cols6' => $numeropresupuesto,//presu
+						'cols7' => $total
+				);
+			}
+		}
+	
+	
+	
+	
+		$col_names = array(
+				'cols1' => '<b>ITEM</b>',
+				'cols2' => '<b>FECHA</b>',
+				'cols3' => '<b>SERIE</b>',
+				'cols4' => '<b>NUMERO</b>',
+				'cols5' => '<b>RAZON SOCIAL</b>',
+				'cols6' => '<b>PRESUPUESTO</b>',
+				'cols7' => '<b>TOTAL</b>'
+		);
+	
+		$this->cezpdf->ezTable($db_data, $col_names, '', array(
+				'width' => 600,
+				'showLines' => 1,
+				'shaded' => 1,
+				'showHeadings' => 1,
+				'xPos' => 'center',
+				'fontSize' => 8,
+				'cols' => array(
+						'cols1' => array('width' => 30, 'justification' => 'center'),
+						'cols2' => array('width' => 60, 'justification' => 'center'),
+						'cols3' => array('width' => 40, 'justification' => 'center'),
+						'cols4' => array('width' => 50, 'justification' => 'center'),
+						'cols5' => array('width' => 160, 'justification' => 'center'),
+						'cols6' => array('width' => 75, 'justification' => 'center'),
+						'cols7' => array('width' => 60, 'justification' => 'center')
+				)
+		));
+		$this->cezpdf->ezText('TOTAL:   '. $valor->MONED_Simbolo.number_format($Stotal,2), '8', array("leading" => 15, 'left' => 410));
+	
+	
+		$cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => $codificacion . '.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
+	
+		ob_end_clean();
+	
+		$this->cezpdf->ezStream($cabecera);
+	}
+	
 
 
 }

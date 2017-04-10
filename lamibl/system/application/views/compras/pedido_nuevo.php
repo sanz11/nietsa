@@ -146,7 +146,7 @@
                     $("#buscar_producto").focus();
 
                     codigoem=ui.item.codigoEmpresa;
-                    get_contacto(codigoem);
+                   get_contacto(codigoem);
                     
                     codigo=ui.item.codigo;
                     get_obra(codigo);
@@ -287,13 +287,13 @@
 					   <table id="customised" class="fuente8">
 					   
 					   <tr>
-							<td>
-								Serie:
-							</td>
-							<td>
-							<input class ="f1" name="serie" type="text" id="serie" size="15" maxlength="3" value="<?php echo $serie;?>" onkeypress="return numbersonly('numero_documento',event);" placeholder="SERIE">
-								<input class="f1" name="numero"  type="text" id="numero" size="15" maxlength="6" value="<?php echo $numero;?>" onkeypress="return numbersonly('numero_documento',event);" placeholder="NUMERO">
-							</td>
+							 <td >N&uacute;mero*</td>
+  				<td>
+                    <?php
+                     echo '<input type="text" name="serie" id="serie" value="'.$serie.'" class="cajaGeneral cajaSoloLectura" size="3" maxlength="3" placeholder="Serie" /> ';
+                    echo '<input type="text" name="numero" id="numero" value="'.$numero.'" class="cajaGeneral cajaSoloLectura" size="10" maxlength="6" placeholder="Numero"  /> ';
+                                echo '<a href="javascript:;" id="linkVerSerieNum"' . ($codigo != '' ? 'style="display:none"' : '') . '><p style="display:none">' . $serie_suger . '-' . $numero_suger . '</p><image src="' . base_url() . 'images/flecha.png" border="0" alt="Serie y número sugerido" title="Serie y número sugerido" /></a>';
+                      ?>  
 							<td >
 								Fecha: <?php echo $fechai?>
                                         <img src="<?php echo base_url();?>images/calendario.png" name="Calendario1" id="Calendario1" width="16" height="16" border="0" onMouseOver="this.style.cursor='pointer'" title="Calendario"/>
@@ -339,7 +339,7 @@
 <!-- 							<td><select id="contacto2">Seleccionar</select></td> -->
 							<td>
 								I.G.V:	<input style="width:30px" type="text" name="igv" id="igv" size="5" value="<?php echo $igv; ?>" readonly  />%
-								Descuento:<input type="text" name="descuento" id="descuento" size="5" value="<?php echo $descuento; ?>" onblur="calcula_totales();"/>%
+								Descuento:<input type="text" name="descuento" id="descuento" size="5" value="<?php echo $descuento; ?>" onblur="modifica_descuento_total();"/>%
 							</td>
 					   </tr>
 					   
@@ -437,6 +437,8 @@
                         	$pu_CIGV =  $value->PEDIDETC_PCIGV;
                         	$pu_SIGV =$value->PEDIDETC_PSIGV;
                         	$PRECIO = $value->PEDIDETC_Precio;
+                        	$detacodi= $value->PEDIDETP_Codigo;
+                        	$proddescuento = $value->PEDIDETC_Descuento;
                         	$IGV =$value->PEDIDETC_IGV;
                         	$IMPORTE = $value->PEDIDETC_Importe;
                         	
@@ -490,7 +492,7 @@
                                                name="prodcantidad[<?php echo $indice; ?>]"
                                                id="prodcantidad[<?php echo $indice; ?>]"
                                                value="<?php echo $cantidad; ?>"
-                                               onblur="calcula_importe('<?php echo $indice; ?>');calcula_totales();"
+                                               onblur="calcula_importe('<?php echo $indice; ?>');modifica_pu_conigv('<?php echo $indice; ?>');"
                                                onKeyPress="return numbersonly(this,event,'.');"/> <?php echo $nombre_unidad; ?>
                                     </div>
                                 </td>
@@ -532,6 +534,9 @@
 
                                                 <input type="hidden" name="detaccion[<?php echo $indice; ?>]"
                                                        id="detaccion[<?php echo $indice; ?>]" value="m"/>
+                                                       
+                                                <input type="hidden" name="detacodi[<?php echo $indice; ?>]" id="detacodi[<?php echo $indice; ?>]" value="<?php echo $detacodi; ?>" />
+                                                        
                                                 <input type="hidden" name="prodigv100[<?php echo $indice; ?>]"
                                                        id="prodigv100[<?php echo $indice; ?>]"
                                                        value="<?php echo $igv; ?>"/>
@@ -542,6 +547,7 @@
                                                 <input type="hidden" name="proddescuento100[<?php echo $indice; ?>]"
                                                        id="proddescuento100[<?php echo $indice; ?>]"
                                                        value="<?php echo $descuento; ?>"/>
+                                                <input type="hidden" name="proddescuento[<?php echo $indice; ?>]" id="proddescuento[<?php echo $indice; ?>]" value="<?php echo $proddescuento; ?>" onblur="calcula_importe2(<?php echo $indice; ?>);" />
                                              
                                                 <input type="text" size="5" maxlength="10"
                                                        class="cajaGeneral cajaSoloLectura"
@@ -623,6 +629,7 @@
 		  	</div>
 		  	</div>
 		  		</div>
+		  		<?php echo $oculto ?>
 
 			</form>
 				</div>

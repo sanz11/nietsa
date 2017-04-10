@@ -1,0 +1,731 @@
+<?php
+class Pedido extends Controller{
+    public function __construct()
+    {
+        parent::Controller();
+        $this->load->model('compras/cotizacion_model');
+        $this->load->model('compras/proveedor_model');
+        $this->load->model('maestros/persona_model');
+        $this->load->model('maestros/documento_model');
+        $this->load->model('maestros/empresa_model');
+        $this->load->model('maestros/proyecto_model');
+		$this->load->model('maestros/emprcontacto_model');
+        $this->load->model('maestros/formapago_model');
+        $this->load->model('maestros/condicionentrega_model');
+        $this->load->model('compras/pedido_model');
+        $this->load->model('compras/pedidodetalle_model');
+        $this->load->model('maestros/centrocosto_model');
+        $this->load->model('maestros/moneda_model');
+        $this->load->model('almacen/producto_model');
+        $this->load->model('almacen/unidadmedida_model');
+        $this->load->model('almacen/almacen_model');
+        $this->load->model('seguridad/usuario_model');
+        $this->load->model('compras/presupuesto_model');
+		$this->load->model('ventas/cliente_model');
+        $this->load->helper('json');
+        $this->load->library('html');
+        $this->load->library('table');
+        $this->load->library('layout','layout');
+        $this->load->library('pagination');
+        $this->load->helper('form');
+		 $this->somevar['compania'] = $this->session->userdata('compania');
+        $this->somevar['user'] = $this->session->userdata('user');
+        $this->somevar['rol'] = $this->session->userdata('rol');
+        $this->somevar['url'] = $_SERVER['REQUEST_URI'];
+        $this->somevar['hoy']       = mdate("%Y-%m-%d",time());
+        date_default_timezone_set("America/Lima");
+
+    }
+    public function index()
+    {
+        $this->layout->view('seguridad/inicio');    
+    }
+    //holas
+        public function pedidos($j=0){
+            $data['numdoc'] = "";
+            $data['nombre'] = "";
+            $data['telefono']  = "";
+            $data['titulo_tabla']    = "RELACIÓN DE PEDIDOS / REQUERIMIENTOS";
+            $data['registros']  = count($this->pedido_model->listar_pedidos_todos());
+            $data['action'] = base_url()."index.php/compras/pedido/pedidos";
+            $conf['base_url']   = site_url('maestros/compras/pedidos/');
+            $conf['total_rows'] = $data['registros'];
+            $conf['per_page']   = 50;
+            $conf['num_links']  = 3;
+            $conf['next_link'] = "&gt;";
+            $conf['prev_link'] = "&lt;";
+            $conf['first_link'] = "&lt;&lt;";
+            $conf['last_link']  = "&gt;&gt;";
+            $conf['uri_segment'] = 4;
+            $this->pagination->initialize($conf);
+            $data['paginacion'] = $this->pagination->create_links();
+            $listado_pedidos = $this->pedido_model->listar_pedidos_todos($conf['per_page'],$j);
+            $item            = $j+1;
+            $lista           = array();
+        if(count($listado_pedidos)>0){
+                foreach($listado_pedidos as $indice=>$valor){
+                    $codigo   = $valor->PEDIP_Codigo;
+                   $numero  =  $this->getOrderNumero($valor->PEDIC_Numero);
+                   $serie  =  $this->getOrderSerie($valor->PEDIC_Serie);
+					$relacion  = $valor->PEDIC_EstadoPresupuesto;
+					$codigocliente   = $valor->CLIP_Codigo;//
+					$numeropresupuesto = $valor->PRESUC_Serie."-".$valor->PRESUC_Numero;//
+					$buscarcliente = $this->cliente_model->obtener_datosCliente($codigocliente);
+					$nombrededos = " ";
+					foreach ($buscarcliente as $indice2=>$valor2){
+						$tipopersona = $valor2->CLIC_TipoPersona;
+							
+						if($tipopersona == 1){
+							$codigoempresa = $valor2->EMPRP_Codigo;
+							$buscarempresa = $this->cliente_model->obtener_datosCliente2($codigoempresa);
+							foreach ($buscarempresa as $indice3 => $valor3){
+									$nombrededos = $valor3->EMPRC_RazonSocial;
+							}
+						}else{
+							$codigopersona = $valor2->PERSP_Codigo;
+							$buscarpersona = $this->cliente_model->obtener_datosCliente3($codigopersona);
+							foreach ($buscarpersona as $indice4 => $valor4){
+								$nombre = $valor4->PERSC_Nombre;
+								$ap =$valor4->PERSC_ApellidoPaterno;
+								$am =$valor4->PERSC_ApellidoMaterno;
+								$nombrededos = $nombre." ".$ap." ".$am;
+							}
+						}
+					}
+						
+                    $codigoproyecto   = $valor->PROYP_Codigo;
+					$buscarproyecto = $this->proyecto_model->obtener_NAMEProyecto($codigoproyecto);
+					$nombreproyecto = "";
+					if(count($buscarproyecto) >0){
+						foreach ($buscarproyecto as $indice1=>$valor1){
+							$nombreproyecto = $valor1->PROYC_Nombre;	
+						}
+					}
+					
+// 					$nombreproyecto=   ;
+					$ConversorDeNumero=1;
+					$imp = 1;
+					$tipo_oper2='"V"';
+					
+                    $editar         = "<a href='javascript:;' onclick='editar_pedido(".$codigo.")'><img src='".base_url()."images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
+					$eliminar       = "<a href='javascript:;' onclick='eliminar_pedido(".$codigo.")'><img src='".base_url()."images/eliminar.png' width='16' height='16' border='0' title='Eliminar'></a>";
+					$ver = "<a href='javascript:;' onclick='comprobante_ver_pdf_conmenbrete(" . $codigo .",".$ConversorDeNumero.",".$imp.",".$tipo_oper2.")'  target='_parent'><img src='" . base_url() . "images/pdf.png' width='16' height='16' border='0' title='Ver PDF'></a>";
+					
+                    $lista[]        = array($item,$serie,$numero,$nombrededos,$nombreproyecto,$editar,$ver,$eliminar,$relacion,$numeropresupuesto);
+                    $item++;
+                }
+            }
+          $data['lista'] = $lista;
+          $this->layout->view("compras/pedido_index",$data);
+    }
+
+   public function nuevo_pedido($tipo_oper='C')
+    {
+		  $compania = $this->somevar['compania'];
+		 $comp_confi = $this->companiaconfiguracion_model->obtener($compania);
+        $combo = '';
+
+        $combomoneda="";
+        $listadomoneda = $this->moneda_model->listartipomoneda();
+        if(count($listadomoneda) > 0){
+        	foreach($listadomoneda as $indices=>$valorm){
+        		$codigom   = $valorm->moned_codigo;
+        		$descripcionm   = $valorm->moned_descripcion;
+        		$combomoneda .= '<option value="'.$codigom.'">'.$descripcionm.'</option>';
+        	}
+        }
+		 $accion = "";
+        $modo = "insertar";
+		 $codigo = "";
+        $data = array();
+        $hoy = date("Y-m-d");
+		$data['contiene_igv'] = (($comp_confi[0]->COMPCONFIC_PrecioContieneIgv == '1') ? true : false);
+        
+         $data['cboContacto'] = form_dropdown("contacto", array('' => ':: Seleccione ::'), "", " class='comboGrande'  id='contacto'");
+		 $data['cboObra'] = form_dropdown("obra", array('' => ':: Seleccione ::'), "", " class='comboGrande'  id='obra'");
+		$data['fechai'] = form_input(array("name" => "fechai", "id" => "fechai", "class" => "cajaPequena", "readonly" => "readonly", "maxlength" => "10", "value" => "$hoy"));
+        $document = $this->pedido_model->traerNumeroDoc();
+		$docum = $this->pedido_model->traerSerieDoc();
+        $data['numero'] = "";
+		 $data['serie'] = "" ;
+		 $data['tipo_oper'] = $tipo_oper;
+        $data['cliente'] = "";
+        $data['ruc_cliente'] = "";
+		$data['modo'] = "";
+        $data['id'] = "";
+        $data['nombre_cliente'] = "";
+		 $data['descuento'] = "0";
+		 $data['preciototal'] = "0";
+		 $data['descuentotal'] = "0";
+		 $data['igvtotal'] = "0";
+		 $data['importetotal'] = "0";
+		 $data['detalle_pedido'] = array();
+		 $oculto = form_hidden(array('accion' => $accion, 'codigo' => $codigo, 'empresa' => '', 'persona' => '', 'modo' => $modo, 'base_url' => base_url(), 'tipo_oper' => $tipo_oper, 'contiene_igv' => ($data['contiene_igv'] == true ? '1' : '0')));
+        
+        $data['oculto'] = $oculto;
+		 
+      $data['igv'] = $comp_confi[0]->COMPCONFIC_Igv;
+        $data['contacto'] = "";
+        $data['modo'] = 'insertar';
+		$data['num_refe'] = '';
+        $data['compania'] = $this->somevar['compania'];
+        $data['combomoneda'] = $combomoneda;
+        $data['importebruto'] ="";
+        $data['vventa'] ="";
+        $data['titulo'] = "REGISTRAR PEDIDOS / REQUERIMIENTOS";
+        $data['array_detalle'] = array();
+        $this->layout->view("compras/pedido_nuevo",$data);
+    }
+
+ 
+    
+   public function editar_pedido($pedido,$j='0'){
+   	$data['modo'] = 'modificar';
+   	$data['titulo'] = "EDITAR PEDIDO";
+   	
+        $datos_pedido = $this->pedido_model->obtener_pedido($pedido);
+        $data['id'] = "";
+       
+        $codigopedido = $datos_pedido[0]->PEDIP_Codigo;
+        $data['numero'] = $datos_pedido[0]->PEDIC_Numero;
+        $data['serie'] = $datos_pedido[0]->PEDIC_Serie;
+        $data['igv'] = $datos_pedido[0]->PEDIC_IGV;
+        $tipo_oper='C';
+        $data['tipo_oper'] = $tipo_oper;
+        $data['descuento'] = "0";
+        $data['importetotal'] = "0";
+        $compania = $this->somevar['compania'];
+        $comp_confi = $this->companiaconfiguracion_model->obtener($compania);
+        $data['contiene_igv'] = (($comp_confi[0]->COMPCONFIC_PrecioContieneIgv == '1') ? true : false);
+        $data['compania'] = $this->somevar['compania'];
+        
+        $codigomoneda = $datos_pedido[0]->MONED_Codigo;
+        $data['combomoneda'] =  $this->OPTION_generador($this->moneda_model->listartipomoneda(), 'moned_codigo','moned_descripcion',$codigomoneda);
+        
+        $codigocliente = $datos_pedido[0]->CLIP_Codigo;
+        $codigoproyecto = $datos_pedido[0]->PROYP_Codigo;
+        
+        if($codigoproyecto != 0){
+        	$listaproyecto = $this->proyecto_model->seleccionar($codigocliente);
+        	$data['cboObra'] = form_dropdown("obra",$listaproyecto,$codigoproyecto, " class='comboGrande'  id='obra' ");
+        }else{
+        	$data['cboObra'] = form_dropdown("obra", array('' => ':: Seleccione ::'), "", " class='comboGrande'  id='obra'");
+        }
+        
+        
+        $contacto = $datos_pedido[0]->ECONP_Contacto;
+        if($contacto != 0){
+        	$listacontacto = $this->proyecto_model->seleccionarcontacto($contacto);
+        	$data['cboContacto'] = form_dropdown("contacto", $listacontacto, $contacto, " class='comboGrande'  id='contacto'");
+        }else{
+        	$data['cboContacto'] = form_dropdown("contacto", array('' => ':: Seleccione ::'), "", " class='comboGrande'  id='contacto'");
+        }
+       
+        $fecha_hora = explode(" ", $datos_pedido[0]->PEDIC_FechaRegistro);
+        $data['hora'] = $fecha_hora[1];
+        $data['fechai'] = form_input(array("name" => "fechai", "id" => "fechai", "class" => "cajaPequena", "readonly" => "readonly", "maxlength" => "10", "value" => "$fecha_hora[0]"));
+        
+        $datos_cliente = $this->cliente_model->obtener($datos_pedido[0]->CLIP_Codigo);
+                $nombre_cliente = $datos_cliente->nombre;
+                $ruc_cliente = $datos_cliente->ruc;
+            $data['ruc_cliente'] = $ruc_cliente;
+            $data['nombre_cliente'] = $nombre_cliente;
+            $data['cliente'] =$codigocliente;
+            
+            
+            $accion = "";
+            $modo = "modificar";
+            $codigo = "";
+            $oculto = form_hidden(array('accion' => $accion, 'codigo' => $codigo, 'empresa' => '', 'persona' => '', 'modo' => $modo, 'base_url' => base_url(), 'tipo_oper' => $tipo_oper, 'contiene_igv' => ($data['contiene_igv'] == true ? '1' : '0'))); 
+            $data['oculto'] = $oculto;
+           
+        
+            $data['importebruto'] = $datos_pedido[0]->PEDIC_ImporteBruto;
+            $data['descuentotal'] = $datos_pedido[0]->PEDIC_DescuentoTotal;
+            $data['vventa'] = $datos_pedido[0]->PEDIC_ValorVenta;
+            $data['igvtotal'] = $datos_pedido[0]->PEDIC_IGVTotal;
+            $data['preciototal'] = $datos_pedido[0]->PEDIC_PrecioTotal;
+
+        $detalle_pedido = $this->obtener_detalle_lista($codigopedido);
+        $data['detalle_pedido'] = $detalle_pedido;
+        $this->load->view("compras/pedido_nuevo",$data);
+    }
+
+   public function modificar_pedido(){
+
+        $pedido = $this->input->post('id');
+        $centro_costo = $this->input->post('centro_costo');
+        $numero_documento = $this->input->post('numero_documento');
+        $nombre_pedido = $this->input->post('nombre_pedido');
+        $cliente = $this->input->post('cliente');
+        $hora = $this->input->post('hora');
+        $fecha = $this->input->post('fechai');
+        $tipo_pedido = $this->input->post('tipo_pedido');
+        $tipo_documento = $this->input->post('tipo_documento');
+        $num_refe = $this->input->post('num_refe');
+        $observacion = $this->input->post('observacion_final');
+        $contacto = $this->input->post('contacto');
+    $this->pedido_model->modificar_pedido($centro_costo,$numero_documento,$nombre_pedido,$tipo_pedido,$tipo_documento,$num_refe,$observacion, $cliente, $fecha, $hora,$contacto);
+    
+    $produnidad       = $this->input->post('produnidad');
+    $eliminado        = $this->input->post('eliminado');
+    $prodcantidad     = $this->input->post('prodcantidad');
+    $prodcodigo       = $this->input->post('prodcodigo');
+    $detalle          = $this->input->post('proddetalle');  
+    $this->pedidodetalle_model->eliminar_x_pedido($pedido);
+    if(count($prodcodigo) > 0){
+        foreach($prodcodigo as $indice=>$value){
+            $eseliminado = $eliminado[$indice];
+            if($eseliminado != 'si'){
+                $filterDP                       = new stdClass();
+                $filterDP->PROD_Codigo          = $prodcodigo[$indice];
+                $filterDP->UNDMED_Codigo        =$produnidad[$indice];
+                $filterDP->PEDIDETC_Cantidad    = $prodcantidad[$indice];
+                $filterDP->PEDIDETP_Detalle = $detalle[$indice];
+                $this->pedidodetalle_model->insertar_varios($filterDP,$pedido);
+            }
+       
+  }
+}
+}
+   public function busqueda_personas()
+    {
+        $ruc      = $this->input->post('ruc');
+        $nombre  = $this->input->post('nombre');
+        $telefono = $this->input->post('telefono');
+                $filter=new stdClass();
+                $filter->nombre=$nombre;
+        $data['n']                  = $this->input->post('n');
+        $data['resultado_personas'] = $this->persona_model->buscar_personas($filter);
+        $this->load->view('compras/busqueda_personas',$data);
+    }
+   public function JSON_busca_persona_xdoc($tipo, $numero){
+            $datos_persona = $this->persona_model->busca_xnumeroDoc($tipo, $numero);  //Esta funcion me devuelde el registro de la empresa
+            
+            $resultado = '[]';
+            if(count($datos_persona)>0){
+                $dpto_domicilio = "15";
+                $prov_domicilio = "01";
+                $dist_domicilio = "00";             
+                $ubigeo_domicilio = $datos_persona[0]->UBIGP_Domicilio;
+                if($ubigeo_domicilio!='000000' && $ubigeo_domicilio!=''){
+                    $dpto_domicilio = substr($ubigeo_domicilio,0,2);
+                    $prov_domicilio = substr($ubigeo_domicilio,2,2);
+                    $dist_domicilio = substr($ubigeo_domicilio,4,2);    
+                }
+                $ubig_naci = $datos_persona[0]->UBIGP_LugarNacimiento;
+                $ubignom = '';
+                if($ubig_naci!='000000' && $ubig_naci!=''){
+                    $temp =  $this->ubigeo_model->obtener_ubigeo($ubig_naci);
+                    if(count($temp)>0)
+                        $ubignom=$temp[0]->UBIGC_Descripcion;
+                }
+                
+                $resultado   = '[{"codigo":"'.$datos_persona[0]->PERSP_Codigo.
+                                '","nombre":"'.$datos_persona[0]->PERSC_Nombre.
+                                '","apepat":"'.$datos_persona[0]->PERSC_ApellidoPaterno.
+                                '","apemat":"'.$datos_persona[0]->PERSC_ApellidoMaterno.
+                                '","ubignom":"'.$ubignom.
+                                '","ubigcod":"'.$datos_persona[0]->UBIGP_LugarNacimiento.
+                                '","sexo":"'.$datos_persona[0]->PERSC_Sexo.
+                                '","estadocivil":"'.$datos_persona[0]->ESTCP_EstadoCivil.
+                                '","nacionalidad":"'.$datos_persona[0]->NACP_Nacionalidad.
+                                '","ruc":"'.$datos_persona[0]->PERSC_Ruc.
+                                '","departamento":"'.$dpto_domicilio.
+                                '","provincia":"'.$prov_domicilio.
+                                '","distrito":"'.$dist_domicilio.
+                                '","direccion":"'.$datos_persona[0]->PERSC_Direccion.
+                                '","telefono":"'.$datos_persona[0]->PERSC_Telefono.
+                                '","movil":"'.$datos_persona[0]->PERSC_Movil.
+                                '","fax":"'.$datos_persona[0]->PERSC_Fax.
+                                '","correo":"'.$datos_persona[0]->PERSC_Email.
+                                '","paginaweb":"'.$datos_persona[0]->PERSC_Web.
+                                '","ctactesoles":"'.$datos_persona[0]->PERSC_CtaCteSoles.
+                                '","ctactedolares":"'.$datos_persona[0]->PERSC_CtaCteDolares.'"}]';
+            }
+            echo $resultado;
+        }
+
+   public function eliminar_persona(){
+            $persona = $this->input->post('persona');
+
+            $this->persona_model->eliminar_persona($persona);
+    }
+   public function seleccionar_estadoCivil($indSel){
+            $array_dist = $this->estadocivil_model->listar_estadoCivil();
+            $arreglo = array();
+            foreach($array_dist as $indice=>$valor){
+                    $indice1   = $valor->ESTCP_Codigo;
+                    $valor1    = $valor->ESTCC_Descripcion;
+                    $arreglo[$indice1] = $valor1;
+            }
+            $resultado = $this->html->optionHTML($arreglo,$indSel,array('0','::Seleccione::'));
+            return $resultado;
+    }
+   public function seleccionar_nacionalidad($indSel=''){
+            $array_dist = $this->nacionalidad_model->listar_nacionalidad();
+            $arreglo = array();
+            foreach($array_dist as $indice=>$valor){
+                    $indice1   = $valor->NACP_Codigo;
+                    $valor1    = $valor->NACC_Descripcion;
+                    $arreglo[$indice1] = $valor1;
+            }
+            $resultado = $this->html->optionHTML($arreglo,$indSel,array('','::Seleccione::'));
+            return $resultado;
+    }
+    /*public function insertar_areaEmpresa($nombre_area){
+            $this->empresa_model->insertar_areaEmpresa($area,$empresa,$descripcion);
+
+    }*/
+   public function seleccionar_departamento($indDefault=''){
+            $array_dpto = $this->ubigeo_model->listar_departamentos();
+            $arreglo = array();
+            if(count($array_dpto)>0){
+                    foreach($array_dpto as $indice=>$valor){
+                            $indice1   = $valor->UBIGC_CodDpto;
+                            $valor1    = $valor->UBIGC_Descripcion;
+                            $arreglo[$indice1] = $valor1;
+                    }
+            }
+            $resultado = $this->html->optionHTML($arreglo,$indDefault,array('00','::Seleccione::'));
+            return $resultado;
+    }
+   public function seleccionar_provincia($departamento,$indDefault=''){
+            $array_prov = $this->ubigeo_model->listar_provincias($departamento);
+            $arreglo = array();
+            if(count($array_prov)>0){
+                    foreach($array_prov as $indice=>$valor){
+                            $indice1   = $valor->UBIGC_CodProv;
+                            $valor1    = $valor->UBIGC_Descripcion;
+                            $arreglo[$indice1] = $valor1;
+                    }
+            }
+            $resultado = $this->html->optionHTML($arreglo,$indDefault,array('00','::Seleccione::'));
+            return $resultado;
+    }
+   public function seleccionar_distritos($departamento,$provincia,$indDefault=''){
+            $array_dist = $this->ubigeo_model->listar_distritos($departamento,$provincia);
+            $arreglo = array();
+            if(count($array_dist)>0){
+                    foreach($array_dist as $indice=>$valor){
+                            $indice1   = $valor->UBIGC_CodDist;
+                            $valor1    = $valor->UBIGC_Descripcion;
+                            $arreglo[$indice1] = $valor1;
+                    }
+            }
+            $resultado = $this->html->optionHTML($arreglo,$indDefault,array('00','::Seleccione::'));
+            return $resultado;
+    }
+   public function seleccionar_tipodocumento($indDefault=''){
+            $array_dist = $this->tipodocumento_model->listar_tipo_documento();
+            $arreglo = array();
+            if(count($array_dist)>0){
+                    foreach($array_dist as $indice=>$valor){
+                            $indice1   = $valor->TIPDOCP_Codigo;
+                            $valor1    = $valor->TIPOCC_Inciales;
+                            $arreglo[$indice1] = $valor1;
+                    }
+            }
+            $resultado = $this->html->optionHTML($arreglo,$indDefault,array('0','::Seleccione::'));
+            return $resultado;
+    }
+
+   public function ver_persona($persona)
+    {
+
+            $datos                = $this->persona_model->obtener_datosPersona($persona);
+            $tipo_doc             = $datos[0]->PERSC_TipoDocIdentidad;
+            $estado_civil         = $datos[0]->ESTCP_EstadoCivil;
+            $nacionalidad         = $datos[0]->NACP_Nacionalidad;
+            $nacimiento           = $datos[0]->UBIGP_LugarNacimiento;
+            $sexo                 = $datos[0]->PERSC_Sexo;
+            $ubigeo_domicilio     = $datos[0]->UBIGP_Domicilio;
+            $datos_nacionalidad   = $this->nacionalidad_model->obtener_nacionalidad($nacionalidad);
+            $datos_nacimiento     = $this->ubigeo_model->obtener_ubigeo($nacimiento);
+            $datos_ubigeoDom_dpto = $this->ubigeo_model->obtener_ubigeo_dpto($ubigeo_domicilio);
+            $datos_ubigeoDom_prov = $this->ubigeo_model->obtener_ubigeo_prov($ubigeo_domicilio);
+            $datos_ubigeoDom_dist = $this->ubigeo_model->obtener_ubigeo($ubigeo_domicilio);
+            $datos_doc            = $this->tipodocumento_model->obtener_tipoDocumento($tipo_doc);
+            $datos_estado_civil   = $this->estadocivil_model->obtener_estadoCivil($estado_civil);
+            $data['nacionalidad'] = $datos_nacionalidad[0]->NACC_Descripcion;
+            $data['nacimiento']   = $datos_nacimiento[0]->UBIGC_Descripcion;
+            $data['tipo_doc']     = $datos_doc[0]->TIPOCC_Inciales;
+            $data['estado_civil'] = $datos_estado_civil[0]->ESTCC_Descripcion;
+            $data['sexo']         = $sexo==0?'MASCULINO':'FEMENINO';
+            $data['telefono']     = $datos[0]->PERSC_Telefono;
+            $data['movil']        = $datos[0]->PERSC_Movil;
+            $data['fax']          = $datos[0]->PERSC_Fax;
+            $data['email']        = $datos[0]->PERSC_Email;
+            $data['web']          = $datos[0]->PERSC_Web;
+            $data['direccion']    = $datos[0]->PERSC_Direccion;
+            $data['dpto']         = $datos_ubigeoDom_dpto[0]->UBIGC_Descripcion;
+            $data['prov']         = $datos_ubigeoDom_prov[0]->UBIGC_Descripcion;
+            $data['dist']         = $datos_ubigeoDom_dist[0]->UBIGC_Descripcion;
+
+
+        $data['datos']  = $datos;
+        $data['titulo'] = "VER PERSONA";
+
+        $this->load->view('maestros/persona_ver',$data);
+    }
+   public function JSON_datos_persona($persona){
+        $datos_persona = $this->persona_model->obtener_datosPersona($persona);
+        $result=array();
+        if(count($datos_persona)>0)
+            $result=$datos_persona[0];
+        echo json_encode($result);
+   }
+   
+    public function eliminar_pedido(){
+        $pedido = $this->input->post('pedido');
+        //primero busca si no esta amarrado a un presupuesto
+        $presupuesto = $this->presupuesto_model->buscar_presu_x_pedido($pedido);
+        if(count($presupuesto) == 0){
+            $this->pedido_model->eliminar_pedido($pedido);
+            $this->pedido_model->eliminar_producto_pedido2($pedido);
+        }else{
+            echo "Tiene este pedido amarrados a un presupuesto";
+        }
+    }
+    
+    public function obtener_detalle_presupuesto($pedido){
+        $detalle_pedido = $this->pedidodetalle_model->listar($pedido);
+        $array_detallepedido = array();
+        foreach($detalle_pedido as $indice=>$value){
+            $pedido     = $value->PEDIP_Codigo;
+            $producto   = $value->PROD_Codigo;
+            $unidad     = $value->UNDMED_Codigo;
+            $cantidad   = $value->PEDIDETC_Cantidad;
+            $des_producto = $this->producto_model->obtener_producto($producto);
+            $nombre_unidad = $this->unidadmedida_model->obtener($unidad);
+            
+            $objeto = new stdClass();
+            $objeto->cod_pedido     = $pedido;
+            $objeto->cod_producto   = $producto;
+            $objeto->des_producto   = $des_producto[0]->PROD_Nombre;
+            $objeto->unidad         = $unidad;
+            $objeto->nombre_unidad  = $nombre_unidad[0]->UNDMED_Simbolo;
+            $objeto->cantidad       = $cantidad;
+            $objeto->detalle        = $value->PEDIDETP_Detalle;
+            $array_detallepedido[] = $objeto;
+        }
+        $resultado = json_encode($array_detallepedido);
+        echo $resultado;
+    }
+    
+	public function obtener_detalle_lista($codigopedido){
+		    $listado_detalle = $this->pedidodetalle_model->listar($codigopedido);
+		    $lista_detalles = array();
+		    if(count($listado_detalle)>0){
+			    foreach($listado_detalle as $key=>$value){
+			    	$productocodigo   = $value->PROD_Codigo;
+			    	$productobusca   = $this->producto_model->obtener_producto($productocodigo);
+			    	$codigousuario = $productobusca[0]->PROD_CodigoUsuario;
+			    	$nombre = $productobusca[0]->PROD_Nombre;
+			    	$cantidad = $value->PEDIDETC_Cantidad;
+			    	$codigounidad = $value->UNDMED_Codigo;
+			    	$unidadbusca     = $this->unidadmedida_model->obtener($codigounidad);
+			    	$unidaddescripcion     = $unidadbusca[0]->UNDMED_Descripcion;
+			    	$pu_CIGV =  $value->PEDIDETC_PCIGV;
+			    	$pu_SIGV =$value->PEDIDETC_PSIGV;
+			    	$PRECIO = $value->PEDIDETC_Precio;
+			    	$IGV =$value->PEDIDETC_IGV;
+			    	$IMPORTE = $value->PEDIDETC_Importe;
+			    	
+			    	$objeto = new stdClass();
+			    	$objeto->PROD_Codigo = $productocodigo;
+			    	$objeto->PROD_CodigoUsuario = $codigousuario;
+			    	$objeto->PROD_Nombre = $nombre;
+			    	$objeto->PEDIDETC_Cantidad = $cantidad;
+			    	$objeto->UNDMED_Descripcion = $unidaddescripcion;
+			    	$objeto->PEDIDETC_PCIGV = $pu_CIGV;
+			    	$objeto->PEDIDETC_PSIGV = $pu_SIGV;
+			    	$objeto->PEDIDETC_Precio = $PRECIO;
+			    	$objeto->PEDIDETC_IGV = $IGV;
+			    	$objeto->PEDIDETC_Importe = $IMPORTE;
+			    	$lista_detalles[] = $objeto;
+			    }
+		    }
+		    return $lista_detalles;
+		
+	}
+	public function contacto(){
+		$codigo = $this->input->post('codigoempre');
+		$respuesta = $this->pedido_model->contactos($codigo);
+			
+		echo json_encode($respuesta);
+	
+	}
+	public function obra(){
+	
+		$codigo = $this->input->post('codigoempre');
+		$respuesta = $this->pedido_model->obras($codigo);
+			
+		echo json_encode($respuesta);
+	
+	}
+	
+	public function seleccionar_centrocosto($indDefault=''){
+		$array_dist = $this->centrocosto_model->listar_centros_costo();
+		$arreglo = array();
+		if(count($array_dist)>0){
+			foreach($array_dist as $indice=>$valor){
+				$indice1   = $valor->CENCOSP_Codigo;
+				$valor1    = $valor->CENCOSC_Descripcion;
+				$arreglo[$indice1] = $valor1;
+			}
+		}
+		$resultado = $this->html->optionHTML($arreglo,$indDefault,array('0','::Seleccione::'));
+		return $resultado;
+	}
+	
+	public function insertar_pedido(){
+		$serie = $this->input->post('serie');
+		$numero = $this->input->post('numero');
+		$fechasistema = $this->input->post('fechai');
+		$moneda = $this->input->post('moneda');
+		$obra = $this->input->post('obra');
+		$cliente = $this->input->post('cliente');
+		$contacto = $this->input->post('contacto');
+		$igvpp = $this->input->post('igv');
+		$importebruto = $this->input->post('importebruto');
+		$descuentotal = $this->input->post('descuentotal');
+		$vventa = $this->input->post('vventa');
+		$igvtotal = $this->input->post('igvtotal');
+		$preciototal= $this->input->post('preciototal');
+	
+	
+		$cod_pedido = $this->pedido_model->insertar_pedido($serie,$numero,$fechasistema,$moneda,$obra,$cliente,$contacto,$igvpp,$importebruto,$descuentotal,$vventa,$igvtotal,$preciototal);
+	
+		$prodcodigo = $this->input->post('prodcodigo');
+		$prodcantidad = $this->input->post('prodcantidad');
+		$produnidad = $this->input->post('produnidad');
+		$ppcigv = $this->input->post('prodpu_conigv');
+		$ppsigv = $this->input->post('prodpu');
+		$precio = $this->input->post('prodprecio');
+		$igv =  $this->input->post('prodigv');
+		$importe = $this->input->post('prodimporte');
+	
+		//         $eliminado        = $this->input->post('eliminado');
+		$fecha = date('Y-m-d h:i:s');
+		if(count($prodcodigo) > 0){
+			foreach($prodcodigo as $indice => $value){
+				//                 $eseliminado = $eliminado[$indice];
+				//                 if($eseliminado != 'si'){
+				$filterDP = new stdClass();
+	
+				$filterDP->PEDIP_Codigo = $cod_pedido;
+				$filterDP->PROD_Codigo = $prodcodigo[$indice];
+				$filterDP->UNDMED_Codigo = $produnidad[$indice];
+				$filterDP->PEDIDETC_Cantidad = $prodcantidad[$indice];
+				$filterDP->PEDIDETC_PCIGV = $ppcigv[$indice];
+				$filterDP->PEDIDETC_PSIGV = $ppsigv[$indice];
+				$filterDP->PEDIDETC_Precio  = $precio[$indice];
+				$filterDP->PEDIDETC_IGV = $igv[$indice];
+				$filterDP->PEDIDETC_Importe = $importe[$indice];
+				$filterDP->PEDIDETC_FechaRegistro =   $fecha;
+				$filterDP->PEDIDETC_FlagEstado = "1";
+				$this->pedidodetalle_model->insertar_varios($filterDP);
+				//                 }
+			}
+		}
+	
+	}
+	
+	public function obtener_persona($persona)
+	{
+		$datos_persona = $this->persona_model->obtener_datosPersona($persona);
+		echo json_encode($datos_persona);
+	}
+	
+	public function buscar_personas($j='0'){
+		$filter = new stdClass();
+		$filter->PERSC_NumeroDocIdentidad = $this->input->post('txtNumDoc');;
+		$filter->nombre = $this->input->post('txtNombre');
+		$filter->PERSC_Telefono = $this->input->post('txtTelefono');
+	
+		$data['numdoc']    = $filter->PERSC_NumeroDocIdentidad;
+		$data['nombre']    = $filter->nombre;
+		$data['telefono']  = $filter->PERSC_Telefono;
+		$data['titulo_tabla']    = "RESULTADO DE BÚSQUEDA DE PERSONAS";
+	
+		$data['registros']  = count($this->persona_model->buscar_personas($filter));
+		$data['action'] = base_url()."index.php/maestros/persona/buscar_personas";
+		$conf['base_url'] = site_url('maestros/persona/buscar_personas/');
+		$conf['total_rows'] = $data['registros'];
+		$conf['per_page']   = 10;
+		$conf['num_links']  = 3;
+		$conf['next_link'] = "&gt;";
+		$conf['prev_link'] = "&lt;";
+		$conf['first_link'] = "&lt;&lt;";
+		$conf['last_link']  = "&gt;&gt;";
+		$conf['uri_segment'] = 4;
+		$this->pagination->initialize($conf);
+		$data['paginacion'] = $this->pagination->create_links();
+		$listado_personas = $this->persona_model->buscar_personas($filter, $conf['per_page'],$j);
+		$item            = $j+1;
+		$lista           = array();
+		if(count($listado_personas)>0){
+			foreach($listado_personas as $indice=>$valor){
+				$persona   = $valor->PERSP_Codigo;
+				$ruc            = $valor->PERSC_NumeroDocIdentidad;
+				$nombres   = $valor->PERSC_Nombre;
+				$telefono       = $valor->PERSC_Telefono;
+				$movil          = $valor->PERSC_Movil;
+				$editar         = "<a href='#' onclick='editar_persona(".$persona.")'><img src='".base_url()."images/modificar.png' width='16' height='16' border='0' title='Modificar'></a>";
+				$ver            = "<a href='#' onclick='ver_persona(".$persona.")'><img src='".base_url()."images/ver.png' width='16' height='16' border='0' title='Modificar'></a>";
+				$eliminar       = "<a href='#' onclick='eliminar_persona(".$persona.")'><img src='".base_url()."images/eliminar.png' width='16' height='16' border='0' title='Modificar'></a>";
+				$lista[]        = array($item,$ruc,$nombres,$telefono,$movil,$editar,$ver,$eliminar);
+				$item++;
+			}
+		}
+		$data['lista'] = $lista;
+		$this->layout->view("maestros/persona_index",$data);
+	
+	}
+	public function getOrderNumero($numero){
+	
+                 $dato ="";
+		$cantidad=strlen($numero);
+	
+		if($cantidad==1){
+			$dato ="00000$numero";
+		}
+		if($cantidad==2){
+			$dato ="0000$numero";
+		}
+		if($cantidad==3){
+			$dato ="000$numero";
+		}
+		if($cantidad==4){
+			$dato= "00$numero";
+		}
+		if($cantidad==5){
+			$dato ="0$numero";
+		}
+		if($cantidad==6){
+			$dato ="$numero";
+		}
+		return $dato;
+	}
+	public function getOrderSerie($numero){
+	
+                $dato ="";
+		$cantidad=strlen($numero);
+	
+		if($cantidad==1){
+			$dato ="00$numero";
+		}
+		if($cantidad==2){
+			$dato ="0$numero";
+		}
+		if($cantidad==3){
+			$dato ="$numero";
+		}
+		return $dato;
+	}
+
+
+}
+
+?>

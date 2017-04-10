@@ -279,9 +279,9 @@ function Close()
 	if($this->page==0)
 		$this->AddPage();
 	// Page footer
-	$this->InFooter = true;
-	$this->Footer();
-	$this->InFooter = false;
+	//$this->InFooter = true;
+	//$this->Footer();
+	//$this->InFooter = false;
 	// Close page
 	$this->_endpage();
 	// Close document

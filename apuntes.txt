@@ -299,3 +299,20 @@ $sumt= '$' . number_format($resul0,4);
 ----------------------
 tilde en cezpdf $html = '<head><meta charset="UTF-8"></head>';
                 $pdf->writeHTML($html, true, false, true, false, '');
+				
+				
+				
+				$fi = explode("-",$fecha_emision);
+    	$ff = explode("-",$fecha_traslado);
+    	$fecha_emision1= $fi[2].'-'.$fi[1].'-'.$fi[0];
+    	$fecha_traslado1 = $ff[2].'-'.$ff[1].'-'.$ff[0];
+    	
+    	$filter = new stdClass();
+    	$filter->GUIATRANS_Serie =$serie ;
+    	$filter->GUIATRANS_Numero =$numero ;
+    	$filter->GUIATRANS_FechaEmision = $fecha_emision1 ; 
+    	$filter->GUIATRANS_FechaTraslado = $fecha_traslado1;
+		
+		
+			$filter->GUIATRANS_FechaEmision = human_to_mysql($fecha_emision) ; 
+    	$filter->GUIATRANS_FechaTraslado = human_to_mysql($fecha_traslado);

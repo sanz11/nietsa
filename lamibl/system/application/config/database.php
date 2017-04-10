@@ -22,10 +22,10 @@
  * By default there is only one group (the "default" group).|| 
  * The $active_record variables lets you determine whether or not to load| the active record class*/
 $active_group = "default";$active_record = TRUE;
-$db['default']['hostname'] = "192.168.0.12";
-$db['default']['username'] = "root"; //vsimport_vipex
-$db['default']['password'] = ""; //Vipex2015
-$db['default']['database'] = "osaerp_lamibl"; //vsimport_root
+$db['default']['hostname'] = "localhost";//192.168.0.12
+$db['default']['username'] = "osaerp_lamibl"; //osaerp_lamibl
+$db['default']['password'] = "%a^@#w=~oxaU"; //%a^@#w=~oxaU
+$db['default']['database'] = "osaerp_lamibl"; //
 $db['default']['dbdriver'] = "mysqli";
 $db['default']['dbprefix'] = "";
 $db['default']['pconnect'] = TRUE;

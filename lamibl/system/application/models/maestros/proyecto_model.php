@@ -24,7 +24,7 @@ class Proyecto_model extends model {
  }
 
 	public function obtener_datosProyecto($proyecto){
-        $query = $this->db->where('EMPRP_Codigo',$proyecto)->get('cji_proyecto');
+        $query = $this->db->where('PROYP_Codigo',$proyecto)->get('cji_proyecto');
         if($query->num_rows()>0){
             foreach($query->result() as $fila){
                 $data[] = $fila;
@@ -237,7 +237,7 @@ class Proyecto_model extends model {
     	{
     		 
     		$listado    = $this->listar_personas($contacto);
-    		
+    		$arreglo='';
     		
     		if(count($listado) > 0){
     			foreach($listado as $indice=>$valor){

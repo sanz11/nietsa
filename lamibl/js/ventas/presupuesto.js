@@ -344,20 +344,25 @@ function calcula_importe(n){
     igv100 = document.getElementById(g).value;
     descuento100 = document.getElementById(h).value;
     precio = money_format(pu*cantidad);
-    total_dscto = money_format(precio*descuento100/100);
+    precio_des=money_format(precio*descuento100/100);
+    precio_total=money_format(precio-parseFloat(precio_des));
+    preciodescuento=money_format(pu_conigv*cantidad);
+    total_dscto = money_format(preciodescuento*descuento100/100);
     precio2 = money_format(precio-parseFloat(total_dscto));
     //alert(pu_conigv)
     if(pu_conigv=='')
         total_igv = money_format(precio2*igv100/100);
     else
         total_igv = money_format((pu_conigv-pu)*cantidad);
+        igvdes= money_format(total_igv*descuento100/100);
+        igv=money_format(total_igv-parseFloat(igvdes));
 
     importe = money_format(precio-parseFloat(total_dscto)+parseFloat(total_igv));
 
-    document.getElementById(c).value = total_dscto;
-    document.getElementById(d).value = total_igv;
-    document.getElementById(e).value = precio;
-    document.getElementById(f).value = importe;
+    document.getElementById(c).value = total_dscto;//proddescuento
+    document.getElementById(d).value = igv;//prodigv
+    document.getElementById(e).value = precio_total;//prodprecio
+    document.getElementById(f).value = importe;//prodimporte
     
     calcula_totales();
 }
@@ -442,7 +447,7 @@ function calcula_totales(){
   
 	igv100 = parseInt($("#igv").val());
 	igv_total=money_format(precio_total*igv100/100);
-	importe_total = money_format(precio_total + igv_total-descuento_total);
+	importe_total = money_format(precio_total + igv_total);
 	
 	
        /*igvtotal=money_format((importe_total*18)/118);
@@ -511,8 +516,8 @@ function modifica_descuento_total(){
         a = "proddescuento100["+i+"]";
         document.getElementById(a).value = descuento;
     }
-    for(i=0;i<n;i++){
-        calcula_importe(i);
+    for(jj=0;jj<n;jj++){
+        calcula_importe(jj);
     }
     calcula_totales();
 }
@@ -762,6 +767,7 @@ function agregar_todopresupuesto(guia,tipo_oper){
     url = base_url+"index.php/ventas/presupuesto/obtener_detalle_presupuesto/"+tipo_oper+"/"+tipo_docu+"/"+guia;
    
    n = document.getElementById('tblDetallePresupuesto').rows.length;
+   $("#tblDetallePresupuesto").html('');
    
    $.getJSON(url,function(data){
         limpiar_datos();
@@ -780,7 +786,7 @@ function agregar_todopresupuesto(guia,tipo_oper){
                 producto        = item.PROD_Codigo;
                 codproducto     = item.PROD_CodigoInterno;
                 unidad_medida   = item.UNDMED_Codigo;
-                nombre_unidad   = item.UNDMED_Descripcion;
+                nombre_unidad   = item.UNDMED_Simbolo;
                 nombre_producto = item.PROD_Nombre;
                 cantidad        = item.PRESDEC_Cantidad;
                 pu              = item.PRESDEC_Pu;
@@ -831,7 +837,9 @@ function agregar_todopresupuesto(guia,tipo_oper){
                     fila += '<input type="hidden" size="1" maxlength="10" readonly class="cajaGeneral" name="proddescuento['+n+']" class="proddescuento" id="proddescuento['+n+']" value="'+descuento+'" onblur="calcula_importe2('+n+');calcula_totales();">';
                //fila += '</div></td>';
                 
-                fila += '<td width="6%" style="display:none;"><div align="center"><input type="text" size="5" class="cajaGeneral cajaSoloLectura" name="prodigv['+n+']" value="'+igv+'" id="prodigv['+n+']" readonly></div></td>';
+                fila += '<td width="6%"><div align="center"><input type="text" size="5" class="cajaGeneral cajaSoloLectura" name="prodigv['+n+']" value="'+igv+'" id="prodigv['+n+']" readonly></div></td>';
+                fila += '<td width="6%"><div align="center"><input type="text" size="5" class="cajaGeneral cajaSoloLectura" name="prodimporte['+n+']" id="prodimporte['+n+']" value="'+total+'" readonly></div></td>';
+                
                 fila += '<td width="6%" style="display:none;" ><div align="center">';
                 fila +='<input type="hidden" name="detacodi['+n+']" id="detacodi['+n+']">';
                 fila += '<input type="hidden" name="proddescuento_conigv['+n+']" id="proddescuento_conigv['+n+']" onblur="calcula_importe2_conigv('+n+');" value="0">';
@@ -839,7 +847,6 @@ function agregar_todopresupuesto(guia,tipo_oper){
                 fila +='<input type="hidden" name="detaccion['+n+']" id="detaccion['+n+']" value="n">';
                 fila+= '<input type="text" value="0" size="1" name="proddescuento['+n+']" class="proddescuento" id="proddescuento['+n+']" onblur="calcula_importe2('+n+');" />';
 
-                fila += '<input type="text" size="5" class="cajaGeneral cajaSoloLectura" name="prodimporte['+n+']" id="prodimporte['+n+']" value="'+total+'" readonly="readonly" value="0">';
                 fila += '</div></td>';
                 fila += '</tr>';
                 $("#tblDetallePresupuesto").append(fila);
@@ -866,6 +873,7 @@ function agregar_todopedido(pedido,tipo_oper){
     url = base_url+"index.php/ventas/presupuesto/obtener_detalle_pedido";
 //location.href = url;
     n = document.getElementById('tblDetallePresupuesto').rows.length;
+    $("#tblDetallePresupuesto").html('');
    
 		
 	 $.ajax({url: url,type: "POST",
@@ -896,6 +904,7 @@ function agregar_todopedido(pedido,tipo_oper){
 		                pu              = item.PRESDEC_Pu;
 		                subtotal        = item.PRESDEC_Subtotal;
 		                descuento       = item.PRESDEC_Descuento;
+		                descuento100       = item.PRESDEC_Descuento100;
 		                
 		                igv             = item.PRESDEC_Igv;
 		                total           = item.PRESDEC_Total
@@ -953,6 +962,7 @@ function agregar_todopedido(pedido,tipo_oper){
 
 		                fila += '</div></td>';
 		                fila += '</tr>';
+		                
 		                $("#tblDetallePresupuesto").append(fila);
 						
 		            }
@@ -962,6 +972,7 @@ function agregar_todopedido(pedido,tipo_oper){
 		            $('#nombre_cliente').val(razon_social);*/
 		            $('#forma_pago').val(formapago);
 		            $('#moneda').val(moneda);
+		            $('#descuento').val(descuento100);
 					
 		            n++;      
 		        })

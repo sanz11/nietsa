@@ -257,6 +257,7 @@ if (empty($persona))
                 $("#serieverPedi").show(2000);
                 $("#serieguiaverPre").html('');//borramos presupuesto
                 $("#serieguiaverPre").hide(2000);
+                calcula_totales();
             }	
 
         </script>

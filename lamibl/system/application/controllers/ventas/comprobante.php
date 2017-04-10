@@ -6546,11 +6546,6 @@ if($_SESSION['compania']=='1'){
         $fechahoy = date('d/m/Y');
 
 
-          $titulo="REPORTE DE VENTAS AL: ".$dias[date('w')]." ".date('d')." de ".$meses[date('n')-1]. " del ".date('Y');
-
-//$this->load->library('cezpdf');
-//$this->load->helper('pdf_helper');
-//prep_pdf();
         $this->cezpdf = new Cezpdf('a4');
 
         /* Cabecera */
@@ -6566,8 +6561,17 @@ if($_SESSION['compania']=='1'){
             }
         }
 
-        $this->cezpdf->ezText($titulo ."  ", 17, $options);
-        $this->cezpdf->ezText(" " ."  ", 17, $options);
+        $titulo="REPORTE DE VENTAS";
+        $fonttitle = array("leading" => 30, "left" => 150);
+        $fontespacio = array("leading" => 20, "left" => 100);
+        $fontdataright = array("leading" => 0, "left" => 350);
+        
+        $hoy = date("d-m-Y");
+        $this->cezpdf->ezText($titulo, 17, $fonttitle);
+        $this->cezpdf->ezText("", 17, $fontespacio);
+         
+        $this->cezpdf->ezText("FECHA DE REPORTE: ".$hoy, 8, $fontdataright);
+        $this->cezpdf->ezText(" " ."  ", 10, $options);
         
         
         $codigo="";
@@ -6586,22 +6590,20 @@ if($_SESSION['compania']=='1'){
                 'col6' => $value->CPC_Numero,
                 'col7' => $value->MONED_Simbolo.$value->CPC_subtotal,
                 'col8' => $value->MONED_Simbolo.$value->CPC_igv,
-                'col9' => $value->MONED_Simbolo.$value->CPC_descuento,
-                'col10' => $value->MONED_Simbolo.$value->CPC_total
+                'col9' => $value->MONED_Simbolo.$value->CPC_total
             );
         }
           
         $col_names = array(
             'col1' => 'Itm',
             'col2' => 'Fecha de Registro',
-            'col3' => 'Lugar',
+            'col3' => 'NOMBRE O RAZON SOCIAL',
             'col4' => 'T. Doc.',
             'col5' => 'SERIE',
             'col6' => 'NRO',
             'col7' => 'VALOR DE VENTA',
             'col8' => 'I.G.V. 18%',
-            'col9' => 'Descuento',
-            'col10' => 'TOTAL'
+            'col9' => 'TOTAL'
 
         );
 
@@ -6631,13 +6633,12 @@ if($_SESSION['compania']=='1'){
                 'col8' => array('width' => 60, 'justification' => 'center'),
                 'col9' => array('width' => 60, 'justification' => 'center'),
                 'col10' => array('width' => 60, 'justification' => 'center'),
-                'col11' => array('width' => 60, 'justification' => 'center'),
-                 'col12' => array('width' => 60, 'justification' => 'center')
+                'col11' => array('width' => 60, 'justification' => 'center')
             )
         ));
-        $this->cezpdf->ezText((''), 7, array("left" => 420));
+        $this->cezpdf->ezText((''), 7, array("left" => 360));
 
-         $this->cezpdf->ezText(('TOTAL'.'            '.$value->MONED_Simbolo.$sum), 7, array("left" => 415));
+         $this->cezpdf->ezText(('TOTAL'.'            '.$value->MONED_Simbolo.$sum), 7, array("left" => 380));
 
 
         $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'nama_file.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
@@ -6646,7 +6647,7 @@ if($_SESSION['compania']=='1'){
     public function ver_reporte_pdf_commpras($anio)
     {
 
-          $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
+          $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sbado");
           $meses = array("enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre");
 
         $usuario = $this->usuario_model->obtener($this->somevar['user']);
@@ -7996,6 +7997,207 @@ $resultado="0";
 }
 echo $resultado;
     }   
+	
+	  public function ver_reporte_pdf_productos($anio ,$mes ,$fech1 ,$fech2, $tipodocumento,$Prodcod)
+        {
+        	$usuario = $this->usuario_model->obtener($this->somevar['user']);
+        	$persona = $this->persona_model->obtener_datosPersona($usuario->PERSP_Codigo);
+        	$fechahoy = date('d/m/Y');
+        	//$this->load->library('cezpdf');
+        	//$this->load->helper('pdf_helper');
+        	//prep_pdf();
+        	$this->cezpdf = new Cezpdf('a4');
+        
+        	/* Cabecera */
+        	$delta = 20;
+        	
+        	$productname = $this->producto_model->nameproducto($Prodcod);
+        
+        	$listado = $this->comprobante_model->buscar_comprobante_producto($anio ,$mes ,$fech1 ,$fech2 ,$tipodocumento,$Prodcod);
+        
+        	$confi = $this->configuracion_model->obtener_configuracion($this->somevar['compania']);
+        	$serie = '';
+        	
+        	$prodn=$productname[0]->PROD_Nombre;
+        	
+        	$titulo="REPORTE DE VENTA POR PRODUCTO";
+        	$fonttitle = array("leading" => 50, "left" => 100);
+        	$fontespacio = array("leading" => 10, "left" => 100);
+        	$fontdata = array("leading" => 12, "left" => 40);
+        	$fontdataright = array("leading" => 0, "left" => 350);
+        	 
+        	$hoy = date("d-m-Y");
+        	$this->cezpdf->ezText($titulo ." ". $subTitulo, 17, $fonttitle);
+        	$this->cezpdf->ezText("", 17, $fontespacio);
+        	
+        	$this->cezpdf->ezText("PRODUCTO: ".$prodn, 8, $fontdata);
+        	$this->cezpdf->ezText("FECHA DE REPORTE: ".$hoy, 8, $fontdataright);
+        	
+        	if($anio!="--" && $mes =="--" ){// SOLO AÃ‘O
+        		$this->cezpdf->ezText("AÃ‘O: ".$anio, 8, $fontdata);
+        	}
+        	if($anio!="--" && $mes !="--" ){// MES Y  AÃ‘O
+        		$this->cezpdf->ezText("AÃ‘O : ".$anio. "     MES : ".$this->get_mesletra($mes), 8, $fontdata);
+        	}
+        	if($anio=="--" && $mes !="--"){//MES CON AÃ‘O ACTUAL
+        		$this->cezpdf->ezText("AÃ‘O : ".date("Y"). "    MES : ".$this->get_mesletra($mes), 8, $fontdata);
+        	}
+        	
+        	//-----------------
+        		
+        	if($anio=="--" && $mes =="--" && $fech1!="--" && $fech2=="--" ){//FECHA INICIAL
+        		$this->cezpdf->ezText("DESDE: ".$fech1, 8, $fontdata);
+        	}
+        	if($anio=="--" && $mes =="--" && $fech1!="--" && $fech2!="--"){//FECHA INICIAL Y FECHA FINAL
+        		$this->cezpdf->ezText("DESDE: ".$fech1. "   HASTA: ".$fech2, 8, $fontdata);
+        	}
+        	
+        	
+        	foreach ($confi as $key => $value) {
+        		if ($value->DOCUP_Codigo == 15) {
+        			$serie = $value->CONFIC_Serie;
+        		}
+        	}
+        
+        	/* Listado */
+        	$codigo="";
+        	$sum = 0;
+        	$this->cezpdf->ezText("", 17, $fontespacio);
+        	foreach ($listado as $key => $value) {
+        		 
+        
+        		$sum += $value->CPC_total;
+        		$db_data[] = array(
+        				'col1' => $key + 1,
+        				'col2' => substr($value->CPC_FechaRegistro, 0, 10),
+        				'col3' => $value->CPC_TipoDocumento,
+        				'col4' => $serie,
+        				'col5' => $value->CPC_Numero,
+        				'col6' =>  $value->nombre,
+        				'col7' => $value->MONED_Simbolo. $value->CPC_subtotal,
+        				'col8' => $value->MONED_Simbolo.$value->CPC_igv,
+        				'col9' => $value->MONED_Simbolo.$value->CPC_total
+        		);
+        	}
+        	$sum = $value->MONED_Simbolo . ' ' . number_format($sum, 2);
+        
+        	$col_names = array(
+        			'col1' => 'Itm',
+        			'col2' => 'Fecha de Registro',
+        			'col3' => 'T. Doc.',
+        			'col4' => 'SERIE',
+        			'col5' => 'NRO',
+        			'col6' => 'RAZON SOCIAL',
+        			'col7' => 'VALOR DE VENTA',
+        			'col8' => 'I.G.V. 18%',
+        			'col9' => 'TOTAL'
+        
+        	);
+        
+        	$db_data[] = array(
+        			'col1' => "",
+        			'col2' => "",
+        			'col3' => "",
+        			'col4' => "",
+        			'col5' => "",
+        			'col6' => "",
+        			'col7' => "",
+        			'col8' => "TOTAL",
+        			'col9' => $sum,
+        			'col10' => "",
+        			'col11' => ""
+        	);
+        
+        	$this->cezpdf->ezTable($db_data, $col_names, '', array(
+        			'width' => 555,
+        			'showLines' => 1,
+        			'shaded' => 0,
+        			'showHeadings' => 1,
+        			'xPos' => 'center',
+        			'fontSize' => 7,
+        			'cols' => array(
+        					'col1' => array('width' => 25, 'justification' => 'center'),
+        					'col2' => array('width' => 50, 'justification' => 'center'),
+        					'col3' => array('width' => 25, 'justification' => 'center'),
+        					'col4' => array('width' => 30,'justification' => 'center'),
+        					'col5' => array('width' => 30, 'justification' => 'center'),
+        					'col6' => array('width' => 130, 'justification' => 'center'),
+        					'col7' => array('width' => 60, 'justification' => 'center'),
+        					'col8' => array('width' => 60, 'justification' => 'center'),
+        					'col9' => array('width' => 60, 'justification' => 'center'),
+        					'col10' => array('width' => 60, 'justification' => 'center'),
+        					'col11' => array('width' => 60, 'justification' => 'center')
+        			)
+        	));
+        
+        	$cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'nama_file.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
+        	$this->cezpdf->ezStream($cabecera);
+        }
+ public function encuentrax_producto() {
+        
+        	$codigoProducto = $this->input->post('codigo'); //captura de ajax mando un valor
+        	$result = array();
+        
+        		
+        	if($codigoProducto!=null && count(trim($codigoProducto))>0){
+        			
+        		$consultaNombre =$datosTipoCaja = $this->comprobante_model->autocompleteProducto($keyword);
+        		if($consultaNombre != null && count($consultaNombre)>0){
+        			foreach ($datosTipoCaja as $indice => $valor) {
+        				$nombre = $valor-> PROD_Nombre;
+        				$codigito = $valor->  PROD_Codigo;
+        				$result[] = array( "value" => $nombre ,"codigo" => $codigito);
+        
+        			}
+        		}
+        
+        	}
+        
+        	echo json_encode($result);
+        
+        }
+        
+
+        public function get_mesletra($monthnumber){
+        	switch ($monthnumber) {
+        		case 1:
+        			return "Enero";
+        			break;
+        		case 2:
+        			return "Febrero";
+        			break;
+        		case 3:
+        			return "Marzo";
+        			break;
+        	    case 4:
+        	    	return "Abril";
+        			break;
+        		case 5:
+        			return "Mayo";
+        			break;
+        		case 6:
+        			return "Junio";
+        			break;
+        		case 7:
+        			return "Julio";
+        			break;
+        		case 8:
+        			return "Agosto";
+        			break;
+        		case 9:
+        			return "Septiembre";
+        			break;
+        		case 10:
+        			return "Octubre";
+        			break;
+        		case 11:
+        			return "Noviembre";
+        			break;
+        		case 12:
+        			return "Diciembre";
+        			break;
+        	}
+        }
 }
 	
 	

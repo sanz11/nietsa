@@ -133,8 +133,8 @@
                             <tr>
                                 <td><div align="left">Orden de Pedido</div></td>
                                 <td><div align="left">
-                                    <input type="text" class="cajaGeneral" size="1" maxlength="3" name="orden_pedido_serie" id="orden_pedido_serie" value="<?php echo $documentos['opedido_serie'];?>">
-                                    <input type="text" class="cajaGeneral" size="7" maxlength="10" name="orden_pedido" id="orden_pedido" value="<?php echo $documentos['opedido'];?>">
+                                    <input type="text" class="cajaGeneral" size="1" maxlength="3" name="orden_pedido_serie" id="orden_pedido_serie" value="<?php echo $documentos['orden_pedido_serie'];?>">
+                                    <input type="text" class="cajaGeneral" size="7" maxlength="10" name="orden_pedido" id="orden_pedido" value="<?php echo $documentos['orden_pedido'];?>">
                                 </div></td>
                                 <td align="left" valign="top"><div align="left">Guia de Ingreso</div></td>
                                 <td align="left" valign="top"><div align="left">

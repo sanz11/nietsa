@@ -1266,7 +1266,6 @@ class Guiarem extends controller
 	                $filter2->GUIAREMDETC_GenInd = $detflag;
 	                $filter2->GUIAREMDETC_Descripcion = strtoupper($descri);
 	                $filter2->ALMAP_Codigo=$codigoAlmacenProducto;
-	                $filter2->GUIAREMDETC_ITEM = $indice+1;
 
 	                if ($guiarem_id == "") {
 	                } else {
@@ -1478,7 +1477,7 @@ class Guiarem extends controller
 	
 	            }
 	        }
-	$this->item($guiarem_id);
+	//$this->item($guiarem_id);
 			/**verificamos si el estado de la guiarem se encuentra en estado 1 ya ejecuto el disparador**/
 	        if($estado!=null && $estado==1){
 	        	if($guiarem_id!=null && $guiarem_id!=0){
@@ -1493,16 +1492,16 @@ class Guiarem extends controller
    		}
    		exit('{"result":"ok", "codigo":"' . $guiarem_id . '"}');
     }
-function item($codigo){
-            $detalle= $this->guiaremdetalle_model->listar2($codigo);
+// function item($codigo){
+//             $detalle= $this->guiaremdetalle_model->listar2($codigo);
             
-            foreach ($detalle as $key => $value) {
+//             foreach ($detalle as $key => $value) {
                 
-                $filter3->GUIAREMDETC_ITEM = $key +1 ;   
-                $this->guiaremdetalle_model->modificar($value->GUIAREMDETP_Codigo, $filter3);
-            }
+//                 $filter3->GUIAREMDETC_ITEM = $key +1 ;   
+//                 $this->guiaremdetalle_model->modificar($value->GUIAREMDETP_Codigo, $filter3);
+//             }
 
-}
+// }
     public function disparador($codigo, $tipo_oper = 'V')
     {
     	if($codigo!=null && $codigo!=0){

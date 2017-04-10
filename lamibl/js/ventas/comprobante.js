@@ -238,7 +238,12 @@ jQuery(document).ready(function () {
                 url = base_url + "index.php/ventas/comprobante/comprobante_modificar";
             
         } else {
-            url = base_url + "index.php/ventas/comprobante/comprobante_insertar_ref";
+           
+            if (codigo == '')
+            	 url = base_url + "index.php/ventas/comprobante/comprobante_insertar_ref";
+            else
+                url = base_url + "index.php/ventas/comprobante/comprobante_modificar";
+            
         }
 
         dataString = $('#frmComprobante').serialize();
@@ -957,7 +962,8 @@ function calcula_importe(n) {
     igv100 = document.getElementById(g).value;
     descuento100 = document.getElementById(h).value;
     precio = money_format(pu * cantidad);
-    total_dscto = money_format(precio * descuento100 / 100);
+    preciodescuento= money_format(pu_conigv*cantidad);
+    total_dscto = money_format(preciodescuento * descuento100 / 100);
     precio2 = money_format(precio - parseFloat(total_dscto));
     if (pu_conigv == '')
         total_igv = money_format(precio2 * igv100 / 100);
@@ -2659,5 +2665,54 @@ function agregar_todo_recu(guia) {
   
     var url3 =base_url2+ "index.php/ventas/comprobante/verPdf/" + tipo_oper2 + "/" + tipo_docu2+"/"+dataEviar;
     window.open(url3, '', "width=800,height=600,menubars=no,resizable=no;");
+ 
+}
+function ver_reporte_productos() {
+
+    var prod = $("#productoDescripcion").val();
+
+    var anio = $("#anioVenta").val();
+    var mes = $("#mesventa").val();
+    var fech1 = $("#fech1").val();
+    var fech2 = $("#fech2").val();
+   
+    var tipodocumento = $("#tipodocumento").val();
+    var Prodcod = $("#reporteProducto").val();
+    
+    if(anio=="0") {anio="--";} 
+    if(mes=="")   {mes="--";} 
+  
+    if(tipodocumento=="")  {tipodocumento="--";}
+
+    var datafechaIni="";var datafechafin="";
+
+    if(fech1=="") {
+        fech1="--";
+    }else{
+        fechai=$("#fech1").val().split("/"); 
+        fech1=fechai[2]+"-"+fechai[1]+"-"+fechai[0];
+    }
+
+    if(fech2=="") {
+        fech2="--";
+    }else{
+        fechaf=$("#fech2").val().split("/");
+        fech2=fechaf[2]+"-"+fechaf[1]+"-"+fechaf[0];
+
+    }
+    
+
+    url = base_url + "index.php/ventas/comprobante/ver_reporte_pdf_productos/" + anio+"/" + mes+"/" + fech1+"/" + fech2+"/"+tipodocumento +"/"+Prodcod;
+    if(Prodcod!="" && prod !="")  {
+    	 if($("#fech1").val() <= $("#fech2").val())  {
+    		 window.open(url, '', "width=800,height=600,menubars=no,resizable=no;");
+    	 }else{
+    	    	alert("Seleccione un rango de fechas validas");
+    	    	$("#fech2").focus();
+    	    }
+    }else{
+    	alert("Seleccione un Producto");
+    	$("#productoDescripcion").focus();
+    }
  
 }

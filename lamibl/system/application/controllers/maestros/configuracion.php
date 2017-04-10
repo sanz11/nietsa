@@ -91,7 +91,7 @@ class Configuracion extends Controller {
             switch ($id) {
                 case 1 :$arrayValores_serie[0] = $serie;
                     $arrayValores[0] = $numero;
-                    break; //opedido
+                    break; //orden_pedido
                 case 2: $arrayValores_serie[1] = $serie;
                     $arrayValores[1] = $numero;
                     break; //cotizacion
@@ -134,12 +134,12 @@ class Configuracion extends Controller {
             }
         }
         $documentos = array(
-            "opedido_serie" => $arrayValores_serie[0], "cotizacion_serie" => $arrayValores_serie[1], "ocompra_serie" => $arrayValores_serie[2],
+            "orden_pedido_serie" => $arrayValores_serie[0], "cotizacion_serie" => $arrayValores_serie[1], "ocompra_serie" => $arrayValores_serie[2],
             "inventario_serie" => $arrayValores_serie[3], "guiain_serie" => $arrayValores_serie[4], "guiasa_serie" => $arrayValores_serie[5],
             "valesa_serie" => $arrayValores_serie[6], "factura_serie" => $arrayValores_serie[7], "boleta_serie" => $arrayValores_serie[8],
             "guiarem_serie" => $arrayValores_serie[9], "notacred_serie" => $arrayValores_serie[10], "notadeb_serie" => $arrayValores_serie[11],
             "presupuesto_serie" => $arrayValores_serie[12], "compgene_serie" => $arrayValores_serie[13],
-            "opedido" => $arrayValores[0], "cotizacion" => $arrayValores[1], "ocompra" => $arrayValores[2],
+            "orden_pedido" => $arrayValores[0], "cotizacion" => $arrayValores[1], "ocompra" => $arrayValores[2],
             "inventario" => $arrayValores[3], "guiain" => $arrayValores[4], "guiasa" => $arrayValores[5],
             "valesa" => $arrayValores[6], "factura" => $arrayValores[7], "boleta" => $arrayValores[8],
             "guiarem" => $arrayValores[9], "notacred" => $arrayValores[10], "notadeb" => $arrayValores[11],
@@ -221,7 +221,7 @@ class Configuracion extends Controller {
                 "comprobante_general" => $comprobante_general
             );
             $datos_serie = array(
-                "orden_pedido" => $orden_pedido_serie,
+                "orden_pedido_serie" => $orden_pedido_serie,
                 "cotizacion" => $cotizacion_serie,
                 "orden_compra" => $orden_compra_serie,
                 "inventario" => $inventario_serie,
@@ -284,7 +284,7 @@ class Configuracion extends Controller {
                 $numero = $valor->CONFIC_Numero;
                 switch ($id) {
                     case 1 : $arrayValores[0] = $numero;
-                        break; //opedido
+                        break; //orden_pedido
                     case 2: $arrayValores[1] = $numero;
                         break; //cotizacion
                     case 3: $arrayValores[2] = $numero;
